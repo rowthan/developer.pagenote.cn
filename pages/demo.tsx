@@ -42,7 +42,7 @@ export default function () {
                 </ul>
             </div>
             <h2 className='text'>
-                示例1：拉取最近标记
+                示例2：拉取最近标记
             </h2>
             <pre>
                 <code>

@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         <CheckNewVersion requireVersion={'0.23.6'}>
           <p className="mt-3 text-2xl">
             从这里参与开发{' '}
-            <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
+            <code className="rounded-md bg-gray-100 dark:bg-gray-500 p-3 font-mono text-lg">
               <a href="https://github.com/rowthan/developer.pagenote.cn">pages/index.tsx</a>
             </code>
           </p>
