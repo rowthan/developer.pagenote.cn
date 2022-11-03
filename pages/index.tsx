@@ -8,7 +8,7 @@ const Home: NextPage = () => {
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
         <title>PAGENOTE 开发者中心</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="https://pagenote.cn/favicon.ico" />
       </Head>
 
 
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
 
         <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
           <a
-            href="structure"
+            href="projects"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
           >
             <h3 className="text-2xl font-bold">PAGENOTE 项目结构 &rarr;</h3>
@@ -51,7 +51,7 @@ const Home: NextPage = () => {
           </a>
 
           <a
-            href="/demo.tsx"
+            href="/demo"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
           >
             <h3 className="text-2xl font-bold">示例 &rarr;</h3>
