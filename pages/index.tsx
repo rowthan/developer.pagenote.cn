@@ -24,7 +24,7 @@ const Home: NextPage = () => {
           <p className="mt-3 text-2xl">
             从这里参与开发{' '}
             <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-              <a href="https://github.com/rowthan/">pages/index.tsx</a>
+              <a href="https://github.com/rowthan/developer.pagenote.cn">pages/index.tsx</a>
             </code>
           </p>
         </CheckNewVersion>
@@ -32,45 +32,40 @@ const Home: NextPage = () => {
 
         <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
           <a
-            href="https://www.npmjs.com/package/@pagenote/shared"
+            href="structure"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
           >
-            <h3 className="text-2xl font-bold">API 文档 &rarr;</h3>
+            <h3 className="text-2xl font-bold">PAGENOTE 项目结构 &rarr;</h3>
             <div className="mt-4 text-xl">
-              你的 HTML 页面可以与 PAGENOTE 通过 API 进行通信，读取、写入标记笔记。
-              <div>
-                示例： <code>/hooks/useWhoAmI</code>
-              </div>
+              PAGENOTE 插件由多个模块组成，选择你擅长的部分，开发维护。
             </div>
           </a>
 
           <a
-            href="https://nextjs.org/learn"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
           >
             <h3 className="text-2xl font-bold">教程 &rarr;</h3>
             <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
+              视频教程还在制作中，稍等一下...
             </p>
           </a>
 
           <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
+            href="/demo.tsx"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
           >
             <h3 className="text-2xl font-bold">示例 &rarr;</h3>
             <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
+              和 PAGENOTE 插件通信示例
             </p>
           </a>
 
           <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
           >
             <h3 className="text-2xl font-bold">部署服务 &rarr;</h3>
             <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
+              提交 MR 至主分支后，将自动部署.
             </p>
           </a>
         </div>
@@ -79,12 +74,12 @@ const Home: NextPage = () => {
       <footer className="flex h-24 w-full items-center justify-center border-t">
         <a
           className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://pagenote.cn/release"
           target="_blank"
           rel="noopener noreferrer"
         >
           Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+          <img src="https://pagenote.cn/favicon.ico" alt="pagenote Logo" width={48} height={48} />
         </a>
       </footer>
     </div>
