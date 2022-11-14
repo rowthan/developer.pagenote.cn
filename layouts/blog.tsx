@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import {parseISO, format} from 'date-fns';
 import {PropsWithChildren, Suspense} from 'react';
-import Container from 'components/Container';
+import DeveloperContainer from 'components/DeveloperContainer';
 import {Post} from 'lib/types';
 
 export default function BlogLayout({
@@ -9,9 +9,9 @@ export default function BlogLayout({
                                        post
                                    }: PropsWithChildren<{ post?: Post }>) {
     return (
-        <Container
+        <DeveloperContainer
             title={`${post?.title} – pagenote`}
-            description={post?.excerpt}
+            description={post?.excerpt || ''}
             date={new Date().toISOString()}
             type="article"
         >
@@ -40,6 +40,6 @@ export default function BlogLayout({
                     </div>
                 </Suspense>
             </article>
-        </Container>
+        </DeveloperContainer>
     );
 }

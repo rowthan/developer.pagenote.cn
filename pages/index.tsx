@@ -1,11 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-import CheckNewVersion from "../components/CheckNewVersion";
+import CheckVersion from "../components/CheckVersion";
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="flex min-h-screen flex-col items-center justify-center py-2 dark:bg-gray-900">
       <Head>
         <title>PAGENOTE 开发者中心</title>
         <link rel="icon" href="https://pagenote.cn/favicon.ico" />
@@ -20,14 +19,14 @@ const Home: NextPage = () => {
           </a>
         </h1>
 
-        <CheckNewVersion requireVersion={'0.23.6'}>
+        <CheckVersion requireVersion={'0.23.6'}>
           <p className="mt-3 text-2xl">
             从这里参与开发{' '}
             <code className="rounded-md bg-gray-100 dark:bg-gray-500 p-3 font-mono text-lg">
               <a href="https://github.com/rowthan/developer.pagenote.cn">pages/index.tsx</a>
             </code>
           </p>
-        </CheckNewVersion>
+        </CheckVersion>
 
 
         <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">

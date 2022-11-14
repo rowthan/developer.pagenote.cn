@@ -2,7 +2,7 @@ const { spacing, fontFamily } = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: ['./pages/**/*.tsx', './components/**/*.tsx', './layouts/**/*.tsx'],
-  darkMode: 'class',
+  darkMode: 'media',//class
   theme: {
     extend: {
       colors: {
@@ -94,5 +94,5 @@ module.exports = {
   variants: {
     typography: ['dark']
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [require('@tailwindcss/typography'),require('daisyui')]
 };

@@ -39,14 +39,16 @@ const projects: {
     skills: ["TypeScript", "Chrome extension",],
     recommend: false,
     score: 4
-}, {
-    github: "",
-    name: "pagenote API",
-    description: "pagenote 的数据同步解决方案，用户可以自行部署此服务。",
-    skills: ["TypeScript", "Node.js","MongoDB"],
-    recommend: false,
-    score: 3
-}]
+},
+    // {
+    // github: "",
+    // name: "pagenote API",
+    // description: "pagenote 的数据同步解决方案，用户可以自行部署此服务。",
+    // skills: ["TypeScript", "Node.js","MongoDB"],
+    // recommend: false,
+    // score: 3
+    // }
+]
 
 const InstallBar: React.FC = function () {
 
