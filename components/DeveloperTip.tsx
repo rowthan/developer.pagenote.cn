@@ -2,7 +2,7 @@ import {ReactElement, useState} from "react";
 import {DeveloperTask} from "../const/developerTask";
 import {GIT_BASE_URL} from "../const/git";
 
-export default function DeveloperTip(props:{children: ReactElement, taskInfo: DeveloperTask}) {
+export default function DeveloperTip(props:{children?: ReactElement, taskInfo: DeveloperTask}) {
     const {taskInfo} = props;
     const [visible,setVisible] = useState(false);
     return(
