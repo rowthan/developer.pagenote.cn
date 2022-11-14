@@ -44,7 +44,6 @@ export default function UploadBackup(props:{onUpload:()=>void}) {
                 <input id="import-data" ref={input} type="file" style={{display: "none"}} onChange={onImportData} />
                 <label htmlFor="import-data">
                     <span
-                        disabled={loading}
                         className="btn btn-outline btn-success">
                         上传备份文件
                     </span>
