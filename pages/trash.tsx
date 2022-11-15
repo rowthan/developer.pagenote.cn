@@ -18,7 +18,7 @@ export default function Trash() {
             query:{
                 deleted: true
             },
-            limit: 999,
+            limit: 10,
         }).then((res)=>{
             if(res.success){
                 setList((res.data.list || []) as WebPage[])
