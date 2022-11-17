@@ -19,6 +19,16 @@ export default function Trash() {
                 deleted: true
             },
             limit: 10,
+            sort:{
+                updateAt: -1
+            },
+            projection:{
+                title: 1,
+                url: 1,
+                key: 1,
+                updateAt: 1,
+                icon: 1
+            }
         }).then((res)=>{
             if(res.success){
                 setList((res.data.list || []) as WebPage[])
@@ -34,6 +44,15 @@ export default function Trash() {
         })
     }
 
+    function revert(key: string) {
+        extApi.lightpage.updatePages([{
+            key: key,
+            deleted: false,
+        }]).then(function () {
+            loadTrashList()
+        })
+    }
+
     function removeAll() {
         extApi.lightpage.removePages({
             keys: list.map(function (item) {
@@ -46,7 +65,7 @@ export default function Trash() {
 
     return(
         <CheckVersion requireVersion={'0.23.8'}>
-            <table className="table table-compact w-full min-h-100">
+            <table className="table table-compact w-3/4 min-h-100 m-10 mx-auto">
                 <thead>
                 <tr>
                     <th>序号</th>
@@ -63,16 +82,21 @@ export default function Trash() {
                                 <td>{index+1}</td>
                                 <td>
                                     <div>
-                                        {item.title}
+                                        <img className='inline' width={14} height={14} src={item.icon} alt=""/> {item.title}
                                     </div>
-                                    <a href={item.url}>
-                                        {item.url || item.key}
-                                    </a>
+                                    <div className='overflow-ellipsis max-w-screen-sm break-words pre-wrap overflow-hidden max-w-xs'>
+                                        <a className='hover:text-blue-400 text-blue-200' target='_blank' href={item.url}>
+                                            {item.url || item.key}
+                                        </a>
+                                    </div >
                                 </td>
                                 <td>{dayjs(item.updateAt).format('YYYY-MM-DD HH:mm:ss')}</td>
                                 <td>
-                                    <button onClick={()=>{removeItem(item.key)}} className="m-2 btn btn-sm btn-success">
+                                    <button onClick={()=>{removeItem(item.key)}} className="m-2 btn btn-sm btn-warning">
                                         彻底删除
+                                    </button>
+                                    <button onClick={()=>{revert(item.key)}} className="m-2 btn btn-sm btn-success">
+                                        恢复
                                     </button>
                                 </td>
                             </tr>
@@ -82,12 +106,14 @@ export default function Trash() {
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th>共计{list.length}</th>
+                    <th>共 {list.length} 个删除网页</th>
                     <th colSpan={3}>
-                        <button onClick={removeAll} className="btn btn-outline btn-success">
-                            清空
-                        </button>
-
+                        {
+                            list.length> 0 &&
+                            <button onClick={removeAll} className="btn btn-outline btn-success">
+                                清空
+                            </button>
+                        }
                     </th>
                 </tr>
                 </tfoot>
