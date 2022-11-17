@@ -1,6 +1,13 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {BackupData, BackupDataType, BackupVersion, Step, WebPage} from "@pagenote/shared/lib/@types/data";
+import {
+    BackupData,
+    BackupDataType,
+    BackupVersion,
+    SnapshotResource,
+    Step,
+    WebPage
+} from "@pagenote/shared/lib/@types/data";
 import extApi from "@pagenote/shared/lib/generateApi";
 import dayjs from "dayjs";
 import useWhoAmi from "../../hooks/useWhoAmi";
@@ -8,7 +15,7 @@ import {addBackup, downloadBackupAsFile, getBackupDetail, listBackupList, remove
 import {pick} from "next/dist/lib/pick";
 import UploadBackup from "./UploadBackup";
 import {toast} from "../../utils/toast";
-import {importLights, importPages} from "./api";
+import {importLights, importPages, importSnapshots} from "./api";
 import DeveloperTip from "../DeveloperTip";
 import {developerTask} from "../../const/developerTask";
 
@@ -42,6 +49,7 @@ export default function BackupList() {
             if(res.success){
                 lights = lights.concat(res.data.list as Step[])
                 if(res.data.has_more){
+                    /**避免数据量过大，无法通过单次请求拉取完，采用递归方式分批次拉取*/
                     const result = await getAllLights(res.data.list.length+skip);
                     lights = lights.concat(result)
                 }
@@ -60,7 +68,7 @@ export default function BackupList() {
             skip: skip,
         }).then(async (res)=> {
             if(res.success){
-                pages = pages.concat(res.data.list as WebPage[])
+                pages = pages.concat(res.data.list)
                 console.log(res.data)
                 if(res.data.has_more){
                     const result = await getAllPages(res.data.list.length+skip);
@@ -72,13 +80,30 @@ export default function BackupList() {
         })
     }
 
+    function getAllSnapshots(skip=0,snapshots :Partial<SnapshotResource>[] = []): Promise<Partial<SnapshotResource>[]> {
+        return extApi.lightpage.querySnapshots({
+            limit: 4,
+            skip: skip,
+        }).then(async function (res) {
+            if(res.success){
+                snapshots = snapshots.concat(res.data.list)
+                if(res.data.has_more){
+                    const result = await getAllSnapshots(res.data.list.length + skip);
+                    snapshots = snapshots.concat(result)
+                }
+            }
+            return snapshots || []
+        })
+    }
+
     function useBackup(backupId: string) {
         setLoading(true)
         getBackupDetail(backupId).then(async function (res) {
             if(res){
-                const {pages=[],lights=[]} = res;
+                const {pages=[],lights=[], snapshots=[]} = res;
                 await importLights(lights)
                 await importPages(pages)
+                await importSnapshots(snapshots)
             }
             toast('已导入')
             setLoading(false)
@@ -94,8 +119,9 @@ export default function BackupList() {
 
         Promise.all([
             getAllLights(),
-            getAllPages()
-        ]).then(function ([lights,pages]) {
+            getAllPages(),
+            getAllSnapshots(),
+        ]).then(function ([lights,pages,snapshots]) {
             addBackup({
                 backupId: dayjs().format('YYYY-MM-DD_HH_mm_ss'),
                 backup_at: Date.now(),
@@ -104,7 +130,8 @@ export default function BackupList() {
                 extension_version: whoAmi?.version,
                 lights: lights,
                 pages: pages,
-                remark: `共计 ${lights.length} 个标记； ${pages.length} 个网页`,
+                snapshots: snapshots,
+                remark: `共计 ${lights.length} 个标记； ${pages.length} 个网页; ${snapshots.length} 个截图快照`,
                 resources: [],
                 size: 0,
                 version: BackupVersion.version4
@@ -164,7 +191,7 @@ export default function BackupList() {
                                                 </li>
                                                 <li>
                                                     <button disabled={loading} onClick={()=>{useBackup(item.backupId as string)}} className="m-2 btn btn-sm btn-success">
-                                                        恢复至此备份节点
+                                                        导入此备份数据至 PAGENOTE 插件
                                                     </button>
                                                 </li>
                                                 <li>

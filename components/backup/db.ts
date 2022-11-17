@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import {BackupData} from "@pagenote/shared/lib/@types/data";
+import {BackupData, SnapshotResource} from "@pagenote/shared/lib/@types/data";
 import {contentToFile} from "@pagenote/shared/lib/utils/document";
 
 const database = new Dexie("lightpage-backup");
@@ -18,7 +18,7 @@ export function getBackupDetail(backupId: string) {
     }).first()
 }
 
-export function addBackup(backup: BackupData) {
+export function addBackup(backup: BackupData & {snapshots?: Partial<SnapshotResource>[]}) {
     return getTable().put(backup);
 }
 

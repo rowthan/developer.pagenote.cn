@@ -1,5 +1,5 @@
 /**导入*/
-import {Step, WebPage} from "@pagenote/shared/lib/@types/data";
+import {SnapshotResource, Step, WebPage} from "@pagenote/shared/lib/@types/data";
 import extApi from "@pagenote/shared/lib/generateApi";
 
 export async function importPages(pages: Partial<WebPage>[]) {
@@ -17,4 +17,8 @@ export async function importLights(lights: Partial<Step>[], webpage?: WebPage) {
             timeout: 2000
         })
     }
+}
+
+export async function importSnapshots(snapshots: SnapshotResource[]) {
+    return extApi.lightpage.addSnapshots(snapshots)
 }
