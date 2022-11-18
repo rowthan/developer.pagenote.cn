@@ -19,6 +19,6 @@ export async function importLights(lights: Partial<Step>[], webpage?: WebPage) {
     }
 }
 
-export async function importSnapshots(snapshots: SnapshotResource[]) {
-    return extApi.lightpage.addSnapshots(snapshots)
+export async function importSnapshots(snapshots: Partial<SnapshotResource>[]) {
+    return extApi.lightpage.addSnapshots(snapshots as SnapshotResource[])
 }

@@ -3,10 +3,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next build && next export",
     "start": "next start"
   },
   "dependencies": {
-    "@pagenote/shared": "^1.8.7",
+    "@pagenote/shared": "^1.9.2",
     "@tailwindcss/typography": "^0.5.7",
     "classnames": "^2.3.2",
     "daisyui": "^2.38.1",
