@@ -10,14 +10,14 @@ export default function () {
     const [webpages,setWebpages] = useState<Partial<WebPage>[]>();
 
     useEffect(function () {
-        extApi.lightpage.getLightPages({
-            limit: 2,
+        extApi.lightpage.queryPages({
+            limit: 5,
             sort: {
                 createAt: -1
             }
         }).then(function (res) {
             if(res.success){
-                setWebpages(res.data.pages)
+                setWebpages(res.data.list)
             }
         })
     },[])
@@ -30,7 +30,7 @@ export default function () {
                 </pre>
             </div>
             <div>
-                <h2>示例1：获取当前插件信息</h2>
+                <h2>示例1：<a href="https://github.com/rowthan/developer.pagenote.cn/blob/main/pages/demo.tsx">获取当前插件信息</a></h2>
                 <pre>
                     <code>
                         extApi.user.getWhoAmI()
@@ -42,12 +42,12 @@ export default function () {
                 </ul>
             </div>
             <h2 className='text'>
-                示例2：拉取最近标记
+                示例2：<a href="https://github.com/rowthan/developer.pagenote.cn/blob/main/pages/demo.tsx">拉取最近标记</a>
             </h2>
             <pre>
                 <code>
-                    extApi.lightpage.getLightPages({"{"}
-                        "limit": 2,
+                    extApi.lightpage.queryPages({"{"}
+                        "limit": 5,
                         "sort": {"{"}
                             "createAt": -1
                         {"}"}
@@ -59,11 +59,10 @@ export default function () {
                     webpages?.map(function (webpage) {
                         return (
                             <li className='text-sm text-blue-600' key={webpage.key}>
-                                {/*@ts-ignore*/}
-                                <img className='inline m-0' src={webpage.icon || webpage.plainData.icon} width={24} height={24} />
+                                <img className='inline m-0' src={webpage.icon} width={24} height={24} />
                                 <a href={webpage.url || webpage.key}>{webpage.title || webpage.url || webpage.key}</a>
                                 <div>
-                                    <span>{dayjs(webpage.updateAt).format('YYYY-MM-DD')}</span>
+                                    <span>{dayjs(webpage.createAt).format('YYYY-MM-DD HH:mm:ss')}</span>
                                 </div>
                             </li>
                         )
