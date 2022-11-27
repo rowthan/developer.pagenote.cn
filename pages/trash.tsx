@@ -4,6 +4,7 @@ import extApi from "@pagenote/shared/lib/generateApi";
 import dayjs from "dayjs";
 import * as React from "react";
 import CheckVersion from "../components/CheckVersion";
+import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 
 
 export default function Trash() {
