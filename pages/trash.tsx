@@ -11,26 +11,29 @@ export default function Trash() {
 
     useEffect(function () {
         loadTrashList()
-    },[])
+        return onVisibilityChange(function () {
+            loadTrashList();
+        })
+    }, [])
 
     function loadTrashList() {
         extApi.lightpage.queryPages({
-            query:{
+            query: {
                 deleted: true
             },
-            limit: 10,
-            sort:{
+            limit: 100,
+            sort: {
                 updateAt: -1
             },
-            projection:{
+            projection: {
                 title: 1,
                 url: 1,
                 key: 1,
                 updateAt: 1,
                 icon: 1
             }
-        }).then((res)=>{
-            if(res.success){
+        }).then((res) => {
+            if (res.success) {
                 setList((res.data.list || []) as WebPage[])
             }
         })
