@@ -30,7 +30,7 @@ export default function () {
                 </pre>
             </div>
             <div>
-                <h2>示例1：<a href="https://github.com/rowthan/developer.pagenote.cn/blob/main/pages/demo.tsx">获取当前插件信息</a></h2>
+                <h2>示例1：<a href="https://github.com/rowthan/developer.pagenote.cn/blob/main/hooks/useWhoAmi.ts#L30">获取当前插件信息</a></h2>
                 <pre>
                     <code>
                         extApi.user.getWhoAmI()
@@ -42,7 +42,7 @@ export default function () {
                 </ul>
             </div>
             <h2 className='text'>
-                示例2：<a href="https://github.com/rowthan/developer.pagenote.cn/blob/main/pages/demo.tsx">拉取最近标记</a>
+                示例2：<a href="https://github.com/rowthan/developer.pagenote.cn/blob/main/pages/demo.tsx#L13">拉取最近标记</a>
             </h2>
             <pre>
                 <code>
