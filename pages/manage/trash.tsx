@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {WebPage} from "@pagenote/shared/lib/@types/data";
 import extApi from "@pagenote/shared/lib/generateApi";
 import dayjs from "dayjs";
@@ -7,7 +7,7 @@ import CheckVersion from "../../components/CheckVersion";
 import Table from "../../components/Table";
 import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import {Pagination} from "@pagenote/shared/lib/@types/database";
-import Breadcrumbs from "../../components/Breadcrumbs";
+import BasicLayout from "../../layouts/BasicLayout";
 
 
 export default function Trash() {
@@ -69,7 +69,8 @@ export default function Trash() {
 
     function removeItem(key: string) {
         extApi.lightpage.removePages({
-            keys: [key]
+            keys: [key],
+            removeRelated: ['light', 'snapshot'], // 一并删除标记、截图
         }).then(function () {
             selectedIds.delete(key)
             loadTrashList();
@@ -89,7 +90,8 @@ export default function Trash() {
     function removeSelected() {
         const keys = Array.from(selectedIds);
         extApi.lightpage.removePages({
-            keys: keys
+            keys: keys,
+            removeRelated: ['light', 'snapshot'], // 一并删除标记、截图
         }).then(function () {
             selectedIds.clear();
             loadTrashList()
@@ -113,69 +115,70 @@ export default function Trash() {
 
     return (
         <CheckVersion requireVersion={'0.23.8'}>
-            <div className='mx-auto w-3/4'>
-                <Breadcrumbs id={'home.manage.trash'}/>
-                <Table list={list}
-                       pagination={pagination}
-                       onPaginationChange={changePagination}
-                       headLabels={["网页", "更新时间", "操作"]}
-                       selectedIds={selectedIds}
-                       onSelectIds={setSelectedIds}
-                       primaryKey={'key'}
-                       renderTDS={function (item, index) {
-                           return (
-                               <>
-                                   <td>
-                                       <div>
-                                           <img className='inline' width={14} height={14} src={item.icon}
-                                                alt=""/> {item.title}
-                                       </div>
-                                       <div
-                                           className='overflow-ellipsis max-w-screen-sm break-words pre-wrap overflow-hidden '>
-                                           <a className='hover:text-blue-400 text-blue-200' target='_blank'
-                                              href={item.url}>
-                                               {item.url || item.key}
-                                           </a>
-                                       </div>
-                                   </td>
-                                   <td>{dayjs(item.updateAt).format('YYYY-MM-DD HH:mm:ss')}</td>
-                                   <td>
-                                       <button onClick={() => {
-                                           removeItem(item.key)
-                                       }} className="m-2 btn btn-sm btn-warning">
-                                           彻底删除
-                                       </button>
-                                       <button onClick={() => {
-                                           revert(item.key)
-                                       }} className="m-2 btn btn-sm btn-success">
-                                           恢复
-                                       </button>
-                                   </td>
-                               </>
-                           )
-                       }}
-                       footerTD={
-                           <div className='mx-2'>
-                               {
-                                   selectedIds.size > 0 ?
-                                       <div>
-                                           <button onClick={removeSelected}
-                                                   className="btn btn-xs btn-outline btn-error">
-                                               批量删除 {selectedIds.size}
+            <BasicLayout>
+                <div className=''>
+                    <Table list={list}
+                           pagination={pagination}
+                           onPaginationChange={changePagination}
+                           headLabels={["网页", "更新时间", "操作"]}
+                           selectedIds={selectedIds}
+                           onSelectIds={setSelectedIds}
+                           primaryKey={'key'}
+                           renderTDS={function (item, index) {
+                               return (
+                                   <>
+                                       <td>
+                                           <div>
+                                               <img className='inline' width={14} height={14} src={item.icon}
+                                                    alt=""/> {item.title}
+                                           </div>
+                                           <div
+                                               className='overflow-ellipsis max-w-screen-sm break-words pre-wrap overflow-hidden '>
+                                               <a className='hover:text-blue-400 text-blue-200' target='_blank'
+                                                  href={item.url}>
+                                                   {item.url || item.key}
+                                               </a>
+                                           </div>
+                                       </td>
+                                       <td>{dayjs(item.updateAt).format('YYYY-MM-DD HH:mm:ss')}</td>
+                                       <td>
+                                           <button onClick={() => {
+                                               removeItem(item.key)
+                                           }} className="m-2 btn btn-sm btn-warning">
+                                               彻底删除
                                            </button>
-                                           <button onClick={revertSelected}
-                                                   className="ml-2 btn btn-xs btn-outline btn-success">
-                                               批量恢复 {selectedIds.size}
+                                           <button onClick={() => {
+                                               revert(item.key)
+                                           }} className="m-2 btn btn-sm btn-success">
+                                               恢复
                                            </button>
-                                       </div> :
-                                       <div className='text-gray-500'>
+                                       </td>
+                                   </>
+                               )
+                           }}
+                           footerTD={
+                               <div className='mx-2'>
+                                   {
+                                       selectedIds.size > 0 ?
+                                           <div>
+                                               <button onClick={removeSelected}
+                                                       className="btn btn-xs btn-outline btn-error">
+                                                   批量删除 {selectedIds.size}
+                                               </button>
+                                               <button onClick={revertSelected}
+                                                       className="ml-2 btn btn-xs btn-outline btn-success">
+                                                   批量恢复 {selectedIds.size}
+                                               </button>
+                                           </div> :
+                                           <div className='text-gray-500'>
 
-                                       </div>
-                               }
-                           </div>
-                       }
-                />
-            </div>
+                                           </div>
+                                   }
+                               </div>
+                           }
+                    />
+                </div>
+            </BasicLayout>
         </CheckVersion>
     )
 }
