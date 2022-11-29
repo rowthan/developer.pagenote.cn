@@ -19,7 +19,7 @@ import {importLights, importPages, importSnapshots} from "./api";
 import DeveloperTip from "../DeveloperTip";
 import {developerTask} from "../../const/developerTask";
 
-
+const PAGE_SIZE = 50;
 export default function BackupList() {
     const [backupList,setBackupList] = useState<Partial<BackupData>[]>([]);
     const [loading,setLoading] = useState(false);
@@ -43,9 +43,9 @@ export default function BackupList() {
             query: {
                 deleted: false,
             },
-            limit: 10, // 一次拉取100条，避免数据量过大，导致信息超载无法通信，分页拉取所有
+            limit: PAGE_SIZE, // 一次拉取100条，避免数据量过大，导致信息超载无法通信，分页拉取所有
             //@ts-ignore
-            skip: 10 * page,
+            skip: PAGE_SIZE * page,
             page: page,
         }).then(async (res)=> {
             if(res.success){
@@ -66,9 +66,9 @@ export default function BackupList() {
             query: {
                 deleted: false,
             },
-            limit: 10, // 一次拉取100条，避免数据量过大，导致信息超载无法通信，分页拉取所有
+            limit: PAGE_SIZE, // 一次拉取100条，避免数据量过大，导致信息超载无法通信，分页拉取所有
             //@ts-ignore
-            skip: 10 * page,
+            skip: PAGE_SIZE * page,
             page: page,
         }).then(async (res)=> {
             if(res.success){
@@ -86,9 +86,9 @@ export default function BackupList() {
 
     function getAllSnapshots(page=0,snapshots :Partial<SnapshotResource>[] = []): Promise<Partial<SnapshotResource>[]> {
         return extApi.lightpage.querySnapshots({
-            limit: 4,
+            limit: 5,
             //@ts-ignore
-            skip: 10 * page,
+            skip: 5 * page,
             page: page,
         }).then(async function (res) {
             if(res.success){
@@ -145,6 +145,8 @@ export default function BackupList() {
                 setLoading(false)
                 loadList();
                 toast('备份成功')
+            }).catch(function (reason) {
+                toast('备份失败');
             })
         })
     }
