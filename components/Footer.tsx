@@ -34,9 +34,6 @@ export default function Footer() {
               </div>
               <div className="md:place-self-center md:justify-self-end">
                   <div className="grid grid-flow-col gap-4">
-                      <a href='https://space.bilibili.com/2089824747'>
-                          <BiliSvg width={24} height={24} />
-                      </a>
                       <div className="dropdown dropdown-hover dropdown-top">
                           <label tabIndex={0} className="">
                               <WechatSvg width={24} height={24} />
@@ -45,6 +42,10 @@ export default function Footer() {
                               <img src="https://pagenote.cn/img/wechat.jpg" alt="微信公众号：pagenote"/>
                           </div>
                       </div>
+                      <a href='https://space.bilibili.com/2089824747'>
+                          <BiliSvg width={24} height={24} />
+                      </a>
+
                       <a href='mailto:pagenote@126.com'>
                           <EmailSvg width={24} height={24}/>
                       </a>
