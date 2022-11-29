@@ -38,19 +38,21 @@ export default function BackupList() {
         })
     }
 
-    function getAllLights(skip=0, lights: Partial<Step>[]=[]): Promise<Partial<Step>[]> {
+    function getAllLights(page=0, lights: Partial<Step>[]=[]): Promise<Partial<Step>[]> {
         return extApi.lightpage.queryLights({
             query: {
                 deleted: false,
             },
             limit: 10, // 一次拉取100条，避免数据量过大，导致信息超载无法通信，分页拉取所有
-            skip: skip,
+            //@ts-ignore
+            skip: 10 * page,
+            page: page,
         }).then(async (res)=> {
             if(res.success){
                 lights = lights.concat(res.data.list as Step[])
                 if(res.data.has_more){
                     /**避免数据量过大，无法通过单次请求拉取完，采用递归方式分批次拉取*/
-                    const result = await getAllLights(res.data.list.length+skip);
+                    const result = await getAllLights(page+1);
                     lights = lights.concat(result)
                 }
                 return lights;
@@ -59,19 +61,21 @@ export default function BackupList() {
         })
     }
 
-    function getAllPages(skip=0, pages: Partial<WebPage>[]=[]): Promise<Partial<WebPage>[]> {
+    function getAllPages(page=0, pages: Partial<WebPage>[]=[]): Promise<Partial<WebPage>[]> {
         return extApi.lightpage.queryPages({
             query: {
                 deleted: false,
             },
             limit: 10, // 一次拉取100条，避免数据量过大，导致信息超载无法通信，分页拉取所有
-            skip: skip,
+            //@ts-ignore
+            skip: 10 * page,
+            page: page,
         }).then(async (res)=> {
             if(res.success){
                 pages = pages.concat(res.data.list)
-                console.log(res.data)
+                console.log('pages:',res)
                 if(res.data.has_more){
-                    const result = await getAllPages(res.data.list.length+skip);
+                    const result = await getAllPages(page+1);
                     pages = pages.concat(result)
                 }
                 return pages;
@@ -80,15 +84,17 @@ export default function BackupList() {
         })
     }
 
-    function getAllSnapshots(skip=0,snapshots :Partial<SnapshotResource>[] = []): Promise<Partial<SnapshotResource>[]> {
+    function getAllSnapshots(page=0,snapshots :Partial<SnapshotResource>[] = []): Promise<Partial<SnapshotResource>[]> {
         return extApi.lightpage.querySnapshots({
             limit: 4,
-            skip: skip,
+            //@ts-ignore
+            skip: 10 * page,
+            page: page,
         }).then(async function (res) {
             if(res.success){
                 snapshots = snapshots.concat(res.data.list)
                 if(res.data.has_more){
-                    const result = await getAllSnapshots(res.data.list.length + skip);
+                    const result = await getAllSnapshots(page+1);
                     snapshots = snapshots.concat(result)
                 }
             }
