@@ -1,45 +1,61 @@
-import Link from 'next/link';
-import React, {ReactElement} from "react";
-
-
-const ExternalLink = ({ href, children }: {href: string, children: ReactElement}) => (
-  <a
-    className="text-gray-500 hover:text-gray-600 transition"
-    target="_blank"
-    rel="noopener noreferrer"
-    href={href}
-  >
-    {children}
-  </a>
-);
+import React from "react";
+import BiliSvg from '../assets/svg/bilibili.svg'
+import WechatSvg from '../assets/svg/wechat.svg'
+import EmailSvg from '../assets/svg/email.svg'
+import GithubSvg from '../assets/svg/github.svg'
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col justify-center items-start max-w-2xl mx-auto w-full mb-8">
-      <hr className="w-full border-1 border-gray-200 dark:border-gray-800 mb-8" />
-      <div className="w-full max-w-2xl grid grid-cols-1 gap-4 pb-16 sm:grid-cols-3">
-        <div className="flex flex-col space-y-4">
-          <Link
-            href="/"
-            className="text-gray-500 hover:text-gray-600 transition"
-          >
-            首页
-          </Link>
-        </div>
-        <div className="flex flex-col space-y-4">
-          <ExternalLink href="https://github.com/pagenote">
-            <span>GitHub</span>
-          </ExternalLink>
-        </div>
-        <div className="flex flex-col space-y-4">
-          <Link
-            href="https://pagenote.cn/release"
-            className="text-gray-500 hover:text-gray-600 transition"
-          >
-            发布记录
-          </Link>
-        </div>
-      </div>
-    </footer>
+      <>
+          {/*<footer className="footer p-4 bg-base-200 text-base-content mt-10">*/}
+          {/*    <div>*/}
+          {/*        <span className="footer-title">服务</span>*/}
+          {/*        <a className="link link-hover">Branding</a>*/}
+          {/*        <a className="link link-hover">Design</a>*/}
+          {/*        <a className="link link-hover">Marketing</a>*/}
+          {/*    </div>*/}
+          {/*    <div>*/}
+          {/*        <span className="footer-title">开发者</span>*/}
+          {/*        <a className="link link-hover" href='https://github.com/pagenote'>GitHub</a>*/}
+          {/*        <a className="link link-hover">项目</a>*/}
+          {/*        <a className="link link-hover" href='https://pagenote.cn/release'>发布记录</a>*/}
+          {/*    </div>*/}
+          {/*    <div>*/}
+          {/*        <span className="footer-title">Legal</span>*/}
+          {/*        <a className="link link-hover">Terms of use</a>*/}
+          {/*        <a className="link link-hover">隐私协议</a>*/}
+          {/*    </div>*/}
+          {/*</footer>*/}
+          <footer className="footer px-10 py-4 border-t bg-base-200 text-base-content border-base-300 mt-10">
+              <div className="items-center grid-flow-col">
+                  <h2>PAGENOTE</h2>
+                  <img src="https://pagenote.cn/favicon.ico" width={24} height={24}/>
+                  <p>小而美的网页标记工具.<br/>Providing reliable tech since 2022</p>
+              </div>
+              <div className="md:place-self-center md:justify-self-end">
+                  <div className="grid grid-flow-col gap-4">
+                      <a href='https://space.bilibili.com/2089824747'>
+                          <BiliSvg width={24} height={24} />
+                      </a>
+                      <div className="dropdown dropdown-hover dropdown-top">
+                          <label tabIndex={0} className="">
+                              <WechatSvg width={24} height={24} />
+                          </label>
+                          <div tabIndex={0} className="dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
+                              <img src="https://pagenote.cn/img/wechat.jpg" alt="微信公众号：pagenote"/>
+                          </div>
+                      </div>
+                      <a href='mailto:pagenote@126.com'>
+                          <EmailSvg width={24} height={24}/>
+                      </a>
+                      <a href='https://github.com/rowthan/developer.pagenote.cn'>
+                          <GithubSvg width={24} height={24} />
+                      </a>
+                  </div>
+              </div>
+          </footer>
+      </>
+
+
   );
 }
