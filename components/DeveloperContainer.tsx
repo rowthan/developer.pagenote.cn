@@ -7,6 +7,7 @@ import cn from 'classnames';
 
 import Footer from 'components/Footer';
 import MobileMenu from 'components/MobileMenu';
+import Breadcrumbs from "./Breadcrumbs";
 
 function NavItem({ href, text }:{href: string,text: string}) {
   const router = useRouter();
@@ -64,9 +65,11 @@ export default function DeveloperContainer(props: PropsWithChildren<{date?: stri
           {/*</a>*/}
           <div className="ml-[-0.60rem]">
             {/*<MobileMenu />*/}
-            <NavItem href="/" text="首页" />
-            <NavItem href="/demo" text="demo" />
-            <NavItem href="/projects" text="所有项目" />
+            {/*<NavItem href="/" text="首页" />*/}
+            {/*<NavItem href="/demo" text="demo" />*/}
+            {/*<NavItem href="/projects" text="所有项目" />*/}
+
+            <Breadcrumbs />
           </div>
           <button
             aria-label="Toggle Dark Mode"

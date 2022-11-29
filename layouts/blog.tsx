@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import {parseISO, format} from 'date-fns';
 import {PropsWithChildren, Suspense} from 'react';
 import DeveloperContainer from 'components/DeveloperContainer';
 import {Post} from 'lib/types';

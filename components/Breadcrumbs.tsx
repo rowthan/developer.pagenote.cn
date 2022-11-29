@@ -21,39 +21,58 @@ const routesMap: RouteInfo = {
         disable: true,
         children: [
             {
+                id: "pages",
+                name: '网页',
+                path: '/manage/pages',
+            },
+            {
+                id: "clipboard",
+                name: '剪切板',
+                path: '/manage/clipboard',
+            },
+            {
                 id: 'trash',
                 name: '回收站',
                 path: '/manage/trash',
             },
             {
-                id: "pages",
-                name: '网页',
-                path: '/manage/pages',
-            }
+                id: "backup",
+                name: '数据备份',
+                path: '/backup',
+            },
         ]
     }, {
-        name: '开发者',
+        name: '开发者中心',
         path: '/',
         id: 'developer',
         children: [
             {
                 id: 'demo',
                 name: '示例',
-                path: '/demo',
+                path: '/developer/demo',
             },
             {
-                id: "web",
-                name: '网页',
-                path: '/pages',
+                id: "project",
+                name: '项目',
+                path: '/developer/project',
             }
         ]
-    }]
+    },{
+        id: 'contact',
+        name: '联系',
+        path: '/contact/feedback',
+        children:[
+            {
+                id: 'feedback',
+                name: '反馈',
+                path: '/contact/feedback',
+            }
+        ]
+    },]
 }
 
 
-export default function (props: { id: string }) {
-    const {id = ''} = props;
-    // const routes = id?.split('.');
+export default function () {
     const {asPath} = useRouter();
 
     // const currentPathArray = asPath.split('/')
@@ -89,7 +108,7 @@ export default function (props: { id: string }) {
 function RenderLink(props: { route: RouteInfo }) {
     const {route} = props;
     return (
-        (route.disable || !route.path) ?
+        (route.disable) ?
             <span>
                 {route.name}
             </span> :
@@ -115,6 +134,9 @@ function RenderRouteGroup(props: { routeArray: RouteInfo[], level: number }) {
             {
                 routeArray.map((route) => {
                     const currentMatched = checkRouteMatched(route)
+                    const brotherRoutes = routeArray.filter(function (item) {
+                        return !checkRouteMatched(item)
+                    })
                     return <Fragment key={route.name}>
                         {
                             currentMatched &&
@@ -122,18 +144,19 @@ function RenderRouteGroup(props: { routeArray: RouteInfo[], level: number }) {
                                 {
                                     <div>
                                         <div className="dropdown dropdown-hover">
-                                            <label tabIndex={0} className="">
+                                            <label tabIndex={0} className="pl-1">
                                                 <RenderLink route={route}/>
                                             </label>
                                             {
-                                                <ul tabIndex={0}  className="dropdown-content py-1 shadow bg-base-100 min-w-10">
+                                                brotherRoutes.length>0 &&
+                                                <ul tabIndex={0}  className="dropdown-content p-1 shadow rounded-box bg-base-100 min-w-10">
                                                     {
                                                         // 同级菜单
-                                                        routeArray.map(function (item) {
+                                                        brotherRoutes.map(function (item) {
                                                             return (
                                                                 checkRouteMatched(item) ?
                                                                 <Fragment key={item.path}></Fragment> :
-                                                                <li key={item.path}>
+                                                                <li key={item.path} className='py-2'>
                                                                     <RenderLink route={item}/>
                                                                 </li>
                                                             )

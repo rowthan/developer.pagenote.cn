@@ -1,6 +1,8 @@
 import {PropsWithChildren} from "react";
 import Head from "next/head";
 import {useTheme} from "next-themes";
+import Breadcrumbs from "../components/Breadcrumbs";
+import Footer from "../components/Footer";
 
 // 给普通用户访问的页面，基础layout
 export default function BasicLayout(props: PropsWithChildren<{title?: string,description?: string}>) {
@@ -15,7 +17,7 @@ export default function BasicLayout(props: PropsWithChildren<{title?: string,des
 
     return(
         // bg-gray-50 dark:bg-gray-900
-        <div className='min-h-screen'>
+        <div className='min-h-screen mx-auto w-3/4'>
             <Head>
                 <title>{meta.title}</title>
                 <meta name="robots" content="follow, index" />
@@ -27,11 +29,12 @@ export default function BasicLayout(props: PropsWithChildren<{title?: string,des
                 <link rel="shortcut icon" href="https://pagenote.cn/favicon.ico" type="image/x-icon" />
             </Head>
             <nav>
-
+                <Breadcrumbs />
             </nav>
-            <main className='min-w-min mx-auto '>
+            <main className='min-w-min mx-auto min-h-3/4'>
                 {children}
             </main>
+            <Footer />
         </div>
     )
 }
