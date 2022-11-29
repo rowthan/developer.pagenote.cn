@@ -139,11 +139,11 @@ export default function Pages() {
                            return (
                                <>
                                    <td className='w-10'>
-                                       <div className='max-w-md	overflow-ellipsis truncate'>
+                                       <div className='max-w-md overflow-hidden	overflow-ellipsis truncate'>
                                            <img className='inline' width={14} height={14} src={item.icon} alt=""/>
                                            {item.title}
                                        </div>
-                                       <div className='max-w-full overflow-ellipsis truncate max-w-md'>
+                                       <div className='max-w-full overflow-hidden overflow-ellipsis truncate max-w-md'>
                                            <a className='hover:text-blue-400 text-blue-200' target='_blank'
                                               href={item.url}>
                                                {item.url || item.key}
