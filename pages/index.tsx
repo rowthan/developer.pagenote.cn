@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import CheckVersion from "../components/CheckVersion";
+import CheckVersion from "../components/check/CheckVersion";
 
 const Home: NextPage = () => {
   return (

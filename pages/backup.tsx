@@ -1,4 +1,4 @@
-import CheckVersion from "../components/CheckVersion";
+import CheckVersion from "../components/check/CheckVersion";
 import BasicLayout from "../layouts/BasicLayout";
 import BackupList from "../components/backup/BackupList";
 

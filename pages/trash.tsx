@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import * as React from "react";
-import CheckVersion from "../components/CheckVersion";
+import CheckVersion from "../components/check/CheckVersion";
 import {useRouter} from "next/router";
 import NextLink from "next/link";
 

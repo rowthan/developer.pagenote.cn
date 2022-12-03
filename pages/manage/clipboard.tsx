@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import extApi from "@pagenote/shared/lib/generateApi";
 import dayjs from "dayjs";
 import * as React from "react";
-import CheckVersion from "../../components/CheckVersion";
+import CheckVersion from "../../components/check/CheckVersion";
 import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import BasicLayout from "../../layouts/BasicLayout";
 import {Pagination} from "@pagenote/shared/lib/@types/database";
