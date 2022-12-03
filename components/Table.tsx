@@ -14,6 +14,8 @@ interface Props<T> {
     selectedIds: Set<string>,
     onSelectIds: (newSelected: Set<string>) => void,
     primaryKey: string
+    disableSelect?: boolean
+    pageSteps?: number[]
 }
 
 /**
@@ -30,7 +32,9 @@ export default function Table<T>(props: Props<any>) {
         footerTD,
         headLabels = [],
         pagination = {total: 0, limit: 10, page: 0},
-        onPaginationChange
+        onPaginationChange,
+        disableSelect = false,
+        pageSteps = [10,100,1000]
     } = props;
     const {total = 0, limit = 10, page = 0} = pagination;
     const pages = Math.fround(total / limit)
@@ -84,15 +88,19 @@ export default function Table<T>(props: Props<any>) {
         <table className="table table-compact w-full min-h-100 mx-auto">
             <thead>
             <tr>
-                <th className='w-4'>
-                    <label>
-                        <input
-                            ref={allCheckRef}
-                            onChange={toggleAll}
-                            checked={allChecked}
-                            type="checkbox" className="checkbox"/>
-                    </label>
-                </th>
+                {
+                    disableSelect ? null :
+                        <th className='w-4'>
+                            <label>
+                                <input
+                                    ref={allCheckRef}
+                                    onChange={toggleAll}
+                                    checked={allChecked}
+                                    type="checkbox" className="checkbox"/>
+                            </label>
+                        </th>
+                }
+
                 {
                     headLabels.map(function (item) {
                         return <th key={item}>{item}</th>
@@ -105,15 +113,19 @@ export default function Table<T>(props: Props<any>) {
                 list.map(function (item, index) {
                     return (
                         <tr key={index}>
-                            <td className=''>
-                                <label>
-                                    <input onChange={() => {
-                                        toggleSelect(get(item, primaryKey))
-                                    }}
-                                           checked={selectedIds.has(get(item, primaryKey))}
-                                           type="checkbox" className="checkbox"/>
-                                </label>
-                            </td>
+                            {
+                                disableSelect ? null :
+                                    <td className=''>
+                                        <label>
+                                            <input onChange={() => {
+                                                toggleSelect(get(item, primaryKey))
+                                            }}
+                                                   checked={selectedIds.has(get(item, primaryKey))}
+                                                   type="checkbox" className="checkbox"/>
+                                        </label>
+                                    </td>
+                            }
+
                             {renderTDS(item, index)}
                         </tr>
 
@@ -141,7 +153,7 @@ export default function Table<T>(props: Props<any>) {
                             onPaginationChange(page, Number(e.target.value))
                         }} className="ml-2 select select-bordered select-sm">
                             {
-                                [10, 100, 1000].map(function (value) {
+                                pageSteps.map(function (value) {
                                     return (
                                         <option key={value} value={value}>
                                             {value}条/每页
