@@ -34,7 +34,11 @@ export default function ClipboardPage() {
     }, [pagination.page, pagination.limit])
 
     function loadTrashList() {
-        extApi.boxroom.get({}).then((res) => {
+        extApi.boxroom.get({
+            sort:{
+                createAt: -1
+            },
+        }).then((res) => {
             if (res.success) {
                 setList((res.data || []) as BoxItem[])
                 setPagination({
@@ -114,7 +118,9 @@ export default function ClipboardPage() {
                                         </div>
                                     </div>
                                     <div className="chat-header">
-                                        <span className='mr-2'>{item.domain}</span>
+                                        <span className='mr-2'>
+                                            <a href={item.from} target='_blank'>{item.domain}</a>
+                                        </span>
                                         <time className="text-xs opacity-50"> {dayjs(item.createAt).format(('YYYY-MM-DD HH:mm:ss'))}</time>
                                     </div>
                                     <div onClick={()=>{item.text && copyItem(item.text)}} className="chat-bubble chat-bubble-accent text-sm">{item.text}</div>
