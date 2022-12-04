@@ -5,6 +5,7 @@ import useDataStat from "../../hooks/useDataStat";
 import {toast} from "../../utils/toast";
 import useWhoAmi from "../../hooks/useWhoAmi";
 import useSettings from "../../hooks/useSettings";
+import CheckVersion from "../check/CheckVersion";
 
 enum SubmitState {
     un_submit = 0,
@@ -82,7 +83,8 @@ export default function () {
 
     return (
         <CheckUser>
-            <div className='w-full max-w-md'>
+            <CheckVersion requireVersion={'0.24.4'}>
+                <div className='w-full max-w-md'>
                 <div className="form-control  ">
                     <label className="label">
                         <span className="label-text">问题类别?</span>
@@ -188,6 +190,7 @@ export default function () {
                     </div>
                 }
             </div>
+            </CheckVersion>
         </CheckUser>
     )
 }
