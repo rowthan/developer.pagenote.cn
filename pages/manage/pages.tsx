@@ -143,14 +143,14 @@ export default function Pages() {
                                            <img className='inline' width={14} height={14} src={item.icon} alt=""/>
                                            {item.title}
                                        </div>
-                                       <div className='max-w-full overflow-hidden overflow-ellipsis truncate max-w-md'>
+                                       <div className='max-w-xl break-words pre-wrap overflow-hidden overflow-ellipsis truncate '>
                                            <a className='hover:text-blue-400 text-blue-200' target='_blank'
                                               href={item.url}>
                                                {item.url || item.key}
                                            </a>
                                        </div>
                                    </td>
-                                   <td className='pre-wrap '>
+                                   <td className='pre-wrap max-w-xs	break-words'>
                                        {item.categories?.map(function (item: string, index: number) {
                                            return <span key={index} className="badge badge-ghost badge-sm">{item}</span>
                                        })}

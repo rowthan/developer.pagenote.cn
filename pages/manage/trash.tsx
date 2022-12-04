@@ -128,7 +128,7 @@ export default function Trash() {
                                return (
                                    <>
                                        <td>
-                                           <div>
+                                           <div className='max-w-xs overflow-ellipsis'>
                                                <img className='inline' width={14} height={14} src={item.icon}
                                                     alt=""/> {item.title}
                                            </div>
