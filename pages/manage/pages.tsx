@@ -103,7 +103,8 @@ export default function Pages() {
             return {
                 key: item,
                 deleted: true,
-                updateAt: Date.now()
+                updateAt: Date.now(),
+                expiredAt: Date.now() + 3600 * 1000 * 24 * 30
             }
         })).then(function () {
             loadPages()

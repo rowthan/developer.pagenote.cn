@@ -81,6 +81,8 @@ export default function Trash() {
         extApi.lightpage.updatePages([{
             key: key,
             deleted: false,
+            updateAt: Date.now(),
+            expiredAt: 0,
         }]).then(function () {
             selectedIds.delete(key)
             loadTrashList()
@@ -104,7 +106,8 @@ export default function Trash() {
             return {
                 key: item,
                 deleted: false,
-                updateAt: Date.now()
+                updateAt: Date.now(),
+                expiredAt: 0,
             }
         });
         extApi.lightpage.updatePages(items).then(function () {
