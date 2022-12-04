@@ -19,7 +19,7 @@ export default function Logs() {
     function loadLogs() {
         extApi.developer.logs({
             query: {
-                // level: 'error'
+                level: 'error'
             },
             limit: 10,
             sort: {
