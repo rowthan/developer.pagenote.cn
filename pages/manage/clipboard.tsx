@@ -34,17 +34,17 @@ export default function ClipboardPage() {
     }, [pagination.page, pagination.limit])
 
     function loadTrashList() {
-        extApi.boxroom.get({
+        extApi.boxroom.queryItems({
             sort:{
                 createAt: -1
             },
         }).then((res) => {
             if (res.success) {
-                setList((res.data || []) as BoxItem[])
+                setList((res.data.list || []) as BoxItem[])
                 setPagination({
                     limit: pagination.limit,
                     page: pagination.page,
-                    total: res.data.length,
+                    total: res.data.total,
                 })
             }
         })

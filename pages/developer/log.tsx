@@ -74,7 +74,7 @@ export default function Pages() {
             <div className='mx-auto w-3/4'>
                 <Breadcrumbs/>
                 <Table list={list}
-                       pageSteps={[20,50,100]}
+                       pageSteps={[10,50,100]}
                        disableSelect={true}
                        pagination={pagination}
                        onPaginationChange={changePagination}
