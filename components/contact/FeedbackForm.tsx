@@ -5,7 +5,6 @@ import useDataStat from "../../hooks/useDataStat";
 import {toast} from "../../utils/toast";
 import useWhoAmi from "../../hooks/useWhoAmi";
 import useSettings from "../../hooks/useSettings";
-import {request, gql, GraphQLClient} from 'graphql-request'
 
 enum SubmitState {
     un_submit = 0,
@@ -14,11 +13,11 @@ enum SubmitState {
 }
 
 export default function () {
-    const [formData, setFormData] = useState<{ title?: string, description?: string, feedbackType: number, uploadWhoAmI: boolean }>({
+    const [formData, setFormData] = useState<{ title?: string, description?: string, feedbackType: number, uploadStat: boolean }>({
         feedbackType: 1,
         title: '',
         description: '',
-        uploadWhoAmI: false,
+        uploadStat: false,
     })
     const [dataStat] = useDataStat();
     const [whoAmI] = useWhoAmi();
@@ -39,14 +38,14 @@ export default function () {
     function submitFeedback() {
         setSubmitState(SubmitState.submiting)
         const data = {
-            ...dataStat,
             userAgent: navigator.userAgent,
         }
-        if (formData.uploadWhoAmI) {
+        if (formData.uploadStat) {
             // @ts-ignore
             data.extInfo = {
                 whoAmI: whoAmI,
                 settings: settings,
+                dataStat: dataStat,
             };
         }
         const extraInfo = JSON.stringify(data)
@@ -160,20 +159,11 @@ export default function () {
                         </span>
                         <input type="checkbox"
                                onChange={(e) => {
-                                   changeValue({uploadWhoAmI: e.target.checked})
+                                   changeValue({uploadStat: e.target.checked})
                                }}
-                               checked={formData.uploadWhoAmI} className="checkbox"/>
+                               checked={formData.uploadStat} className="checkbox"/>
                     </label>
                 </div>
-
-                {/*<div className="form-control">*/}
-                {/*    <label className="label cursor-pointer">*/}
-                {/*        <span className="label-text">上传日志数据（最近100条）</span>*/}
-                {/*        <input type="checkbox"*/}
-                {/*               onChange={(e)=>{changeValue({uploadWhoAmI: e.target.checked})}}*/}
-                {/*               checked={formData.uploadWhoAmI} className="checkbox"/>*/}
-                {/*    </label>*/}
-                {/*</div>*/}
 
                 <div className='flex justify-end my-2'>
                     <button disabled={!formData.description || submitState === SubmitState.submiting}
