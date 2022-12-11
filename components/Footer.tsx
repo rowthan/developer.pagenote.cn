@@ -3,6 +3,7 @@ import BiliSvg from '../assets/svg/bilibili.svg'
 import WechatSvg from '../assets/svg/wechat.svg'
 import EmailSvg from '../assets/svg/email.svg'
 import GithubSvg from '../assets/svg/github.svg'
+import StateSvg from '../assets/svg/state.svg'
 
 export default function Footer() {
   return (
@@ -51,6 +52,9 @@ export default function Footer() {
                       </a>
                       <a href='https://github.com/rowthan/developer.pagenote.cn'>
                           <GithubSvg width={24} height={24} />
+                      </a>
+                      <a href="/feedback">
+                          <StateSvg width={24} height={24} />
                       </a>
                   </div>
               </div>
