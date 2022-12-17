@@ -5,11 +5,13 @@ import {useEffect} from "react";
 const redirectMap: Record<string, string> = {
     '/log': '/developer/log',
     '/projects': '/developer/project',
-
     '/feedback': '/contact/feedback',
     '/debug': '',
     '/demo': '/developer/demo',
-    '/trash': '/manage/trash'
+    '/trash': '/manage/trash',
+    '/page': '/manage/page',
+    '/light': '/manage/light',
+    '/manage/pages': '/manage/page',
 }
 
 export default function Custom404() {
