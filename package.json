@@ -7,10 +7,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@pagenote/shared": "1.10.2",
+    "@pagenote/shared": "1.10.4",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.7",
     "classnames": "^2.3.2",
+    "color": "^4.2.3",
     "daisyui": "^2.42.1",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.6",
@@ -21,10 +22,12 @@
     "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.40.0",
     "swr": "^1.3.0",
     "use-delayed-render": "0.0.7"
   },
   "devDependencies": {
+    "@types/color": "^3.0.3",
     "@types/lodash": "^4.14.190",
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
