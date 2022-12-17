@@ -38,6 +38,9 @@ export default function ClipboardPage() {
             sort:{
                 createAt: -1
             },
+            pageSize:100,
+            page: 0,
+            limit: 100,
         }).then((res) => {
             if (res.success) {
                 setList((res.data.list || []) as BoxItem[])

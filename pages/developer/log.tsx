@@ -12,6 +12,7 @@ import CloseIcon from '../../assets/svg/close.svg'
 import Breadcrumbs from "../../components/Breadcrumbs";
 import {developer} from "@pagenote/shared/lib/extApi";
 import LogInfo = developer.LogInfo;
+import BasicLayout from "../../layouts/BasicLayout";
 
 export default function Pages() {
     const [list, setList] = useState<LogInfo[]>([])
@@ -40,16 +41,19 @@ export default function Pages() {
             },
             limit: pagination.limit,
             page: pagination.page,
+            pageSize: pagination.pageSize,
             sort: {
                 createAt: -1
             },
             projection:{
+                json: -1,
                 meta: -1
             }
         }).then((res) => {
             if (res.success) {
                 setList((res.data.list || []) as LogInfo[])
                 setPagination({
+                    ...pagination,
                     page: res.data.page || 0,
                     total: res.data.total || 0,
                     limit: res.data.limit || 10,
@@ -67,43 +71,42 @@ export default function Pages() {
         })
     }
 
-
-
     return (
-        <CheckVersion requireVersion={'0.24.2'}>
-            <div className='mx-auto w-3/4'>
-                <Breadcrumbs/>
-                <Table list={list}
-                       pageSteps={[10,50,100]}
-                       disableSelect={true}
-                       pagination={pagination}
-                       onPaginationChange={changePagination}
-                       selectedIds={selectedIds}
-                       onSelectIds={setSelectedIds}
-                       primaryKey={'id'}
-                       headLabels={["分组", "级别","更新时间","日志内容",  "操作"]}
-                       renderTDS={function (item: LogInfo, index) {
-                           return (
-                               <>
-                                   <td className='w-10'>
-                                       <div className='max-w-md overflow-hidden	overflow-ellipsis truncate'>
-                                           {/*<img className='inline' width={14} height={14} src={item.icon} alt=""/>*/}
-                                           {item.namespace}
-                                       </div>
-                                   </td>
-                                   <td className='pre-wrap '>
-                                       <span key={index} className="badge badge-ghost badge-sm">{item.level}</span>
-                                   </td>
+        <BasicLayout>
+            <CheckVersion requireVersion={'0.24.2'}>
+                <div className='mx-auto'>
+                    <Table list={list}
+                           pageSteps={[10,50,100]}
+                           disableSelect={true}
+                           pagination={pagination}
+                           onPaginationChange={changePagination}
+                           selectedIds={selectedIds}
+                           onSelectIds={setSelectedIds}
+                           primaryKey={'id'}
+                           headLabels={["分组", "级别","更新时间","日志内容",  "操作"]}
+                           renderTDS={function (item: LogInfo, index) {
+                               return (
+                                   <>
+                                       <td className='w-10'>
+                                           <div className='max-w-md overflow-hidden	overflow-ellipsis truncate'>
+                                               {/*<img className='inline' width={14} height={14} src={item.icon} alt=""/>*/}
+                                               {item.namespace}
+                                           </div>
+                                       </td>
+                                       <td className='pre-wrap '>
+                                           <span key={index} className="badge badge-ghost badge-sm">{item.level}</span>
+                                       </td>
 
-                                   <td className='text-sm'>{dayjs(item.createAt).format('YYYY-MM-DD HH:mm:ss')}</td>
-                                   <td>
-                                       {item.stack}
-                                   </td>
-                               </>
-                           )
-                       }}
-                />
-            </div>
-        </CheckVersion>
+                                       <td className={`text-sm` }>{dayjs(item.createAt).format('YYYY-MM-DD HH:mm:ss')}</td>
+                                       <td className={`text-${item.level}`}>
+                                           {item.message || item.stack}
+                                       </td>
+                                   </>
+                               )
+                           }}
+                    />
+                </div>
+            </CheckVersion>
+        </BasicLayout>
     )
 }

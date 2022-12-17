@@ -1,12 +1,4 @@
-import BlogLayout from "../../layouts/blog";
-import useWhoAmi from "../../hooks/useWhoAmi";
 import {useEffect, useState} from "react";
-import {WebPage} from "@pagenote/shared/lib/@types/data";
-import extApi from "@pagenote/shared/lib/generateApi";
-import dayjs from 'dayjs';
-import Breadcrumbs from "../../components/Breadcrumbs";
-import {Simulate} from "react-dom/test-utils";
-import change = Simulate.change;
 import BasicLayout from "../../layouts/BasicLayout";
 import ExtensionInfos from "components/ExtensionInfos";
 import Logs from "../../components/debug/Logs";

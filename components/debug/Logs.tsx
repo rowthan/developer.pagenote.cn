@@ -44,7 +44,7 @@ export default function Logs() {
                                         return (
                                             <pre key={item.id} data-prefix=">" className={`${item.level} text-error max-w-full overflow-auto`}>
                                             <time>{dayjs(item.createAt).format('YYYY-MM-DD HH:mm:ss')}</time>
-                                            <code className='ml-4 break-words '>{item.stack?.substring(0,40)}</code>
+                                            <code className='ml-4 break-words '>{item.message || item.stack?.substring(0,40)}</code>
                                         </pre>
                                         )
                                     })

@@ -118,7 +118,7 @@ export default function Trash() {
 
     return (
         <CheckVersion requireVersion={'0.23.8'}>
-            <BasicLayout>
+            <BasicLayout title={'网页回收站'}>
                 <div className=''>
                     <Table list={list}
                            pagination={pagination}

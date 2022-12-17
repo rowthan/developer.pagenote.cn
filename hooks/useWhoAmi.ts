@@ -18,7 +18,7 @@ export default function useWhoAmi():[WhoAmI|undefined,()=>void] {
             isTest: false,
             language: "",
             mainVersion: "",
-            name: "",
+            name: "-",
             origin: "",
             platform: "",
             short_name: "",
@@ -30,7 +30,7 @@ export default function useWhoAmi():[WhoAmI|undefined,()=>void] {
         return extApi.user.getWhoAmI(undefined,{
             timeout: 3000,
         }).then(function (res) {
-            return res.data
+            return res.data || null
         })
     }
 

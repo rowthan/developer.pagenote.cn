@@ -9,7 +9,7 @@ export default function BasicLayout(props: PropsWithChildren<{title?: string,des
     const { resolvedTheme, setTheme } = useTheme();
     const { children, ...customMeta } = props;
     const meta = {
-        title: 'PAGENOTE',
+        title: '小而美的网页标记工具',
         description: `一页一记 pagenote，开发者中心.`,
         type: 'website',
         ...customMeta
@@ -19,7 +19,7 @@ export default function BasicLayout(props: PropsWithChildren<{title?: string,des
         // bg-gray-50 dark:bg-gray-900
         <div className='min-h-screen mx-auto w-3/4'>
             <Head>
-                <title>{meta.title}</title>
+                <title>{meta.title} - PAGENOTE</title>
                 <meta name="robots" content="follow, index" />
                 <meta content={meta.description} name="description" />
                 <meta property="og:type" content={meta.type} />

@@ -43,14 +43,14 @@ export default function useDataStat():[StatInfo|undefined,()=>void] {
             }
         })
 
-        const clipboards = await extApi.boxroom.get({})
+        const clipboards = await extApi.boxroom.queryItems({})
 
         return{
             lightsCnt: lights.data.total,
             pagesCnt: pages.data.total,
             snapshotsCnt: snapshots.data.total,
             todayNewLights: todayLights.data.total,
-            clipboardCnt: clipboards.data.length,
+            clipboardCnt: clipboards.data.total,
         }
     }
 

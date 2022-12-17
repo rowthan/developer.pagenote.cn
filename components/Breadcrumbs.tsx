@@ -23,23 +23,23 @@ const routesMap: RouteInfo = {
             {
                 id: "pages",
                 name: '网页',
-                path: '/manage/pages',
+                path: '/manage/page',
+            },
+            {
+                id: "light",
+                name: '标记',
+                path: '/manage/light',
             },
             {
                 id: "clipboard",
-                name: '剪切板',
+                name: '临时剪切板',
                 path: '/manage/clipboard',
             },
-            {
-                id: 'trash',
-                name: '回收站',
-                path: '/manage/trash',
-            },
-            {
-                id: "backup",
-                name: '数据备份',
-                path: '/backup',
-            },
+            // {
+            //     id: 'trash',
+            //     name: '网页回收站',
+            //     path: '/manage/trash',
+            // },
         ]
     }, {
         name: '开发者中心',
@@ -57,6 +57,10 @@ const routesMap: RouteInfo = {
                 path: '/developer/project',
             }
         ]
+    },{
+        id: "backup",
+        name: '数据备份',
+        path: '/backup',
     },{
         id: 'contact',
         name: '联系',
@@ -88,7 +92,7 @@ export default function () {
     // })
 
     return (
-        <div className="text-sm breadcrumbs overflow-visible">
+        <div className="text-sm breadcrumbs overflow-visible z-50">
             {
                 useMemo(() => (
                     <ul>

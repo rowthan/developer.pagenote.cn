@@ -39,10 +39,10 @@ export default function () {
                         ↗︎ {stat?.todayNewLights}
                     </div>
                     <div className="stat-desc">
-                        网页{stat?.pagesCnt}; 标记{stat?.lightsCnt}; 截图{stat?.pagesCnt}；剪切板{stat?.clipboardCnt}
-                        <div>
-
-                        </div>
+                        <a href="/manage/page">网页{stat?.pagesCnt}</a>;
+                        <a href="/manage/light">标记{stat?.lightsCnt}</a>;
+                        截图{stat?.snapshotsCnt}；
+                        <a href="/manage/clipboard">剪切板{stat?.clipboardCnt}</a>;
                         {/*↘︎ 90 (14%)*/}
                     </div>
                 </div>
