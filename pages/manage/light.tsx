@@ -74,7 +74,7 @@ export default function Light() {
             },
             pageSize: pagination.pageSize,
             page: pagination.page,
-            limit: pagination.page,
+            limit: pagination.pageSize,
             sort: {
                 updateAt: -1
             },
