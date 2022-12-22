@@ -15,7 +15,7 @@ interface FormData {
     password: string
 }
 
-export default function (props:{onSuccess:()=>void}) {
+export default function (props:{onSuccess:()=>void, onError:()=>void}) {
     const [state, setState] = useState<SubmitState>(SubmitState.unset);
 
     const {
@@ -47,6 +47,10 @@ export default function (props:{onSuccess:()=>void}) {
                 setState(SubmitState.success);
                 props.onSuccess();
             }else{
+                if(res.status === 100){
+                    return onSubmit(data)
+                }
+                props.onError();
                 toast('登录失败，请重试')
             }
             setState(SubmitState.unset)
