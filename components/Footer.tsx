@@ -30,7 +30,7 @@ export default function Footer() {
           <footer className="footer gap-y-1 px-4 py-4 border-t bg-base-200 text-base-content border-base-300 mt-10 flex md:justify-center">
               <div className="items-center grid-flow-col">
                   <h2>PAGENOTE</h2>
-                  <img src="https://pagenote.cn/favicon.ico" width={24} height={24}/>
+                  <img src="/images/light-64.png" width={24} height={24}/>
                   <p className='hidden md:block'>小而美的网页标记工具.</p>
               </div>
               <div className="md:place-self-center md:justify-self-end">
@@ -40,7 +40,7 @@ export default function Footer() {
                               <WechatSvg width={24} height={24} />
                           </label>
                           <div tabIndex={0} className="dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
-                              <img src="https://pagenote.cn/img/wechat.jpg" alt="微信公众号：pagenote"/>
+                              <img src="/images/wechat.jpg" alt="微信公众号：pagenote"/>
                           </div>
                       </div>
                       <a href='https://space.bilibili.com/2089824747' target='_blank'>
