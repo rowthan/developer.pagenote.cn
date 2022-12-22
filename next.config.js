@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
+  assetPrefix: process.env.prefix || '',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
