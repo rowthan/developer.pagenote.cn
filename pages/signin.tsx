@@ -16,7 +16,7 @@ export default function () {
     }
 
     function afterSign() {
-        setTimeout(function (res) {
+        setTimeout(function () {
             mutation()
         },2000)
     }
@@ -38,7 +38,7 @@ export default function () {
                                 </div>
                                 <ExtensionInfos />
                             </div> :
-                            <SignForm onSuccess={afterSign}/>
+                            <SignForm onSuccess={afterSign} onError={afterSign}/>
                     }
                 </div>
             </CheckVersion>
