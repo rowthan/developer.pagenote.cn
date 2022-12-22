@@ -10,6 +10,7 @@ module.exports = {
             '1/2': '50%',
             '3/4': '75%',
             'full': '100%',
+            "screen": '70vh',
         },
         extend: {
             colors: {
