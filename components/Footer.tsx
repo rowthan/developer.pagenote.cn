@@ -27,11 +27,11 @@ export default function Footer() {
           {/*        <a className="link link-hover">隐私协议</a>*/}
           {/*    </div>*/}
           {/*</footer>*/}
-          <footer className="footer px-10 py-4 border-t bg-base-200 text-base-content border-base-300 mt-10">
+          <footer className="footer gap-y-1 px-4 py-4 border-t bg-base-200 text-base-content border-base-300 mt-10 flex md:justify-center">
               <div className="items-center grid-flow-col">
                   <h2>PAGENOTE</h2>
                   <img src="https://pagenote.cn/favicon.ico" width={24} height={24}/>
-                  <p>小而美的网页标记工具.<br/>Providing reliable tech since 2022</p>
+                  <p className='hidden md:block'>小而美的网页标记工具.</p>
               </div>
               <div className="md:place-self-center md:justify-self-end">
                   <div className="grid grid-flow-col gap-4">
@@ -43,17 +43,17 @@ export default function Footer() {
                               <img src="https://pagenote.cn/img/wechat.jpg" alt="微信公众号：pagenote"/>
                           </div>
                       </div>
-                      <a href='https://space.bilibili.com/2089824747'>
+                      <a href='https://space.bilibili.com/2089824747' target='_blank'>
                           <BiliSvg width={24} height={24} />
                       </a>
 
                       <a href='mailto:pagenote@126.com'>
                           <EmailSvg width={24} height={24}/>
                       </a>
-                      <a href='https://github.com/rowthan/developer.pagenote.cn'>
+                      <a href='https://github.com/rowthan/developer.pagenote.cn' target='_blank'>
                           <GithubSvg width={24} height={24} />
                       </a>
-                      <a href="/feedback">
+                      <a href="https://developer.pagenote.cn/feedback" target='_blank'>
                           <StateSvg width={24} height={24} />
                       </a>
                   </div>
