@@ -48,7 +48,7 @@ export default function PopupPage() {
 
     return (
         <BasicLayout nav={false} title={'标签页'} full={true}>
-            <div style={{minHeight: "30rem",minWidth:"28rem"}}>
+            <div className={'m-auto'} style={{minHeight: "30rem",minWidth:"28rem",maxWidth: '40rem'}}>
                 <div className="tabs">
                     {
                         tabs.map((item, index) => (

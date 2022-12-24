@@ -15,8 +15,7 @@ export default function useSettings():[settings: SDK_SETTING, update:(newSet:Par
 
     function fetchLocalAndServerSetting (){
         setLoading(true);
-        console.log('fetch settings')
-        return extApi.setting.getSetting().then((result)=>{
+        return extApi.setting.getUserSetting().then((result)=>{
             setLoading(false)
             return result.data || setting.getDefaultSdkSetting();
         }).catch(function () {
@@ -24,7 +23,7 @@ export default function useSettings():[settings: SDK_SETTING, update:(newSet:Par
         })
     }
 
-    const update = function (newSet:Partial<SDK_SETTING>,callback?:()=>void) {
+    function update(newSet: null | Partial<SDK_SETTING>,callback?:()=>void) {
         const callbackFun = function () {
             setLoading(false);
             typeof callback==='function' && callback();

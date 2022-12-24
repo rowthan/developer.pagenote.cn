@@ -118,7 +118,7 @@ export default function CurrentTab() {
         }, 2000)
     }, [])
 
-    const isExtensionUrl = /(extension:|chrome:)\/\//.test(tab?.url || '');
+    const isExtensionUrl = /(edge:|extension:|chrome:)\/\//.test(tab?.url || '');
     return (
         <div>
             {tabState.active ?

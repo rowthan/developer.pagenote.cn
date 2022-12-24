@@ -3,12 +3,25 @@ import OutLink from "../assets/svg/outlink.svg";
 
 
 export default function Setting() {
-    const [setting, updateSetting] = useSettings();
+    const [setting, updateSetting,loading] = useSettings();
 
-    const {enableType,maxRecord,controlC} = setting;
+    const {enableType,maxRecord,controlC,keyupTimeout,showBarTimeout} = setting;
+    function resetSetting() {
+        // @ts-ignore
+        updateSetting(null)
+    }
     return (
         <div>
             <table className="table table-compact w-full">
+                <style jsx>{`
+                    table th:first-child{
+                      text-align: right;
+                    }
+                    table td:first-child{
+                      text-align: right;
+                    }
+                  `}
+                </style>
                 <thead>
                 <tr>
                     <th>设置类型</th>
@@ -22,7 +35,7 @@ export default function Setting() {
                     </td>
                     <td>
                         <label className="label cursor-pointer justify-start">
-                            <input type="radio" name="radio-6" className="radio radio-success"
+                            <input type="radio" name="radio-6" className="radio radio-info"
                                    onChange={(e) => {
                                        updateSetting({enableType: e.target.checked ? 'always' : 'when-needed'})
                                    }}
@@ -33,7 +46,7 @@ export default function Setting() {
                         </label>
                         <label className="label cursor-pointer justify-start">
                             <input type="radio" name="radio-10"
-                                   className="radio radio-success"
+                                   className="radio radio-info"
                                    onChange={(e) => {
                                        updateSetting({enableType: !e.target.checked ? 'always' : 'when-needed'})
                                    }}
@@ -49,8 +62,63 @@ export default function Setting() {
                     </td>
                 </tr>
                 <tr>
-                    <td>网页标记数上限</td>
-                    <td className={''}>{maxRecord > 99 ? '-' : maxRecord}</td>
+                    <td><span>网页内标记上限</span></td>
+                    <td className={''}>
+                        <div className={'w-40'}>
+                            <input type="range" min="0" max="1000"
+                                   value={maxRecord}
+                                   onChange={(e)=>{updateSetting({maxRecord:Number(e.target.value)})}}
+                                   className="range range-xs range-info"
+                                   step="25" />
+                            <div className="w-full flex justify-between text-xs px-2">
+                                <span>50个</span>
+                                <span>100</span>
+                                <span></span>
+                                <span>
+                                <a className={'link'} target={'_blank'} href="https://pagenote.cn/pro-plan">无限</a>
+                            </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>标记快捷键灵敏度</td>
+                    <td>
+                        <div className={'w-40'}>
+                            <input type="range" min="0" max="2000"
+                                   value={keyupTimeout}
+                                   onChange={(e)=>{updateSetting({keyupTimeout:Number(e.target.value)})}}
+                                   className="range range-xs range-info"
+                                   step="500" />
+                            <div className="w-full flex justify-between text-xs px-2">
+                                <span>灵敏</span>
+                                {/*<span>适中</span>*/}
+                                <span>迟缓</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>画笔面板出现时机</td>
+                    <td>
+                        <div className={'w-40'}>
+                            <input type="range" min="0" max="1000"
+                                   value={showBarTimeout}
+                                   onChange={(e)=>{updateSetting({showBarTimeout:Number(e.target.value)})}}
+                                   className="range range-xs range-info"
+                                   step="200" />
+                            <div className="w-full flex justify-between text-xs px-2">
+                                <span>立刻</span>
+                                {/*<span>适中</span>*/}
+                                <span>迟缓</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={2} className={'!text-center'}>
+                        <button className={'btn btn-success btn-sm'} onClick={resetSetting} disabled={loading}>一键重置推荐设置</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
