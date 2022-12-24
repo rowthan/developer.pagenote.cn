@@ -9,16 +9,15 @@ export default function BasicLayout(props: PropsWithChildren<{nav?:boolean, foot
     const { resolvedTheme, setTheme } = useTheme();
     const { children,nav=true,footer=true,full=false, ...customMeta } = props;
     const meta = {
-        title: customMeta.title || '小而美的网页标记工具',
+        title: customMeta.title || '小而美的网页标记工具 PAGENOTE',
         description: customMeta.description || `一页一记 pagenote，开发者中心.`,
         type: 'website',
     };
 
     return(
-        // bg-gray-50 dark:bg-gray-900
         <div className={`mx-auto ${full? '' : 'w-3/4'}`}>
             <Head>
-                <title>{meta.title} - PAGENOTE</title>
+                <title>{meta.title}</title>
                 <meta name="robots" content="follow, index" />
                 <meta content={meta.description} name="description" />
                 <meta property="og:type" content={meta.type} />
