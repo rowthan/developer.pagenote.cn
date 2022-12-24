@@ -18,7 +18,7 @@ export default function Pages() {
     const [list, setList] = useState<LogInfo[]>([])
     const [pagination, setPagination] = useState<Pagination>({
         page: 0,
-        limit: 20,
+        pageSize: 20,
         total: 0,
     })
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -31,7 +31,7 @@ export default function Pages() {
 
     useEffect(function () {
         loadPages()
-    }, [pagination.page, pagination.limit])
+    }, [pagination.page, pagination.pageSize])
 
     /**拉取页面数据*/
     function loadPages() {
@@ -39,7 +39,7 @@ export default function Pages() {
             query:{
               // level: 'info'
             },
-            limit: pagination.limit,
+            limit: pagination.pageSize,
             page: pagination.page,
             pageSize: pagination.pageSize,
             sort: {
@@ -56,16 +56,15 @@ export default function Pages() {
                     ...pagination,
                     page: res.data.page || 0,
                     total: res.data.total || 0,
-                    limit: res.data.limit || 10,
                 })
             }
         })
     }
 
     /**分页器修改*/
-    function changePagination(page: number, limit: number) {
+    function changePagination(page: number, pageSize: number) {
         setPagination({
-            limit: limit,
+            pageSize: pageSize,
             page: page,
             total: pagination.total
         })
