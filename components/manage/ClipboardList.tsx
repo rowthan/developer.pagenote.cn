@@ -103,7 +103,7 @@ export default function ClipboardList() {
                                         </span>
                                     <time className="text-xs opacity-50"> {dayjs(item.createAt).format(('YYYY-MM-DD HH:mm:ss'))}</time>
                                 </div>
-                                <div onClick={()=>{item.text && copyItem(item.text)}} className="chat-bubble chat-bubble-accent text-sm">{item.text}</div>
+                                <div onClick={()=>{item.text && copyItem(item.text)}} className="break-all chat-bubble chat-bubble-accent text-sm">{item.text}</div>
                                 <div className="chat-footer opacity-50 mt-1">
                                     <button className='btn btn-xs btn-outline' onClick={()=>removeItem(item.id || '')}>删除</button>
                                 </div>
