@@ -22,12 +22,9 @@ export default function () {
     }
 
     return (
-        <BasicLayout nav={false } title={'登录'} description={'登录 PAGENOTE 账号'}>
+        <BasicLayout nav={false } title={'登录 PAGENOTE'} description={'登录 PAGENOTE 账号'}>
             <CheckVersion requireVersion={'0.24.2'}>
                 <div className={'m-auto max-w-md mt-20'}>
-                    <Head>
-                        <title>登录 PAGENOTE</title>
-                    </Head>
                     {
 
                         user?.profile?.nickname ?
