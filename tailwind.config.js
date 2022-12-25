@@ -1,8 +1,43 @@
 const {spacing, fontFamily} = require('tailwindcss/defaultTheme');
 
+// https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L7
+const themeColors = {
+
+    "primary": "#44ADEE",
+
+    "secondary": "#bfdbfe",
+
+    "accent": "#3b82f6",
+
+    "neutral": "#1A1A1A",
+
+    "base-100": "#FFFFFF",
+
+    "info": "#4AA8BF",
+
+    "success": "#4fad88",
+
+    "warning": "#facc15",
+
+    "error": "#f43f5e",
+}
+
+const darkThemeColors = {
+    ...themeColors,
+    "base-100": 'rgb(53, 54, 58)'
+}
+
 module.exports = {
     content: ['./pages/**/*.tsx', './components/**/*.tsx', './layouts/**/*.tsx'],
     darkMode: 'media',//class
+    daisyui: {
+        themes: [
+            {
+                light: themeColors,
+                dark: darkThemeColors
+            },
+        ],
+    },
     theme: {
         minHeight: {
             '0': '0',
@@ -14,6 +49,7 @@ module.exports = {
         },
         extend: {
             colors: {
+                ...themeColors,
                 'blue-opaque': 'rgb(13 42 148 / 18%)',
                 gray: {
                     0: '#fff',
