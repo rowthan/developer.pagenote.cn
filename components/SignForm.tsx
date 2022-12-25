@@ -15,6 +15,8 @@ interface FormData {
     password: string
 }
 
+const GITHUB_SIGN_URL = 'https://pagenote.cn/signin?auth=github'
+const NOTION_SIGN_URL = 'https://pagenote.cn/signin?auth=notion'
 export default function (props:{onSuccess:()=>void, onError:()=>void}) {
     const [state, setState] = useState<SubmitState>(SubmitState.unset);
 
@@ -91,6 +93,15 @@ export default function (props:{onSuccess:()=>void, onError:()=>void}) {
                         type="submit">
                     登录
                 </button>
+            </div>
+            <div>
+                <a className={'btn btn-sm block flex my-2'} href={GITHUB_SIGN_URL} target='_blank'>
+                    <div>
+                        GitHub授权登录
+                    </div>
+                </a>
+                <a className={'btn btn-sm btn-primary block flex my-2'} href={NOTION_SIGN_URL} target='_blank'>Notion授权登录</a>
+                <a className={'btn btn-sm btn-secondary block flex my-2'} href="https://pagenote.cn/signup" target={'_blank'}>注册账号</a>
             </div>
         </form>
     )
