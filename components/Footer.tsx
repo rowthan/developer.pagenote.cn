@@ -1,11 +1,12 @@
 import React from "react";
 import BiliSvg from '../assets/svg/bilibili.svg'
 import WechatSvg from '../assets/svg/wechat.svg'
-import EmailSvg from '../assets/svg/email.svg'
 import GithubSvg from '../assets/svg/github.svg'
 import StateSvg from '../assets/svg/state.svg'
+import useWhoAmi from "../hooks/useWhoAmi";
 
 export default function Footer() {
+    const [whoAmI] = useWhoAmi();
   return (
       <>
           {/*<footer className="footer p-4 bg-base-200 text-base-content mt-10">*/}
@@ -32,6 +33,7 @@ export default function Footer() {
                   <h2>PAGENOTE</h2>
                   <img src="/images/light-64.png" width={24} height={24}/>
                   <p className='hidden md:block'>小而美的网页标记工具.</p>
+                  <a className={'link link-info'} href={'https://pagenote.cn/release'} target={'_blank'}>{whoAmI?.version || '未安装'}</a>
               </div>
               <div className="md:place-self-center md:justify-self-end">
                   <div className="grid grid-flow-col gap-4">
@@ -45,10 +47,6 @@ export default function Footer() {
                       </div>
                       <a href='https://space.bilibili.com/2089824747' target='_blank'>
                           <BiliSvg width={24} height={24} />
-                      </a>
-
-                      <a href='mailto:pagenote@126.com'>
-                          <EmailSvg width={24} height={24}/>
                       </a>
                       <a href='https://github.com/rowthan/developer.pagenote.cn' target='_blank'>
                           <GithubSvg width={24} height={24} />
