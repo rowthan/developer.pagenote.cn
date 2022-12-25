@@ -72,7 +72,23 @@ const routesMap: RouteInfo = {
                 path: '/contact/feedback',
             }
         ]
-    },]
+    },{
+        id: "sync",
+        name: '数据同步',
+        path: '/sync',
+        children:[
+            {
+                id: 'sync_dir',
+                name: '文件夹同步',
+                path: '/sync/dir',
+            },
+            {
+                id: 'sync_notion',
+                name: 'Notion同步',
+                path: '/sync/notion',
+            }
+        ]
+    }]
 }
 
 
