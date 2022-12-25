@@ -51,9 +51,6 @@ export default function Footer() {
                       <a href='https://github.com/rowthan/developer.pagenote.cn' target='_blank'>
                           <GithubSvg width={24} height={24} />
                       </a>
-                      <a href="https://developer.pagenote.cn/feedback" target='_blank'>
-                          <StateSvg width={24} height={24} />
-                      </a>
                   </div>
               </div>
           </footer>
