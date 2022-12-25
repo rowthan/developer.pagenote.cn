@@ -120,7 +120,7 @@ export default function CurrentTab() {
 
     const isExtensionUrl = /(edge:|extension:|chrome:)\/\//.test(tab?.url || '');
     return (
-        <div>
+        <div className={'p-3'}>
             {tabState.active ?
                 <div>
                     <div className="badge badge-xs badge-success mr-1"></div>

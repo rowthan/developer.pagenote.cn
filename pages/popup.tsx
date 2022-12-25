@@ -1,86 +1,43 @@
 import BasicLayout from "../layouts/BasicLayout";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Setting from "../components/Setting";
-import UserInfo from "../components/UserInfo";
-import OutLink from '../assets/svg/outlink.svg'
 import ClipboardList from "../components/manage/ClipboardList";
 import CurrentTab from "../components/popup/CurrentTab";
+import {HashRouter as Router, Route, Routes} from "react-router-dom";
+import CheckVersion from "../components/check/CheckVersion";
+import Search from "../components/popup/Search";
+import NavTabs from "../components/popup/NavTabs";
 
-interface Tab {
-    label: string,
-    outlink: string,
-}
-
-const tabs: Tab[] = [{
-    label: '当前网页',
-    outlink: ''
-},{
-    label: '剪切板',
-    outlink: ''
-},
-    {
-        label: '设置',
-        outlink: ""
-    }, {
-        label: '前往管理',
-        outlink: '/pagenote.html',
-    },
-]
-
-
-
-const POPUP_CACHE_KEY = 'popup_tab'
 export default function PopupPage() {
-    const [activeTab, setActive] = useState('');
+    const [loaded, setLoaded] = useState(false);
+    const [keyword,setKeyword] = useState('');
 
     useEffect(function () {
-        setActive(localStorage.getItem(POPUP_CACHE_KEY)||'当前网页')
+        setLoaded(true)
     }, [])
 
-    function setTab(item: Tab) {
-        if (item.outlink) {
-            window.open(item.outlink)
-        } else {
-            setActive(item.label)
-            localStorage.setItem(POPUP_CACHE_KEY,item.label)
-        }
-    }
 
+    if (!loaded) {
+        return null
+    }
     return (
-        <BasicLayout nav={false} title={'标签页'} full={true}>
-            <div className={'m-auto'} style={{minHeight: "30rem",minWidth:"28rem",maxWidth: '40rem'}}>
-                <div className="tabs">
-                    {
-                        tabs.map((item, index) => (
-                            <a key={index}
-                               onClick={() => {
-                                   setTab(item)
-                               }}
-                               className={`tab tab-lifted tab-${activeTab === item.label ? 'active' : ''}`}>
-                                {item.label}
-                                {item.outlink && <OutLink width={14} height={14}/>}
-                            </a>
-                        ))
-                    }
+        <BasicLayout nav={false} footer={false} title={'标签页'} full={true}>
+            <CheckVersion requireVersion={'0.24.7'}>
+                <div className={'m-auto border border-black shadow rounded-2xl overflow-hidden w-fit overflow-y-auto'}
+                     style={{width: '30rem',height:'35rem'}}>
+                    <Router>
+                        <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+                        <Routes>
+                            <Route index element={<CurrentTab/>}/>
+                            <Route path={'/tab'} element={<CurrentTab/>}/>
+                            <Route path="/clipboard" element={<ClipboardList/>}/>
+                            <Route path="/setting" element={<Setting />} />
+                            <Route path="/search" element={<Search keyword={keyword}/>}/>
+                            <Route path="*" element={<CurrentTab/>}/>
+                        </Routes>
+                    </Router>
                 </div>
-                <div className='p-2'>
-                    {
-                        activeTab === '当前网页' &&
-                        <CurrentTab />
-                    }
-                    {
-                        activeTab === '剪切板' &&
-                        <ClipboardList />
-                    }
-                    {
-                        activeTab === '设置' &&
-                        <div>
-                            <UserInfo/>
-                            <Setting/>
-                        </div>
-                    }
-                </div>
-            </div>
+            </CheckVersion>
         </BasicLayout>
     )
 }
