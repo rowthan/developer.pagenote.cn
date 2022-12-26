@@ -21,7 +21,11 @@ export default function Custom404() {
         const redirectUrl = redirectMap[router.asPath];
         if(redirectUrl){
             router.replace(redirectUrl)
-
+        }else{
+            if(router.asPath.indexOf('.html')){
+                const path = router.asPath.replace('.html','');
+                router.replace(path)
+            }
         }
     },[router.asPath])
 
