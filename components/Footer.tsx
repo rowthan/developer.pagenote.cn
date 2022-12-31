@@ -33,7 +33,7 @@ export default function Footer() {
                   <h2>PAGENOTE</h2>
                   <img src="/images/light-64.png" width={24} height={24}/>
                   <p className='hidden md:block'>小而美的网页标记工具.</p>
-                  <a className={'link link-info'} href={'https://pagenote.cn/release'} target={'_blank'}>{whoAmI?.version || '未安装'}</a>
+                  <a className={'link link-info badge badge-outline badge-sm'} href={'https://pagenote.cn/release'} target={'_blank'}>{whoAmI?.version || '未安装'}</a>
               </div>
               <div className="md:place-self-center md:justify-self-end">
                   <div className="grid grid-flow-col gap-4">
