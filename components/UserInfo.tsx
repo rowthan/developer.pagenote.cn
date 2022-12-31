@@ -1,5 +1,5 @@
 import useUserInfo from "../hooks/useUserInfo";
-import SignForm from "./SignForm";
+import SignForm from "./account/SignForm";
 import MoreSvg from 'assets/svg/more.svg'
 import extApi from "@pagenote/shared/lib/generateApi";
 
@@ -12,7 +12,7 @@ export default function () {
         })
     }
     return (
-        <div className={''}>
+        <div className={' w-80 m-auto'}>
             {
                 user?.profile?.nickname ?
                     <div className={'flex justify-around py-2'}>
@@ -35,7 +35,7 @@ export default function () {
                         <img className={'rounded-full bg-white w-10 h-10'}  src="https://pagenote.cn/favicon.ico" alt=""/>
                     </div> :
                     <div className='my-20 '>
-                        <SignForm onSuccess={fetch} onError={fetch}/>
+                        <SignForm></SignForm>
                     </div>
             }
         </div>
