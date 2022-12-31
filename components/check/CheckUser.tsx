@@ -8,7 +8,7 @@ export default function CheckUser({children}:{children:ReactElement}) {
     const [user] = useUserInfo();
     if(!user?.profile?.nickname){
         return (
-            <div className="m-auto mt-20 card w-96 bg-base-100 shadow-xl">
+            <div className="m-auto mt-20 card w-96 bg-base-200 shadow-xl">
                 <figure className="px-10 pt-10">
                     <img src="https://placeimg.com/400/225/arch" alt="Shoes" className="rounded-xl" />
                 </figure>
