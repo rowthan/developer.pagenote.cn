@@ -5,9 +5,11 @@ export default function HighLightText(props:{keyword: string, text?: string, hid
         return null;
     }
 
-    const regex = new RegExp(keyword,"g")
+    const regex = new RegExp(keyword,"ig")
 
-    const html = text.replace(regex,`<mark>${keyword}</mark>`)
+    const html = text.replace(regex,function (word) {
+        return `<mark>${word}</mark>`
+    })
     return (
         <span dangerouslySetInnerHTML={{__html: html}}></span>
     )

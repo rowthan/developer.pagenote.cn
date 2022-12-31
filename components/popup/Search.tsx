@@ -39,26 +39,28 @@ function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Par
 }
 
 export default function Search(props: { keyword: string }) {
-    const {keyword} = props;
+    const {keyword=''} = props;
     const [list, setList] = useState<Partial<WebPage>[]>([])
 
-
     const search = function () {
-        if (keyword) {
+        // TODO 搜索所有tab 标签页
+        if (keyword.trim()) {
             setList([])
-            const regex = '.*' + keyword + '.*'
+            const regex = '.*' + (keyword || '').trim() + '.*'
             const orFilter: {
                 [key in keyof WebPage]?: QueryValue
             }[] = ['title', 'url', 'categories'].map(function (key) {
                 return {
                     [key]: {
-                        $regex: regex
+                        $regex: regex,
+                        $options: "i"
                     }
                 }
             })
 
             extApi.lightpage.queryPages({
                 query: {
+                    deleted: false,
                     $or: orFilter
                 },
                 sort:{
@@ -69,15 +71,17 @@ export default function Search(props: { keyword: string }) {
                 setList(pageResult)
                 const orLightFilter: {
                     [key in keyof Step]?: QueryValue
-                }[] = ['text', 'pre', 'tip'].map(function (key) {
+                }[] = ['text', 'tip'].map(function (key) {
                     return {
                         [key]: {
-                            $regex: regex
+                            $regex: regex,
+                            $options: "i"
                         }
                     }
                 })
                 extApi.lightpage.queryLights({
                     query: {
+                        deleted: false,
                         $or: orLightFilter
                     },
                     sort:{
@@ -95,18 +99,19 @@ export default function Search(props: { keyword: string }) {
     useLazyEffect(search, [keyword], 500)
 
     return (
-        <div className={'p-4 w-full overflow-ellipsis'}>
+        <div className={'p-2 w-full overflow-ellipsis'}>
             <div className={'text-gray-400 text-xs'}>
                 {
-                    keyword ? <span>PAGENOTE 为你找到  <mark>{keyword}</mark> 相关搜索约 {list.length} 个</span> :
+                    keyword ? <span>PAGENOTE 为你找到  <mark>{keyword}</mark> 相关搜索标记约 {list.length} 个</span> :
                         <span>请输入搜索词</span>
                 }
             </div>
+            {/*分组 折叠，搜 pagenote笔记\搜标签页、搜扩展API*/}
             <ul>
-                {list.map((item) => (
-                    <li className={'mb-2 py-2 hover:bg-base-200 rounded'}  key={item.key} >
+                {list.map((item,index) => (
+                    <li className={'mb-2 p-2 hover:bg-base-200 border-b'}  key={index} >
                         <div>
-                            <a href={item.url || item.key} target={'_blank'} className={'link link-primary inline-block truncate'}>
+                            <a href={item.url || item.key} target={'_blank'} className={'max-w-full link link-primary text-md inline-block truncate'}>
                                 <img src={item.icon} width={14} height={14} className={'inline-block'}/> <HighLightText hideOnUnMatch={false} keyword={keyword} text={item.title || item.key || ''} />
                             </a>
                             <div className={'text-gray-300 text-sm'}>
@@ -123,9 +128,11 @@ export default function Search(props: { keyword: string }) {
                             {item.plainData?.steps.map( (light)=>(
                                 <div key={light.key} className={'text-sm p-1'}>
                                     <span className={'badge badge-xs'} style={{backgroundColor: light.bg}}></span>
-                                    <HighLightText keyword={keyword} text={light.pre || ''} />
-                                    <span style={{borderColor: light.bg}} className={'border-b'}><HighLightText keyword={keyword} text={light.text || ''} /></span>
-                                    <HighLightText keyword={keyword} text={light.suffix || ''} />
+                                    {/*<HighLightText keyword={keyword} text={light.pre || ''} />*/}
+                                    <span style={{borderColor: light.bg}} className={'border-b'}>
+                                        <HighLightText keyword={keyword} text={light.text || ''} />
+                                    </span>
+                                    {/*<HighLightText keyword={keyword} text={light.suffix || ''} />*/}
                                     <HighLightText keyword={keyword} text={light.tip || ''} />
                                 </div>
                             ))}
