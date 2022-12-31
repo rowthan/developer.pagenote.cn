@@ -167,7 +167,7 @@ export default function Light() {
                                            {/*</div>*/}
                                        </td>
                                        <td className='max-w-md whitespace-pre-line	overflow-ellipsis'>
-                                           <div dangerouslySetInnerHTML={{__html: item.tip}}></div>
+                                           <div dangerouslySetInnerHTML={{__html: item.tip || ''}}></div>
                                        </td>
                                        <td>
                                            <span className='text-xs'>{computeTimeDiff(item.updateAt)}</span>
