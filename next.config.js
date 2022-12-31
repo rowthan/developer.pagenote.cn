@@ -2,6 +2,9 @@
 module.exports = {
   reactStrictMode: true,
   assetPrefix: process.env.prefix || '',
+  env: {
+    prefix: process.env.prefix || '',
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
