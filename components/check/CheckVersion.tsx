@@ -4,7 +4,10 @@ import React, {ReactElement} from "react";
 
 
 export default function CheckVersion({requireVersion,children}:{requireVersion: string,children:ReactElement}) {
-    const [whoAmi] = useWhoAmi();
+    const [whoAmi,isLoading] = useWhoAmi();
+    if(isLoading){
+        return null
+    }
     if(!whoAmi?.version){
         return (
             <div className="m-auto mt-20 card w-96 bg-base-100 shadow-xl">
@@ -18,6 +21,9 @@ export default function CheckVersion({requireVersion,children}:{requireVersion: 
                         <button className="btn btn-primary">
                             <a href="https://pagenote.cn/release">前往安装</a>
                         </button>
+                    </div>
+                    <div className={'text-center'}>
+                        <a href="" className={'link link-primary'}>刷新重试</a>
                     </div>
                 </div>
             </div>
