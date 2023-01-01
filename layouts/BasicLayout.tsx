@@ -62,8 +62,8 @@ export default function BasicLayout(props: PropsWithChildren<{nav?:boolean, foot
             <aside className={'fixed w-fit right-4 bottom-0 pb-2'}>
                 <div className="dropdown dropdown-top dropdown-end">
                     <label tabIndex={0}>
-                        <button className={'rounded-full bg-base-100'}>
-                            <QuestionSvg width={20} height={20} />
+                        <button className={'rounded-full bg-neutral text-neutral-content'}>
+                            <QuestionSvg className={'fill-current'} width={20} height={20} />
                         </button>
                     </label>
                     <ul tabIndex={0} className="dropdown-content w-32 rounded right-4 mb-4 py-2 overflow-hidden bottom-full bg-neutral text-base-100 text-sm">
