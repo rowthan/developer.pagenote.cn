@@ -4,8 +4,8 @@ import useSWR from "swr";
 import WhoAmI = user.WhoAmI;
 
 
-export default function useWhoAmi():[WhoAmI|undefined,()=>void] {
-    const {data} = useSWR<WhoAmI>('/whoAmI',fetchInfo,{
+export default function useWhoAmi():[WhoAmI|undefined,boolean] {
+    const {data,isLoading} = useSWR<WhoAmI>('/whoAmI',fetchInfo,{
         fallbackData: {
             version: '',
             browser: "",
@@ -34,5 +34,5 @@ export default function useWhoAmi():[WhoAmI|undefined,()=>void] {
         })
     }
 
-    return [data,fetchInfo]
+    return [data,isLoading]
 }
