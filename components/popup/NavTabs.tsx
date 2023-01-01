@@ -12,7 +12,7 @@ interface Tab {
 }
 
 const tabs: Tab[] = [{
-    label: '当前页',
+    label: '标签页',
     outlink: '',
     link: '/tab'
 }, {
@@ -32,7 +32,6 @@ export default function NavTabs(props:{keyword: string, onChangeKeyword:(keyword
     const location = useLocation();
 
     function gotoSearch() {
-        redirect('/search')
         navigate('/search')
     }
 
@@ -59,9 +58,10 @@ export default function NavTabs(props:{keyword: string, onChangeKeyword:(keyword
                 ))
             }
             <div className={`tab tab-lifted ${isSearchPath ? 'tab-active':''}`} onClick={gotoSearch}>
-                <input type="text" placeholder="🔍快速搜索"
+                <input type="text" placeholder="🔍搜索笔记"
+                       autoFocus={true}
                        value={props.keyword}
-                       onChange={(e)=>{props.onChangeKeyword(e.target.value)}}
+                       onChange={(e)=>{navigate('/search');props.onChangeKeyword(e.target.value)}}
                        className={`input input-xs input-bordered w-full max-w-md ${isSearchPath?'':''}`} />
             </div>
             <div data-tip={'前往管理页'} className={`tooltip tooltip-left tab tab-lifted flex`} onClick={gotoHome}>
