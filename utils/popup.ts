@@ -2,18 +2,21 @@ import Tab = chrome.tabs.Tab;
 import extApi from "@pagenote/shared/lib/generateApi";
 
 export function refreshTab(tab?:Tab) {
+    function callback() {
+        setTimeout(function () {
+            window.location.reload();
+        },600)
+    }
     if (tab?.id) {
         if(chrome?.tabs){
-            chrome?.tabs?.reload(tab?.id, {}, function () {
-                window.location.reload();
-            })
+            chrome?.tabs?.reload(tab?.id, {}, callback)
         }else{
             extApi.developer.chrome({
                 namespace: 'tabs',
                 type: 'reload',
                 params: tab?.id,
             }).then(function () {
-                window.location.reload();
+                callback()
             })
         }
     }

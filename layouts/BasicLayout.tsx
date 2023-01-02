@@ -67,7 +67,7 @@ export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, fo
                         </button>
                     </label>
                     <ul tabIndex={0}
-                        className="dropdown-content w-32 rounded right-4 mb-4 py-2 overflow-hidden bottom-full bg-neutral text-base-100 text-sm">
+                        className="dropdown-content w-32 rounded right-4 mb-2 py-2 overflow-hidden bottom-full bg-neutral text-base-100 text-sm">
                         {asideList.map((item, index) => (
                             <li key={index} className={'hover:bg-accent py-1 px-4'}>
                                 <a className={'flex items-center w-full text-base-100'} href={item.link}
