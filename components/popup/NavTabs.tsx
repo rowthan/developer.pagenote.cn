@@ -26,7 +26,7 @@ const tabs: Tab[] = [{
         link: '/setting'
     }
 ]
-export default function NavTabs(props:{keyword: string, onChangeKeyword:(keyword: string)=>void}) {
+export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyword: string) => void }) {
     const [whoAmi] = useWhoAmi();
     const navigate = useNavigate();
     const location = useLocation();
@@ -35,20 +35,14 @@ export default function NavTabs(props:{keyword: string, onChangeKeyword:(keyword
         navigate('/search')
     }
 
-    function gotoHome() {
-        extApi.commonAction.openTab({
-            url: `${whoAmi?.origin}/pagenote.html`
-        })
-    }
-
     const isSearchPath = location.pathname === '/search'
-    return(
-        <div className="tabs">
+    return (
+        <div className="tabs relative w-basic max-w-full">
             {
                 tabs.map((item, index) => (
                     <NavLink key={index}
                              to={item.link}
-                             className={({ isActive }) =>
+                             className={({isActive}) =>
                                  `tab tab-lifted tab-${isActive ? 'active' : ''}`
                              }
                     >
@@ -57,16 +51,20 @@ export default function NavTabs(props:{keyword: string, onChangeKeyword:(keyword
                     </NavLink>
                 ))
             }
-            <div className={`tab tab-lifted ${isSearchPath ? 'tab-active':''}`} onClick={gotoSearch}>
+            <div className={`tab tab-lifted ${isSearchPath ? 'tab-active' : ''}`} onClick={gotoSearch}>
                 <input type="text" placeholder="🔍搜索笔记"
                        autoFocus={true}
                        value={props.keyword}
-                       onChange={(e)=>{navigate('/search');props.onChangeKeyword(e.target.value)}}
-                       className={`input input-xs input-bordered w-full max-w-md ${isSearchPath?'':''}`} />
+                       onChange={(e) => {
+                           navigate('/search');
+                           props.onChangeKeyword(e.target.value)
+                       }}
+                       className={`input input-xs input-bordered w-44  ${isSearchPath ? '' : ''}`}/>
             </div>
-            <div data-tip={'前往管理页'} className={`tooltip tooltip-left tab tab-lifted flex`} onClick={gotoHome}>
-                <HomeSvg className={'fill-current text-secondary hover:text-primary'} width={24} height={24} />
-            </div>
+            <a href={`${whoAmi?.origin}/pagenote.html`} target={'_blank'}
+               data-tip={'前往管理页'} className={`link absolute right-5 top-1 tooltip tooltip-left flex`}>
+                <HomeSvg className={'fill-current text-secondary hover:text-primary'} width={24} height={24}/>
+            </a>
         </div>
     )
 }

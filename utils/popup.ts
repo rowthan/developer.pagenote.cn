@@ -65,7 +65,8 @@ export function fetchStatus(tabId?: number) {
         params: undefined,
         // @ts-ignore
         header:{
-            targetTabId: tabId
+            targetTabId: tabId,
+            timeout: 2000,
         }
     }).then(function (res) {
         return res.data

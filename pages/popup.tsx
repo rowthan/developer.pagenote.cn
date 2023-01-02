@@ -42,18 +42,19 @@ export default function PopupPage() {
     return (
         <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
             <CheckVersion requireVersion={'0.24.7'}>
-                <div style={{height:"36rem",width:'30rem'}}
-                     className={'m-auto border border-black shadow rounded-2xl overflow-hidden w-fit overflow-y-auto'}>
+                <div className={'w-basic m-auto border border-black shadow rounded-2xl overflow-hidden'}>
                     <Router>
                         <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-                        <Routes>
-                            <Route index element={<CurrentTab/>}/>
-                            <Route path={'/tab'} element={<CurrentTab/>}/>
-                            <Route path="/clipboard" element={<ClipboardList/>}/>
-                            <Route path="/setting" element={<Setting />} />
-                            <Route path="/search" element={<Search keyword={keyword}/>}/>
-                            <Route path="*" element={<CurrentTab/>}/>
-                        </Routes>
+                        <div className={'w-basic h-basic overflow-hidden overflow-y-auto '}>
+                            <Routes>
+                                <Route index element={<CurrentTab/>}/>
+                                <Route path={'/tab'} element={<CurrentTab/>}/>
+                                <Route path="/clipboard" element={<ClipboardList/>}/>
+                                <Route path="/setting" element={<Setting />} />
+                                <Route path="/search" element={<Search keyword={keyword}/>}/>
+                                <Route path="*" element={<CurrentTab/>}/>
+                            </Routes>
+                        </div>
                     </Router>
                 </div>
             </CheckVersion>

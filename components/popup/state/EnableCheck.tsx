@@ -45,7 +45,7 @@ export default function EnableCheck() {
         return null;
     }
 
-    if(!tabState){
+    if (!tabState) {
         return <Waring tab={tab}/>
     }
 
@@ -60,8 +60,10 @@ export default function EnableCheck() {
                     </span>
                 </button>
 
-                <div className={`transform-gpu -translate-y-full transition duration-500 ease-in-out ${tabState?.active ? '-translate-y-0' : ''}`}>
-                    <span className={'tooltip tooltip-left'} data-tip={tabState.enabledCopy ? '已解除复制限制' : '解除网页复制限制'}>
+                <div
+                    className={`transform-gpu -translate-y-full transition duration-500 ease-in-out ${tabState?.active ? '-translate-y-0' : ''}`}>
+                    <span className={'tooltip tooltip-left'}
+                          data-tip={tabState.enabledCopy ? '已解除复制限制' : '解除网页复制限制'}>
                         <IconButton className={'m-1'} onClick={enableCopy} disabled={tabState?.enabledCopy}>
                             <UnlockCopySvg/>
                         </IconButton>
@@ -83,7 +85,7 @@ export default function EnableCheck() {
 function Waring(props: { tab?: Tab }) {
     const {tab} = props;
     const isHtmlFile = checkIsLocalFile(tab?.url)
-    const isBrowserUrl =  checkIsBrowserBasicUrl(tab?.url);
+    const isBrowserUrl = checkIsBrowserBasicUrl(tab?.url);
     return (
         <div className="alert alert-warning shadow-lg my-4">
             <div>
@@ -95,25 +97,30 @@ function Waring(props: { tab?: Tab }) {
 
                     {
                         isHtmlFile ?
-                        <div className={'text-sm'}>
-                            请授权「允许访问文件网址」后刷新重新尝试。
-                        </div> :
-                        <div className={'text-sm'}>
-                            {
-                                isBrowserUrl ?
-                                    <div className={'text-red-500'}>
-                                        浏览器插件无法在此类页面上使用：
+                            <div className={'text-sm'}>
+                                请授权
+                                <a href="https://page-note.notion.site/ce1300d2471b4391946bd1a7c281758f#1a1a1746bae74d6b8f21f9d8b5a77434"
+                                   className={'link'}
+                                   target={'_blank'}>
+                                    「允许访问文件网址」
+                                </a>后刷新重新尝试。
+                            </div> :
+                            <div className={'text-sm'}>
+                                {
+                                    isBrowserUrl ?
+                                        <div className={'text-red-500'}>
+                                            浏览器插件无法在此类页面上使用：
+                                            <div>
+                                                {tab?.url}
+                                            </div>
+                                        </div> :
                                         <div>
-                                            {tab?.url}
+                                            <a className='link' onClick={() => {
+                                                refreshTab(tab)
+                                            }}>请刷新页面</a> 后重试
                                         </div>
-                                    </div> :
-                                    <div>
-                                        <a className='link' onClick={() => {
-                                            refreshTab(tab)
-                                        }}>请刷新页面</a> 后重试
-                                    </div>
-                            }
-                        </div>
+                                }
+                            </div>
                     }
                 </div>
             </div>

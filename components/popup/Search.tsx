@@ -18,7 +18,6 @@ function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Par
     lights.forEach(function (item) {
         const tempPage = webpageMap.get(item.pageKey as string);
         if (tempPage) {
-            console.log(tempPage,webpage)
             const currentSteps = get(tempPage, LIGHT_PLACE_KEY) || []
             currentSteps.push(item as Step);
             set(tempPage, LIGHT_PLACE_KEY, currentSteps)
