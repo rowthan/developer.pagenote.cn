@@ -32,12 +32,14 @@ export default function AuthBottoms(props: { type: 'signin' | 'signup' | 'bind' 
                 {
                     isSignin &&
                         <a className={'btn btn-sm btn-secondary block flex my-2'}
-                           href={`${basePath}/signup.html`}>还没账号，前往注册</a>
+                           target={'_blank'}
+                           href={`https://pagenote.cn/signup.html`}>还没账号，前往注册</a>
                 }
                 {
                     isSignup &&
                     <a className={'btn btn-sm btn-secondary block flex my-2'}
-                       href={`${basePath}/signin.html`}>已有账号，前往登录</a>
+                       target={'_blank'}
+                       href={`https://pagenote.cn/signin.html`}>已有账号，前往登录</a>
                 }
             </div>
         </div>
