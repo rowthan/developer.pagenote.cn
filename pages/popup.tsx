@@ -7,24 +7,42 @@ import {HashRouter as Router, Route, Routes} from "react-router-dom";
 import CheckVersion from "../components/check/CheckVersion";
 import Search from "../components/popup/Search";
 import NavTabs from "../components/popup/NavTabs";
+import extApi from "@pagenote/shared/lib/generateApi";
+import useWhoAmi from "../hooks/useWhoAmi";
+
+const CACHE_SEARCH_KEY = 'popup_search'
 
 export default function PopupPage() {
-    const [loaded, setLoaded] = useState(false);
-    const [keyword,setKeyword] = useState('');
+    const [keyword,setKeyword] = useState<string>('');
+    const [whoAmi,loading] = useWhoAmi();
 
     useEffect(function () {
-        setLoaded(true)
-    }, [])
+       setKeyword(localStorage.getItem(CACHE_SEARCH_KEY) || '');
+    },[])
+
+    useEffect(function () {
+        if(keyword){
+            localStorage.setItem(CACHE_SEARCH_KEY, keyword)
+        }
+    },[keyword])
+
+    useEffect(function () {
+        if(whoAmi?.version){
+            extApi.commonAction.setPersistentValue({
+                key: 'popup_version',
+                value: whoAmi?.version,
+            })
+        }
+    }, [whoAmi])
 
 
-    if (!loaded) {
+    if (loading) {
         return null
     }
     return (
-        <BasicLayout nav={false} footer={false} title={'标签页'} full={true}>
+        <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
             <CheckVersion requireVersion={'0.24.7'}>
-                <div className={'m-auto border border-black shadow rounded-2xl overflow-hidden w-fit overflow-y-auto'}
-                     style={{width: '30rem',height:'35rem'}}>
+                <div style={{height:"35rem",width:'30rem'}} className={'m-auto border border-black shadow rounded-2xl overflow-hidden w-fit overflow-y-auto'}>
                     <Router>
                         <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
                         <Routes>
