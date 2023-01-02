@@ -1,6 +1,7 @@
 import useSettings from "../hooks/useSettings";
 import OutLink from "../assets/svg/outlink.svg";
 import UserInfo from "./UserInfo";
+import TipInfo from "./TipInfo";
 
 
 export default function Setting() {
@@ -67,28 +68,7 @@ export default function Setting() {
                         }}/>
                     </td>
                 </tr>
-                <tr>
-                    <td><span>网页内标记上限</span></td>
-                    <td className={''}>
-                        <div className={'w-40'}>
-                            <input type="range" min="0" max="1000"
-                                   value={maxRecord}
-                                   onChange={(e) => {
-                                       updateSetting({maxRecord: Number(e.target.value)})
-                                   }}
-                                   className="range range-xs range-info"
-                                   step="25"/>
-                            <div className="w-full flex justify-between text-xs px-2">
-                                <span>50个</span>
-                                <span>100</span>
-                                <span></span>
-                                <span>
-                                <a className={'link'} target={'_blank'} href="https://pagenote.cn/pro-plan">无限</a>
-                            </span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+
                 <tr>
                     <td>标记快捷键灵敏度</td>
                     <td>
@@ -127,6 +107,28 @@ export default function Setting() {
                         </div>
                     </td>
                 </tr>
+
+                <tr>
+                    <td><span>网页内标记上限</span> <TipInfo tip={'根据用户身份自动调整。不可手动修改'} /></td>
+                    <td className={''}>
+                        <div className={'w-40'}>
+                            <input type="range" min="0" max="1000"
+                                   disabled={true}
+                                   readOnly={true}
+                                   value={maxRecord}
+                                   className="range range-xs range-info"
+                                   step="25"/>
+                            <div className="w-full flex justify-between text-xs px-2">
+                                <span>50个</span>
+                                <span>100</span>
+                                <span>
+                                    <a className={'link'} target={'_blank'} href="https://pagenote.cn/pro-plan">无限（VIP）</a>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
                 <tr>
                     <td colSpan={2} className={'!text-center'}>
                         <button className={'btn btn-success btn-sm'} onClick={resetSetting}

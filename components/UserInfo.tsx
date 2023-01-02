@@ -32,7 +32,7 @@ export default function () {
                                 </div>
                             </div>
                         </div>
-                        <img className={'rounded-full bg-white w-10 h-10'}  src="https://pagenote.cn/favicon.ico" alt=""/>
+                        {/*<img className={'rounded-full bg-white w-10 h-10'}  src="https://pagenote.cn/favicon.ico" alt=""/>*/}
                     </div> :
                     <div className='my-20 '>
                         <SignForm></SignForm>
