@@ -41,19 +41,25 @@ module.exports = {
         ],
     },
     theme: {
-        minWidth:{
-          basic: '30rem',
-        },
-        minHeight: {
-            basic: '36rem',
-            '0': '0',
-            '1/4': '25%',
-            '1/2': '50%',
-            '3/4': '75%',
-            'full': '100%',
-            "screen": '70vh',
-        },
         extend: {
+            width:{
+                basic: '480px',
+            },
+            height:{
+                basic: '600px',
+            },
+            minWidth:{
+                basic: '480px',
+            },
+            minHeight: {
+                basic: '600px',
+                '0': '0',
+                '1/4': '25%',
+                '1/2': '50%',
+                '3/4': '75%',
+                'full': '100%',
+                "screen": '70vh',
+            },
             fontFamily: {
                 sans: ['Inter', ...fontFamily.sans]
             },
