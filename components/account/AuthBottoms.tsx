@@ -15,13 +15,18 @@ export default function AuthBottoms(props: { type: 'signin' | 'signup' | 'bind' 
     const isSignup = type === 'signup'
     return (
         <div>
-            <a className={'btn btn-sm block flex my-2'} href={GITHUB_SIGN_URL} target='_blank'>
-                <div>
-                    GitHub授权{actionName}
-                </div>
-            </a>
-            <a className={'btn btn-sm btn-primary block flex my-2'} href={NOTION_SIGN_URL}
-               target='_blank'>Notion授权{actionName}</a>
+            {
+                !isSignup &&
+                <>
+                    <a className={'btn btn-sm block flex my-2'} href={GITHUB_SIGN_URL} target='_blank'>
+                        <div>
+                            GitHub授权{actionName}
+                        </div>
+                    </a>
+                    <a className={'btn btn-sm btn-primary block flex my-2'} href={NOTION_SIGN_URL}
+                       target='_blank'>Notion授权{actionName}</a>
+                </>
+            }
 
             <div className={'mt-10'}>
                 {
