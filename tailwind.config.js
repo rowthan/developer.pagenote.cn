@@ -46,7 +46,7 @@ module.exports = {
                 basic: '480px',
             },
             height:{
-                basic: '600px',
+                basic: '550px',
             },
             minWidth:{
                 basic: '480px',
@@ -58,7 +58,7 @@ module.exports = {
                 '1/2': '50%',
                 '3/4': '75%',
                 'full': '100%',
-                "screen": '70vh',
+                "screen": '100vh',
             },
             fontFamily: {
                 sans: ['Inter', ...fontFamily.sans]

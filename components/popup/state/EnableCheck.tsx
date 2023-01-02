@@ -110,7 +110,7 @@ function Waring(props: { tab?: Tab }) {
                                     isBrowserUrl ?
                                         <div className={'text-red-500'}>
                                             浏览器插件无法在此类页面上使用：
-                                            <div>
+                                            <div className={'text-xs break-all'}>
                                                 {tab?.url}
                                             </div>
                                         </div> :
