@@ -38,7 +38,7 @@ export default function BasicLayout(props: PropsWithChildren<{nav?:boolean, foot
     };
 
     return(
-        <div className={''}>
+        <div className={'min-h-basic min-w-basic'}>
             <Head>
                 <title>{meta.title}</title>
                 <meta name="robots" content="follow, index" />

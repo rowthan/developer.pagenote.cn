@@ -41,7 +41,11 @@ module.exports = {
         ],
     },
     theme: {
+        minWidth:{
+          basic: '30rem',
+        },
         minHeight: {
+            basic: '36rem',
             '0': '0',
             '1/4': '25%',
             '1/2': '50%',
