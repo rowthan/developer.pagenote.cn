@@ -2,20 +2,20 @@ const {spacing, fontFamily} = require('tailwindcss/defaultTheme');
 
 // https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L7
 const themeColors = {
+    "primary": "#35A8F3",
 
-    "primary": "#44ADEE",
+    "secondary": "#67C0F9",
 
-    "secondary": "#bfdbfe",
+    "accent": "#FFA12B",
 
-    "accent": "#3b82f6",
-
-    "neutral": "#1A1A1A",
+    "neutral": "#3f3f3f",
+    "neutral-content":"#fff",
 
     "base-100": "#FFFFFF",
 
-    "info": "#4AA8BF",
+    "info": "#8ECFF9",
 
-    "success": "#4fad88",
+    "success": "#45B881",
 
     "warning": "#facc15",
 
@@ -24,7 +24,9 @@ const themeColors = {
 
 const darkThemeColors = {
     ...themeColors,
-    "base-100": 'rgb(53, 54, 58)'
+    "base-100": 'rgb(53, 54, 58)',
+    "neutral": "#e7e7e7",
+    "neutral-content":"#1A1A1A"
 }
 
 module.exports = {
@@ -48,22 +50,6 @@ module.exports = {
             "screen": '70vh',
         },
         extend: {
-            colors: {
-                ...themeColors,
-                'blue-opaque': 'rgb(13 42 148 / 18%)',
-                gray: {
-                    0: '#fff',
-                    100: '#fafafa',
-                    200: '#eaeaea',
-                    300: '#999999',
-                    400: '#888888',
-                    500: '#666666',
-                    600: '#444444',
-                    700: '#333333',
-                    800: '#222222',
-                    900: '#111111'
-                }
-            },
             fontFamily: {
                 sans: ['Inter', ...fontFamily.sans]
             },
