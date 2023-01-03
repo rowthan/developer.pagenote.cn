@@ -159,7 +159,7 @@ export default function BackupList() {
                 时间机器：备份、还原数据
             </h2>
             <div className='opacity-80'>
-                备份数据存储在当前浏览器下（浏览器卸载时清空），插件卸载也不会丢失。重新安装时，可用于还原。
+                {/*备份数据存储在当前浏览器下（浏览器卸载时清空），插件卸载也不会丢失。重新安装时，可用于还原。*/}
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-compact w-full min-h-100">
