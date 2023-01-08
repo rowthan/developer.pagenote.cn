@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
-  assetPrefix: process.env.prefix || '',
+  assetPrefix: process.env.prefix || undefined,
   env: {
     prefix: process.env.prefix || '',
   },
