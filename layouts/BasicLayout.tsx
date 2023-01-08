@@ -55,7 +55,7 @@ export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, fo
                     <Breadcrumbs/>
                 </nav>
             }
-            <main className='mx-auto relative'>
+            <main className='mx-auto relative min-h-fill'>
                 {children}
             </main>
 

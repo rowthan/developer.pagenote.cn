@@ -2,13 +2,14 @@ const {spacing, fontFamily} = require('tailwindcss/defaultTheme');
 
 // https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L7
 const themeColors = {
-    "primary": "#35A8F3",
+    "primary": "#4299e1",
 
-    "secondary": "#67C0F9",
+    "secondary": "#63b3ed",
 
     "accent": "#FFA12B",
 
     "neutral": "#3f3f3f",
+
     "neutral-content":"#fff",
 
     "base-100": "#FFFFFF",
@@ -59,6 +60,7 @@ module.exports = {
                 '3/4': '75%',
                 'full': '100%',
                 "screen": '100vh',
+                "fill": "calc(100vh - 60px)"
             },
             fontFamily: {
                 sans: ['Inter', ...fontFamily.sans]
