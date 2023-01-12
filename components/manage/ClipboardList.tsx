@@ -64,6 +64,30 @@ export default function ClipboardList() {
     return(
         <div>
             <div className='mx-auto p-3'>
+                {
+                    list.map(function (item) {
+                        return(
+                            <div  key={item.id} className="chat chat-start">
+                                <div className="chat-image avatar">
+                                    <div className="w-10 rounded-full">
+                                        <img src={item.icon} />
+                                    </div>
+                                </div>
+                                <div className="chat-header">
+                                        <span className='mr-2'>
+                                            <a href={item.from} target='_blank'>{item.domain}</a>
+                                        </span>
+                                    <time className="text-xs opacity-50"> {dayjs(item.createAt).format(('YYYY-MM-DD HH:mm:ss'))}</time>
+                                </div>
+                                <div onClick={()=>{item.text && copyItem(item.text)}} className="break-all chat-bubble chat-bubble-accent text-sm">{item.text}</div>
+                                <div className="chat-footer opacity-50 mt-1">
+                                    <button className='btn btn-xs btn-outline' onClick={()=>removeItem(item.id || '')}>删除</button>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+
                 <div className="alert shadow-lg">
                     <div>
                         <TipSvg width={32} height={32} />
@@ -89,29 +113,6 @@ export default function ClipboardList() {
                         }
                     </div>
                 </div>
-                {
-                    list.map(function (item) {
-                        return(
-                            <div  key={item.id} className="chat chat-start">
-                                <div className="chat-image avatar">
-                                    <div className="w-10 rounded-full">
-                                        <img src={item.icon} />
-                                    </div>
-                                </div>
-                                <div className="chat-header">
-                                        <span className='mr-2'>
-                                            <a href={item.from} target='_blank'>{item.domain}</a>
-                                        </span>
-                                    <time className="text-xs opacity-50"> {dayjs(item.createAt).format(('YYYY-MM-DD HH:mm:ss'))}</time>
-                                </div>
-                                <div onClick={()=>{item.text && copyItem(item.text)}} className="break-all chat-bubble chat-bubble-accent text-sm">{item.text}</div>
-                                <div className="chat-footer opacity-50 mt-1">
-                                    <button className='btn btn-xs btn-outline' onClick={()=>removeItem(item.id || '')}>删除</button>
-                                </div>
-                            </div>
-                        )
-                    })
-                }
             </div>
         </div>
     )
