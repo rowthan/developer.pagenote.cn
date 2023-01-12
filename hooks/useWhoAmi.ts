@@ -5,21 +5,24 @@ import WhoAmI = user.WhoAmI;
 
 
 export default function useWhoAmi():[WhoAmI|undefined,boolean] {
+    // @ts-ignore todo
     const {data,isLoading,mutate} = useSWR<WhoAmI>('/whoAmI',fetchInfo,{
         fallbackData: {
+            origin: "",
+            extensionId: "",
             version: '',
             browser: "",
             browserPlatform: "",
             browserVersion: "",
             did: "",
-            extensionId: "",
+
             isCN: false,
             isMac: false,
             isTest: false,
             language: "",
             mainVersion: "",
             name: "-",
-            origin: "",
+
             platform: "",
             short_name: "",
             supportSDK: [],

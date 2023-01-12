@@ -15,7 +15,7 @@ export default function useCurrentTab(tabId?: number):{tab: Tab | undefined, win
             return extApi.developer.chrome({
                 type: 'get',
                 namespace: 'tabs',
-                params: tabId
+                args: [tabId]
             }).then(function (res) {
                 return res.data
             })
