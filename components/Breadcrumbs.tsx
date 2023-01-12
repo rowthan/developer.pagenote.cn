@@ -125,7 +125,6 @@ function RenderLink(props: { route: RouteInfo }) {
 function RenderRouteGroup(props: { routeArray: RouteInfo[], level: number }) {
     const {asPath} = useRouter();
     const {level} = props;
-    console.log('---', asPath)
     const {routeArray = []} = props
     const currentPathArray = asPath.split('/');
 

@@ -13,12 +13,14 @@ enum SubmitState {
     success = 2
 }
 
-export default function () {
-    const [formData, setFormData] = useState<{ title?: string, description?: string, feedbackType: number, uploadStat: boolean }>({
+
+export default function (props:{onSubmit:()=>void}) {
+    const [formData, setFormData] = useState<{ title?: string, description?: string, feedbackType: number, uploadStat: boolean,uploadLog: boolean }>({
         feedbackType: 1,
         title: '',
         description: '',
-        uploadStat: false,
+        uploadStat: true,
+        uploadLog: false,
     })
     const [dataStat] = useDataStat();
     const [whoAmI] = useWhoAmi();
@@ -78,6 +80,8 @@ export default function () {
             console.log(res, '--提交结果')
 
             setSubmitState(SubmitState.un_submit)
+
+            props.onSubmit();
         })
     }
 
@@ -157,7 +161,7 @@ export default function () {
                 <div className="form-control">
                     <label className="label cursor-pointer">
                         <span className="label-text">
-                            上传本插件、设置信息（不含笔记数据）
+                            上传本插件基础信息（<span className={'text-green-500'}>不含笔记数据</span>）
                         </span>
                         <input type="checkbox"
                                onChange={(e) => {
@@ -166,6 +170,18 @@ export default function () {
                                checked={formData.uploadStat} className="checkbox"/>
                     </label>
                 </div>
+                {/*<div className="form-control">*/}
+                {/*    <label className="label cursor-pointer">*/}
+                {/*    <span className="label-text">*/}
+                {/*        上传插件运行日志，方便排查问题（<span className={'text-red-500'}>可能含有笔记数据</span>）*/}
+                {/*    </span>*/}
+                {/*        <input type="checkbox"*/}
+                {/*               onChange={(e) => {*/}
+                {/*                   changeValue({uploadLog: e.target.checked})*/}
+                {/*               }}*/}
+                {/*               checked={formData.uploadLog} className="checkbox"/>*/}
+                {/*    </label>*/}
+                {/*</div>*/}
 
                 <div className='flex justify-end my-2'>
                     <button disabled={!formData.description || submitState === SubmitState.submiting}

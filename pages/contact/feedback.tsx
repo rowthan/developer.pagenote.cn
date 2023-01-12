@@ -4,6 +4,8 @@ import ExtensionInfos from "components/ExtensionInfos";
 import Logs from "../../components/debug/Logs";
 import FeedbackForm from "../../components/contact/FeedbackForm";
 import FeedbackList from "../../components/contact/FeedbackList";
+import {developer} from "@pagenote/shared/lib/extApi";
+import LogLevel = developer.LogLevel;
 
 export default function () {
     const [showForm, setShowForm] = useState(false)
@@ -15,24 +17,15 @@ export default function () {
 
     return (
         <BasicLayout title={'反馈问题'} description={'联系开发者'}>
-            <div className="flex w-full">
-                <div className="flex-grow card bg-base-300 rounded-box min-w-4xl p-4">
+            <div className="flex w-full max-w-screen-xl	m-auto">
+                <div className="flex-grow card bg-base-300 rounded-box w-1/2 p-4">
                     <ExtensionInfos/>
-                    <Logs/>
+                    <div className={'h-basic'}>
+                        <Logs initPageSize={20} levels={[LogLevel.ERROR,LogLevel.WARN]}/>
+                    </div>
                 </div>
                 <div className="divider divider-horizontal"></div>
                 <div className="grid flex-grow card bg-base-300 rounded-box p-4">
-                    {
-                        showForm ? <FeedbackForm/> :
-                        <div className='flex align-center text-center justify-center items-center'>
-                            <div>
-                                <div className='text-sm text-gray-400'>
-                                    请根据左侧日志、提示了解当前插件运行状态，如仍无法解决请：
-                                </div>
-                                <button className='btn' onClick={()=>{setShowForm(true)}}>反馈问题</button>
-                            </div>
-                        </div>
-                    }
                     <FeedbackList />
                 </div>
             </div>
