@@ -117,7 +117,7 @@ export default function Trash() {
     }
 
     return (
-        <CheckVersion requireVersion={'0.23.8'}>
+        <CheckVersion requireVersion={'0.24.8'}>
             <BasicLayout title={'网页回收站'}>
                 <div className=''>
                     <Table list={list}

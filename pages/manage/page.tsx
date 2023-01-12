@@ -15,7 +15,7 @@ export default function Page() {
     const [list, setList] = useState<WebPage[]>([])
     const [pagination, setPagination] = useState<Pagination>({
         page: 0,
-        limit: 10,
+        pageSize: 10,
         total: 0,
     })
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -29,7 +29,7 @@ export default function Page() {
 
     useEffect(function () {
         loadPages()
-    }, [pagination.page, pagination.limit, keywords])
+    }, [pagination.page, pagination.pageSize, keywords])
 
     /**拉取页面数据*/
     function loadPages() {
@@ -50,7 +50,7 @@ export default function Page() {
                 deleted: false,
                 $or: orFilter.length ? orFilter : undefined
             },
-            limit: pagination.limit,
+            pageSize: pagination.pageSize,
             page: pagination.page,
             sort: {
                 updateAt: -1
@@ -69,16 +69,16 @@ export default function Page() {
                 setPagination({
                     page: res.data.page || 0,
                     total: res.data.total || 0,
-                    limit: res.data.limit || 10,
+                    pageSize: res.data.pageSize || 10,
                 })
             }
         })
     }
 
     /**分页器修改*/
-    function changePagination(page: number, limit: number) {
+    function changePagination(page: number, pageSize: number) {
         setPagination({
-            limit: limit,
+            pageSize: pageSize,
             page: page,
             total: pagination.total
         })
@@ -115,7 +115,7 @@ export default function Page() {
 
     return (
         <BasicLayout>
-            <CheckVersion requireVersion={'0.24.1.0'}>
+            <CheckVersion requireVersion={'0.24.8'}>
                 <div className='mx-auto'>
                     <div className='my-4 input-group'>
                         <input value={keywords} onChange={(e) => {

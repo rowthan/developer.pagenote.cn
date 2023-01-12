@@ -74,7 +74,6 @@ export default function Light() {
             },
             pageSize: pagination.pageSize,
             page: pagination.page,
-            limit: pagination.pageSize,
             sort: {
                 updateAt: -1
             },
@@ -99,10 +98,10 @@ export default function Light() {
     }
 
     /**分页器修改*/
-    function changePagination(page: number, limit: number) {
+    function changePagination(page: number, pageSize: number) {
         setPagination({
             ...pagination,
-            limit: limit,
+            pageSize: pageSize,
             page: page,
         })
     }
@@ -122,7 +121,7 @@ export default function Light() {
 
     return (
         <BasicLayout>
-            <CheckVersion requireVersion={'0.24.5'}>
+            <CheckVersion requireVersion={'0.24.8'}>
                 <div className='mx-auto'>
                     <div className='my-4  sticky top-0 z-40'>
                         <div className='input-group'>

@@ -10,7 +10,7 @@ interface Props<T> {
     footerTR?: ReactElement,
     footerTD?: ReactElement,
     pagination: Pagination
-    onPaginationChange: (page: number, size: number) => void
+    onPaginationChange: (page: number, pageSize: number) => void
     selectedIds: Set<string>,
     onSelectIds: (newSelected: Set<string>) => void,
     primaryKey: string
@@ -31,13 +31,13 @@ export default function Table<T>(props: Props<any>) {
         footerTR,
         footerTD,
         headLabels = [],
-        pagination = {total: 0, limit: 10, page: 0},
+        pagination = {total: 0, pageSize: 10, page: 0},
         onPaginationChange,
         disableSelect = false,
         pageSteps = [10,100,1000]
     } = props;
-    const {total = 0, limit = 10, page = 0} = pagination;
-    const pages = Math.fround(total / limit)
+    const {total = 0, pageSize = 10, page = 0} = pagination;
+    const pages = Math.fround(total / pageSize)
 
     const [allChecked, setAllChecked] = useState(false)
     const allCheckRef = useRef<HTMLInputElement>(null);
@@ -84,6 +84,7 @@ export default function Table<T>(props: Props<any>) {
         }
     }
 
+    const colspan = headLabels.length - 1 + (disableSelect ? 0 : 1)
     return (
         <table className="table table-compact w-full min-h-100 mx-auto">
             <thead>
@@ -135,21 +136,21 @@ export default function Table<T>(props: Props<any>) {
             </tbody>
             <tfoot className='sticky bottom-0'>
             <tr>
-                <th colSpan={headLabels.length}>
+                <th colSpan={colspan}>
                     <div className=' btn-group flex  items-center'>
                         <div className="btn-group">
                             <button className="btn btn-sm" disabled={page === 0} onClick={() => {
-                                onPaginationChange(page - 1, limit)
+                                onPaginationChange(page - 1, pageSize)
                             }}>«
                             </button>
                             {/* TODO 这里改为跳页 */}
                             <button className="btn btn-sm">{page + 1}</button>
                             <button className="btn btn-sm" disabled={page >= pages - 1} onClick={() => {
-                                onPaginationChange(page + 1, limit)
+                                onPaginationChange(page + 1, pageSize)
                             }}>»
                             </button>
                         </div>
-                        <select value={limit} onChange={(e) => {
+                        <select value={pageSize} onChange={(e) => {
                             onPaginationChange(page, Number(e.target.value))
                         }} className="ml-2 select select-bordered select-sm">
                             {
