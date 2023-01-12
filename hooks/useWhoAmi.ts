@@ -5,7 +5,7 @@ import WhoAmI = user.WhoAmI;
 
 
 export default function useWhoAmi():[WhoAmI|undefined,boolean] {
-    const {data,isLoading} = useSWR<WhoAmI>('/whoAmI',fetchInfo,{
+    const {data,isLoading,mutate} = useSWR<WhoAmI>('/whoAmI',fetchInfo,{
         fallbackData: {
             version: '',
             browser: "",
@@ -30,6 +30,11 @@ export default function useWhoAmi():[WhoAmI|undefined,boolean] {
         return extApi.user.getWhoAmI(undefined,{
             timeout: 3000,
         }).then(function (res) {
+            if(!res.data){
+                setTimeout(function () {
+                    mutate()
+                },3000)
+            }
             return res.data || null
         })
     }
