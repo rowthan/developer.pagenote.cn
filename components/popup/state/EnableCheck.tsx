@@ -1,15 +1,15 @@
-import {NavLink} from "react-router-dom";
 import extApi from "@pagenote/shared/lib/generateApi";
 import useCurrentTab from "hooks/useCurrentTab";
 import {checkIsBrowserBasicUrl, checkIsLocalFile} from "utils/check";
 import {enablePagenote, refreshTab} from "utils/popup";
 import WarnSvg from 'assets/svg/warn.svg'
-import useTabPagenoteState from "../../../hooks/useTabPagenoteState";
-import CaptureSvg from 'assets/svg/jietu.svg'
+import useTabPagenoteState from "hooks/useTabPagenoteState";
 import UnlockCopySvg from 'assets/svg/wenjianfuzhi.svg'
+import {toast} from "utils/toast";
+import useSettings from "hooks/useSettings";
+import {useEffect} from "react";
 import Tab = chrome.tabs.Tab;
-import IconButton from "../../IconButton";
-import {toast} from "../../../utils/toast";
+
 
 
 export default function EnableCheck() {
@@ -17,15 +17,15 @@ export default function EnableCheck() {
     const {tab} = useCurrentTab();
 
     function enableInject() {
+        if (tabState?.active) {
+            return
+        }
         enablePagenote(tab?.id).then(function () {
             setTimeout(function () {
                 mutate();
             }, 500)
             toast('已成功开启')
         })
-    }
-
-    function capture() {
     }
 
 
@@ -40,6 +40,16 @@ export default function EnableCheck() {
         })
     }
 
+    function capture() {
+
+    }
+
+    useEffect(function () {
+        setTimeout(function () {
+            mutate()
+        }, 1000)
+    }, [])
+
 
     if (isLoading) {
         return null;
@@ -50,33 +60,36 @@ export default function EnableCheck() {
     }
 
     return (
-        <div className={'my-48'}>
+        <div className={'mt-48'}>
             <div className={'relative text-center'}>
-                <button disabled={tabState?.active} onClick={enableInject}
-                        className={`z-50 relative btn btn-xl transition duration-500 ease-in-out`}>
-                    <img src={tab?.favIconUrl} width={24} height={24} alt=""/>
+                <button onClick={enableInject}
+                        className={`w-56 relative btn btn-xl ${tabState.active ? 'btn-primary' : "btn-neutral"} text-neutral-content rounded transition duration-500 ease-in-out`}>
+                    <img className={'bg-white rounded-lg'} src={tab?.favIconUrl||'https://pagenote.cn/favicon.ico'} width={24} height={24} alt=""/>
                     <span className={'ml-2'}>
-                        {tabState?.active ? '已经启动，开始标记吧' : '点击启动'}
+                        {tabState?.active ? '已启动，可以开始标记啦' : '点击启动后，开始标记'}
+                        {/*  TODO 增加快捷键*/}
                     </span>
                 </button>
-
+            </div>
+            <div className={'w-56 m-auto mt-14'}>
+                <h3 className={'text-sm text-center'}>附加功能</h3>
                 <div
-                    className={`transform-gpu -translate-y-full transition duration-500 ease-in-out ${tabState?.active ? '-translate-y-0' : ''}`}>
-                    <span className={'tooltip tooltip-left'}
-                          data-tip={tabState.enabledCopy ? '已解除复制限制' : '解除网页复制限制'}>
-                        <IconButton className={'m-1'} onClick={enableCopy} disabled={tabState?.enabledCopy}>
-                            <UnlockCopySvg/>
-                        </IconButton>
-                    </span>
-
-                    {/*<div className={'tooltip tooltip-right'} data-tip={'截图'}>*/}
-                    {/*    <IconButton onClick={capture}>*/}
-                    {/*        <CaptureSvg/>*/}
-                    {/*    </IconButton>*/}
-                    {/*</div>*/}
+                    className={`transform-gpu transition duration-500 ease-in-out flex justify-center`}>
+                    {/*<button onClick={enableCopy} className={'btn btn-sm btn-outline mx-1'}>*/}
+                    {/*    <CaptureSvg/>截图*/}
+                    {/*</button>*/}
+                    <button onClick={enableCopy} disabled={tabState.enabledCopy} className={'btn btn-sm btn-outline mx-1'}>
+                        <UnlockCopySvg/> {tabState.enabledCopy ? '已经解除复制限制' : '解除网页复制限制'}
+                    </button>
                 </div>
             </div>
-            {/*<SettingTip/>*/}
+
+
+            <div className={'absolute left-0 bottom-0 w-full'}>
+                <div className={'flex justify-end'}>
+                    <SettingTip/>
+                </div>
+            </div>
         </div>
     )
 }
@@ -101,7 +114,7 @@ function Waring(props: { tab?: Tab }) {
                                 请授权
                                 <a href="https://page-note.notion.site/ce1300d2471b4391946bd1a7c281758f#1a1a1746bae74d6b8f21f9d8b5a77434"
                                    className={'link'}
-                                   target={'_blank'}>
+                                   target={'_blank'} rel="noreferrer">
                                     「允许访问文件网址」
                                 </a>后刷新重新尝试。
                             </div> :
@@ -128,17 +141,44 @@ function Waring(props: { tab?: Tab }) {
     )
 }
 
+const ENABLE_TYPES: { label: string, value: 'when-needed' | 'always', tip: string }[] = [{
+    label: '根据需要启动',
+    value: 'when-needed',
+    tip: '访问未标记过的网页，你需要手动点击启动后，才可以开始标记'
+}, {
+    label: '默认启动',
+    value: 'always',
+    tip: '访问网站都自动启动。无需手动处理，即可标记'
+}]
+
 function SettingTip() {
+    const {data, loading, update} = useSettings();
+    if (loading) {
+        return null;
+    }
+    const type = ENABLE_TYPES.find(function (item) {
+        return item.value === data.enableType
+    }) || ENABLE_TYPES[1]
+
     return (
-        <div className={'p-2 text-xs text-gray-400 text-center'}>
-            已设置
-            <span className={'tooltip tooltip-top'}
-                  data-tip={'在打开的网页内默认不启动，需要「点击启动」PAGENOTE，才会开始工作'}>
-                <NavLink to="/setting"
-                         className={'badge badge-primary badge-outline badge-xs'}>
-                    根据需要
-                </NavLink>
-            </span>启用
+        <div className={'mt-4 p-2 text-xs text-gray-400 text-center'}>
+            <span className={'tooltip tooltip-top'} data-tip={type.tip}>启动方式: </span>
+            <div className="dropdown dropdown-top dropdown-end">
+                <label tabIndex={0} className={'btn btn-xs btn-ghost btn-outline'}>
+                    {type.label}
+                </label>
+                <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {
+                        ENABLE_TYPES.map(function (item) {
+                            return <li key={item.value} onClick={() => {
+                                update({enableType: item.value})
+                            }}>
+                                <a className={item.value === data.enableType ? 'bg-primary text-gray-800' : ''}>{item.label}</a>
+                            </li>
+                        })
+                    }
+                </ul>
+            </div>
         </div>
     )
 }
