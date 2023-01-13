@@ -5,6 +5,12 @@ import React, {ReactElement} from "react";
 
 export default function CheckVersion({requireVersion,children,label}:{requireVersion: string,children:ReactElement,label?: string}) {
     const [whoAmi,isLoading] = useWhoAmi();
+
+    // 插件模式下，不做检测，直接返回 true
+    if(window.location.protocol.indexOf('http') === -1){
+        return children
+    }
+
     if(isLoading){
         return null
     }
