@@ -13,21 +13,21 @@ import useWhoAmi from "../hooks/useWhoAmi";
 const CACHE_SEARCH_KEY = 'popup_search'
 
 export default function PopupPage() {
-    const [keyword,setKeyword] = useState<string>('');
-    const [whoAmi,loading] = useWhoAmi();
+    const [keyword, setKeyword] = useState<string>('');
+    const [whoAmi, loading] = useWhoAmi();
 
     useEffect(function () {
-       setKeyword(localStorage.getItem(CACHE_SEARCH_KEY) || '');
-    },[])
+        setKeyword(localStorage.getItem(CACHE_SEARCH_KEY) || '');
+    }, [])
 
     useEffect(function () {
-        if(keyword){
+        if (keyword) {
             localStorage.setItem(CACHE_SEARCH_KEY, keyword)
         }
-    },[keyword])
+    }, [keyword])
 
     useEffect(function () {
-        if(whoAmi?.version){
+        if (whoAmi?.version) {
             extApi.commonAction.setPersistentValue({
                 key: 'popup_version',
                 value: whoAmi?.version,
@@ -41,23 +41,23 @@ export default function PopupPage() {
     }
     return (
         <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
-            <CheckVersion requireVersion={'0.24.7'}>
-                <div className={'w-basic m-auto border border-black shadow rounded-lg overflow-hidden'}>
+            <div className={'w-basic m-auto border border-black shadow rounded-lg overflow-hidden'}>
+                <CheckVersion requireVersion={'0.24.7'}>
                     <Router>
-                        <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-                        <div className={'w-basic h-basic overflow-hidden overflow-y-auto '}>
+                        <NavTabs keyword={keyword} onChangeKeyword={setKeyword}/>
+                        <div className={'w-basic h-basic relative overflow-hidden overflow-y-auto '}>
                             <Routes>
                                 <Route index element={<CurrentTab/>}/>
                                 <Route path={'/tab'} element={<CurrentTab/>}/>
                                 <Route path="/clipboard" element={<ClipboardList/>}/>
-                                <Route path="/setting" element={<Setting />} />
+                                <Route path="/setting" element={<Setting/>}/>
                                 <Route path="/search" element={<Search keyword={keyword}/>}/>
                                 <Route path="*" element={<CurrentTab/>}/>
                             </Routes>
                         </div>
                     </Router>
-                </div>
-            </CheckVersion>
+                </CheckVersion>
+            </div>
         </BasicLayout>
     )
 }
