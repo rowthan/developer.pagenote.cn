@@ -50,8 +50,8 @@ export default function PopupPage() {
                                 <Route index element={<CurrentTab/>}/>
                                 <Route path={'/tab'} element={<CurrentTab/>}/>
                                 <Route path="/clipboard" element={<ClipboardList/>}/>
-                                <Route path="/setting" element={<Setting/>}/>
                                 <Route path="/search" element={<Search keyword={keyword}/>}/>
+                                <Route path="/setting/*" element={<Setting/>}/>
                                 <Route path="*" element={<CurrentTab/>}/>
                             </Routes>
                         </div>

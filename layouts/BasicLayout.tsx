@@ -59,7 +59,7 @@ export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, fo
                 {children}
             </main>
 
-            <aside className={'fixed right-4 bottom-0 pb-2'}>
+            <aside className={'fixed right-4 bottom-6 pb-2'}>
                 <div className="dropdown dropdown-top dropdown-end">
                     <label tabIndex={0}>
                         <button className={'rounded-full bg-neutral text-neutral-content'}>

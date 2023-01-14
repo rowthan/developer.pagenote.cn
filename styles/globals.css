@@ -4,4 +4,6 @@
 
 html,body{
     font-size: 16px;
+    min-height: 500px;
+    min-width: 480px;
 }

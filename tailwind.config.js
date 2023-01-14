@@ -10,7 +10,7 @@ const themeColors = {
 
     "neutral": "#3f3f3f",
 
-    "neutral-content":"#fff",
+    "neutral-content":"#f3f3f3",
 
     "base-100": "#FFFFFF",
 
@@ -27,7 +27,7 @@ const darkThemeColors = {
     ...themeColors,
     "base-100": 'rgb(53, 54, 58)',
     "neutral": "#e7e7e7",
-    "neutral-content":"#1A1A1A"
+    "neutral-content":"rgb(95,99,104)"
 }
 
 module.exports = {

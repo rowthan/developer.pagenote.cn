@@ -5,7 +5,7 @@ export function refreshTab(tab?:Tab) {
     function callback() {
         setTimeout(function () {
             window.location.reload();
-        },600)
+        },1000)
     }
     if (tab?.id) {
         if(chrome?.tabs){
