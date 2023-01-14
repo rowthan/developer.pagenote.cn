@@ -1,13 +1,18 @@
 import {isLow} from "@pagenote/shared/lib/utils/compare";
 import useWhoAmi from "../../hooks/useWhoAmi";
-import React, {ReactElement} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 
 
 export default function CheckVersion({requireVersion,children,label}:{requireVersion: string,children:ReactElement,label?: string}) {
     const [whoAmi,isLoading] = useWhoAmi();
+    const [valid,setValid] = useState(false)
+
+    useEffect(function () {
+        setValid(window.location.protocol.indexOf('http') === -1)
+    },[])
 
     // 插件模式下，不做检测，直接返回 true
-    if(window.location.protocol.indexOf('http') === -1){
+    if(valid){
         return children
     }
 
