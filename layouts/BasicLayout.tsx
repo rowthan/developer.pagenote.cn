@@ -18,7 +18,7 @@ export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, fo
 //     link: '/help-center'
 // },
         {
-            label: '提交反馈',
+            label: '反馈',
             link: 'https://developer.pagenote.cn/feedback',
             icon: <HelpSvg className={'fill-current inline'}/>
         }

@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import ExtensionInfos from "components/ExtensionInfos";
 import Logs from "../../components/debug/Logs";
-import FeedbackForm from "../../components/contact/FeedbackForm";
 import FeedbackList from "../../components/contact/FeedbackList";
 import {developer} from "@pagenote/shared/lib/extApi";
 import LogLevel = developer.LogLevel;

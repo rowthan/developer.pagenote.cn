@@ -88,3 +88,19 @@ export function enablePagenote(tabId?: number) {
         }
     })
 }
+
+export function captureVisibleAsImage() {
+    chrome.tabs.captureVisibleTab({format:'jpeg',quality:40}, function(screenshotUrl) {
+        extApi.developer.requestFront({
+            // @ts-ignore
+            header: {
+
+            },
+            params: {
+                imageStr: screenshotUrl,
+                isAuto: false,
+            },
+            type: 'onCaptureView'
+        })
+    });
+}

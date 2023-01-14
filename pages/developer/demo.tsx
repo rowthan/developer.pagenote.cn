@@ -37,7 +37,7 @@ export default function () {
                     </code>
                 </pre>
                 <ul>
-                    <li>平台： {whoAmI?.platform}</li>
+                    <li>平台： {whoAmI?.extensionPlatform}</li>
                     <li>版本： {whoAmI?.version}</li>
                 </ul>
             </div>
