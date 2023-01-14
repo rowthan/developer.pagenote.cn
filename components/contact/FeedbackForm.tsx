@@ -24,7 +24,7 @@ export default function (props:{onSubmit:()=>void}) {
     })
     const [dataStat] = useDataStat();
     const [whoAmI] = useWhoAmi();
-    const [settings] = useSettings();
+    const {data:settings} = useSettings();
 
 
     const [submitState, setSubmitState] = useState<SubmitState>(SubmitState.un_submit);
