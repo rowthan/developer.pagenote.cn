@@ -32,11 +32,11 @@ export default function WhoAmIBoard() {
                     </tr>
                     <tr>
                         <th>插件平台</th>
-                        <td>{whoAmI?.platform}</td>
+                        <td>{whoAmI?.extensionPlatform}</td>
                     </tr>
                     <tr>
                         <th>浏览器</th>
-                        <td>{whoAmI?.browser}</td>
+                        <td>{whoAmI?.browserType}</td>
                     </tr>
                     <tr>
                         <th>浏览器版本</th>

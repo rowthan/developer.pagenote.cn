@@ -4,7 +4,7 @@ export function checkIsBrowserBasicUrl(url?: string) {
     if(!url){
         return false
     }
-    return /^(edge:|extension:|chrome:|about:)/.test(url || '')
+    return /^(edge:|extension:|chrome:|about:|chrome-extension:)/.test(url || '')
 }
 
 export function checkIsLocalFile(url?: string) {
