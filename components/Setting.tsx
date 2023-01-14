@@ -2,7 +2,7 @@ import useSettings from "../hooks/useSettings";
 import OutLink from "../assets/svg/outlink.svg";
 import TipInfo from "./TipInfo";
 import UserCard from "./account/UserCard";
-import DataBackup from "./popup/DataBackup";
+import DataBackup from "./backup/DataBackup";
 import SettingHome from "./setting/SettingHome";
 import {NavLink, Outlet, Route, Routes} from "react-router-dom";
 import BackSvg from 'assets/svg/back.svg'
