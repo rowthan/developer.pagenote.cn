@@ -111,7 +111,7 @@ export default function DataBackup() {
                             </button>
                             <h3 className="font-bold text-lg">请确认你的备份文件</h3>
                             <div className="py-4">
-                                备份文件的数据将覆盖现有数据! 导入过程中，请勿关闭页面
+                                导入的数据将 <b className={'text-error'}>覆盖插件内现有数据</b>！请谨慎操作。
                                 <table className="table table-compact w-full">
                                     <thead>
                                     <tr>

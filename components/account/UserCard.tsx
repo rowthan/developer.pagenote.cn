@@ -58,7 +58,7 @@ export default function UserCard() {
                                     </div>
                                 </>:
                                 <div>
-                                    <a href="https://pagenote.cn/signin" className={'btn btn-ghost btn-sm'}>登录</a>
+                                    <a target={'_blank'} href="https://pagenote.cn/signin" className={'btn btn-ghost btn-sm'}>登录</a>
                                 </div>
                         }
                     </div>
