@@ -1,13 +1,18 @@
-import {basePath} from "../../const/env";
 
-const GITHUB_SIGN_URL = 'https://pagenote.cn/signin?auth=github'
-const NOTION_SIGN_URL = 'https://pagenote.cn/signin?auth=notion'
 
 const label = {
     'signin': '登录',
     'signup': "注册",
     "bind": "绑定"
 }
+
+const AUTH_LIST = [{
+    label:"GitHub授权",
+    link: 'https://pagenote.cn/signin?auth=github'
+},{
+    label:"Notion授权",
+    link: 'https://pagenote.cn/signin?auth=notion'
+}]
 export default function AuthBottoms(props: { type: 'signin' | 'signup' | 'bind' }) {
     const {type} = props;
     const actionName = label[type]
@@ -18,30 +23,16 @@ export default function AuthBottoms(props: { type: 'signin' | 'signup' | 'bind' 
             {
                 !isSignup &&
                 <>
-                    <a className={'btn btn-sm block flex my-2'} href={GITHUB_SIGN_URL} target='_blank'>
-                        <div>
-                            GitHub授权{actionName}
-                        </div>
-                    </a>
-                    <a className={'btn btn-sm btn-primary block flex my-2'} href={NOTION_SIGN_URL}
-                       target='_blank'>Notion授权{actionName}</a>
+                    {
+                        AUTH_LIST.map((value, index, array)=>(
+                            <button
+                                className="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300">
+                                {value.label}
+                            </button>
+                        ))
+                    }
                 </>
             }
-
-            <div className={'mt-10'}>
-                {
-                    isSignin &&
-                        <a className={'btn btn-sm btn-secondary block flex my-2'}
-                           target={'_blank'}
-                           href={`https://pagenote.cn/signup.html`}>还没账号，前往注册</a>
-                }
-                {
-                    isSignup &&
-                    <a className={'btn btn-sm btn-secondary block flex my-2'}
-                       target={'_blank'}
-                       href={`https://pagenote.cn/signin.html`}>已有账号，前往登录</a>
-                }
-            </div>
         </div>
     )
 }

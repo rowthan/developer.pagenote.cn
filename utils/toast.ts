@@ -4,7 +4,7 @@ export function toast(message: string, type: "success"|"info"|"error" = 'info', 
     const element = document.createElement('div');
     element.innerHTML = `
             <div class="toast toast-end">
-                <div class="alert alert-info alert-${type}">
+                <div class="alert alert-${type}">
                     <div>
                         <span>${message}</span>
                     </div>
