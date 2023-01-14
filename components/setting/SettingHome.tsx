@@ -5,6 +5,7 @@ import useWhoAmi from "../../hooks/useWhoAmi";
 import {user} from "@pagenote/shared/lib/extApi";
 import ExtensionPlatform = user.ExtensionPlatform;
 import {checkIsInPopup} from "../../utils/check";
+import extApi from "@pagenote/shared/lib/generateApi";
 
 
 export default function SettingHome() {
@@ -13,6 +14,14 @@ export default function SettingHome() {
     const {controlC, enableType} = setting;
 
     const isFirefox = whoAmI?.extensionPlatform === ExtensionPlatform.Firefox && checkIsInPopup()
+
+    function openDataCenter() {
+        window.open(`${whoAmI?.origin}/web/popup.html#/setting/data`)
+        // extApi.commonAction.openTab({
+        //     url: `${whoAmI?.origin}/web/popup.html#/setting/data`
+        // })
+        window.close()
+    }
     return (
         <div className={'shadow rounded-lg'}>
             <BasicSettingLine label={'自动启动'}
@@ -26,14 +35,13 @@ export default function SettingHome() {
                 <input type="checkbox" className="toggle toggle-info" checked={controlC} onChange={(e) => {
                     updateSetting({controlC: e.target.checked})
                 }}/>}/>
+            <BasicSettingLine label={'🖌画笔'} path={'/setting/light'}/>
             {
                 isFirefox ?
-                    <a target={'_blank'} href={`${whoAmI?.origin}/web/popup.html#/setting/data`}>
-                        <BasicSettingLine label={'🖌画笔'}/>
-                    </a> :
-                    <BasicSettingLine label={'🖌画笔'} path={'/setting/light'}/>
+                    <a onClick={openDataCenter}>
+                        <BasicSettingLine label={'📚数据管理'} path={'/setting/data'}/>
+                    </a> : <BasicSettingLine label={'📚数据中心'} path={'/setting/data'}/>
             }
-            <BasicSettingLine label={'📚数据中心'} path={'/setting/data'}/>
         </div>
     )
 }
