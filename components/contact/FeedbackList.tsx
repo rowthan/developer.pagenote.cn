@@ -95,6 +95,10 @@ export default function () {
                         </div>
                     }
                 </div>
+
+                <div className={'absolute right-2 bottom-2'}>
+                    <a className={'link link-primary text-sm'} href="/question">常见问题》</a>
+                </div>
             </div>
         </CheckVersion>
     )
