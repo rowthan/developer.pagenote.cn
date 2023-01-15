@@ -1,19 +1,27 @@
-import {useRef, useState} from "react"
+import {useEffect, useRef, useState} from "react"
 import BasicLayout from "../layouts/BasicLayout";
+import questions from 'assets/json/question.json'
+import { useRouter } from "next/router";
 
-const FaqsCard = (props: { question: { q: string, a: string } }) => {
-
+const FaqsCard = (props: { question: { q: string, a: string, id: string }, active: boolean }) => {
+    const {question,active} = props
     const answerElRef = useRef<HTMLDivElement>(null)
-    const [state, setState] = useState(false)
+    const [state, setState] = useState(active)
     const [answerH, setAnswerH] = useState('0px')
-    const {question} = props
 
     const handleOpenAnswer = () => {
+        setState(!state)
+    }
+
+    useEffect(function () {
+        setState(active)
+    },[active])
+
+    useEffect(function () {
         //@ts-ignore
         const answerElH = answerElRef.current?.childNodes[0]?.offsetHeight
-        setState(!state)
         setAnswerH(`${answerElH + 20}px`)
-    }
+    },[state])
 
     return (
         <div
@@ -22,12 +30,12 @@ const FaqsCard = (props: { question: { q: string, a: string } }) => {
             onClick={handleOpenAnswer}
         >
             <h4 className="cursor-pointer pb-5 flex items-center justify-between text-lg text-neutral font-medium">
-                {question.q}
+                <div dangerouslySetInnerHTML={{__html: question.q}}></div>
                 {
                     state ? (
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 ml-2" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"/>
                         </svg>
                     ) : (
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 ml-2" fill="none"
@@ -42,9 +50,9 @@ const FaqsCard = (props: { question: { q: string, a: string } }) => {
                 style={state ? {height: answerH} : {height: '0px'}}
             >
                 <div>
-                    <p className="text-neutral opacity-90">
-                        {question.a}
-                    </p>
+                    <div className="text-neutral opacity-90">
+                        <div dangerouslySetInnerHTML={{__html: question.a}}></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,18 +60,7 @@ const FaqsCard = (props: { question: { q: string, a: string } }) => {
 }
 
 export default () => {
-
-    const faqsList = [
-        {
-            q: "多设备数据如何同步？",
-            a: "当下 PAGENOTE 不存储用户的数据信息，所以无法通过官方服务器同步；目前仅支持手动导出或导入数据。"
-        },
-        {
-            q: "VIP有优惠活动吗？",
-            a: "目前暂时还没有规划；不用等，现在就是最优惠的时刻"
-        },
-    ]
-
+    const {query} = useRouter();
     return (
         <BasicLayout title={'常见问题'} nav={false}>
             <section className="leading-relaxed max-w-screen-xl pt-12 mx-auto px-4 lg:px-8">
@@ -77,8 +74,8 @@ export default () => {
                 </div>
                 <div className="mt-14 max-w-2xl mx-auto">
                     {
-                        faqsList.map((item, idx) => (
-                            <FaqsCard question={item}/>
+                        questions.map((item, idx) => (
+                            <div key={idx}><FaqsCard question={item} active={query.id === item.id}/></div>
                         ))
                     }
                 </div>

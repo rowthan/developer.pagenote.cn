@@ -12,6 +12,7 @@ const redirectMap: Record<string, string> = {
     '/page': '/manage/page',
     '/light': '/manage/light',
     '/manage/pages': '/manage/page',
+    '/questions': '/question',
 }
 
 export default function Custom404() {
