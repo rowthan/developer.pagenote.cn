@@ -1,6 +1,6 @@
-import CheckVersion from "../components/check/CheckVersion";
-import BasicLayout from "../layouts/BasicLayout";
-import BackupList from "../components/backup/BackupList";
+import CheckVersion from "components/check/CheckVersion";
+import BasicLayout from "layouts/BasicLayout";
+import BackupList from "components/backup/BackupList";
 
 
 export default function BackupPage() {
