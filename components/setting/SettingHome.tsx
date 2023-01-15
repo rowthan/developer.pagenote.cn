@@ -16,9 +16,9 @@ export default function SettingHome() {
     const isFirefox = whoAmI?.extensionPlatform === ExtensionPlatform.Firefox && checkIsInPopup()
 
     function openDataCenter() {
-        window.open(`${whoAmI?.origin}/web/popup.html#/setting/data`)
+        window.open(`${whoAmI?.origin}/web/ext/popup.html#/setting/data`)
         // extApi.commonAction.openTab({
-        //     url: `${whoAmI?.origin}/web/popup.html#/setting/data`
+        //     url: `${whoAmI?.origin}/web/ext/popup.html#/setting/data`
         // })
         window.close()
     }
