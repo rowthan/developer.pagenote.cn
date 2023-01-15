@@ -13,6 +13,7 @@ const redirectMap: Record<string, string> = {
     '/light': '/manage/light',
     '/manage/pages': '/manage/page',
     '/questions': '/question',
+    '/popup':"/ext/popup"
 }
 
 export default function Custom404() {

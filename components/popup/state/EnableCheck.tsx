@@ -5,16 +5,18 @@ import {enablePagenote, refreshTab} from "utils/popup";
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from "hooks/useTabPagenoteState";
 import UnlockCopySvg from 'assets/svg/wenjianfuzhi.svg'
+import CaptureSvg from 'assets/svg/jietu.svg'
 import {toast} from "utils/toast";
 import useSettings from "hooks/useSettings";
 import {useEffect} from "react";
+import useTabPagenoteData from "hooks/useTabPagenoteData";
 import Tab = chrome.tabs.Tab;
-
 
 
 export default function EnableCheck() {
     const [tabState, mutate, isLoading] = useTabPagenoteState()
     const {tab} = useCurrentTab();
+    const [webpage,refresh] = useTabPagenoteData();
 
     function enableInject() {
         if (tabState?.active) {
@@ -30,6 +32,9 @@ export default function EnableCheck() {
 
 
     function enableCopy() {
+        if (tabState?.enabledCopy) {
+            return
+        }
         extApi.commonAction.injectCodeToPage({
             scripts: ['/lib/enable_copy.js'],
             tabId: tab?.id,
@@ -41,7 +46,34 @@ export default function EnableCheck() {
     }
 
     function capture() {
+        if (!tabState?.active) {
+            toast('请在当前标签页启动后再截图')
+            return;
+        }
 
+        extApi.developer.chrome({
+            args: [{format: 'jpeg', quality: 40}],
+            namespace: "tabs",
+            type: "captureVisibleTab"
+        }).then(function (res) {
+            const data = res.data;
+            if (data) {
+                extApi.developer.requestFront({
+                    header: {
+                        targetTabId: tab?.id
+                    },
+                    params: {
+                        imageStr: data,
+                    },
+                    type: 'onCaptureView'
+                }).then(function (res) {
+                    console.log('更新结果', res)
+                    refresh()
+                })
+            } else {
+                toast('截图失败了。' + res.error)
+            }
+        })
     }
 
     useEffect(function () {
@@ -59,27 +91,37 @@ export default function EnableCheck() {
         return <Waring tab={tab}/>
     }
 
+    const snapshotLength = webpage?.plainData?.snapshots?.length || 0
     return (
         <div className={'mt-48'}>
             <div className={'relative text-center'}>
                 <button onClick={enableInject}
-                        className={`w-56 relative btn btn-xl ${tabState.active ? 'btn-primary' : "btn-neutral"} text-neutral-content rounded transition duration-500 ease-in-out`}>
-                    <img className={'bg-white rounded-lg'} src={tab?.favIconUrl||'https://pagenote.cn/favicon.ico'} width={24} height={24} alt=""/>
+                        className={`w-56 relative btn btn-xl ${tabState.active ? 'btn-primary text-white' : "btn-outline"} rounded transition duration-500 ease-in-out`}>
+                    <img className={'bg-white rounded-lg'} src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}
+                         width={24} height={24} alt=""/>
                     <span className={'ml-2'}>
-                        {tabState?.active ? '已启动，可以开始标记啦' : '点击启动后，开始标记'}
+                        {tabState?.active ? '可以开始标记啦' : '点击启动后开始标记'}
                         {/*  TODO 增加快捷键*/}
                     </span>
                 </button>
             </div>
-            <div className={'w-56 m-auto mt-14'}>
-                <h3 className={'text-sm text-center'}>附加功能</h3>
+            <div className={' m-auto mt-2'}>
                 <div
                     className={`transform-gpu transition duration-500 ease-in-out flex justify-center`}>
-                    {/*<button onClick={enableCopy} className={'btn btn-sm btn-outline mx-1'}>*/}
-                    {/*    <CaptureSvg/>截图*/}
-                    {/*</button>*/}
-                    <button onClick={enableCopy} disabled={tabState.enabledCopy} className={'btn btn-sm btn-outline mx-1'}>
-                        <UnlockCopySvg/> {tabState.enabledCopy ? '已经解除复制限制' : '解除网页复制限制'}
+                    <div className={'tooltip tooltip-bottom'}
+                         data-tip={`${snapshotLength ? `已截图` : "启动后可截图"}`}>
+                        <button disabled={!tabState?.active}
+                                onClick={() => {
+                                    capture()
+                                }}
+                                className={`relative btn btn-sm rounded mx-1 ${snapshotLength>0?"btn-primary text-white":"btn-outline "}`}>
+                            <CaptureSvg/>截图
+                        </button>
+                    </div>
+
+                    <button onClick={enableCopy}
+                            className={`btn btn-sm rounded  mx-1 w-36 ${tabState.enabledCopy ? "btn-primary text-white" : "btn-outline"}`}>
+                        <UnlockCopySvg/> {tabState.enabledCopy ? '已经解除限制' : '解除复制限制'}
                     </button>
                 </div>
             </div>
