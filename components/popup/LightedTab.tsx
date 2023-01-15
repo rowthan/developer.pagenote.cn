@@ -1,10 +1,11 @@
 import {enablePagenote, focus} from "../../utils/popup";
-import Tab = chrome.tabs.Tab;
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import {useEffect, useState} from "react";
 import {Step} from "@pagenote/shared/lib/@types/data";
-import useTabPagenoteState from "../../hooks/useTabPagenoteState";
-import {checkIsBrowserBasicUrl} from "../../utils/check"
+import useTabPagenoteState from "hooks/useTabPagenoteState";
+import {checkIsBrowserBasicUrl} from "utils/check"
+import Tab = chrome.tabs.Tab;
+
 
 export default function LightedTab(props: { tab: Tab, isCurrent: boolean }) {
     const {tab, isCurrent} = props;

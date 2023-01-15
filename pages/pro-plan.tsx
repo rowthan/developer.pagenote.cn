@@ -1,137 +1,81 @@
-import BasicLayout from "../layouts/BasicLayout";
+import PlanCard, {PlanInfo} from "../components/pro/PlanCard";
+import Tip from "../components/pro/Tip";
+import {useState} from "react";
+import useUserInfo from "../hooks/useUserInfo";
+import CloseSvg from 'assets/svg/close.svg'
 
-const TYPES = [{
-    label:  '',
-
+const plans: PlanInfo[] = [{
+    title: '免费/ Hobby',
+    description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。",
+    price: 0,
+    duration: '月',
+    bg: 'green',
+    role: 0,
+},{
+    title: '订阅VIP',
+    description:"可以按年或月支持。赞助金额可用于升级终身版 ",
+    price: 5,
+    duration: '月',
+    bg: 'blue',
+    role: 1,
+},{
+    title: '终身VIP',
+    description:"没有时限的VIP用户。",
+    price: 120,
+    duration: '终身',
+    bg: 'indigo',
+    role: 2,
 }]
+
+// 根据选择，提交 支付类型 金额
 export default function ProPlan() {
-    return (
-        <BasicLayout nav={false}>
-            <form className="w-full max-w-screen-md mx-auto">
-                <fieldset className="space-y-6">
-                    <div className="flex items-center justify-between py-4 border-b border-gray-300">
-                        <legend className="text-2xl text-neutral mr-4">选择赞助类型</legend>
+    const [userInfo] = useUserInfo();
+    const [plan,setPlan] = useState<PlanInfo|null>(null)
+
+    let current = 0;
+    if(userInfo){
+        // const pro = userInfo?.profile?.pro || 0
+        const pro = 1.5
+        if(pro >= 5){
+            current = 2
+        }else if(pro > 1){
+            current = 1
+        }
+    }
+
+    const open = plan !== null;
+    return(
+        <div>
+            <section className="flex flex-col justify-center antialiased bg-gray-100 text-gray-600 min-h-screen p-4">
+                <div className="h-full">
+                    <div className="max-w-5xl mx-auto">
+                        <h2 className="text-3xl text-gray-800 font-bold text-center mb-4">会员计划</h2>
+                        
+                        <div className="grid grid-cols-12 gap-6">
+                            {
+                                plans.map((item,index)=>(
+                                    <PlanCard key={index} info={item} current={current}  onClick={setPlan} />
+                                ))
+                            }
+                        </div>
+
+                        <div className="py-2">
+                            <ul>
+                                <li>VIP可优先使用部分功能，普通用户会滞后一段时间，限制会逐步放开。</li>
+                                <li>如果你是学生或老师，使用 <b className={'border-b-2'}>教育邮箱</b>注册后，也可解锁功能 1个月。</li>
+                                <li><a className={'link link-primary'} href="https://pagenote.cn/img/wechat.jpg" target={'_blank'}>关注微信公众号</a>，也可领取VIP。</li>
+                            </ul>
+                        </div>
                     </div>
-
-                    <div className="grid sm:grid-cols-4 gap-6">
-                        <label htmlFor="plan-hobby"
-                               className="relative flex flex-col bg-white p-5 rounded-lg shadow-md cursor-pointer">
-                                        <span className="font-semibold text-gray-500 leading-tight uppercase mb-3">Hobby</span>
-                                        <span className="font-bold text-gray-900">
-                                            <span className="text-4xl">1</span>
-                                            <span className="text-2xl uppercase">GB</span>
-                                          </span>
-                                                <span>
-                                <span className="text-xl font-bold text-gray-500">$</span>
-                                <span className="text-xl font-bold text-gray-900 -ml-1">5</span>
-                                <span className="text-xl font-semibold text-gray-500">/</span>
-                                <span className="text-lg font-semibold text-gray-500">mo</span>
-                              </span>
-                                                <input type="radio" name="plan" id="plan-hobby" value="hobby"
-                                                       className="absolute h-0 w-0 appearance-none"/>
-                                                <span aria-hidden="true"
-                                                      className="hidden absolute inset-0 border-2 border-green-500 bg-green-200 bg-opacity-10 rounded-lg">
-                                <span
-                                    className="absolute top-4 right-4 h-6 w-6 inline-flex items-center justify-center rounded-full bg-green-200">
-                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                       className="h-5 w-5 text-green-600">
-                                    <path fill-rule="evenodd"
-                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                          clip-rule="evenodd"/>
-                                  </svg>
-                                </span>
-                              </span>
-                        </label>
-
-
-
-                        <label htmlFor="plan-growth"
-                               className="relative flex flex-col bg-white p-5 rounded-lg shadow-md cursor-pointer">
-                            <span className="font-semibold text-gray-500 leading-tight uppercase mb-3">Growth</span>
-                            <span className="font-bold text-gray-900">
-            <span className="text-4xl">5</span>
-            <span className="text-2xl uppercase">GB</span>
-          </span>
-                            <span>
-            <span className="text-xl font-bold text-gray-500">$</span>
-            <span className="text-xl font-bold text-gray-900 -ml-1">10</span>
-            <span className="text-xl font-semibold text-gray-500">/</span>
-            <span className="text-lg font-semibold text-gray-500">mo</span>
-          </span>
-                            <input type="radio" name="plan" id="plan-growth" value="growth"
-                                   className="absolute h-0 w-0 appearance-none" checked/>
-                            <span aria-hidden="true"
-                                  className=" absolute inset-0 border-2 border-green-500 bg-green-200 bg-opacity-10 rounded-lg">
-            <span
-                className="absolute top-4 right-4 h-6 w-6 inline-flex items-center justify-center rounded-full bg-green-200">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                   className="h-5 w-5 text-green-600">
-                <path fill-rule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clip-rule="evenodd"/>
-              </svg>
-            </span>
-          </span>
-                        </label>
-                        <label htmlFor="plan-business"
-                               className="relative flex flex-col bg-white p-5 rounded-lg shadow-md cursor-pointer">
-                            <span className="font-semibold text-gray-500 leading-tight uppercase mb-3">Business</span>
-                            <span className="font-bold text-gray-900">
-            <span className="text-4xl">10</span>
-            <span className="text-2xl uppercase">GB</span>
-          </span>
-                            <span>
-            <span className="text-xl font-bold text-gray-500">$</span>
-            <span className="text-xl font-bold text-gray-900 -ml-1">15</span>
-            <span className="text-xl font-semibold text-gray-500">/</span>
-            <span className="text-lg font-semibold text-gray-500">mo</span>
-          </span>
-                            <input type="radio" name="plan" id="plan-business" value="business"
-                                   className="absolute h-0 w-0 appearance-none"/>
-                            <span aria-hidden="true"
-                                  className="hidden absolute inset-0 border-2 border-green-500 bg-green-200 bg-opacity-10 rounded-lg">
-            <span
-                className="absolute top-4 right-4 h-6 w-6 inline-flex items-center justify-center rounded-full bg-green-200">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                   className="h-5 w-5 text-green-600">
-                <path fill-rule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clip-rule="evenodd"/>
-              </svg>
-            </span>
-          </span>
-                        </label>
-                        <label htmlFor="plan-enterprise"
-                               className="relative flex flex-col bg-white p-5 rounded-lg shadow-md cursor-pointer">
-                            <span className="font-semibold text-gray-500 leading-tight uppercase mb-3">Enterprise</span>
-                            <span className="font-bold text-gray-900">
-            <span className="text-4xl">20</span>
-            <span className="text-2xl uppercase">GB</span>
-          </span>
-                            <span>
-            <span className="text-xl font-bold text-gray-500">$</span>
-            <span className="text-xl font-bold text-gray-900 -ml-1">20</span>
-            <span className="text-xl font-semibold text-gray-500">/</span>
-            <span className="text-lg font-semibold text-gray-500">mo</span>
-          </span>
-                            <input type="radio" name="plan" id="plan-enterprise" value="enterprise"
-                                   className="absolute h-0 w-0 appearance-none"/>
-                            <span aria-hidden="true"
-                                  className="hidden absolute inset-0 border-2 border-green-500 bg-green-200 bg-opacity-10 rounded-lg">
-            <span
-                className="absolute top-4 right-4 h-6 w-6 inline-flex items-center justify-center rounded-full bg-green-200">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                   className="h-5 w-5 text-green-600">
-                <path fill-rule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clip-rule="evenodd"/>
-              </svg>
-            </span>
-          </span>
-                        </label>
+                    
+                </div>
+                {
+                    open &&
+                    <div className={`modal modal-open`}>
+                        <Tip onClose={()=>{setPlan(null)}}  />
                     </div>
-                </fieldset>
-            </form>
-        </BasicLayout>
+                }
+            </section>
+        </div>
     )
 }
