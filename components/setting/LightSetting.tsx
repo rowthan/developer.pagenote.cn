@@ -1,4 +1,3 @@
-import TipInfo from "../TipInfo";
 import OutLink from "../../assets/svg/outlink.svg";
 import React from "react";
 import useSettings from "../../hooks/useSettings";

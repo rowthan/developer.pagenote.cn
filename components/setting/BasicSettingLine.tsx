@@ -2,7 +2,7 @@ import React, {ReactElement} from "react";
 import {NavLink} from "react-router-dom";
 import SettingMoreSvg from "../../assets/svg/right-more.svg";
 
-export default function BasicSettingLine(props: { label: string,subLabel?: string, path?: string, right?: ReactElement }) {
+export default function BasicSettingLine(props: { label: string| ReactElement,subLabel?: string, path?: string, right?: ReactElement }) {
     const {label, path, right,subLabel} = props;
 
     function Content() {

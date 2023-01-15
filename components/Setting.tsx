@@ -1,6 +1,5 @@
 import useSettings from "../hooks/useSettings";
 import OutLink from "../assets/svg/outlink.svg";
-import TipInfo from "./TipInfo";
 import UserCard from "./account/UserCard";
 import DataBackup from "./backup/DataBackup";
 import SettingHome from "./setting/SettingHome";

@@ -1,11 +1,14 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import extApi from "@pagenote/shared/lib/generateApi";
 import {toast} from "../../utils/toast";
 import {resolveImportString} from "@pagenote/shared/lib/utils/data";
-import {BackupData} from "@pagenote/shared/lib/@types/data";
+import {BackupData, BackupDataType, BackupVersion, ContentType} from "@pagenote/shared/lib/@types/data";
 import BasicSettingLine from "../setting/BasicSettingLine";
 import SettingDetail from "../setting/SettingDetail";
 import CloseSvg from 'assets/svg/close.svg'
+import TipInfo from "components/TipInfo";
+import useWhoAmi from "../../hooks/useWhoAmi";
+import dayjs from "dayjs";
 
 enum ImportState {
     unset = 0,
@@ -17,19 +20,56 @@ export default function DataBackup() {
     const [downloading, setDownloading] = useState(false);
     const [importState, setImportState] = useState<ImportState>(ImportState.unset)
     const [backupData, setBackupData] = useState<BackupData | null>(null);
-
-    function exportData() {
-        setDownloading(true)
-        extApi.lightpage.exportBackup({}).then(function (res) {
-            if (res.success) {
-                toast(`导出成功。文件名：${res.data.filename}`)
-            } else {
-                toast(`导出失败。${res.error}`, 'error')
+    const [whoAmI] = useWhoAmi();
+    async function exportData() {
+        setDownloading(true);
+        const localDownload = false //whoAmI?.browserType===BrowserType.Firefox TODO v3升级时 Firefox不支持，需兼容
+        if(localDownload){
+            const find = {
+                limit: 999999999,
+                query:{
+                    deleted: false
+                }
             }
-
-        }).finally(function () {
-            setDownloading(false)
-        })
+            const pages = (await extApi.lightpage.queryPages(find)).data.list;
+            const lights = (await extApi.lightpage.queryLights(find)).data.list;
+            const snapshots = (await extApi.lightpage.querySnapshots(find)).data.list;
+            const backup: BackupData = {
+                backupId: `${Date.now()}`,
+                backup_at: Date.now(),
+                box: [],
+                dataType: [BackupDataType.pages,BackupDataType.light,BackupDataType.snapshot],
+                extension_version: whoAmI?.version,
+                lights: lights,
+                pages: pages,
+                remark: "",
+                resources: [],
+                size: 0,
+                snapshots: snapshots,
+                version: BackupVersion.version4
+            }
+            const blob = new Blob([JSON.stringify(backup)],{
+                type: ContentType.json,
+            })
+            const url = URL.createObjectURL(blob)
+            const filename = `${whoAmI?.extensionPlatform}_${whoAmI?.version}_${dayjs().format('YYYY-MM-DD')}.${pages.length}_${lights.length}_${snapshots.length}.pagenote.bak`
+            extApi.developer.chrome({
+                namespace: "downloads",
+                type: "download",
+                args:[{
+                    saveAs: true,
+                    url: url,
+                    filename: filename
+                }]
+            }).then(function () {
+                URL.revokeObjectURL(url);
+                setDownloading(false)
+            })
+        }else{
+            extApi.lightpage.exportBackup({}).then(function (res) {
+                setDownloading(false)
+            })
+        }
     }
 
     async function doImport() {
@@ -40,13 +80,13 @@ export default function DataBackup() {
                 backupData: backupData,
             },
             type: "onImportBackup",
-            header:{
-                timeout: 10*1000,
+            header: {
+                timeout: 10 * 1000,
             }
         }).then(function (res) {
-            if(res.success){
+            if (res.success) {
                 toast('已成功导入')
-            }else{
+            } else {
                 toast(res.error || '导入失败')
             }
             setImportState(ImportState.unset)
@@ -82,19 +122,31 @@ export default function DataBackup() {
     return (
         <SettingDetail label={'数据管理'}>
             <div className={' min-w-80'}>
-                <BasicSettingLine label={'插件内'} subLabel={'随插件卸载清空'} right={
+
+                <BasicSettingLine label={<div>
+                    插件内<TipInfo
+                    position={'right'}
+                    tip={'产生的数据存储在浏览器中。当插件被卸载时，数据也一并清空。如要卸载，请注意导出备份。'}/>
+                </div>} subLabel={'随插件卸载清空'} right={
                     <div>
                         <button onClick={exportData}
                                 className={`mr-2 btn btn-outline btn-xs ${downloading ? 'loading' : ''}`}>导出
                         </button>
-                        <label htmlFor={'backup-input'} className={'btn btn-outline btn-xs'}>
+                        <label htmlFor={'backup-input'} className={'btn btn-outline btn-xs mr-2'}>
                             <input id={'backup-input'} type="file" style={{width: "0px"}} onChange={onImportBackup}/>
                             导入
                         </label>
                     </div>
                 }/>
 
-                <BasicSettingLine label={'云端'} right={
+                <BasicSettingLine label={
+                    <span>
+                        云端
+                        <TipInfo
+                            position={'right'}
+                            tip={'将数据存储在云端，多设备可以同步数据。'}/>
+                    </span>
+                } right={
                     <div className={'text-xs'}>
                         敬请期待...
                     </div>
