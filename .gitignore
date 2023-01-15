@@ -38,3 +38,5 @@ next-env.d.ts
 .idea
 
 package-lock.json
+
+_pages

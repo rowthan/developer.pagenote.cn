@@ -1,14 +1,14 @@
-import BasicLayout from "../layouts/BasicLayout";
+import BasicLayout from "layouts/BasicLayout";
 import React, {useEffect, useState} from "react";
-import Setting from "../components/Setting";
-import ClipboardList from "../components/manage/ClipboardList";
-import CurrentTab from "../components/popup/CurrentTab";
+import Setting from "components/Setting";
+import ClipboardList from "components/manage/ClipboardList";
+import CurrentTab from "components/popup/CurrentTab";
 import {HashRouter as Router, Route, Routes} from "react-router-dom";
-import CheckVersion from "../components/check/CheckVersion";
-import Search from "../components/popup/Search";
-import NavTabs from "../components/popup/NavTabs";
+import CheckVersion from "components/check/CheckVersion";
+import Search from "components/popup/Search";
+import NavTabs from "components/popup/NavTabs";
 import extApi from "@pagenote/shared/lib/generateApi";
-import useWhoAmi from "../hooks/useWhoAmi";
+import useWhoAmi from "hooks/useWhoAmi";
 
 const CACHE_SEARCH_KEY = 'popup_search'
 

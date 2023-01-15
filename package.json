@@ -4,7 +4,9 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next build && next export",
-    "export-ext": "prefix=/web next build && next export",
+    "move-ext": "mv pages _pages && mkdir pages && cp -rf _pages/ext pages/ext && cp _pages/_app.tsx pages/_app.tsx",
+    "revert-pages": "rm -rf pages && mv _pages pages",
+    "build-ext": "npm run move-ext && prefix=/web next build && next export && npm run revert-pages",
     "start": "next start"
   },
   "dependencies": {
