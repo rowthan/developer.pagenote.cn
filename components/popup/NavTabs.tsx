@@ -2,8 +2,11 @@ import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import OutLink from "assets/svg/outlink.svg";
 import HomeSvg from "assets/svg/home.svg";
 import CloseSvg from 'assets/svg/close.svg'
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import useWhoAmi from "hooks/useWhoAmi";
+import useCurrentTab from "../../hooks/useCurrentTab";
+import {getSearchKeyFormUrl} from "../../utils/search-engine";
+import useConfig from "../../hooks/useConfig";
 
 interface Tab {
     label: string,
@@ -30,12 +33,27 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
     const [whoAmi] = useWhoAmi();
     const navigate = useNavigate();
     const location = useLocation();
+    const {tab} = useCurrentTab();
+    const config = useConfig();
     const {keyword,onChangeKeyword} =props;
     const ref = useRef<HTMLInputElement>(null)
 
     function gotoSearch() {
         navigate('/search')
     }
+
+    useEffect(function () {
+        if(!tab){
+            return
+        }
+        if(config?.searchEngines?.length){
+            const searchKey = getSearchKeyFormUrl(tab?.url,config.searchEngines);
+            if(searchKey){
+                navigate('/search')
+            }
+            onChangeKeyword(searchKey)
+        }
+    },[tab,config])
 
     const isSearchPath = location.pathname === '/search'
     return (
@@ -60,7 +78,7 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
                        ref={ref}
                        onChange={(e) => {
                            navigate('/search');
-                           props.onChangeKeyword(e.target.value)
+                           onChangeKeyword(e.target.value)
                        }}
                        className={`input input-xs input-bordered w-44  ${isSearchPath ? '' : ''}`}/>
                 {
