@@ -11,12 +11,14 @@ import useSettings from "hooks/useSettings";
 import {useEffect} from "react";
 import useTabPagenoteData from "hooks/useTabPagenoteData";
 import Tab = chrome.tabs.Tab;
+import KeyboardTip from "components/KeyboardTip";
+import TipInfoSvg from "assets/svg/info.svg";
 
 
 export default function EnableCheck() {
     const [tabState, mutate, isLoading] = useTabPagenoteState()
     const {tab} = useCurrentTab();
-    const [webpage,refresh] = useTabPagenoteData();
+    const [webpage, refresh] = useTabPagenoteData();
 
     function enableInject() {
         if (tabState?.active) {
@@ -93,36 +95,46 @@ export default function EnableCheck() {
 
     const snapshotLength = webpage?.plainData?.snapshots?.length || 0
     return (
-        <div className={'mt-48'}>
-            <div className={'relative text-center'}>
-                <button onClick={enableInject}
-                        className={`w-56 relative btn btn-xl ${tabState.active ? 'btn-primary text-white' : "btn-outline"} rounded transition duration-500 ease-in-out`}>
-                    <img className={'bg-white rounded-lg'} src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}
-                         width={24} height={24} alt=""/>
-                    <span className={'ml-2'}>
+        <div className={'mt-48 mx-auto'}>
+            <div className={'flex justify-center'}>
+                <KeyboardTip command={'enable_light'}>
+                    <button onClick={enableInject}
+                            className={`w-60 relative btn btn-xl ${tabState.active ? 'btn-primary text-white' : "btn-outline"} rounded transition duration-500 ease-in-out`}>
+                        <img className={'bg-white rounded-lg'}
+                             src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}
+                             width={24} height={24} alt=""/>
+                        <span className={'ml-2'}>
                         {tabState?.active ? '可以开始标记啦' : '点击启动后开始标记'}
-                        {/*  TODO 增加快捷键*/}
-                    </span>
-                </button>
+                        </span>
+                    </button>
+                </KeyboardTip>
             </div>
-            <div className={' m-auto mt-2'}>
+            <div className={'w-full m-auto my-2 align-center'}>
                 <div
                     className={`transform-gpu transition duration-500 ease-in-out flex justify-center`}>
                     <div className={'tooltip tooltip-bottom'}
                          data-tip={`${snapshotLength ? `已截图` : "启动后可截图"}`}>
-                        <button disabled={!tabState?.active}
-                                onClick={() => {
-                                    capture()
-                                }}
-                                className={`relative btn btn-sm rounded mx-1 ${snapshotLength>0?"btn-primary text-white":"btn-outline "}`}>
-                            <CaptureSvg/>截图
-                        </button>
+                        <KeyboardTip command={'capture'}>
+                            <button disabled={!tabState?.active}
+                                    onClick={() => {
+                                        capture()
+                                    }}
+                                    className={`relative btn btn-sm text-xs w-24 p-0 rounded ${snapshotLength > 0 ? "btn-primary text-white" : "btn-outline "}`}>
+                                <CaptureSvg className={'inline-block'}/>截图
+                            </button>
+                        </KeyboardTip>
                     </div>
 
-                    <button onClick={enableCopy}
-                            className={`btn btn-sm rounded  mx-1 w-36 ${tabState.enabledCopy ? "btn-primary text-white" : "btn-outline"}`}>
-                        <UnlockCopySvg/> {tabState.enabledCopy ? '已经解除限制' : '解除复制限制'}
-                    </button>
+                    <KeyboardTip command={'enable_copy'}>
+                        <button onClick={enableCopy}
+                                className={`t btn btn-sm rounded text-xs  ml-1 w-33 ${tabState.enabledCopy ? "btn-primary text-white" : "btn-outline"}`}>
+                            <UnlockCopySvg/> {tabState.enabledCopy ? '已经解除限制' : '解除复制限制'}
+                            <span className={'tooltip tooltip-left tooltip-info'}
+                                  data-tip={'个别网站不允许选取、复制。为你破解该限制'}>
+                                <TipInfoSvg/>
+                            </span>
+                        </button>
+                    </KeyboardTip>
                 </div>
             </div>
 
@@ -132,6 +144,7 @@ export default function EnableCheck() {
                     <SettingTip/>
                 </div>
             </div>
+            {/*    标签- 智能标签 - 》（智能标签可以设置专属的定时动作-如按时打开、按时清理等）*/}
         </div>
     )
 }
@@ -188,7 +201,7 @@ const ENABLE_TYPES: { label: string, value: 'when-needed' | 'always', tip: strin
     value: 'when-needed',
     tip: '访问未标记过的网页，你需要手动点击启动后，才可以开始标记'
 }, {
-    label: '默认启动',
+    label: '默认启动(推荐)',
     value: 'always',
     tip: '访问网站都自动启动。无需手动处理，即可标记'
 }]
