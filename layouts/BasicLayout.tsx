@@ -1,4 +1,4 @@
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, useState} from "react";
 import Head from "next/head";
 // import {useTheme} from "next-themes";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -7,6 +7,7 @@ import QuestionSvg from 'assets/svg/question.svg'
 import HelpSvg from 'assets/svg/bangzhu.svg'
 import RateSvg from 'assets/svg/pingfen.svg'
 import SettingSvg from 'assets/svg/setting.svg'
+import ShortCutInfo from "../components/ShortCutInfo";
 
 
 // 给普通用户访问的页面，基础layout
@@ -80,12 +81,29 @@ export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, fo
                                 </a>
                             </li>
                         ))}
+                        <li className={'hover:bg-accent py-1 px-4'}>
+                            <label htmlFor="my-modal-4">
+                                <a className={' flex items-center w-full text-base-100'}>
+                                    <RateSvg className={'fill-current inline'}/>
+                                    <span>快捷键</span>
+                                </a>
+                            </label>
+                        </li>
+
                     </ul>
                 </div>
             </aside>
             {
                 footer && <Footer/>
             }
+
+
+            <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+            <label htmlFor="my-modal-4" className="modal cursor-pointer">
+                <label className="modal-box relative" htmlFor="">
+                    <ShortCutInfo/>
+                </label>
+            </label>
         </div>
     )
 }
