@@ -1,3 +1,4 @@
+import {BrowserType, getBrowserTypeAndVersion} from "@pagenote/shared/lib/utils/browser";
 
 
 export function checkIsBrowserBasicUrl(url?: string) {
@@ -18,7 +19,25 @@ export function checkIsInPopup() {
     return window.innerWidth < 800 || window.innerHeight < 600
 }
 
-export function checkIsBrowserAppStore(platform: 'chrome'|'', url: string) {
-    // https://addons.mozilla.org/zh-CN/developers/addons
-    // return /https://chrome.google.com//
+
+const browserUrlMap: Record<BrowserType, (string|RegExp)[]> = {
+    "": [],
+    ie: [],
+    opera: [],
+    safari: [],
+    [BrowserType.Firefox]: ['https://addons.mozilla.org/zh-CN/developers/addons'],
+    [BrowserType.Edge]: ['https://microsoftedge.microsoft.com/addons'],
+    [BrowserType.CHROME]: ['https://chrome.google.com'],
+    [BrowserType.SAN60]: ['https://ext.chrome.360.cn/']
+}
+export function checkIsBrowserAppStore(url?: string):boolean {
+    if(!url){
+        return false
+    }
+    const browser = getBrowserTypeAndVersion();
+    const rules = browserUrlMap[browser.type];
+    return rules.some(function (rule) {
+        let ruleReg = typeof rule === 'string' ? new RegExp(rule) : rule;
+        return ruleReg.test(url)
+    })
 }

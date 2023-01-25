@@ -1,6 +1,6 @@
 import extApi from "@pagenote/shared/lib/generateApi";
 import useCurrentTab from "hooks/useCurrentTab";
-import {checkIsBrowserBasicUrl, checkIsLocalFile} from "utils/check";
+import {checkIsBrowserAppStore, checkIsBrowserBasicUrl, checkIsLocalFile} from "utils/check";
 import {enablePagenote, refreshTab} from "utils/popup";
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from "hooks/useTabPagenoteState";
@@ -131,7 +131,7 @@ export default function EnableCheck() {
                             <UnlockCopySvg/> {tabState.enabledCopy ? '已经解除限制' : '解除复制限制'}
                             <span className={'tooltip tooltip-left tooltip-info'}
                                   data-tip={'个别网站不允许选取、复制。为你破解该限制'}>
-                                <TipInfoSvg/>
+                                <TipInfoSvg className={'fill-current'}/>
                             </span>
                         </button>
                     </KeyboardTip>
@@ -154,6 +154,25 @@ function Waring(props: { tab?: Tab }) {
     const {tab} = props;
     const isHtmlFile = checkIsLocalFile(tab?.url)
     const isBrowserUrl = checkIsBrowserBasicUrl(tab?.url);
+    const isAppstoreUrl = checkIsBrowserAppStore(tab?.url);
+    if(isBrowserUrl){
+        return <div>
+            <h3>点击切换标签页</h3>
+            <WindowTabs />
+        </div>
+    }
+
+    if(isAppstoreUrl){
+        return (
+            <div>
+                <WindowTabs />
+                <div className={'text-gray-400'}>
+                    浏览器不允许在此网页上使用插件，请切换至其他标签页使用标记功能。
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="alert alert-warning shadow-lg my-4">
             <div>
