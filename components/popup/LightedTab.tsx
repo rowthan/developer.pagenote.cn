@@ -65,7 +65,7 @@ export default function LightedTab(props: { tab: Tab, isCurrent: boolean }) {
         >
             {
                 notSupport ?
-                    <div className={'text-xs text-center text-gray-400'}>不可使用</div> :
+                    <div className={'text-xs text-center text-gray-400'}>🚫</div> :
                     <div className={'rounded bg-white border'}>
                         <img width='20px' height='20px' src={favIconUrl}/>
                     </div>

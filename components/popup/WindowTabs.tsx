@@ -11,8 +11,7 @@ function Window(props: { tabs: TabGroups, currentTab?: Tab }) {
 
     const isCurrentWindow = tabs[0].windowId === currentTab?.windowId
     return (
-        <div className={'border mb-4'}>
-            <h3>窗口1</h3>
+        <div className={'border mb-4 p-1 rounded'}>
             <div className={` grid grid-cols-10 gap-1 justify-center ${isCurrentWindow?'active':''}`}>
                 {
                     useMemo(()=>(
@@ -33,7 +32,7 @@ export default function WindowTabs() {
     const {tab, windows=[]} = useCurrentTab();
 
     return (
-        <div className={'my-10'}>
+        <div className={''}>
             {
                 useMemo(()=>(
                     windows.map(function (item, index) {
