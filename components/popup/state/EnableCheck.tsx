@@ -13,6 +13,8 @@ import useTabPagenoteData from "hooks/useTabPagenoteData";
 import Tab = chrome.tabs.Tab;
 import KeyboardTip from "components/KeyboardTip";
 import TipInfoSvg from "assets/svg/info.svg";
+import WindowTabs from "../WindowTabs";
+import OfflineButton from "./OfflineButton";
 
 
 export default function EnableCheck() {
@@ -137,7 +139,9 @@ export default function EnableCheck() {
                     </KeyboardTip>
                 </div>
             </div>
-
+            <div className={'flex justify-center w-full'}>
+                <OfflineButton />
+            </div>
 
             <div className={'absolute left-0 bottom-0 w-full'}>
                 <div className={'flex justify-end'}>
