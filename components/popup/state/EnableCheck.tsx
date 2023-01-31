@@ -15,6 +15,7 @@ import KeyboardTip from "components/KeyboardTip";
 import TipInfoSvg from "assets/svg/info.svg";
 import WindowTabs from "../WindowTabs";
 import OfflineButton from "./OfflineButton";
+import DisableButton from "./DisableButton";
 
 
 export default function EnableCheck() {
@@ -99,17 +100,18 @@ export default function EnableCheck() {
     return (
         <div className={'mt-48 mx-auto'}>
             <div className={'flex justify-center'}>
-                <KeyboardTip command={'enable_light'}>
-                    <button onClick={enableInject}
-                            className={`w-60 relative btn btn-xl ${tabState.active ? 'btn-primary text-white' : "btn-outline"} rounded transition duration-500 ease-in-out`}>
-                        <img className={'bg-white rounded-lg'}
-                             src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}
-                             width={24} height={24} alt=""/>
-                        <span className={'ml-2'}>
-                        {tabState?.active ? '可以开始标记啦' : '点击启动后开始标记'}
-                        </span>
-                    </button>
-                </KeyboardTip>
+                <DisableButton />
+                {/*<KeyboardTip command={'enable_light'}>*/}
+                {/*    <button onClick={enableInject}*/}
+                {/*            className={`w-60 relative btn btn-xl ${tabState.active ? 'btn-primary text-white' : "btn-outline"} rounded transition duration-500 ease-in-out`}>*/}
+                {/*        <img className={'bg-white rounded-lg'}*/}
+                {/*             src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}*/}
+                {/*             width={24} height={24} alt=""/>*/}
+                {/*        <span className={'ml-2'}>*/}
+                {/*        {tabState?.active ? '已启动' : '点击启动后开始标记'}*/}
+                {/*        </span>*/}
+                {/*    </button>*/}
+                {/*</KeyboardTip>*/}
             </div>
             <div className={'w-full m-auto my-2 align-center'}>
                 <div
@@ -143,11 +145,9 @@ export default function EnableCheck() {
                 <OfflineButton />
             </div>
 
-            <div className={'absolute left-0 bottom-0 w-full'}>
-                <div className={'flex justify-end'}>
-                    <SettingTip/>
-                </div>
-            </div>
+            {/*<div className={'absolute right-1 bottom-1 w-full'}>*/}
+            {/*    <DisableButton />*/}
+            {/*</div>*/}
             {/*    标签- 智能标签 - 》（智能标签可以设置专属的定时动作-如按时打开、按时清理等）*/}
         </div>
     )
