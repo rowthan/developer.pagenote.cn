@@ -14,7 +14,7 @@ export default function DataBackup() {
 
                 <BasicSettingLine label={
                     <span>
-                        云端
+                        云端数据库
                         <TipInfo
                             position={'right'}
                             tip={'将数据存储在云端，多设备可以同步数据。'}/>
@@ -24,6 +24,16 @@ export default function DataBackup() {
                         敬请期待...
                     </div>
                 }/>
+
+                {/*<BasicSettingLine subLabel={'备份数据至第三方存储平台'} label={*/}
+                {/*    <span>*/}
+                {/*        时间机器*/}
+                {/*    </span>*/}
+                {/*} right={*/}
+                {/*    <div className={'text-xs'}>*/}
+                {/*        敬请期待...*/}
+                {/*    </div>*/}
+                {/*}/>*/}
             </div>
         </SettingDetail>
     )
