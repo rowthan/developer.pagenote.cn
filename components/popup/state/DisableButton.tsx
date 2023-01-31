@@ -65,12 +65,12 @@ export default function DisableButton() {
     const disableDomain = `${getDomain(url || "", false)}/*`
     return (
         <div className={'flex justify-end'}>
-            <label htmlFor="disable-modal" data-tip={'点击修改禁用/启用'}
-                   className={`tooltip w-60 rounded btn btn-xl ${tabState?.active ? 'btn-primary text-white' : "btn-outline"}`}>
+            <label htmlFor="disable-modal"
+                   className={` w-60 rounded btn btn-xl ${tabState?.active ? 'btn-primary text-white' : "btn-outline"}`}>
                 <img className={'bg-white rounded-lg'}
                      src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}
                      width={24} height={24} alt=""/>
-                <span className={'ml-2'}>
+                <span className={'ml-2 tooltip'} data-tip={'点击修改禁用规则'}>
                     {disabled ? "已禁用标记功能" :
                         <span>
                        {tabState?.active ? '已启用' : '未启用'}
