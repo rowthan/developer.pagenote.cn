@@ -2,10 +2,16 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import extApi from "@pagenote/shared/lib/generateApi";
 import Head from "next/head";
+import Script from "next/script";
+
 import dayjs from "dayjs";
 import TipInfo from "components/TipInfo";
 import {localResource} from "@pagenote/shared/lib/extApi";
 import LocalResource = localResource.LocalResource;
+import useWhoAmi from "../../hooks/useWhoAmi";
+import {basePath} from "../../const/env";
+import {appendCss, appendScript} from "../../utils/document";
+import LocalHTML from "../../components/offline/LocalHTML";
 
 function runScript(root?: Document | null) {
     if (!root) {
@@ -28,38 +34,66 @@ export default function Offline() {
     const {query} = useRouter();
     const [resource, setResource] = useState<Partial<LocalResource> | undefined>();
     const [relatedResource, setResourceList] = useState<Partial<LocalResource>[]>([])
+    const [whoAmI] = useWhoAmi();
+    const [loaded, setLoaded] = useState(false)
 
     function fetchResource() {
         const id = query.id as string;
-        if (!id) {
+        const url = query.url as string;
+        if (!id || !whoAmI?.origin || loaded) {
             return
+        }
+        const queries = [];
+        if (id) {
+            queries.push({
+                resourceId: id,
+            })
+        }
+        if (url) {
+            queries.push({
+                relatedPageUrl: url,
+            })
         }
         extApi.localResource.query({
             query: {
-                resourceId: id
+                $or: queries
             },
             limit: 1,
         }).then(function (res) {
             const resource = res.data?.list[0] || null;
             setResource(resource)
             if (resource) {
+                // setHTML(resource.data)
+                // return;
                 // 1.iframe 隔离的方式
+                const originUrl = resource.relatedPageUrl || resource.originUrl || '';
                 const iframe = document.createElement('iframe');
                 // TODO 植入 service worker 来控制网络请求的跨域问题
                 iframe.srcdoc = '<!DOCTYPE html><html><head></head><body></body></html>';
+                iframe.src = originUrl;
                 iframe.setAttribute('data-pagenote', 'html')
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';
+                iframe.style.backgroundColor = '#ffffff'
                 const current = document.querySelector('iframe[data-pagenote]');
                 if (current) {
                     document.documentElement.removeChild(current)
                 }
                 document.documentElement.appendChild(iframe)
-                iframe?.contentDocument?.write(resource.data || '')
+                iframe?.contentDocument?.write(resource.data || '');
 
-                // const script = document.createElement('script')
-                // script.src = 'http://127.0.0.1:3000/init.js'
-                // iframe.contentDocument?.documentElement.appendChild(script)
+
+                appendCss([
+                    `${whoAmI?.origin}/lib/pagenote/5.5.3/pagenote.css`,
+                    `${whoAmI?.origin}/rollup/pagenote_kit.css`
+                ], iframe.contentDocument?.documentElement)
+
+                appendScript([
+                    `${whoAmI?.origin}/lib/pagenote/5.5.3/pagenote.js`,
+                    `${whoAmI?.origin}/rollup/pagenote_kit.js`
+                ], iframe.contentDocument?.documentElement)
+
+                setLoaded(true)
 
                 // 2.最原始的植入方式
                 //@ts-ignore
@@ -88,7 +122,7 @@ export default function Offline() {
     }
 
     function onChangeResourceId(id: string) {
-        window.location.href = `/ext/offline.html?id=${id}`
+        window.location.href = `${basePath}/ext/offline.html?id=${id}`
     }
 
     function removeResource() {
@@ -107,70 +141,88 @@ export default function Offline() {
 
     useEffect(function () {
         fetchResource();
-    }, [query])
+    }, [query, whoAmI])
+
+
+    const withoutId = !query.id && !query.url
 
     return <>
         <Head>
+            <script src="/rollup/open_api_bridge.js"></script>
             <title>【pagenote离线网页】{resource?.name}</title>
         </Head>
+
         {
-            resource ?
-                <div className="alert alert-info shadow-lg">
-                    <div>
-                        <TipInfo tip={'断网也可以访问，永久保存'}/>
-                        <span>你正在访问网页（<a className={'link link-error max-w-lg overflow-hidden overflow-ellipsis inline-block align-bottom whitespace-nowrap'} href={resource?.originUrl}
-                                                target={'_blank'}>{resource?.originUrl}</a>）的离线快照版本</span>
-                    </div>
-                    <div>
-                        <select value={resource?.resourceId}
-                                onChange={(e) => {
-                                    onChangeResourceId(e.target.value)
-                                }}
-                                className="select select-ghost w-52 max-w-xs">
-                            <option value={''} disabled selected>选择版本</option>
-                            {
-                                relatedResource.map((item, index) => {
-                                    const value = dayjs(item.createAt).format('YYYY/MM/DD HH:mm:ss')
-                                    return (
-                                        <option key={index} className="step step-primary"
-                                                value={item.resourceId}
-                                                data-content={item.resourceId === resource?.resourceId ? "✓" : index + 1}>
-                                            {value}
-                                            {/*<span*/}
-                                            {/*    data-tip={`记录于${dayjs(item.createAt).format('YYYY/MM/DD HH:mm:ss')}`}*/}
-                                            {/*    className={`tooltip tooltip-bottom badge badge-sm  ${item.resourceId === resource?.resourceId ? 'badge-primary' : 'badge-outline'}`}>*/}
-                                            {/*    */}
-                                            {/*</span>*/}
-                                        </option>
-                                    )
-                                })
-                            }
-                        </select>
+            withoutId ? <LocalHTML/> :
+            (
+                resource ?
+                    <div className="alert alert-info shadow-lg">
+                        <div className={'select-none'}>
+                            <TipInfo tip={'断网也可以访问，永久保存'}/>
+                            <div>你正在访问网页（<a
+                                className={'link link-error max-w-lg overflow-hidden overflow-ellipsis inline-block align-bottom whitespace-nowrap'}
+                                href={resource?.originUrl}
+                                target={'_blank'}>{resource?.originUrl}</a>）的离线快照版本。
+                            </div>
+                            <div className={'ml-2'}>
+                                <a href={'https://pagenote.cn/feedback'} target={'_blank'}>
+                                    <button className={'tooltip tooltip-left btn btn-sm btn-outline'}
+                                            data-tip={'离线版与在线版内容不一致？'}>反馈
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <select value={resource?.resourceId}
+                                    onChange={(e) => {
+                                        onChangeResourceId(e.target.value)
+                                    }}
+                                    className="select select-ghost w-52 max-w-xs">
+                                {
+                                    relatedResource.map((item, index) => {
+                                        const value = dayjs(item.createAt).format('YYYY/MM/DD HH:mm:ss')
+                                        return (
+                                            <option key={index} className="step step-primary"
+                                                    value={item.resourceId}
+                                                    data-content={item.resourceId === resource?.resourceId ? "✓" : index + 1}>
+                                                {value}
+                                                {/*<span*/}
+                                                {/*    data-tip={`记录于${dayjs(item.createAt).format('YYYY/MM/DD HH:mm:ss')}`}*/}
+                                                {/*    className={`tooltip tooltip-bottom badge badge-sm  ${item.resourceId === resource?.resourceId ? 'badge-primary' : 'badge-outline'}`}>*/}
+                                                {/*    */}
+                                                {/*</span>*/}
+                                            </option>
+                                        )
+                                    })
+                                }
+                            </select>
 
-                        {/* The button to open modal */}
-                        <label htmlFor="remove-modal" className="btn btn-error btn-sm">
-                            删除此版本
-                        </label>
-
-                        {/* Put this part before </body> tag */}
-                        <input type="checkbox" id="remove-modal" className="modal-toggle"/>
-                        <label htmlFor="remove-modal" className="modal cursor-pointer">
-                            <label className="modal-box relative" htmlFor="">
-                                <h3 className="text-lg font-bold">删除后不可恢复!</h3>
-                                <p className="py-4">
-                                    仅删除当前离线网页。笔记数据不受影响。
-                                </p>
-                                <div className="modal-action">
-                                    <button onClick={removeResource} className="btn btn-error">确认删除!</button>
-                                </div>
+                            {/* The button to open modal */}
+                            <label htmlFor="remove-modal" className="btn btn-error btn-sm">
+                                删除此版本
                             </label>
-                        </label>
+
+                            {/* Put this part before </body> tag */}
+                            <input type="checkbox" id="remove-modal" className="modal-toggle"/>
+                            <label htmlFor="remove-modal" className="modal cursor-pointer">
+                                <label className="modal-box relative" htmlFor="">
+                                    <h3 className="text-lg font-bold">删除后不可恢复!</h3>
+                                    <p className="py-4">
+                                        仅删除当前离线网页。仍可以在原始网页中查看、管理笔记。
+                                    </p>
+                                    <div className="modal-action">
+                                        <button onClick={removeResource} className="btn btn-error">确认删除!
+                                        </button>
+                                    </div>
+                                </label>
+                            </label>
+                        </div>
+                    </div> :
+                    <div className="alert alert-error shadow-lg">
+                        没有找到离线网页数据，请检查。<a className={'btn btn-primary'}
+                                                       href={`${basePath}/ext/local_html.html`}>重新选择</a>
                     </div>
-                </div> :
-                <div className="alert alert-error shadow-lg">
-                    没有找到离线网页数据，请检查。<a className={'btn btn-primary'}
-                                                   href="/ext/local_html.html">重新选择</a>
-                </div>
+            )
         }
 
     </>;

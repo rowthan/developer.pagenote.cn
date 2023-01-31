@@ -6,8 +6,9 @@ import LocalResource = localResource.LocalResource;
 import dayjs from "dayjs";
 import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import {getDomain} from "@pagenote/shared/lib/utils/filter";
+import {basePath} from "../../const/env";
 
-export default function Local_html() {
+export default function LocalHTML() {
     const [group, setGroup] = useState<Record<string, Partial<LocalResource>[]>>({})
 
     useEffect(function () {
@@ -29,7 +30,7 @@ export default function Local_html() {
     }
 
 
-    const list: { url: string, name?: string, versions: Partial<LocalResource>[] }[] = []
+    let list: { url: string, name?: string, versions: Partial<LocalResource>[] }[] = []
     for (let i in group) {
         list.push({
             url: i,
@@ -37,6 +38,9 @@ export default function Local_html() {
             versions: group[i],
         })
     }
+    list = list.sort(function (pre,next) {
+        return pre.versions.length > next.versions.length ? 1 : -1
+    })
 
     return (
         <div className={'grid grid-cols-5 gap-4 p-2'}>
@@ -46,7 +50,7 @@ export default function Local_html() {
                         {
                             item.versions.map((version) => (
                                 <a target={'_blank'}
-                                   href={version.localUrl || `/ext/offline?id=${version.resourceId}`}
+                                   href={version.localUrl || `${basePath}/ext/offline.html?id=${version.resourceId}&url=${version.relatedPageUrl}`}
                                    key={version.createAt}
                                    className="w-full h-full text-center border border-base-content card bg-base-100">
                                     <div className={'card-body text-sm'}>
