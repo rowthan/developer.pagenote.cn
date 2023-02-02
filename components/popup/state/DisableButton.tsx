@@ -92,25 +92,9 @@ export default function DisableButton() {
                         </tr>
                         </thead>
                         <tbody>
-                        {
-                            disabledList.map((item, index) => (
-                                <tr key={item}>
-                                    <td className={''}>
-                                        {checkDisabled(item, url) ? "🚫" : ""}
-                                    </td>
-                                    <td className={'max-w-xl overflow-ellipsis whitespace-normal break-all'}>{item}</td>
-                                    <td>
-                                        <button className={'btn btn-xs'} onClick={() => {
-                                            remove(item)
-                                        }}>移除
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        }
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td>{set.has(url)?"🚫":""}</td>
+                            <td className={'text-xs'}>{set.has(url)?"该规则已生效":"未添加该规则"}</td>
                             <td colSpan={1} className={''}>
                                 {
                                     url && <button disabled={set.has(url)} onClick={() => {
@@ -123,8 +107,8 @@ export default function DisableButton() {
                         </tr>
 
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td>{set.has(disableDomain)?"🚫":""}</td>
+                            <td className={'text-xs'}>{set.has(disableDomain)?"该规则已生效":"未添加该规则"}</td>
                             <td colSpan={1} className={''}>
                                 <button disabled={set.has(disableDomain)} onClick={() => {
                                     add(disableDomain)
@@ -155,6 +139,23 @@ export default function DisableButton() {
                                 </button>
                             </td>
                         </tr>
+                        {
+                            disabledList.map((item, index) => (
+                                <tr key={item}>
+                                    <td className={''}>
+                                        {checkDisabled(item, url) ? "🚫" : ""}
+                                    </td>
+                                    <td className={'max-w-xl overflow-ellipsis whitespace-normal break-all'}>{item}</td>
+                                    <td>
+                                        <button className={'btn btn-xs'} onClick={() => {
+                                            remove(item)
+                                        }}>移除
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+
                         </tbody>
                     </table>
                 </label>
