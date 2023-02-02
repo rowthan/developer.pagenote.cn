@@ -25,7 +25,9 @@ export default function OfflineButton() {
         }).then(function (res) {
             fetchResourceList()
             toast(res.error||'离线化成功。')
-            console.log(res.data, 'offline res')
+            setTimeout(function () {
+                window.close();
+            },1000)
         })
     }
 
