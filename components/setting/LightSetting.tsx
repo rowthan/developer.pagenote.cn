@@ -24,9 +24,9 @@ export default function LightSetting() {
                                 updateSetting({keyupTimeout: Number(e.target.value)})
                             }}
                             className="select select-ghost w-20 -mr-4 select-sm max-w-xs">
-                        <option value={0}>灵敏</option>
-                        <option value={500}>适中</option>
-                        <option value={2000}>迟缓</option>
+                        <option value={0}>灵敏，按下即触发</option>
+                        <option value={500}>适中，长按0.5秒</option>
+                        <option value={2000}>迟缓，长按2秒</option>
                     </select>}></BasicSettingLine>
                 <BasicSettingLine label={'画笔面板出现时机'} right={
                     <select value={showBarTimeout}
