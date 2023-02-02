@@ -33,6 +33,7 @@ export default function ExtensionData() {
             const pages = (await extApi.lightpage.queryPages(find)).data.list;
             const lights = (await extApi.lightpage.queryLights(find)).data.list;
             const snapshots = (await extApi.lightpage.querySnapshots(find)).data.list;
+            const htmlList = (await extApi.localResource.query(find)).data.list
             const backup: BackupData = {
                 backupId: `${Date.now()}`,
                 backup_at: Date.now(),
@@ -43,9 +44,10 @@ export default function ExtensionData() {
                 pages: pages,
                 remark: "",
                 resources: [],
+                htmlList: htmlList,
                 size: 0,
                 snapshots: snapshots,
-                version: BackupVersion.version4
+                version: BackupVersion.version5
             }
             const blob = new Blob([JSON.stringify(backup)],{
                 type: ContentType.json,
@@ -101,7 +103,7 @@ export default function ExtensionData() {
             params: {
                 backupData: backupData,
             },
-            type: "onImportBackup",
+            type: "importBackup",
             header: {
                 timeout: 10 * 1000,
             }
@@ -116,16 +118,16 @@ export default function ExtensionData() {
     }
 
 
-    const {lights = [], pages = [], snapshots = []} = backupData || {};
+    const {lights = [], pages = [], snapshots = [],htmlList=[]} = backupData || {};
     const importIng = importState === ImportState.importing
 
     return(
         <>
             <BasicSettingLine label={<div>
-                插件内<TipInfo
+                插件本地数据<TipInfo
                 position={'right'}
                 tip={'产生的数据存储在浏览器中。当插件被卸载时，数据也一并清空。如要卸载，请注意导出备份。'}/>
-            </div>} subLabel={'随插件卸载清空'} right={
+            </div>} subLabel={'插件卸载时清空'} right={
                 <div>
                     <button onClick={exportData}
                             className={`mr-2 btn btn-outline btn-xs ${downloading ? 'loading' : ''}`}>导出
@@ -160,17 +162,22 @@ export default function ExtensionData() {
                                 <tr>
                                     <td>网页</td>
                                     <td>{pages.length}个</td>
-                                    <td>选择</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr>
                                     <td>标记</td>
                                     <td>{lights.length}个</td>
-                                    <td>选择</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr>
                                     <td>截图</td>
                                     <td>{snapshots.length}个</td>
-                                    <td>选择</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>离线网页</td>
+                                    <td>{htmlList.length}个</td>
+                                    <td>-</td>
                                 </tr>
                                 </tbody>
                             </table>

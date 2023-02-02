@@ -14,7 +14,7 @@ export default function useConfig(): IConfig{
         return extApi.setting.getSearchEngines().then((result)=>{
             return {
                 ...data,
-                searchEngine: result.data
+                searchEngines: result.data
             };
         })
     }

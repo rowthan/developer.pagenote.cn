@@ -7,6 +7,7 @@ import {localResource} from "@pagenote/shared/lib/extApi";
 import LocalResource = localResource.LocalResource;
 import useCurrentTab from "hooks/useCurrentTab";
 import {toast} from "utils/toast";
+import {basePath} from "const/env";
 
 export default function OfflineButton() {
     const [tabState] = useTabPagenoteState();
@@ -17,17 +18,16 @@ export default function OfflineButton() {
         extApi.developer.requestFront({
             params: {
                 cssToInline: true,
-                imageToLocal: false,
+                imageToLocal: true,
                 removeScript: true
             },
             type: 'offlineHTML'
         }).then(function (res) {
-            if (res?.data?.data?.localURL) {
-                window.open(res.data.data.localURL)
-            }
             fetchResourceList()
-            toast('离线化成功。')
-            console.log(res.data.data, 'offline res')
+            toast(res.error||'离线化成功。')
+            setTimeout(function () {
+                window.close();
+            },1000)
         })
     }
 
@@ -43,6 +43,7 @@ export default function OfflineButton() {
             pageSize: 9999,
             projection: {
                 resourceId: 1,
+                relatedPageUrl: 1,
             }
         }).then(function (res) {
             if (res.success) {
@@ -53,8 +54,7 @@ export default function OfflineButton() {
 
     function gotoOffline(e: { stopPropagation: () => void; }) {
         e.stopPropagation();
-        // @ts-ignore
-        window.open(resourceList[0].localURL || `/ext/offline.html?id=${resourceList[0].resourceId}`)
+        window.open(resourceList[0].localUrl || `${basePath}/ext/offline.html?id=${resourceList[0].resourceId}&url=${resourceList[0].relatedPageUrl}`)
     }
 
     useEffect(function () {

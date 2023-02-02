@@ -9,26 +9,62 @@ import {Pagination} from "@pagenote/shared/lib/@types/database";
 import {boxroom} from "@pagenote/shared/lib/extApi";
 import TipSvg from 'assets/svg/info.svg'
 import BoxItem = boxroom.BoxItem;
+import BasicSettingLine from "../setting/BasicSettingLine";
+import useSettings from "../../hooks/useSettings";
 
 export default function ClipboardList() {
     const [list, setList] = useState<BoxItem[]>([])
     const [syncInfo] = useClipboardSync();
+    const {data: setting, update: updateSetting} = useSettings();
     const [pagination, setPagination] = useState<Pagination>({
         limit: 100,
         total: 0,
         page: 0
     })
-    useEffect(function () {
-        return onVisibilityChange(function () {
-            loadTrashList();
+
+    const [selected,setSelected] = useState<string[]>([])
+
+
+    function toggleSelected(id: string) {
+        const index = selected.indexOf(id);
+        if(index!==-1){
+            selected.splice(index,1)
+        }else{
+            selected.push(id)
+        }
+        setSelected([...selected])
+    }
+
+    function toggleAll() {
+        if(selected.length===0){
+            setSelected(list.map((item)=>item.id))
+        }else{
+            setSelected([])
+        }
+    }
+
+    function batchDeleted() {
+        extApi.boxroom.removeItems({
+            ids: selected
+        }).then(function (res) {
+            loadBoxList();
+            if(res.success){
+                setSelected([])
+            }
         })
-    }, [])
+    }
 
-    useEffect(function () {
-        loadTrashList()
-    }, [pagination.page, pagination.limit])
+    function batchCopy() {
+        const text = list.map(function (item) {
+            return selected.includes(item.id) ? item.text : ''
+        }).join('  ')
+        navigator.clipboard.writeText(text);
+        toast('已复制')
+    }
 
-    function loadTrashList() {
+
+
+    function loadBoxList() {
         extApi.boxroom.queryItems({
             sort:{
                 createAt: -1
@@ -53,7 +89,7 @@ export default function ClipboardList() {
         extApi.boxroom.removeItems({
             ids: [key],
         }).then(function () {
-            loadTrashList();
+            loadBoxList();
         })
     }
 
@@ -61,9 +97,37 @@ export default function ClipboardList() {
         navigator.clipboard.writeText(text);
         toast('已复制')
     }
+
+
+    useEffect(function () {
+        return onVisibilityChange(function () {
+            loadBoxList();
+        })
+    }, [])
+
+    useEffect(function () {
+        loadBoxList()
+    }, [pagination.page, pagination.limit])
+
+
+
+    const selectedCnt = selected.length;
     return(
         <div>
             <div className='mx-auto p-3'>
+                <BasicSettingLine label={'自动 Control C'} subLabel={'自动复制的内容将出现在下方'} right={
+                    <input type="checkbox" className="toggle toggle-info" checked={setting.controlC} onChange={(e) => {
+                        updateSetting({controlC: e.target.checked})
+                    }}/>}/>
+                <div className="my-4 flex items-center">
+                    <input type="checkbox" onChange={toggleAll} checked={selectedCnt>0} className="checkbox mx-3"/>
+                    <button onClick={batchDeleted} disabled={selectedCnt===0} className="btn btn-xs btn-error mx-2">
+                        批量删除{selectedCnt>0?selectedCnt:''}
+                    </button>
+                    <button onClick={batchCopy} disabled={selectedCnt===0} className={'btn btn-xs btn-info mx-2'}>
+                        批量复制{selectedCnt>0?selectedCnt:''}
+                    </button>
+                </div>
                 {
                     list.map(function (item) {
                         return(
@@ -71,6 +135,8 @@ export default function ClipboardList() {
                                 <div className="chat-image avatar">
                                     <div className="w-10 rounded-full">
                                         <img src={item.icon} />
+                                        <input type="checkbox" onChange={()=>{toggleSelected(item.id)}} checked={selected.includes(item.id)}
+                                               className="checkbox checkbox-info absolute left-2 top-2 bg-white bg-opacity-50" />
                                     </div>
                                 </div>
                                 <div className="chat-header">
@@ -98,7 +164,7 @@ export default function ClipboardList() {
                                 }
                                 {
                                     !syncInfo?.hasToken &&
-                                    <span>尚未与 <a href="https://notion.so">Notion</a> 绑定，授权后可 <a href="https://page-note.notion.site/Notion-PAGENOTE-6a7353124e9d4d49a6a2bed07acff3df">将剪切板数据同步至Notion</a></span>
+                                    <span>尚未与 <a href="https://notion.so">Notion</a> 绑定(Beta功能)，授权后可 <a href="https://page-note.notion.site/Notion-PAGENOTE-6a7353124e9d4d49a6a2bed07acff3df">将剪切板数据同步至Notion</a></span>
                                 }
                             </h3>
                             <div className="text-xs">共计 {list.length} 条剪切板数据。保留30天内、最多100条数据。</div>
