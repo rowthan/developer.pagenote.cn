@@ -41,6 +41,10 @@ const RIGHTS: Right[] = [{
     label: "与 Notion 同步",
     allowFor: [1, 2],
     visibleFor: [0, 1,2],
+},{
+    label: "网页离线化",
+    allowFor: [1, 2],
+    visibleFor: [0, 1,2],
 }, {
     label: "有赠送福利时，时长加倍",
     allowFor: [1],
