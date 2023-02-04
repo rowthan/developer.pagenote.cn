@@ -1,4 +1,4 @@
-import {PropsWithChildren, useState} from "react";
+import {PropsWithChildren, ReactComponentElement, useState} from "react";
 import Head from "next/head";
 // import {useTheme} from "next-themes";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -8,30 +8,38 @@ import HelpSvg from 'assets/svg/bangzhu.svg'
 import RateSvg from 'assets/svg/pingfen.svg'
 import SettingSvg from 'assets/svg/setting.svg'
 import ShortCutInfo from "../components/ShortCutInfo";
+import useWhoAmi from "../hooks/useWhoAmi";
+import {useRouter} from "next/router";
 
 
 // 给普通用户访问的页面，基础layout
 export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, footer?: boolean, title?: string, description?: string, full?: boolean }>) {
     // const { resolvedTheme, setTheme } = useTheme();
+    const [whoAmi] = useWhoAmi();
+    const {pathname} = useRouter();
 
-    const asideList = [
+    const asideList: {label: string,link: string,icon: ReactComponentElement<any>,target?: "_self"|"_blank"}[] = [
         {
+            label: '帮助',
+            link: 'https://developer.pagenote.cn/question',
+            icon: <HelpSvg className={'fill-current inline'}/>,
+        }
+    ]
+    if(!['/ext/popup'].includes(pathname)){
+        asideList.push({
             label: '设置',
             link: '#/setting',
             icon: <SettingSvg className={'fill-current inline'}/>,
             target: '_self'
-        },
-        {
-            label: '帮助',
-            link: 'https://developer.pagenote.cn/question',
-            icon: <HelpSvg className={'fill-current inline'}/>
-        }
-        , {
+        },)
+    }
+    if(!whoAmi?.isTest){
+        asideList.push({
             label: '评分',
             link: 'https://pagenote.cn/rate',
             icon: <RateSvg className={'fill-current inline'}/>
-        }
-    ]
+        })
+    }
 
     const {children, nav = true, footer = true, full = false, ...customMeta} = props;
 
