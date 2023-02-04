@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import {toast} from "../../utils/toast";
 import dayjs from "dayjs";
 import CheckVersion from "../check/CheckVersion";

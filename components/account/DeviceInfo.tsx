@@ -1,5 +1,5 @@
 import useWhoAmi from "../../hooks/useWhoAmi";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 
 export default function DeviceInfo() {
     const [whoAmI] = useWhoAmi();

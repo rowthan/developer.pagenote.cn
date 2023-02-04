@@ -1,4 +1,4 @@
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import OfflineSvg from "assets/svg/offline_download.svg";
 import TipInfoSvg from "assets/svg/info.svg";
 import useTabPagenoteState from "hooks/useTabPagenoteState";
@@ -24,10 +24,10 @@ export default function OfflineButton() {
             type: 'offlineHTML'
         }).then(function (res) {
             fetchResourceList()
-            toast(res.error||'离线化成功。')
+            toast(res.error || '离线化成功。')
             setTimeout(function () {
                 window.close();
-            },1000)
+            }, 1000)
         })
     }
 
@@ -61,19 +61,25 @@ export default function OfflineButton() {
         fetchResourceList();
     }, [tab])
 
+    const cnt = resourceList.length;
     return (
-        <button onClick={offlineHtml}
-                disabled={!tabState?.connected}
-                className={`w-60 m-auto btn btn-sm rounded  mx-1 ${resourceList.length > 0 ? "btn-primary text-white" : "btn-outline"}`}>
-            <OfflineSvg className={'fill-current'}/> 网页离线化
-            <span className={`tooltip tooltip-bottom tooltip-info align-bottom`}
-                  data-tip={'将当前访问的网页永久保存为离线网页。'}>
+        <div className={'w-60 flex'}>
+            <button onClick={offlineHtml}
+                    disabled={!tabState?.connected}
+                    className={`w-full flex-shrink m-auto btn btn-sm rounded-none ${cnt > 0 ? "btn-primary text-white" : "btn-outline"}`}>
+                <OfflineSvg className={'fill-current'}/> 网页离线化
+                <span className={`tooltip tooltip-bottom tooltip-info align-bottom`}
+                      data-tip={'将当前访问的网页永久保存为离线网页。'}>
                 <TipInfoSvg className={'fill-current'}/>
             </span>
+            </button>
             {
-                resourceList.length > 0 &&
-                <button data-tip={'点击查看历史快照'} className={'tooltip btn btn-xs btn-outline'} onClick={gotoOffline}>{resourceList.length}</button>
+                cnt > 0 &&
+                <button data-tip={`点击查看${cnt}个历史快照`}
+                        className={'rounded-none tooltip btn btn-sm btn-outline btn-primary'}
+                        onClick={gotoOffline}>{resourceList.length}</button>
             }
-        </button>
+        </div>
+
     )
 }

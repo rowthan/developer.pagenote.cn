@@ -1,7 +1,7 @@
 import TipInfo from "../../TipInfo";
 import BasicSettingLine from "../../setting/BasicSettingLine";
 import React, {ChangeEvent, useState} from "react";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import {BackupData, BackupDataType, BackupVersion, ContentType} from "@pagenote/shared/lib/@types/data";
 import dayjs from "dayjs";
 import useWhoAmi from "../../../hooks/useWhoAmi";

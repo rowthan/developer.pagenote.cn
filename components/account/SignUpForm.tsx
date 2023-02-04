@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
 import {ReactElement, useState} from "react";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import {toast} from "../../utils/toast";
 import { useRouter } from "next/router";
 import useUserInfo from "../../hooks/useUserInfo";

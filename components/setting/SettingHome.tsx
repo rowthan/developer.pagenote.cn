@@ -6,7 +6,7 @@ import {user} from "@pagenote/shared/lib/extApi";
 import {checkIsInPopup} from "../../utils/check";
 import {basePath} from "../../const/env";
 import {BrowserType} from "@pagenote/shared/lib/utils/browser";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 
 
 export default function SettingHome() {

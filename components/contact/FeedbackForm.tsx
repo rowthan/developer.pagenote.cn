@@ -1,6 +1,6 @@
 import {useState} from "react";
 import CheckUser from "../check/CheckUser";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import useDataStat from "../../hooks/useDataStat";
 import {toast} from "../../utils/toast";
 import useWhoAmi from "../../hooks/useWhoAmi";

@@ -1,9 +1,9 @@
 import {useState} from 'react'
 import  {setting} from "@pagenote/shared/lib/extApi";
 import SETTING = setting.SDK_SETTING;
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import useSWR from "swr";
-import getDefaultSdkSetting = setting.getDefaultSdkSetting;
+import {getDefaultSdkSetting} from "@pagenote/shared/lib/pagenote-setting/uitl";
 
 type SDK_SETTING = SETTING
 
@@ -15,16 +15,16 @@ export default function useSettings():{
 } {
     const [loading,setLoading] = useState<boolean>(false);
     const {data:settings = getDefaultSdkSetting(),mutate} = useSWR<SDK_SETTING>('/setting',fetchLocalAndServerSetting,{
-        fallbackData: setting.getDefaultSdkSetting(),
+        fallbackData: getDefaultSdkSetting(),
     })
 
     function fetchLocalAndServerSetting (){
         setLoading(true);
         return extApi.setting.getUserSetting().then((result)=>{
             setLoading(false)
-            return result.data || setting.getDefaultSdkSetting();
+            return result.data || getDefaultSdkSetting();
         }).catch(function () {
-            return setting.getDefaultSdkSetting()
+            return getDefaultSdkSetting()
         })
     }
 

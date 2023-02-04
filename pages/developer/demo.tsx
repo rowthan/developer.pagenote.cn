@@ -2,7 +2,7 @@ import BlogLayout from "../../layouts/blog";
 import useWhoAmi from "../../hooks/useWhoAmi";
 import {useEffect, useState} from "react";
 import {WebPage} from "@pagenote/shared/lib/@types/data";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import dayjs from 'dayjs';
 
 export default function () {
@@ -26,7 +26,7 @@ export default function () {
         <BlogLayout post={{excerpt: '与PAGENOTE通信',title: '开发你自己的数据管理页面'}}>
             <div>
                 <pre>
-                    <code>import extApi from "@pagenote/shared/lib/generateApi";</code>
+                    <code>import extApi from "@pagenote/shared/lib/pagenote-api";</code>
                 </pre>
             </div>
             <div>

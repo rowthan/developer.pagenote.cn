@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import Head from "next/head";
 import Script from "next/script";
 

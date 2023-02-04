@@ -1,4 +1,4 @@
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import useCurrentTab from "hooks/useCurrentTab";
 import {checkIsBrowserAppStore, checkIsBrowserBasicUrl, checkIsLocalFile} from "utils/check";
 import {enablePagenote, refreshTab} from "utils/popup";

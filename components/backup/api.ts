@@ -1,6 +1,6 @@
 /**导入*/
 import {SnapshotResource, Step, WebPage} from "@pagenote/shared/lib/@types/data";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 
 export async function importPages(pages: Partial<WebPage>[]) {
     for(let i=0; i<pages.length; i++){

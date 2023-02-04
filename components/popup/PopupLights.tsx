@@ -1,4 +1,4 @@
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import {useEffect, useState} from "react";
 import Tab = chrome.tabs.Tab;
 import {Step} from "@pagenote/shared/lib/@types/data";

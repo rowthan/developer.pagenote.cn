@@ -8,7 +8,7 @@ import {
     Step,
     WebPage
 } from "@pagenote/shared/lib/@types/data";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import dayjs from "dayjs";
 import useWhoAmi from "../../hooks/useWhoAmi";
 import {addBackup, downloadBackupAsFile, getBackupDetail, listBackupList, removeBackup} from "./db";

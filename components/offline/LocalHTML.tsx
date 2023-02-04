@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import {ContentType} from "@pagenote/shared/lib/@types/data";
 import {localResource} from "@pagenote/shared/lib/extApi";
 import LocalResource = localResource.LocalResource;

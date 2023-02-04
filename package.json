@@ -11,11 +11,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "@pagenote/shared": "1.10.21-rc.e",
+    "@pagenote/shared": "1.11.0",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.7",
     "classnames": "^2.3.2",
-    "color": "^4.2.3",
     "daisyui": "^2.46.0",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.6",

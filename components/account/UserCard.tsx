@@ -1,7 +1,7 @@
 import useUserInfo from "../../hooks/useUserInfo";
 import MoreSvg from "../../assets/svg/more.svg";
 import FreeSvg from 'assets/svg/free.svg'
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import VipSvg from 'assets/svg/vip.svg'
 import useWhoAmi from "../../hooks/useWhoAmi";
 import {useEffect, useState} from "react";

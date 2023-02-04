@@ -1,6 +1,6 @@
 import CheckVersion from "../components/check/CheckVersion";
 import useUserInfo from "../hooks/useUserInfo";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import SignForm from "../components/account/sign/SignForm";
 import BasicLayout from "../layouts/BasicLayout";
 import ExtensionInfos from "../components/ExtensionInfos";

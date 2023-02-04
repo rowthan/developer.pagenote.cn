@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {WebPage} from "@pagenote/shared/lib/@types/data";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import dayjs from "dayjs";
 import * as React from "react";
 import CheckVersion from "../../components/check/CheckVersion";

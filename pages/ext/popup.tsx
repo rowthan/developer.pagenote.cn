@@ -7,7 +7,7 @@ import {HashRouter as Router, Route, Routes} from "react-router-dom";
 import CheckVersion from "components/check/CheckVersion";
 import Search from "components/popup/Search";
 import NavTabs from "components/popup/NavTabs";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import useWhoAmi from "hooks/useWhoAmi";
 
 const CACHE_SEARCH_KEY = 'popup_search'

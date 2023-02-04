@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {Step, WebPage} from "@pagenote/shared/lib/@types/data";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import {QueryValue} from "@pagenote/shared/lib/@types/database";
 import {useLazyEffect} from "../../hooks/userLazyEffect";
 import set from 'lodash/set'

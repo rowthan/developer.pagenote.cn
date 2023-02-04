@@ -1,6 +1,6 @@
 import useShortcut from "../hooks/useShortcut";
 import useSettings from "../hooks/useSettings";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import useWhoAmi from "../hooks/useWhoAmi";
 import {useEffect} from "react";
 import {BrowserType} from "@pagenote/shared/lib/utils/browser";

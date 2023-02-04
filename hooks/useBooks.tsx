@@ -1,4 +1,4 @@
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import useSWR from "swr";
 
 interface Book {endTime: number, startTime: number,duration: number,remark: string,giftDays: number}

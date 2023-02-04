@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 import {toast} from "../../utils/toast";
 import useClipboardSync from "../../hooks/useClipboardSync";
 import {Pagination} from "@pagenote/shared/lib/@types/database";
