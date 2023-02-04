@@ -8,10 +8,10 @@ import dayjs from "dayjs";
 import TipInfo from "components/TipInfo";
 import {localResource} from "@pagenote/shared/lib/extApi";
 import LocalResource = localResource.LocalResource;
-import useWhoAmi from "../../hooks/useWhoAmi";
-import {basePath} from "../../const/env";
-import {appendCss, appendScript} from "../../utils/document";
-import LocalHTML from "../../components/offline/LocalHTML";
+import useWhoAmi from "hooks/useWhoAmi";
+import {basePath} from "const/env";
+import {appendCss, appendScript} from "utils/document";
+import LocalHTML from "components/offline/LocalHTML";
 
 function runScript(root?: Document | null) {
     if (!root) {

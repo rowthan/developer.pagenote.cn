@@ -9,6 +9,8 @@ export default function DeviceInfo() {
 
     function onClick() {
         extApi.commonAction.openTab({
+            tab: {},
+            reUse: true,
             url: 'https://pagenote.cn/release'
         })
     }

@@ -18,6 +18,8 @@ export default function SettingHome() {
 
     function openDataCenter() {
         extApi.commonAction.openTab({
+            reUse: false,
+            tab: {},
             url: `${whoAmI?.origin}/web/ext/popup.html#/setting/data`
         })
         window.close()

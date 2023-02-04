@@ -1,4 +1,4 @@
-import Footer from "../components/Footer";
+import Footer from "components/Footer";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 
