@@ -46,11 +46,11 @@ export default function ProPlan() {
     const open = plan !== null;
     return(
         <div>
-            <section className="flex flex-col justify-center antialiased bg-gray-100 text-gray-600 min-h-screen p-4">
+            <section className="flex flex-col justify-center antialiased  text-gray-600 min-h-screen p-4">
                 <div className="h-full">
                     <div className="max-w-5xl mx-auto">
-                        <h2 className="text-3xl text-gray-800 font-bold text-center mb-4">会员计划</h2>
-                        
+                        <h2 className="text-3xl text-neutral font-bold text-center mb-4">会员计划</h2>
+
                         <div className="grid grid-cols-12 gap-6">
                             {
                                 plans.map((item,index)=>(
@@ -67,7 +67,7 @@ export default function ProPlan() {
                             </ul>
                         </div>
                     </div>
-                    
+
                 </div>
                 {
                     open &&

@@ -63,7 +63,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
     const buttonLabel = current === role ? `当前身份` : (current < role ? '升级' : '已高于此身份');
 
     return (
-        <div className="relative col-span-full md:col-span-4 !bg-white bg-blue-500 bg-green-500 bg-indigo-500 shadow-md rounded-sm border border-gray-200">
+        <div className="relative col-span-full md:col-span-4 text-neutral !bg-opacity-0 bg-blue-500 bg-green-500 bg-indigo-500 shadow-md rounded-sm border border-gray-200">
             <div className={`absolute top-0 left-0 right-0 h-0.5 bg-${bg}-500`} aria-hidden="true"></div>
             <div className="px-5 pt-5 pb-6 border-b border-gray-200">
                 <header className="flex items-center mb-2">
@@ -74,10 +74,10 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                                 d="M12 17a.833.833 0 01-.833-.833 3.333 3.333 0 00-3.334-3.334.833.833 0 110-1.666 3.333 3.333 0 003.334-3.334.833.833 0 111.666 0 3.333 3.333 0 003.334 3.334.833.833 0 110 1.666 3.333 3.333 0 00-3.334 3.334c0 .46-.373.833-.833.833z"/>
                         </svg>
                     </div>
-                    <h3 className="text-lg text-gray-800 font-semibold">{title}</h3>
+                    <h3 className="text-lg text-neutral font-semibold">{title}</h3>
                 </header>
                 <div className="text-sm mb-2 h-10">{description}</div>
-                <div className="text-gray-800 font-bold mb-4">
+                <div className="font-bold mb-4">
                     <span className="text-2xl">￥</span>
                     <span className="text-3xl" x-text="annual ? '14' : '19'">
                         {price}元
@@ -100,7 +100,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                 </button>
             </div>
             <div className="px-5 pt-4 pb-5">
-                <div className="text-xs text-gray-800 font-semibold uppercase mb-4">
+                <div className="text-xs font-semibold uppercase mb-4">
                     权益列表 / What's included
                 </div>
                 <ul>
