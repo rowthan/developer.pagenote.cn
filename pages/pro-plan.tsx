@@ -21,7 +21,7 @@ const plans: PlanInfo[] = [{
 },{
     title: '终身VIP',
     description:"没有时限的VIP用户。",
-    price: 120,
+    price: 125,
     duration: '终身',
     bg: 'indigo',
     role: 2,
@@ -36,7 +36,7 @@ export default function ProPlan() {
     if(userInfo){
         // const pro = userInfo?.profile?.pro || 0
         const pro = 1.5
-        if(pro >= 5){
+        if(pro > 9){
             current = 2
         }else if(pro > 1){
             current = 1

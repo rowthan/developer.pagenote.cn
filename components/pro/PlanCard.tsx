@@ -23,15 +23,15 @@ const RIGHTS: Right[] = [{
     label: "在任意网页标记",
     allowFor: [0,1, 2],
     visibleFor: [0, 1, 2]
+}, {
+    label: "搜索引擎内可联动搜索",
+    allowFor: [0,1, 2],
+    visibleFor: [0, 1, 2],
 },{
     label: "标记无上限，画笔颜色无限制",
     disAllowLabel: '单个页面标记上限 50 个',
     allowFor: [1, 2],
     visibleFor: [0, 1, 2]
-}, {
-    label: "搜索引擎内可联动搜索",
-    allowFor: [1, 2],
-    visibleFor: [0, 1, 2],
 }, {
     label: "对图片进行标记",
     disAllowLabel: '不可标记图片',
@@ -68,8 +68,8 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
             <div className="px-5 pt-5 pb-6 border-b border-gray-200">
                 <header className="flex items-center mb-2">
                     <div
-                        className={`w-6 h-6 rounded-full flex-shrink-0 bg-gradient-to-tr from-${bg}-500 to-${bg}-300 mr-3`}>
-                        <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                        className={`w-6 h-6 rounded-full flex-shrink-0 bg-${bg}-500 bg-gradient-to-tr from-${bg}-500 to-${bg}-300 mr-3`}>
+                        <svg className="w-6 h-6 fill-white" viewBox="0 0 24 24">
                             <path
                                 d="M12 17a.833.833 0 01-.833-.833 3.333 3.333 0 00-3.334-3.334.833.833 0 110-1.666 3.333 3.333 0 003.334-3.334.833.833 0 111.666 0 3.333 3.333 0 003.334 3.334.833.833 0 110 1.666 3.333 3.333 0 00-3.334 3.334c0 .46-.373.833-.833.833z"/>
                         </svg>
