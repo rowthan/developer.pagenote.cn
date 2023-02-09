@@ -72,7 +72,7 @@ export default function (props:{onSubmit:()=>void}) {
         },{
             timeout: 8000,
         }).then(function (res) {
-            if (res.success && res.data.json.success) {
+            if (res?.success && res.data?.json.success) {
                 setFeedbackId(res.data.json?.data?.postFeedback?.feedbackId)
             } else {
                 toast('提交失败')

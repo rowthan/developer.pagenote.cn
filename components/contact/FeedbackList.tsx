@@ -28,7 +28,7 @@ export default function () {
                 'query': `query{listFeedback{feedbackId,title,content,reply,createAt}}`
             }
         }).then(function (res) {
-            if(res.data?.json?.success){
+            if(res?.data?.json?.success){
                 console.log('list',res)
                 setList(res.data.json?.data?.listFeedback)
             }
