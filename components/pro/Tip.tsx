@@ -1,16 +1,26 @@
 import useUserInfo from "hooks/useUserInfo";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CloseSvg from "../../assets/svg/close.svg";
+import {bindTransition} from "../../service";
 
-export default function (props: { onClose: () => void }) {
-    const {onClose} = props
+export default function (props: { onClose: () => void; amount: number;  }) {
+    const {onClose,amount} = props
     const [paid,setPaid] = useState(false);
     const [userInfo] = useUserInfo();
+    const [showButton,setShowButton] = useState(false)
 
     function confirmPaid(){
+        bindTransition('',amount)
         setPaid(true);
-        // 发送请求，交易入库 & 客户端刷新身份信息
     }
+
+    useEffect(function () {
+        setTimeout(function () {
+            setShowButton(true)
+        },5000)
+    },[])
+
+    // @ts-ignore
     const {uid,emailMask} = userInfo?.profile || {}
 
     return(
@@ -24,7 +34,8 @@ export default function (props: { onClose: () => void }) {
                     className="inline-block py-8 px-5 md:px-10 bg-base-100 text-neutral  border-4 border-gray-900 text-center transform skew-x-2">
                     {
                         paid ? <div>
-                            请稍后，我将尽快确认赞助信息；已为你提前开通VIP，请试用。
+                            请稍后，我将尽快确认赞助信息，请注意查收邮件。超过12小时未绑定请联系我。
+                            <div className={'link text-xs'}>忘记留邮箱/ID了？</div>
                         </div>:
                             <div>
                                 <h1 className="mt-2 font-comic text-2xl md:text-4xl font-extrabold tracking-wider">
@@ -51,8 +62,8 @@ export default function (props: { onClose: () => void }) {
                                     <a href="#wechat" className="btn btn-xs">微信</a>
                                 </div>
 
-                                <button onClick={confirmPaid} className="bg-red-500 hover:bg-red-600 text-white py-2 px-10 border-2 border-gray-900 mt-5 font-bold -skew-x-2">
-                                    支付好了
+                                <button onClick={confirmPaid} disabled={!showButton} className="btn bg-red-500 hover:bg-red-600 text-white py-2 px-10 border-2 border-gray-900 mt-5 font-bold -skew-x-2">
+                                    支付好了点这里
                                 </button>
                             </div>
                     }
