@@ -34,19 +34,21 @@ export default function (props: { onClose: () => void; amount: number;  }) {
                     className="inline-block py-8 px-5 md:px-10 bg-base-100 text-neutral  border-4 border-gray-900 text-center transform skew-x-2">
                     {
                         paid ? <div>
-                            请稍后，我将尽快确认赞助信息，请注意查收邮件。超过12小时未绑定请联系我。
-                            <div className={'link text-xs'}>忘记留邮箱/ID了？</div>
+                            请稍后，我将尽快确认赞助信息，这可能需要几分钟，请注意查收邮件。
+                            <div className={'divider'}></div>
+                            <div className={'text-sm'}>超过12小时未绑定请联系我</div>
+                            <div className={'text-xs'}>忘记留邮箱/ID了？请在微信公众号留言。</div>
                         </div>:
                             <div>
                                 <h1 className="mt-2 font-comic text-2xl md:text-4xl font-extrabold tracking-wider">
                                     赞助
                                     <span className="underline decoration-double decoration-blue-500">
-                          PAGENOTE
-                        </span>
+                                      PAGENOTE
+                                    </span>
                                 </h1>
 
                                 <p className="my-2 font-medium">
-                                    支付时，请备注你的 用户ID {uid && <b>:{uid}</b>} 或邮箱{emailMask && <span>({emailMask})</span>}
+                                    请备注你的用户ID {uid && <b>:{uid}</b>} 或邮箱{emailMask && <span>({emailMask})</span>}
                                 </p>
 
                                 <div className="carousel w-40 h-40 m-auto">
@@ -60,6 +62,9 @@ export default function (props: { onClose: () => void; amount: number;  }) {
                                 <div className="flex justify-center w-full py-2 gap-2">
                                     <a href="#ali" className="btn btn-xs">支付宝</a>
                                     <a href="#wechat" className="btn btn-xs">微信</a>
+                                </div>
+                                <div className={'text-sm'}>
+                                    你可以选择、修改支付金额，系统将根据支付金额自动处理。
                                 </div>
 
                                 <button onClick={confirmPaid} disabled={!showButton} className="btn bg-red-500 hover:bg-red-600 text-white py-2 px-10 border-2 border-gray-900 mt-5 font-bold -skew-x-2">

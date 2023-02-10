@@ -2,10 +2,9 @@ import PlanCard, {PlanInfo} from "../components/pro/PlanCard";
 import Tip from "../components/pro/Tip";
 import {useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
-import CloseSvg from 'assets/svg/close.svg'
 
 const plans: PlanInfo[] = [{
-    title: '免费/ Hobby',
+    title: '免费',
     description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。",
     price: 0,
     duration: '月',
@@ -34,8 +33,7 @@ export default function ProPlan() {
 
     let current = 0;
     if(userInfo){
-        // const pro = userInfo?.profile?.pro || 0
-        const pro = 1.5
+        const pro = userInfo?.profile?.pro || 0
         if(pro > 9){
             current = 2
         }else if(pro > 1){
