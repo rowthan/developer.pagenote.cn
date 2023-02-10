@@ -42,7 +42,7 @@ export default function Search(props: { keyword: string }) {
     const [list, setList] = useState<Partial<WebPage>[]>([])
 
     const search = function () {
-        // TODO 搜索所有tab 标签页
+        // TODO 搜索所有tab 标签页 多关键词搜索🔍
         if (keyword.trim()) {
             setList([])
             const regex = '.*' + (keyword || '').trim() + '.*'
