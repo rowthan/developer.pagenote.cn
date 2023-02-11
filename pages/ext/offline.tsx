@@ -12,6 +12,7 @@ import useWhoAmi from "hooks/useWhoAmi";
 import {basePath} from "const/env";
 import {appendCss, appendScript} from "utils/document";
 import LocalHTML from "components/offline/LocalHTML";
+import RedirectToExt from "../../components/RedirectToExt";
 
 function runScript(root?: Document | null) {
     if (!root) {
@@ -146,9 +147,10 @@ export default function Offline() {
 
     const withoutId = !query.id && !query.url
 
-    return <>
+    return <RedirectToExt>
+        <>
         <Head>
-            <script src="/rollup/open_api_bridge.js"></script>
+            <Script src="/rollup/open_api_bridge.js"></Script>
             <title>【pagenote离线网页】{resource?.name}</title>
         </Head>
 
@@ -220,10 +222,10 @@ export default function Offline() {
                     </div> :
                     <div className="alert alert-error shadow-lg">
                         没有找到离线网页数据，请检查。<a className={'btn btn-primary'}
-                                                       href={`${basePath}/ext/local_html.html`}>重新选择</a>
+                                                       href={`${basePath}/ext/offline.html`}>重新选择</a>
                     </div>
             )
         }
-
-    </>;
+        </>
+    </RedirectToExt>;
 }
