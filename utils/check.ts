@@ -8,6 +8,11 @@ export function checkIsBrowserBasicUrl(url?: string) {
     return /^(edge:|extension:|chrome:|about:|chrome-extension:|moz-extension:|edge-extension:)/.test(url || '')
 }
 
+/**检测阅读器模式*/
+export function checkIsReadMode(url?: string) {
+    return /^read:/.test(url || window.location.protocol);
+}
+
 export function checkIsLocalFile(url?: string) {
     if(!url){
         return false
@@ -41,3 +46,5 @@ export function checkIsBrowserAppStore(url?: string):boolean {
         return ruleReg.test(url)
     })
 }
+
+

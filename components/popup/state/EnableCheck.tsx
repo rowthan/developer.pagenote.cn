@@ -1,6 +1,6 @@
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import useCurrentTab from "hooks/useCurrentTab";
-import {checkIsBrowserAppStore, checkIsBrowserBasicUrl, checkIsLocalFile} from "utils/check";
+import {checkIsBrowserAppStore, checkIsBrowserBasicUrl, checkIsLocalFile, checkIsReadMode} from "utils/check";
 import {enablePagenote, refreshTab} from "utils/popup";
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from "hooks/useTabPagenoteState";
@@ -100,7 +100,7 @@ export default function EnableCheck() {
     return (
         <div className={'mt-48 mx-auto'}>
             <div className={'flex justify-center'}>
-                <DisableButton />
+                <DisableButton/>
                 {/*<KeyboardTip command={'enable_light'}>*/}
                 {/*    <button onClick={enableInject}*/}
                 {/*            className={`w-60 relative btn btn-xl ${tabState.active ? 'btn-primary text-white' : "btn-outline"} rounded transition duration-500 ease-in-out`}>*/}
@@ -142,7 +142,7 @@ export default function EnableCheck() {
                 </div>
             </div>
             <div className={'flex justify-center w-full'}>
-                <OfflineButton />
+                <OfflineButton/>
             </div>
 
             {/*<div className={'absolute right-1 bottom-1 w-full'}>*/}
@@ -159,19 +159,33 @@ function Waring(props: { tab?: Tab }) {
     const isHtmlFile = checkIsLocalFile(tab?.url)
     const isBrowserUrl = checkIsBrowserBasicUrl(tab?.url);
     const isAppstoreUrl = checkIsBrowserAppStore(tab?.url);
-    if(isBrowserUrl){
+    if (isBrowserUrl) {
         return <div>
             <h3>点击切换标签页</h3>
-            <WindowTabs />
+            <WindowTabs/>
         </div>
     }
 
-    if(isAppstoreUrl){
+    if (isAppstoreUrl) {
         return (
             <div>
-                <WindowTabs />
+                <WindowTabs/>
                 <div className={'text-gray-400'}>
                     浏览器不允许在此网页上使用插件，请切换至其他标签页使用标记功能。
+                </div>
+            </div>
+        )
+    }
+    const isReadMode = checkIsReadMode(tab?.url);
+    if(!isReadMode){
+        return (
+            <div>
+                <WindowTabs/>
+                <div className={'text-gray-400'}>
+                    不可在阅读模式下工作。
+                    <div className={'text-sm'}>
+                        请切换至其他标签页，或退出阅读模式后使用 PAGENOTE。
+                    </div>
                 </div>
             </div>
         )
