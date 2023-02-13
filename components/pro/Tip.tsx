@@ -64,7 +64,7 @@ export default function (props: { onClose: () => void; amount: number;  }) {
                                     <a href="#wechat" className="btn btn-xs">微信</a>
                                 </div>
                                 <div className={'text-sm'}>
-                                    你可以选择、修改支付金额，系统将根据支付金额自动处理。
+                                    请按照 <b>5元/月</b>、<b>40元/年</b>、<b>125元/终身</b> 支付
                                 </div>
 
                                 <button onClick={confirmPaid} disabled={!showButton} className="btn bg-red-500 hover:bg-red-600 text-white py-2 px-10 border-2 border-gray-900 mt-5 font-bold -skew-x-2">

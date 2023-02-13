@@ -12,9 +12,9 @@ const plans: PlanInfo[] = [{
     role: 0,
 },{
     title: '订阅VIP',
-    description:"可以按年或月支持。赞助金额可用于升级终身版 ",
-    price: 5,
-    duration: '月',
+    description:"可以按年或月支持。赞助金额可用于升级终身VIP。",
+    price: 40,
+    duration: '年',
     bg: 'blue',
     role: 1,
 },{
