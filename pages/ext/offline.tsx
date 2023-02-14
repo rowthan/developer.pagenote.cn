@@ -13,6 +13,7 @@ import {basePath} from "const/env";
 import {appendCss, appendScript} from "utils/document";
 import LocalHTML from "components/offline/LocalHTML";
 import RedirectToExt from "../../components/RedirectToExt";
+import {contentToFile} from "@pagenote/shared/lib/utils/document";
 
 function runScript(root?: Document | null) {
     if (!root) {
@@ -134,6 +135,12 @@ export default function Offline() {
         })
     }
 
+    function downloadHtml() {
+        if(resource?.data){
+            contentToFile(resource?.data||"",`${resource?.name||""}.html`)
+        }
+    }
+
     useEffect(function () {
         if (resource?.relatedPageUrl) {
             fetchRelated()
@@ -203,6 +210,9 @@ export default function Offline() {
                             <label htmlFor="remove-modal" className="btn btn-error btn-sm">
                                 删除此版本
                             </label>
+                            <button onClick={downloadHtml} className='btn btn-primary btn-sm ml-2'>
+                                下载为HTML文件
+                            </button>
 
                             {/* Put this part before </body> tag */}
                             <input type="checkbox" id="remove-modal" className="modal-toggle"/>

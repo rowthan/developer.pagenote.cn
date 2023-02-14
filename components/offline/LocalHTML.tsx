@@ -1,15 +1,15 @@
 import {useEffect, useState} from "react";
 import extApi from "@pagenote/shared/lib/pagenote-api";
-import {ContentType} from "@pagenote/shared/lib/@types/data";
 import {localResource} from "@pagenote/shared/lib/extApi";
 import LocalResource = localResource.LocalResource;
 import dayjs from "dayjs";
 import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import {getDomain} from "@pagenote/shared/lib/utils/filter";
 import {basePath} from "../../const/env";
+import Empty from "../Empty";
 
 export default function LocalHTML() {
-    const [group, setGroup] = useState<Record<string, Partial<LocalResource>[]>>({})
+    const [group, setGroup] = useState<Record<string, Partial<LocalResource>[]>>({});
 
     useEffect(function () {
         fetchList();
@@ -41,6 +41,12 @@ export default function LocalHTML() {
     list = list.sort(function (pre,next) {
         return pre.versions.length > next.versions.length ? 1 : -1
     })
+
+    if(list.length===0){
+        return <div>
+            <Empty>还没有离线网页，去尝试一下吧。</Empty>
+        </div>
+    }
 
     return (
         <div className={'grid grid-cols-5 gap-4 p-2'}>
