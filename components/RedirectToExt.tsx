@@ -4,7 +4,7 @@ import {ReactElement, useEffect} from "react";
 export default function RedirectToExt(props:{children: ReactElement}) {
     const [whoAmI] = useWhoAmi();
     useEffect(function () {
-        const isHttp = /^http/.test(window.location.protocol);
+        const isHttp = /^https/.test(window.location.protocol);
         if(isHttp){
             const origin = whoAmI?.origin;
             if(!origin){
