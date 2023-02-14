@@ -74,7 +74,7 @@ export default function ProPlan() {
                 {
                     open &&
                     <div className={`modal modal-open`}>
-                        <Tip amount={userInfo?.leftPermanent} onClose={()=>{setPlan(null)}}  />
+                        <Tip amount={userInfo?.leftPermanent || plans[1].price} onClose={()=>{setPlan(null)}}  />
                     </div>
                 }
             </section>
