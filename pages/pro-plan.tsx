@@ -4,26 +4,30 @@ import {useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
 
 const plans: PlanInfo[] = [{
-    title: '免费',
+    title: '免费/种子用户',
     description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。",
     price: 0,
     duration: '月',
     bg: 'green',
     role: 0,
+    deduct: false,
 },{
-    title: '订阅VIP',
+    title: '周期VIP',
     description:"可以按年或月支持。赞助金额可用于升级终身VIP。",
     price: 40,
     duration: '年',
     bg: 'blue',
     role: 1,
+    deduct: false,
 },{
     title: '终身VIP',
     description:"没有时限的VIP用户。",
     price: 125,
     duration: '终身',
+    unit:"元(累计)",
     bg: 'indigo',
     role: 2,
+    deduct: true,
 }]
 
 // 根据选择，提交 支付类型 金额
@@ -70,7 +74,7 @@ export default function ProPlan() {
                 {
                     open &&
                     <div className={`modal modal-open`}>
-                        <Tip amount={plan?.price||40} onClose={()=>{setPlan(null)}}  />
+                        <Tip amount={userInfo?.leftPermanent} onClose={()=>{setPlan(null)}}  />
                     </div>
                 }
             </section>

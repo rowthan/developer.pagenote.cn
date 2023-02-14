@@ -1,5 +1,6 @@
 import useBooks from "../../hooks/useBooks";
 import dayjs from "dayjs";
+import useUserInfo from "../../hooks/useUserInfo";
 
 interface Right {
     label: string,
@@ -12,11 +13,15 @@ export interface PlanInfo {
     title: string
     description: string
     price: number,
+
+    unit?: string
     duration: string
 
     bg: string
 
     role: number
+
+    deduct: boolean
 }
 
 const RIGHTS: Right[] = [{
@@ -29,12 +34,12 @@ const RIGHTS: Right[] = [{
     visibleFor: [0, 1, 2],
 },{
     label: "标记无上限，画笔颜色无限制",
-    disAllowLabel: '单个页面标记上限 50 个',
+    disAllowLabel: '单个页面标记上限 50 个(种子用户100个)',
     allowFor: [1, 2],
     visibleFor: [0, 1, 2]
 }, {
     label: "对图片进行标记",
-    disAllowLabel: '不可标记图片',
+    disAllowLabel: '不可标记图片（种子用户可标记）',
     allowFor: [1, 2],
     visibleFor: [0, 1, 2],
 }, {
@@ -59,12 +64,17 @@ const RIGHTS: Right[] = [{
 export default function PlanCard(props: { info: PlanInfo, current: number,onClick:(info: PlanInfo)=>void }) {
     const [books] = useBooks();
     const {current, info,onClick} = props;
-    const {title, description, price, duration, bg='indigo', role} = info;
+    const [user] = useUserInfo();
+    const {title, description, price, duration, bg='indigo', role,unit='元'} = info;
     const disabled = current >= role
 
     const endAtTime = books[0]?.endTime ? dayjs(books[0].endTime) : ''
 
-    const buttonLabel = current === role ? `当前身份` : (current < role ? '升级' : '已高于此身份');
+    const canUpgrade = current < role;
+    let buttonLabel = current === role ? `当前身份` : (canUpgrade ? '加入此身份' : '已高于此身份');
+    if(canUpgrade){
+        buttonLabel += ` ￥${info.deduct ? (user?.leftPermanent || info.price) : info.price}`
+    }
 
     return (
         <div className="relative col-span-full md:col-span-4 text-neutral !bg-opacity-0 bg-blue-500 bg-green-500 bg-indigo-500 shadow-md rounded-sm border border-gray-200">
@@ -84,7 +94,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                 <div className="font-bold mb-4">
                     <span className="text-2xl">￥</span>
                     <span className="text-3xl" x-text="annual ? '14' : '19'">
-                        {price}元
+                        {price}{unit}
                     </span>
                     <span className="text-gray-500 font-medium text-sm">/{duration}</span>
                 </div>
@@ -105,7 +115,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
             </div>
             <div className="px-5 pt-4 pb-5">
                 <div className="text-xs font-semibold uppercase mb-4">
-                    权益列表 / What's included
+                    权益列表（只增不减）
                 </div>
                 <ul>
                     {
