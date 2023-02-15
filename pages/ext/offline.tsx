@@ -12,7 +12,7 @@ import useWhoAmi from "hooks/useWhoAmi";
 import {basePath} from "const/env";
 import {appendCss, appendScript} from "utils/document";
 import LocalHTML from "components/offline/LocalHTML";
-import RedirectToExt from "../../components/RedirectToExt";
+import RedirectToExt from "components/RedirectToExt";
 import {contentToFile} from "@pagenote/shared/lib/utils/document";
 
 function runScript(root?: Document | null) {

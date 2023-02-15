@@ -87,7 +87,7 @@ export default function EnableCheck() {
         }, 1000)
     }, [])
 
-    
+
     if (!tabState) {
         return <Waring tab={tab}/>
     }

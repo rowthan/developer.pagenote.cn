@@ -6,26 +6,7 @@ import WhoAmI = user.WhoAmI;
 
 export default function useWhoAmi():[WhoAmI|undefined|null,boolean] {
     const {data,isLoading,mutate} = useSWR<WhoAmI>('/whoAmI',fetchInfo,{
-        fallbackData: {
-            origin: "",
-            extensionId: "",
-            version: '',
-            browser: "",
-            browserPlatform: "",
-            browserVersion: "",
-            did: "",
-
-            isCN: false,
-            isMac: false,
-            isTest: false,
-            language: "",
-            mainVersion: "",
-            name: "-",
-
-            platform: "",
-            short_name: "",
-            supportSDK: [],
-        }
+        fallbackData: {}
     });
 
     function fetchInfo() {
