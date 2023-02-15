@@ -173,7 +173,7 @@ function Waring(props: { tab?: Tab }) {
         )
     }
     const isReadMode = checkIsReadMode(tab?.url);
-    if(!isReadMode){
+    if(isReadMode){
         return (
             <div>
                 <WindowTabs/>
