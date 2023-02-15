@@ -3,15 +3,8 @@ import extApi from "@pagenote/shared/lib/pagenote-api";
 import {BackupData, BackupDataType, BackupVersion, ContentType} from "@pagenote/shared/lib/@types/data";
 import dayjs from "dayjs";
 import useWhoAmi from "hooks/useWhoAmi";
+import FilterCheckBox from "./FilterCheckBox";
 
-function ToggleCheckbox(props: { field: string, selected: string[], onChange:(key: string)=>void }) {
-    return (
-        <input type="checkbox"
-               onChange={(e)=>{props.onChange(props.field)}}
-               checked={props.selected.includes(props.field)}
-               className="checkbox checkbox-xs"/>
-    )
-}
 
 export default function ExportFilter() {
     const [downloading, setDownloading] = useState(false);
@@ -111,25 +104,25 @@ export default function ExportFilter() {
                 <tr>
                     <td>网页</td>
                     <td>
-                        <ToggleCheckbox field={'page'} selected={selected} onChange={toggleSelect} />
+                        <FilterCheckBox field={'page'} selected={selected} onChange={toggleSelect} />
                     </td>
                 </tr>
                 <tr>
                     <td>标记</td>
                     <td>
-                        <ToggleCheckbox field={'light'} selected={selected} onChange={toggleSelect} />
+                        <FilterCheckBox field={'light'} selected={selected} onChange={toggleSelect} />
                     </td>
                 </tr>
                 <tr>
                     <td>截图</td>
                     <td>
-                        <ToggleCheckbox field={'snapshot'} selected={selected} onChange={toggleSelect} />
+                        <FilterCheckBox field={'snapshot'} selected={selected} onChange={toggleSelect} />
                     </td>
                 </tr>
                 <tr>
                     <td>离线网页</td>
                     <td>
-                        <ToggleCheckbox field={'html'} selected={selected} onChange={toggleSelect} />
+                        <FilterCheckBox field={'html'} selected={selected} onChange={toggleSelect} />
                     </td>
                 </tr>
                 </tbody>
