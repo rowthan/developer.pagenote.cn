@@ -84,9 +84,12 @@ export default function EnableCheck() {
     useEffect(function () {
         setTimeout(function () {
             mutate()
-        }, 1000)
+        }, 200)
     }, [])
 
+    if (isLoading && !tabState) {
+        return null;
+    }
 
     if (!tabState) {
         return <Waring tab={tab}/>
@@ -224,48 +227,6 @@ function Waring(props: { tab?: Tab }) {
                             </div>
                     }
                 </div>
-            </div>
-        </div>
-    )
-}
-
-const ENABLE_TYPES: { label: string, value: 'when-needed' | 'always', tip: string }[] = [{
-    label: '根据需要启动',
-    value: 'when-needed',
-    tip: '访问未标记过的网页，你需要手动点击启动后，才可以开始标记'
-}, {
-    label: '默认启动(推荐)',
-    value: 'always',
-    tip: '访问网站都自动启动。无需手动处理，即可标记'
-}]
-
-function SettingTip() {
-    const {data, loading, update} = useSettings();
-    if (loading) {
-        return null;
-    }
-    const type = ENABLE_TYPES.find(function (item) {
-        return item.value === data.enableType
-    }) || ENABLE_TYPES[1]
-
-    return (
-        <div className={'mt-4 p-2 text-xs text-gray-400 text-center'}>
-            <span className={'tooltip tooltip-top'} data-tip={type.tip}>启动方式: </span>
-            <div className="dropdown dropdown-top dropdown-end">
-                <label tabIndex={0} className={'btn btn-xs btn-ghost btn-outline'}>
-                    {type.label}
-                </label>
-                <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                    {
-                        ENABLE_TYPES.map(function (item) {
-                            return <li key={item.value} onClick={() => {
-                                update({enableType: item.value})
-                            }}>
-                                <a className={item.value === data.enableType ? 'bg-primary text-gray-800' : ''}>{item.label}</a>
-                            </li>
-                        })
-                    }
-                </ul>
             </div>
         </div>
     )
