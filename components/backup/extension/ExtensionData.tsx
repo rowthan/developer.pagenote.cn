@@ -8,6 +8,7 @@ import useWhoAmi from "../../../hooks/useWhoAmi";
 import {toast} from "../../../utils/toast";
 import {resolveImportString} from "@pagenote/shared/lib/utils/data";
 import CloseSvg from "../../../assets/svg/close.svg";
+import ExportFilter from "./ExportFilter";
 
 enum ImportState {
     unset = 0,
@@ -15,64 +16,8 @@ enum ImportState {
     importing = 2,
 }
 export default function ExtensionData() {
-    const [downloading, setDownloading] = useState(false);
-    const [whoAmI] = useWhoAmi();
     const [backupData, setBackupData] = useState<BackupData | null>(null);
-    const [importState, setImportState] = useState<ImportState>(ImportState.unset)
-
-    async function exportData() {
-        setDownloading(true);
-        const localDownload = false //whoAmI?.browserType===BrowserType.Firefox TODO v3升级时 Firefox不支持，需兼容
-        if(localDownload){
-            const find = {
-                limit: 999999999,
-                query:{
-                    deleted: false
-                }
-            }
-            const pages = (await extApi.lightpage.queryPages(find)).data.list;
-            const lights = (await extApi.lightpage.queryLights(find)).data.list;
-            const snapshots = (await extApi.lightpage.querySnapshots(find)).data.list;
-            const htmlList = (await extApi.localResource.query(find)).data.list
-            const backup: BackupData = {
-                backupId: `${Date.now()}`,
-                backup_at: Date.now(),
-                box: [],
-                dataType: [BackupDataType.pages,BackupDataType.light,BackupDataType.snapshot],
-                extension_version: whoAmI?.version,
-                lights: lights,
-                pages: pages,
-                remark: "",
-                resources: [],
-                htmlList: htmlList,
-                size: 0,
-                snapshots: snapshots,
-                version: BackupVersion.version5
-            }
-            const blob = new Blob([JSON.stringify(backup)],{
-                type: ContentType.json,
-            })
-            const url = URL.createObjectURL(blob)
-            const filename = `${whoAmI?.extensionPlatform}_${whoAmI?.version}_${dayjs().format('YYYY-MM-DD')}.${pages.length}_${lights.length}_${snapshots.length}.pagenote.bak`
-            extApi.developer.chrome({
-                namespace: "downloads",
-                type: "download",
-                args:[{
-                    saveAs: true,
-                    url: url,
-                    filename: filename
-                }]
-            }).then(function () {
-                URL.revokeObjectURL(url);
-                setDownloading(false)
-            })
-        }else{
-            extApi.lightpage.exportBackup({}).then(function (res) {
-                setDownloading(false)
-            })
-        }
-    }
-
+    const [importState, setImportState] = useState<ImportState>(ImportState.unset);
     function onImportBackup(e: ChangeEvent<HTMLInputElement>) {
         const selectedFile = e.target?.files || []
         if (!selectedFile[0]) {
@@ -129,9 +74,15 @@ export default function ExtensionData() {
                 tip={'产生的数据存储在浏览器中。当插件被卸载时，数据也一并清空。如要卸载，请注意导出备份。'}/>
             </div>} subLabel={'插件卸载时清空'} right={
                 <div>
-                    <button onClick={exportData}
-                            className={`mr-2 btn btn-outline btn-xs ${downloading ? 'loading' : ''}`}>导出
-                    </button>
+                    <label htmlFor="my-modal-3" className="mr-2 btn btn-outline btn-xs">导出</label>
+                    <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+                    <label htmlFor="my-modal-3" className="modal">
+                        <label htmlFor="" className="modal-box relative">
+                            <label htmlFor="my-modal-3" className="z-50 btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                            <ExportFilter />
+                        </label>
+                    </label>
+
                     <label htmlFor={'backup-input'} className={'btn btn-outline btn-xs mr-2'}>
                         <input id={'backup-input'} type="file" style={{width: "0px"}} onChange={onImportBackup}/>
                         导入
