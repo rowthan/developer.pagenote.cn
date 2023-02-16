@@ -53,7 +53,7 @@ export default function (props: { onClose: () => void; amount: number;  }) {
 
                                 <div className="carousel w-40 h-40 m-auto">
                                     <div id="ali" className="carousel-item w-full">
-                                        <img src="https://pagenote.cn/img/pay/year-40.png" className="w-full" />
+                                        <img src="https://pagenote.cn/img/pay/alipay.png" className="w-full" />
                                     </div>
                                     <div id="wechat" className="carousel-item w-full">
                                         <img src="https://pagenote.cn/img/pay/wechat-pay.png" className="w-full" />
