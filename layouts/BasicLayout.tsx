@@ -25,10 +25,17 @@ export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, fo
             icon: <HelpSvg className={'fill-current inline'}/>,
         }
     ]
-    if(!['/ext/popup'].includes(pathname)){
+    if(['/ext/popup'].includes(pathname)){
         asideList.push({
             label: '设置',
             link: '#/setting',
+            icon: <SettingSvg className={'fill-current inline'}/>,
+            target: '_self'
+        },)
+    }else{
+        asideList.push({
+            label: '设置',
+            link: 'https://developer.pagenote.cn//setting',
             icon: <SettingSvg className={'fill-current inline'}/>,
             target: '_self'
         },)
