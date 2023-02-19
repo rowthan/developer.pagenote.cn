@@ -6,9 +6,9 @@ import SettingDetail from "./SettingDetail";
 
 
 export default function LightSetting() {
-    const {data: setting, update: updateSetting, loading} = useSettings();
+    const {data: setting, update: updateSetting} = useSettings();
 
-    const {maxRecord, controlC, keyupTimeout, showBarTimeout} = setting;
+    const {keyupTimeout, showBarTimeout} = setting;
 
     function resetSetting() {
         // @ts-ignore
@@ -37,13 +37,6 @@ export default function LightSetting() {
                         <option value={0}>立刻</option>
                         <option value={1000}>迟缓</option>
                     </select>}></BasicSettingLine>
-                <BasicSettingLine label={'单页面标记上限'} right={
-                    <div className={'text-xs'}>
-                        {(maxRecord || 0) > 9999 ? <span>无限制</span> : <span>最多标记{maxRecord}个  <a className={'link'} target={'_blank'}
-                                                                                                         href="https://pagenote.cn/pro-plan">解锁无限（VIP）</a></span>}
-                    </div>
-                }></BasicSettingLine>
-
                 <a href="/pagenote.html#setting" target={'_blank'}>
                     <BasicSettingLine label={'画笔设置'} subLabel={'添加画笔、修改颜色'} right={<OutLink className={'fill-current'} />}></BasicSettingLine>
                 </a>
