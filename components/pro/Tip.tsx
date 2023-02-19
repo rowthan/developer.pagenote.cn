@@ -2,6 +2,7 @@ import useUserInfo from "hooks/useUserInfo";
 import {useEffect, useState} from "react";
 import CloseSvg from "../../assets/svg/close.svg";
 import {bindTransition} from "../../service";
+import {toast} from "../../utils/toast";
 
 export default function (props: { onClose: () => void; amount: number;  }) {
     const {onClose,amount} = props
@@ -10,8 +11,13 @@ export default function (props: { onClose: () => void; amount: number;  }) {
     const [showButton,setShowButton] = useState(false)
 
     function confirmPaid(){
-        bindTransition('',amount)
-        setPaid(true);
+        if(userInfo){
+            bindTransition('',amount)
+            setPaid(true);
+        }else{
+            window.open('/signin.html')
+            toast('请先登录')
+       }
     }
 
     useEffect(function () {
@@ -29,9 +35,9 @@ export default function (props: { onClose: () => void; amount: number;  }) {
                 <CloseSvg />
             </button>
             <div
-                className="relative px-4 md:px-14 py-4 md:py-10 bg-gradient-to-br from-yellow-300 to-yellow-400 border-4 border-gray-900 flex items-center justify-center transform -skew-x-1">
+                className="relative px-4 md:px-14 py-4 md:py-10 bg-gradient-to-br from-yellow-300 to-yellow-400 border-4 border-gray-900 flex items-center justify-center transform ">
                 <div
-                    className="inline-block py-8 px-5 md:px-10 bg-base-100 text-neutral  border-4 border-gray-900 text-center transform skew-x-2">
+                    className="inline-block py-8 px-5 md:px-10 bg-base-100 text-neutral  border-4 border-gray-900 text-center transform ">
                     {
                         paid ? <div>
                             请稍后，我将尽快确认赞助信息，这可能需要几分钟，请注意查收邮件。

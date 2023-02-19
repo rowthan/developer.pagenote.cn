@@ -48,7 +48,7 @@ export default function ProPlan() {
     const open = plan !== null;
     return(
         <div>
-            <section className="flex flex-col justify-center antialiased  text-gray-600 min-h-screen p-4">
+            <section className="flex flex-col justify-center antialiased  text-gray-600 min-h-screen">
                 <div className="h-full">
                     <div className="max-w-5xl mx-auto">
                         <h2 className="text-3xl text-neutral font-bold text-center mb-4">会员计划</h2>
