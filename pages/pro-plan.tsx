@@ -1,6 +1,6 @@
 import PlanCard, {PlanInfo} from "../components/pro/PlanCard";
 import Tip from "../components/pro/Tip";
-import {useState} from "react";
+import React, {useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
 
 const plans: PlanInfo[] = [{
@@ -64,8 +64,12 @@ export default function ProPlan() {
                         <div className="py-2">
                             <ul>
                                 <li>VIP可优先使用部分功能，普通用户会滞后一段时间，限制会逐步放开。</li>
-                                <li>如果你是学生或老师，使用 <key-word>教育邮箱</key-word>注册后，也可解锁功能 1个月。</li>
-                                <li>关注<key-word preview="1">微信公众号</key-word>，也可领取VIP。</li>
+                                <li>如果你是学生或老师，使用
+                                    <key-word>教育邮箱</key-word>
+                                    注册后，也可解锁功能 1个月。关注
+                                    <key-word preview="1">微信公众号</key-word>
+                                    ，也可领取VIP。
+                                </li>
                             </ul>
                         </div>
                     </div>
