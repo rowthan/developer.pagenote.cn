@@ -4,7 +4,7 @@ import {useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
 
 const plans: PlanInfo[] = [{
-    title: '免费/<key-word preview="1">掘金<key-word>',
+    title: '免费/<key-word preview="1">种子用户<key-word>',
     description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。",
     price: 0,
     duration: '月',

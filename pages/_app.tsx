@@ -11,8 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Head>
             <link rel="shortcut icon" href="https://pagenote.cn/favicon.ico" type="image/x-icon" />
         </Head>
-        <Script src="/images/keyword.js" />
-        <Script src="/images/markdown.js"/>
+        <Script src="/components.js"/>
         <Component {...pageProps} />
       </>
       // <ThemeProvider attribute='class'>
