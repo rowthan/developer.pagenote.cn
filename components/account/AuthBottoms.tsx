@@ -18,6 +18,8 @@ export default function AuthBottoms(props: { type: 'signin' | 'signup' | 'bind' 
     const actionName = label[type]
     const isSignin = type === 'signin'
     const isSignup = type === 'signup'
+
+
     return (
         <div>
             {
@@ -26,6 +28,8 @@ export default function AuthBottoms(props: { type: 'signin' | 'signup' | 'bind' 
                     {
                         AUTH_LIST.map((value, index, array)=>(
                             <button
+                                key={index}
+                                onClick={()=>{window.location.href = value.link}}
                                 className="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300">
                                 {value.label}
                             </button>

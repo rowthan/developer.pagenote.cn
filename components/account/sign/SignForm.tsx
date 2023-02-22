@@ -23,13 +23,19 @@ export default function (props: { onSuccess?: () => void, onError?: () => void, 
     const {onError, onSuccess} = props;
     const [state, setState] = useState<SubmitState>(SubmitState.unset);
     const [user, mutation] = useUserInfo();
-    const [tip, setTip] = useState('')
+    const [tip, setTip] = useState('');
+    const [showPassword,setShowPassword] = useState(false)
     const {
         setValue,
         register,
         handleSubmit,
         formState: {errors},
-    } = useForm<FormData>();
+    } = useForm<FormData>({
+       defaultValues:{
+           emailOrUid:"",
+           password:""
+       }
+    });
 
 
     function onSubmit(data: FormData) {
@@ -68,14 +74,14 @@ export default function (props: { onSuccess?: () => void, onError?: () => void, 
     }
 
     function signinout() {
-        extApi.user.signout().then(function () {
+        extApi.user.signout(undefined).then(function () {
             mutation()
         })
     }
 
     useEffect(function () {
         const search = new URLSearchParams(window.location.search);
-        const uid = search.get('uid');
+        const uid: string = search.get('uid') || "";
         if (uid) {
             setValue('emailOrUid', uid)
         }
@@ -88,11 +94,13 @@ export default function (props: { onSuccess?: () => void, onError?: () => void, 
             <input type="text" className="p-2 m-5 mb-1 rounded-xl border"
                    {...register('emailOrUid', {required: true})}
                    placeholder="email 或用户ID"/>
-            <div className="relative">
+            {
+                showPassword &&
                 <input type="password" className="w-full p-2 rounded-xl border"
                        {...register('password', {required: true})}
                        placeholder="密码"/>
-            </div>
+            }
+
             <button
                 className={`bg-[#002074] rounded-xl py-2 text-white max-w-full px-10  hover:scale-105 duration-300 btn btn-sm ${state === SubmitState.loading ? 'loading' : ''}`}>
                 登录
@@ -101,7 +109,7 @@ export default function (props: { onSuccess?: () => void, onError?: () => void, 
                 {tip}
             </div>
             <div className=" text-xs border-b">
-                <a href="https://pagenote.cn/reset_password">忘记密码？..</a>
+                <a>未注册账号，登录时将自动注册。</a>
             </div>
         </form>
     )
