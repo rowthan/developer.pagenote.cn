@@ -1,10 +1,10 @@
 import PlanCard, {PlanInfo} from "../components/pro/PlanCard";
 import Tip from "../components/pro/Tip";
-import {useState} from "react";
+import React, {useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
 
 const plans: PlanInfo[] = [{
-    title: '免费/种子用户',
+    title: '免费/<key-word preview="1">种子用户<key-word>',
     description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。",
     price: 0,
     duration: '月',
@@ -50,7 +50,7 @@ export default function ProPlan() {
         <div>
             <section className="flex flex-col justify-center antialiased  text-gray-600 min-h-screen">
                 <div className="h-full">
-                    <div className="max-w-5xl mx-auto">
+                    <div className="max-w-5xl mx-auto p-2">
                         <h2 className="text-3xl text-neutral font-bold text-center mb-4">会员计划</h2>
 
                         <div className="grid grid-cols-12 gap-6">
@@ -64,12 +64,15 @@ export default function ProPlan() {
                         <div className="py-2">
                             <ul>
                                 <li>VIP可优先使用部分功能，普通用户会滞后一段时间，限制会逐步放开。</li>
-                                <li>如果你是学生或老师，使用 <b className={'border-b-2'}>教育邮箱</b>注册后，也可解锁功能 1个月。</li>
-                                <li><a className={'link link-primary'} href="https://pagenote.cn/img/wechat.jpg" target={'_blank'}>关注微信公众号</a>，也可领取VIP。</li>
+                                <li>如果你是学生或老师，使用
+                                    <key-word>教育邮箱</key-word>
+                                    注册后，也可解锁功能 1个月。关注
+                                    <key-word preview="1">微信公众号</key-word>
+                                    ，也可领取VIP。
+                                </li>
                             </ul>
                         </div>
                     </div>
-
                 </div>
                 {
                     open &&

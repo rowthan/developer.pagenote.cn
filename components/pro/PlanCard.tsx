@@ -88,7 +88,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                                 d="M12 17a.833.833 0 01-.833-.833 3.333 3.333 0 00-3.334-3.334.833.833 0 110-1.666 3.333 3.333 0 003.334-3.334.833.833 0 111.666 0 3.333 3.333 0 003.334 3.334.833.833 0 110 1.666 3.333 3.333 0 00-3.334 3.334c0 .46-.373.833-.833.833z"/>
                         </svg>
                     </div>
-                    <h3 className="text-lg text-neutral font-semibold">{title}</h3>
+                    <h3 className="text-lg text-neutral font-semibold" dangerouslySetInnerHTML={{__html:title}}></h3>
                 </header>
                 <div className="text-sm mb-2 h-10">{description}</div>
                 <div className="font-bold mb-4">
