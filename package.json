@@ -11,6 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@pagenote/notion-database": "^0.0.1-b",
     "@pagenote/shared": "1.11.2",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.7",

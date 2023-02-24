@@ -1,9 +1,11 @@
 
 export default function HighLightText(props:{keyword: string, text?: string, hideOnUnMatch?: boolean}) {
-    const {keyword,text, hideOnUnMatch=true} = props;
-    const regex = new RegExp(keyword,"i")
+    const {keyword,text, hideOnUnMatch=false} = props;
 
-    if(!text || (hideOnUnMatch && !regex.test(keyword))){
+    const words = keyword.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').split(/\s+/)
+    const regex = new RegExp(words.join("|"),"ig")
+
+    if(!text || (hideOnUnMatch && !regex.test(text))){
         return null;
     }
 
