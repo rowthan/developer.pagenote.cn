@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
 
 const plans: PlanInfo[] = [{
-    title: '免费/<key-word preview="1">种子用户<key-word>',
+    title: '免费/<key-word>种子用户<key-word>',
     description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。",
     price: 0,
     duration: '月',
@@ -50,7 +50,7 @@ export default function ProPlan() {
         <div>
             <section className="flex flex-col justify-center antialiased  text-gray-600 min-h-screen">
                 <div className="h-full">
-                    <div className="max-w-5xl mx-auto p-2">
+                    <div className="max-w-screen-lg	 mx-auto p-2">
                         <h2 className="text-3xl text-neutral font-bold text-center mb-4">会员计划</h2>
 
                         <div className="grid grid-cols-12 gap-6">

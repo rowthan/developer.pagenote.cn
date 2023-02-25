@@ -38,5 +38,6 @@ next-env.d.ts
 .idea
 
 package-lock.json
+yarn.lock
 
 _pages

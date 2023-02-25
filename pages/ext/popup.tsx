@@ -41,7 +41,7 @@ export default function PopupPage() {
     }
     return (
         <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
-            <div className={'w-basic m-auto border border-black shadow rounded-lg overflow-hidden'}>
+            <div className={'w-basic m-auto border border-black shadow rounded-lg overflow-hidden transform translate-x-0'}>
                 <CheckVersion requireVersion={'0.24.7'}>
                     <Router>
                         <NavTabs keyword={keyword} onChangeKeyword={setKeyword}/>
