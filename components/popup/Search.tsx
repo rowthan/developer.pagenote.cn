@@ -91,7 +91,7 @@ export default function Search(props: { keyword: string }) {
                 pageKey: pageKey
             }
         }).then(function (res) {
-            console.log(res,'导出结果')
+            console.log(res,'备份结果')
         })
     }
 
@@ -149,7 +149,7 @@ export default function Search(props: { keyword: string }) {
                     </h2>
                     <div className="my-2 text-right">
                         {/*<button onClick={batchDeleted} className={'btn btn-sm btn-error'}>删除</button>*/}
-                        <button onClick={batchExport} className={'btn btn-sm btn-primary ml-2'}>备份导出</button>
+                        <button onClick={batchExport} className={'btn btn-sm btn-primary ml-2'}>备份备份</button>
                     </div>
                 </>
             </Modal>

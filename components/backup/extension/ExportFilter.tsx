@@ -25,7 +25,7 @@ export default function ExportFilter() {
             lightFilter: selected.includes('light') ? commonFilter : {key: "1"},
             snapshotFilter: selected.includes('snapshot') ? commonFilter : {url: "1"},
         }).then(function (res) {
-            console.log(res,'导出结果')
+            console.log(res,'备份结果')
             setDownloading(false)
         })
 
@@ -96,7 +96,7 @@ export default function ExportFilter() {
             <table className="table table-compact w-full">
                 <thead>
                 <tr>
-                    <th>导出类型</th>
+                    <th>备份类型</th>
                     <th>筛选</th>
                 </tr>
                 </thead>
@@ -131,7 +131,7 @@ export default function ExportFilter() {
                     <td></td>
                     <td className={'text-right'}>
                         <button disabled={downloading} className={'btn btn-sm'} onClick={exportData}>
-                            确定导出
+                            确定备份
                         </button>
                     </td>
                 </tr>

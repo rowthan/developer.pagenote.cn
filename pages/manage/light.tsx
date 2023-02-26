@@ -189,7 +189,7 @@ export default function Light() {
                                            <ul tabIndex={0}
                                                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                                                {/*<li>*/}
-                                               {/*    <button className='btn' disabled={true}>批量导出</button>*/}
+                                               {/*    <button className='btn' disabled={true}>批量备份</button>*/}
                                                {/*</li>*/}
                                                <li onClick={()=>{batchDelete()}}><a>彻底删除</a></li>
                                            </ul>

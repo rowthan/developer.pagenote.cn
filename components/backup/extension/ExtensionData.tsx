@@ -39,10 +39,10 @@ export default function ExtensionData() {
             <BasicSettingLine label={<div>
                 插件本地数据<TipInfo
                 position={'right'}
-                tip={'产生的数据存储在浏览器中。当插件被卸载时，数据也一并清空。如要卸载，请注意导出备份。'}/>
+                tip={'产生的数据存储在浏览器中。当插件被卸载时，数据也一并清空。如要卸载，请注意备份备份。'}/>
             </div>} subLabel={'插件卸载时清空'} right={
                 <div>
-                    <label htmlFor="my-modal-3" className="mr-2 btn btn-outline btn-xs">导出</label>
+                    <label htmlFor="my-modal-3" className="mr-2 btn btn-outline btn-xs">备份</label>
                     <input type="checkbox" id="my-modal-3" className="modal-toggle" />
                     <label htmlFor="my-modal-3" className="modal">
                         <label htmlFor="" className="modal-box relative">

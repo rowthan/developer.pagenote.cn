@@ -196,7 +196,7 @@ function Waring(props: { tab?: Tab }) {
                 <WarnSvg className="text-warning fill-current flex-shrink-0 h-6 w-6"/>
                 <div>
                     <div className={'text-lg'}>
-                        无法联通PAGENOTE
+                        此标签页无法与PAGENOTE联通
                     </div>
 
                     {
