@@ -1,12 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {Step, WebPage} from "@pagenote/shared/lib/@types/data";
 import extApi from "@pagenote/shared/lib/pagenote-api";
-import {QueryValue} from "@pagenote/shared/lib/@types/database";
 import {useLazyEffect} from "../../hooks/userLazyEffect";
-import set from 'lodash/set'
-import get from "lodash/get";
-import HighLightText from "../HighLightText";
-import dayjs from "dayjs";
 import { searchInExt } from "service/ext";
 import WebPageItem from "../webpage/WebPageItem";
 import Modal from "../Modal";
@@ -20,12 +15,12 @@ export default function Search(props: { keyword: string }) {
     const search = function () {
         // TODO 搜索所有tab 标签页 多关键词搜索🔍
         if (keyword.trim()) {
-            console.time(keyword)
+            // console.time(keyword)
             searchInExt(keyword,(result)=>{
                 setList(result)
                 setSelected([])
                 setLimit(20)
-                console.timeEnd(keyword)
+                // console.timeEnd(keyword)
             })
         } else {
             setSelected([])

@@ -44,7 +44,11 @@ export default function LocalHTML() {
 
     if(list.length===0){
         return <div>
-            <Empty>还没有离线网页，去尝试一下吧。</Empty>
+            <Empty>
+                <div>
+                    还没有 <key-word preview={'1'}>离线网页</key-word>，去尝试一下吧。
+                </div>
+            </Empty>
         </div>
     }
 

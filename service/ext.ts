@@ -5,6 +5,8 @@ import extApi from "@pagenote/shared/lib/pagenote-api";
 import set from 'lodash/set'
 import get from "lodash/get";
 import {throttle} from 'lodash'
+import {localResource} from "@pagenote/shared/lib/extApi";
+import LocalResource = localResource.LocalResource;
 
 const LIGHT_PLACE_KEY = 'plainData.steps'
 
@@ -42,12 +44,13 @@ function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Par
     return result;
 }
 
-async function searchInPage(keyword: string){
+async function searchInPage(keyword: string,operation: "$or"|"$and"){
     const regex = '.*' + (keyword) + '.*';
 
+    const keys:(keyof WebPage)[] = ['title', 'url','key', 'categories']
     const orFilter: {
         [key in keyof WebPage]?: QueryValue
-    }[] = ['title', 'url','key', 'categories'].map(function (key) {
+    }[] = keys.map(function (key) {
         return {
             [key]: {
                 $regex: regex,
@@ -60,7 +63,7 @@ async function searchInPage(keyword: string){
     const result = await extApi.lightpage.queryPages({
         query: {
             deleted: false,
-            $or: orFilter,
+            [operation]: orFilter,
         },
         pageSize:1000,
         sort:{
@@ -71,11 +74,13 @@ async function searchInPage(keyword: string){
     return result?.data?.list || []
 }
 
-async function searchInLight(keyword: string){
+async function searchInLight(keyword: string,operation: "$or"|"$and"){
     const regex = '.*' + (keyword) + '.*';
+    const keys:(keyof Step)[] = ['text', 'tip']
+
     const orLightFilter: {
         [key in keyof Step]?: QueryValue
-    }[] = ['text', 'tip'].map(function (key) {
+    }[] = keys.map(function (key) {
         return {
             [key]: {
                 $regex: regex,
@@ -87,7 +92,7 @@ async function searchInLight(keyword: string){
     const lightResult = await extApi.lightpage.queryLights({
         query: {
             deleted: false,
-            $or: orLightFilter,
+            [operation]: orLightFilter,
         },
         pageSize: 1000,
         sort:{
@@ -97,11 +102,12 @@ async function searchInLight(keyword: string){
     return lightResult?.data?.list||[];
 }
 
-async function searchInHTML(keyword: string){
+async function searchInHTML(keyword: string,operation: "$or"|"$and"){
     const regex = '.*' + (keyword) + '.*';
+    const keys:( keyof LocalResource)[] = ['name']
     const orHtmlFilter: {
-        [key in keyof Step]?: QueryValue
-    }[] = ['name'].map(function (key) {
+        [key in keyof LocalResource]?: QueryValue
+    }[] = keys.map(function (key) {
         return {
             [key]: {
                 $regex: regex,
@@ -113,7 +119,7 @@ async function searchInHTML(keyword: string){
     const htmlResult = await extApi.localResource.query({
         query: {
             deleted: false,
-            $or: orHtmlFilter,
+            [operation]: orHtmlFilter,
             contentType: ContentType.html,
             // name:{
             //     $regex: regex,
@@ -161,8 +167,12 @@ export async function searchInExt(keywords: string, callback:(list:Partial<WebPa
     const tasks = [];
     for(let i=0; i<words.length; i++){
         const keyword = (words[i]||"").trim();
-        // 异步搜索        
-        tasks.push(searchInPage(keyword).then(function(pageResult){
+        // 异步搜索
+        tasks.push(searchInPage(keyword,"$or").then(function(pageResult){
+            // 单个关键词，立刻返回
+            if(words.length===1){
+                callback(pageResult)
+            }
             pageResult.forEach(function(item){
                 const key: string = item.key || item.url || "";
                 mark("page",key,i,1)
@@ -170,7 +180,7 @@ export async function searchInExt(keywords: string, callback:(list:Partial<WebPa
             })
         }))
 
-        tasks.push(searchInLight(keyword).then(function(lights){
+        tasks.push(searchInLight(keyword,"$or").then(function(lights){
             lights.forEach(function(item){
                 const key: string = item.key || item.url || "";
                 mark("light",key,i,1)
@@ -181,7 +191,6 @@ export async function searchInExt(keywords: string, callback:(list:Partial<WebPa
             })
         }))
 
-        tasks.push
     }
 
     await Promise.all(tasks)
@@ -231,10 +240,9 @@ export async function searchInExt(keywords: string, callback:(list:Partial<WebPa
         if(prePageMatched !== nextPageMatched){
             return prePageMatched > nextPageMatched ? -1 : 1
         }
-        
+
         return (pre.plainData?.steps||[])?.length > (next.plainData?.steps||[])?.length ? -1 : 1
     })
-
 
     callback(list)
 
