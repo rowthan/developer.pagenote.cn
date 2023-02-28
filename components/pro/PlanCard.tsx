@@ -55,7 +55,7 @@ const RIGHTS: Right[] = [{
     allowFor: [1],
     visibleFor: [0, 1],
 }, {
-    label: "福利转换为积分。可抵扣<key-word>其他作品</key-word>VIP",
+    label: "福利转换为积分。可抵扣其他作品VIP",
     allowFor: [2],
     visibleFor: [2],
 }]
