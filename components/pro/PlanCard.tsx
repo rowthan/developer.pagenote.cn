@@ -115,7 +115,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
             </div>
             <div className="px-5 pt-4 pb-5">
                 <div className="text-xs font-semibold uppercase mb-4">
-                    权益列表（只增不减）
+                    权益列表（<key-word>只增不减</key-word>）
                 </div>
                 <ul>
                     {
