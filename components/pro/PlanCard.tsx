@@ -90,7 +90,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                     </div>
                     <h3 className="text-lg text-neutral font-semibold" dangerouslySetInnerHTML={{__html:title}}></h3>
                 </header>
-                <div className="text-sm mb-2 h-10">{description}</div>
+                <div className="text-sm mb-2 h-10" dangerouslySetInnerHTML={{__html: description}}></div>
                 <div className="font-bold mb-4">
                     <span className="text-2xl">￥</span>
                     <span className="text-3xl" x-text="annual ? '14' : '19'">
