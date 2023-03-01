@@ -157,7 +157,7 @@ export default function Offline() {
     return <RedirectToExt>
         <>
         <Head>
-            <Script src="/rollup/open_api_bridge.js"></Script>
+            <script src="/rollup/open_api_bridge.js"></script>
             <title>【pagenote离线网页】{resource?.name}</title>
         </Head>
 
