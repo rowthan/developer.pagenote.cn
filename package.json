@@ -11,9 +11,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "@pagenote/shared": "1.11.4",
+    "@pagenote/shared": "1.11.5",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.7",
+    "ali-oss": "^6.17.1",
     "classnames": "^2.3.2",
     "daisyui": "^2.46.0",
     "date-fns": "^2.29.3",
@@ -27,10 +28,12 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.40.0",
+    "react-image-crop": "^10.0.9",
     "swr": "^2.0.0",
     "use-delayed-render": "0.0.7"
   },
   "devDependencies": {
+    "@types/ali-oss": "^6.16.7",
     "@types/chrome": "0.0.206",
     "@types/color": "^3.0.3",
     "@types/lodash": "^4.14.190",
