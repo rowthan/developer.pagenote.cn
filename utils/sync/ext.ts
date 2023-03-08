@@ -1,8 +1,8 @@
 import {DataTypes, TableNameType} from "./const";
-import {AbstractInfo, CacheMethod, Snapshot, SyncMethods,scheduleWrap} from "@pagenote/shared/lib/library/syncStrategy";
+import {AbstractInfo, CacheMethod, Snapshot, SyncMethods,scheduleWrap} from  'lib/SyncStrategy'// "@pagenote/shared/lib/library/syncStrategy";
 import {Find, FindResponse} from "@pagenote/shared/lib/@types/database";
 import {BaseMessageHeader, BaseMessageResponse} from "@pagenote/shared/lib/communication/base";
-import extApi from "@pagenote/shared/lib/generateApi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 
 /**
  * 获取插件当前快照
@@ -56,7 +56,7 @@ async function getExtensionCurrentDataSnapshot(tableName: TableNameType): Promis
 /**
  * 根据类型，操作插件数据：增删改查、快照
  * */
-export function getExtBasicMethodByType<T extends { key: string, updateAt: number }>(tableName: TableNameType): SyncMethods<T> & CacheMethod  {
+export function getExtBasicMethodByType<T extends { key: string, updateAt: number }>(tableName: TableNameType): SyncMethods<T>  {
     let addMethod: (list: any[], header?: Partial<BaseMessageHeader>) => Promise<any>;
     let removeMethod: (query: { keys: string[] }, header?: Partial<BaseMessageHeader>) => Promise<any>;
     let queryMethod: (find: Find<T>, header?: Partial<BaseMessageHeader>) => Promise<BaseMessageResponse<FindResponse<Partial<DataTypes>>>>
@@ -77,37 +77,21 @@ export function getExtBasicMethodByType<T extends { key: string, updateAt: numbe
             queryMethod = extApi.lightpage.queryPages;
             break;
     }
-    // addMethod = scheduleWrap(addMethod.bind(addMethod),50,2)
-    // queryMethod = scheduleWrap(queryMethod.bind(queryMethod),50,2)
-    // removeMethod = scheduleWrap(removeMethod.bind(removeMethod),50,2)
+    addMethod = scheduleWrap(addMethod.bind(addMethod),50,2)
+    queryMethod = scheduleWrap(queryMethod.bind(queryMethod),50,2)
+    removeMethod = scheduleWrap(removeMethod.bind(removeMethod),50,2)
     const header = {
         timeout: 20 * 1000
     }
     return {
-        cache:{
-            storageGet: function (storeId):Promise<Snapshot|null> {
-                return extApi.commonAction.getPersistentValue(storeId).then(function (res) {
-                    return res.data
-                })
-            },
-            storageSet: function (storeId, snapshot) {
-                return extApi.commonAction.setPersistentValue({
-                    key: storeId,
-                    value: snapshot
-                }).then(function () {
-
-                })
-            },
-        },
-        getAbstractInfo(data: T | null) {
+        computeAbstractByData(data: T | null) {
             if (!data) {
                 return null
             }
 
             const abstract: AbstractInfo = {
                 id: data.key,
-                c_id: '',
-                l_id: data.key,
+                self_id: data.key,
                 updateAt: data.updateAt
             }
             return abstract

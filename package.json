@@ -11,7 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@pagenote/shared": "1.11.4",
+    "@pagenote/shared": "1.11.6",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.7",
     "@typegoose/typegoose": "^10.0.0",
