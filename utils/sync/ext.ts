@@ -25,23 +25,23 @@ async function getExtensionCurrentDataSnapshot(tableName: TableNameType): Promis
 
     const snapshot: Snapshot = {}
     function queryList(page:number=0) {
-        const pageSize = 1000;
+        const pageSize = 99999999999;
         return method({
             query: {},
             limit: pageSize,
             page: page,
             pageSize: pageSize,
-            projection: {
+            projection: { // 精简数据体积
                 updateAt: 1,
-                key: 1
+                key: 1,
+                url: 1,
             }
         }).then(async function (res) {
             res.data.list.forEach(function (item) {
                 snapshot[item.key || ''] = {
                     id: item.key || '',
                     updateAt: item.updateAt || 0,
-                    l_id: item.key || '',
-                    c_id: ''
+                    self_id: item.key || '',
                 }
             })
             if(res.data.has_more){
@@ -78,8 +78,8 @@ export function getExtBasicMethodByType<T extends { key: string, updateAt: numbe
             break;
     }
     addMethod = scheduleWrap(addMethod.bind(addMethod),50,2)
-    queryMethod = scheduleWrap(queryMethod.bind(queryMethod),50,2)
-    removeMethod = scheduleWrap(removeMethod.bind(removeMethod),50,2)
+    queryMethod = scheduleWrap(queryMethod.bind(queryMethod),100,10)
+    removeMethod = scheduleWrap(removeMethod.bind(removeMethod),100,20)
     const header = {
         timeout: 20 * 1000
     }
@@ -97,7 +97,7 @@ export function getExtBasicMethodByType<T extends { key: string, updateAt: numbe
             return abstract
         },
         getSourceId(): Promise<string> {
-            return extApi.user.getWhoAmI().then(function (res) {
+            return extApi.user.getWhoAmI(undefined).then(function (res) {
                 return `${tableName}_${res.data.did}`
             })
         },

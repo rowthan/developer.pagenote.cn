@@ -175,6 +175,24 @@ export function diffSnapshot(
     return result
 }
 
+export function mergeSnapshot(snapshotA: Snapshot,snapshotB: Snapshot) {
+    const result: Snapshot = {}
+    for(let i in snapshotA){
+        if(snapshotB[i] && snapshotB[i]?.updateAt > snapshotA[i]?.updateAt){
+            result[i] = snapshotB[i]
+        }else{
+            result[i] = snapshotA[i]
+        }
+    }
+    for(let j in snapshotB){
+        if(!result[j]){
+            result[j] = snapshotB[j]
+        }
+    }
+
+    return result;
+}
+
 type SyncTaskInfo = {
     changeMap: ChangeMap
     latestSnapshot: Snapshot
@@ -238,11 +256,8 @@ export function computeSyncTask(
     /** 2 */
     for (const i in local.changeMap) {
         const flag = local.changeMap[i]
-        if (
-            [ChangeFlag.nochange, ChangeFlag.changed, ChangeFlag.created].includes(
-                flag
-            )
-        ) {
+        const SERVER_ADD: ChangeFlag[] = [ChangeFlag.nochange, ChangeFlag.changed, ChangeFlag.created]
+        if (SERVER_ADD.includes(flag)) {
             taskGroup[SYNC_ACTION.serverAdd].set(i,{
                 id: i,
                 state: TaskState.pending,
@@ -256,11 +271,8 @@ export function computeSyncTask(
     /** 3 */
     for (const i in cloud.changeMap) {
         const flag = cloud.changeMap[i]
-        if (
-            [ChangeFlag.nochange, ChangeFlag.changed, ChangeFlag.created].includes(
-                flag
-            )
-        ) {
+        const CLIENT_ADD: ChangeFlag[] = [ChangeFlag.nochange, ChangeFlag.changed, ChangeFlag.created];
+        if (CLIENT_ADD.includes(flag)) {
             taskGroup[SYNC_ACTION.clientAdd].set(i,{
                 id: i,
                 state: TaskState.pending,
@@ -277,11 +289,20 @@ interface GetSnapshot {
     (): Promise<Snapshot | null>
 }
 
+interface SetSnapshot {
+    // 应用方可以选择批量更新，或单个更新
+    (abstract: AbstractInfo,snapshot: Snapshot): Promise<boolean>
+}
+
+export enum TaskResolvedBy {
+    CLOUD = 'cloud',
+    LOCAL = 'local',
+}
 export interface ResolveTask {
     (id: string, task: SyncTaskDetail): Promise<{
         result: TaskState,
-        abstract: AbstractInfo | null,
-        resolveBy: "cloud"|"local"
+        abstract: AbstractInfo,
+        resolveBy: TaskResolvedBy
     }>
 }
 
@@ -299,24 +320,24 @@ export type SyncMethods<T> = {
     /**当前数据源ID标识*/
     getSourceId: ()=>Promise<string>
 
+    /**全量数据的当前快照信息*/
+    getCurrentSnapshot: GetSnapshot
+
+    /**基于单个数据的全量信息，提取摘要数据*/
+    computeAbstractByData: (data: T | null)=>AbstractInfo | null
+
     /**增删改查基础方法*/
     add: ModifyByIdAndData<T>
     update: ModifyByIdAndData<T>
     remove: MethodById<T>
     query: MethodById<T>
-
-    /**全量数据的当前快照信息*/
-    getCurrentSnapshot: GetSnapshot
-
-    /**基于单个数据的全量信息，提取摘要数据*/
-    computeAbstractByData: (data: T | null)=>AbstractInfo
 }
 
 export type CacheMethod = {
     /**上次同步结果。
      * 先计算基于上次同步本地、远程各自的变化，然后再对差异合并处理。
      * 不存储的效果：每次同步都当做两个完全全新的节点进行同步，无法最优化处理变动
-     * 
+     *
      * 1. 存储在本地; 读写更快捷方便
      * 2. 存储到云端，可以由服务器计算客户端与最新数据的差异，通知客户端执行同步操作。
      *
@@ -373,10 +394,10 @@ export default class SyncStrategy<T> {
 
     public lockResolving: number
     public resolving: boolean = false;
-    private nextTimer: NodeJS.Timer | undefined;
+    private nextTimer: number;
     // 一次任务集处理ID，标识当前正在执行的任务集；非当前任务集ID的任务，放弃执行
     private resolveId: string = '';
-    private tempNewSnapshot: {
+    public tempNewSnapshot: {
         local: Snapshot,
         cloud: Snapshot,
     } = {
@@ -393,7 +414,7 @@ export default class SyncStrategy<T> {
     }
 
     /**生成同步对ID*/
-    async _getSyncPariId(type:'local'|'cloud'){
+    async _getSyncPariId(type:TaskResolvedBy){
         if(!this.syncPairId){
             const localId = await this.client.local.getSourceId();
             const cloudId = await this.client.cloud.getSourceId();
@@ -404,7 +425,7 @@ export default class SyncStrategy<T> {
 
 
     /**计算自身与上次同步比较，数据变更的差异*/
-    async _computeSelfDiff(client: 'local'|'cloud'){
+    async _computeSelfDiff(client: TaskResolvedBy){
         const currentSnapshot = await this.client[client].getCurrentSnapshot() || {};
         const storeId = await this._getSyncPariId(client);
         const lastSnapshot = await this.client.cache.getLastSyncSnapshot(storeId) || {};
@@ -424,8 +445,8 @@ export default class SyncStrategy<T> {
         this.syncTaskMap = getInitTaskMap();
         // 计算差异
         return Promise.all([
-            this._computeSelfDiff('local'),
-            this._computeSelfDiff('cloud'),
+            this._computeSelfDiff(TaskResolvedBy.LOCAL),
+            this._computeSelfDiff(TaskResolvedBy.CLOUD),
         ]).then(([localDiff, cloudDiff]) => {
             this.syncTaskMap = computeSyncTask(localDiff, cloudDiff);
             return this.syncTaskMap
@@ -436,10 +457,10 @@ export default class SyncStrategy<T> {
         const {cloud, local} = this.client;
         switch (actionType) {
             case SYNC_ACTION.clientDelete:
-                return function (id,taskDetail) {
+                return function (id:string,taskDetail:SyncTaskDetail) {
                     return local.remove(id,taskDetail).then(function (res) {
                         return {
-                            resolveBy: "local",
+                            resolveBy: TaskResolvedBy.LOCAL,
                             abstract: local.computeAbstractByData(res),
                             result: TaskState.success
                         }
@@ -449,7 +470,7 @@ export default class SyncStrategy<T> {
                 return function (id,taskDetail) {
                     return cloud.remove(id,taskDetail).then(function (res) {
                         return {
-                            resolveBy: "cloud",
+                            resolveBy: TaskResolvedBy.CLOUD,
                             abstract: cloud.computeAbstractByData(res),
                             result: TaskState.success
                         }
@@ -472,7 +493,7 @@ export default class SyncStrategy<T> {
                             }
                             return cloud.add(id, localRes,taskDetail).then(function (res) {
                                 return {
-                                    resolveBy: "cloud",
+                                    resolveBy: TaskResolvedBy.CLOUD,
                                     abstract: cloud.computeAbstractByData(res),
                                     result: TaskState.success
                                 }
@@ -484,7 +505,7 @@ export default class SyncStrategy<T> {
                             }
                             return local.add(id, cloudRes,taskDetail).then(function (res) {
                                 return {
-                                    resolveBy: "local",
+                                    resolveBy: TaskResolvedBy.LOCAL,
                                     abstract: local.computeAbstractByData(res),
                                     result: TaskState.success
                                 }
@@ -501,7 +522,7 @@ export default class SyncStrategy<T> {
                         if (result) {
                             return local.add(id, result,taskDetail).then(function (res) {
                                 return {
-                                    resolveBy: "local",
+                                    resolveBy: TaskResolvedBy.LOCAL,
                                     abstract: local.computeAbstractByData(res),
                                     result: TaskState.success
                                 }
@@ -520,7 +541,7 @@ export default class SyncStrategy<T> {
                         if (result) {
                             return cloud.add(id, result,taskDetail).then(function (res) {
                                 return {
-                                    resolveBy: "cloud",
+                                    resolveBy: TaskResolvedBy.CLOUD,
                                     abstract: cloud.computeAbstractByData(res),
                                     result: TaskState.success
                                 }
@@ -545,7 +566,7 @@ export default class SyncStrategy<T> {
         }
         const {actionType,id} = taskDetail;
         let responseAbstract: AbstractInfo;
-        let resolveBy:"local"|"cloud" = 'local'
+        let resolveBy:TaskResolvedBy = TaskResolvedBy.LOCAL
         try {
             const resultMethod = await this._getResolveMethod(actionType)(id, taskDetail);
             resolveBy = resultMethod.resolveBy;
@@ -554,29 +575,24 @@ export default class SyncStrategy<T> {
                 responseAbstract = resultMethod.abstract;
                 // 更新摘要
                 // 如果删除资源，则快照中直接除名
-                if (responseAbstract === null) {
+                if (responseAbstract === null) { // todo 这里是删除还是设置为 null
                     delete this.tempNewSnapshot.cloud[id];
                     delete this.tempNewSnapshot.local[id];
                 } else if (responseAbstract) { // 有最新快照信息，将其赋值给本地、云端快照
-                    const cloudSelfId = resultMethod.resolveBy === 'cloud' ? responseAbstract.self_id : this.tempNewSnapshot.cloud[id]?.self_id;
+                    const cloudSelfId = resultMethod.resolveBy === TaskResolvedBy.CLOUD ? responseAbstract.self_id : this.tempNewSnapshot.cloud[id]?.self_id;
                     this.tempNewSnapshot.cloud[id] = {
                         id: responseAbstract.id,
                         updateAt: responseAbstract.updateAt,
                         self_id: cloudSelfId || "",
                     }
 
-                    const localSelfId = resultMethod.resolveBy === 'local' ? responseAbstract.self_id : this.tempNewSnapshot.local[id]?.self_id;
+                    const localSelfId = resultMethod.resolveBy === TaskResolvedBy.LOCAL ? responseAbstract.self_id : this.tempNewSnapshot.local[id]?.self_id;
                     this.tempNewSnapshot.local[id] = {
                         id: responseAbstract.id,
                         updateAt: responseAbstract.updateAt,
                         self_id: localSelfId || "",
                     }
                 }
-
-                // 读写太频繁 可能异常 增量提交
-                this.client.cache.setLastSyncSnapshot(await this._getSyncPariId('local'), this.tempNewSnapshot.local).then(async ()=>{
-                    this.client.cache.setLastSyncSnapshot(await this._getSyncPariId('cloud'), this.tempNewSnapshot.cloud);
-                });
             }
         } catch (e) {
             console.error('resolve error:', e)
@@ -597,7 +613,7 @@ export default class SyncStrategy<T> {
         function pushTask(item: SyncTaskDetail) {
             promiseTaskList.push(that._resolveSingleTask(item,that.resolveId))
         }
-        
+
         /**2. 优先下载本地*/
         task[SYNC_ACTION.clientAdd].forEach(pushTask)
 
@@ -606,7 +622,7 @@ export default class SyncStrategy<T> {
 
         /**4. 冲突解决*/
         task[SYNC_ACTION.conflict].forEach(pushTask)
-        
+
 
         /**6. 服务端上传*/
         task[SYNC_ACTION.serverAdd].forEach(pushTask)
@@ -632,7 +648,7 @@ export default class SyncStrategy<T> {
 
     sync(): Promise<{task?: SyncTaskActionsMap,locked?: boolean,}> {
         if (this.resolving) {
-            clearTimeout(<NodeJS.Timeout>this.nextTimer)
+            clearTimeout(this.nextTimer)
             this.nextTimer = setTimeout(() => {
                 return this.sync()
             }, this.lockResolving / 2)
@@ -644,7 +660,10 @@ export default class SyncStrategy<T> {
             this.resolving = false;
         }, this.lockResolving)
         return this._computeSyncTask().then((task) => {
-            return this._resolveTaskMap(task).then(function (res) {
+            return this._resolveTaskMap(task).then( async(res)=> {
+                // TODO 读写太频繁 可能异常 增量提交
+                this.client.cache.setLastSyncSnapshot(await this._getSyncPariId(TaskResolvedBy.LOCAL), this.tempNewSnapshot.local);
+                this.client.cache.setLastSyncSnapshot(await this._getSyncPariId(TaskResolvedBy.CLOUD), this.tempNewSnapshot.cloud);
                 return{
                     task: res,
                     locked: false,
