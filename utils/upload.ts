@@ -5,13 +5,14 @@ import extApi from '@pagenote/shared/lib/pagenote-api/'
 export function UploadImage() {
     console.log('upload')
     return extApi.network.pagenote({
-        url:"http://localhost:3000/api/graph/profile",
+        url:"https://api-test.pagenote.cn/api/graph/profile",
         method:"GET",
         data:{
-            query:`query{ossKey(buket:"public"){AccessKeyId,AccessKeySecret,SecurityToken}}`
+            query:`query{ossKey(buket:"public"){AccessKeyId,AccessKeySecret,SecurityToken,CloudSpace}}`
         }
     }).then(function (res) {
-        const data = res.data.json.data.ossKey;
+        console.log(res,'upload token')
+        const data = res?.data?.json?.data?.ossKey;
         console.log(data,'ossKey')
         const client = new OSS({
             region:"oss-cn-beijing",
@@ -20,6 +21,9 @@ export function UploadImage() {
             stsToken: data.SecurityToken,
             bucket:"pagenote-public"
         });
-        return client;
+        return {
+            client: client,
+            cloud_space: data.CloudSpace,
+        };
     })
 }

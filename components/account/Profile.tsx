@@ -6,6 +6,10 @@ import React, {useRef, useState} from "react";
 import UploadTrigger from "../image/UploadTrigger";
 import Modal from "../Modal";
 import {ContentType} from "@pagenote/shared/lib/@types/data";
+import { updateProfile } from "service";
+import extApi from '@pagenote/shared/lib/pagenote-api/'
+
+
 export default function Profle(){
     const [user] = useUserInfo();
     const {profile} = user || {};
@@ -15,12 +19,14 @@ export default function Profle(){
 
     function onCropFinished() {
         setNewImg('')
-        UploadImage().then(function (client) {
+        UploadImage().then(function ({client,cloud_space}) {
             canvas.current?.toBlob(function (blob) {
-                client.put(`${profile?.uid}/test.png`, new Blob([blob], { type: ContentType.jpeg })).then(res =>{
-                    console.log(res,'上传结果')
+                client.put(`${cloud_space||profile?.uid}/test.png`, new Blob([blob], { type: ContentType.jpeg })).then(res =>{
+                    console.log(res.url,'上传结果')
+                    updateProfile(res.url)
                 }).catch(function (reason) {
                     console.log('山川失败')
+                    extApi.user.getUser()
                 })
             },ContentType.jpeg,0.1)
         })
@@ -83,7 +89,7 @@ export default function Profle(){
                                 </ul>
                             </div>
 
-                            <div className="my-4 bg-white p-3 hover:shadow">
+                            {/* <div className="my-4 bg-white p-3 hover:shadow">
                                 <div className="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
                                     <span>授权管理</span>
                                 </div>
@@ -106,7 +112,7 @@ export default function Profle(){
                                         将 PAGENOTE 推荐给其他人
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                         </div>
 

@@ -21,6 +21,20 @@ export function bindTransition(record: string, amount: number) {
     })
 }
 
+export function updateProfile(avatar: string){
+    return extApi.network.pagenote({
+        url:"https://api-test.pagenote.cn/api/graph/user",
+        data: {
+            mutation: `mutation{updateProfile(avatar:"${avatar}"){avatar}}`
+        },
+        method:"POST",
+    }).then(function(res){
+        console.log('更新结果',res)
+        const url = res?.data?.json?.data?.updateProfile
+        return url;
+    })
+}
+
 
 const CACHE_DURATION = 60 * 1000 * 10
 
