@@ -8,10 +8,11 @@ import Modal from "../Modal";
 import {ContentType} from "@pagenote/shared/lib/@types/data";
 import { updateProfile } from "service";
 import extApi from '@pagenote/shared/lib/pagenote-api/'
+import md5 from "md5";
 
 
 export default function Profle(){
-    const [user] = useUserInfo();
+    const [user,refresh] = useUserInfo();
     const {profile} = user || {};
     const canvas = useRef<HTMLCanvasElement | null>(null);
     const img = profile?.avatar;
@@ -21,12 +22,14 @@ export default function Profle(){
         setNewImg('')
         UploadImage().then(function ({client,cloud_space}) {
             canvas.current?.toBlob(function (blob) {
-                client.put(`${cloud_space||profile?.uid}/test.png`, new Blob([blob], { type: ContentType.jpeg })).then(res =>{
+                const fileName = md5(`${profile?.uid}${Date.now()}`)+'.jpeg'
+                client.put(`${cloud_space||profile?.uid}/${fileName}`, new Blob([blob], { type: ContentType.jpeg })).then(res =>{
                     console.log(res.url,'上传结果')
                     updateProfile(res.url)
                 }).catch(function (reason) {
                     console.log('山川失败')
-                    extApi.user.getUser()
+                    extApi.user.getUser({forceRefresh: true},{runAt: Date.now() + 5000})
+                    refresh();
                 })
             },ContentType.jpeg,0.1)
         })

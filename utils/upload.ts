@@ -8,18 +8,21 @@ export function UploadImage() {
         url:"https://api-test.pagenote.cn/api/graph/profile",
         method:"GET",
         data:{
-            query:`query{ossKey(buket:"public"){AccessKeyId,AccessKeySecret,SecurityToken,CloudSpace}}`
-        }
+            query:`query{ossKey(spaceType:"public"){AccessKeyId,AccessKeySecret,SecurityToken,CloudSpace,bucket,region}}`
+        },
+        _config:{
+          cacheDuration: 10 * 1000 * 60
+        },
     }).then(function (res) {
         console.log(res,'upload token')
         const data = res?.data?.json?.data?.ossKey;
         console.log(data,'ossKey')
         const client = new OSS({
-            region:"oss-cn-beijing",
+            region: data.region,
             accessKeyId: data.AccessKeyId,
             accessKeySecret: data.AccessKeySecret,
             stsToken: data.SecurityToken,
-            bucket:"pagenote-public"
+            bucket: data.bucket,
         });
         return {
             client: client,

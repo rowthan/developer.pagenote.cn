@@ -9,7 +9,7 @@ type UserInfo = {
 
 
 function fetchInfo() {
-    return extApi.user.getUser(undefined).then(function (res) {
+    return extApi.user.getUser({}).then(function (res) {
         return res.data
     })
 }
