@@ -1,3 +1,4 @@
+import Footer from 'components/Footer';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import CheckVersion from "../components/check/CheckVersion";
@@ -70,17 +71,7 @@ const Home: NextPage = () => {
         </div>
       </main>
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://pagenote.cn/release"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="https://pagenote.cn/favicon.ico" alt="pagenote Logo" width={48} height={48} />
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }
