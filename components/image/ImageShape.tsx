@@ -37,35 +37,35 @@ type Props =  {
     originImgSrc: string,
 
     children: ReactElement
+
+    cropCallback: (canvas: HTMLCanvasElement,)=>void
 }
 
 export default function ImageShape(props:Props) {
-    const {originImgSrc,preViewCanvas,children} = props;
+    const {originImgSrc,preViewCanvas,children,cropCallback} = props;
     const [imgSrc, setImgSrc] = useState('')
     const previewCanvasRef = useRef<HTMLCanvasElement|null>(null)
     const imgRef = useRef<HTMLImageElement|null>(null)
     const [crop, setCrop] = useState<Crop>()
-    const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
+    const [completedCrop, setCompletedCrop] = useState<PixelCrop|null>()
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
     const [aspect, setAspect] = useState<number | undefined>(1 / 1)
 
     useEffect(function () {
-        setImgSrc(originImgSrc)
+        setImgSrc(originImgSrc);
+        setScale(1);
+        setRotate(0)
     },[originImgSrc])
 
-    function onFinished() {
-        previewCanvasRef.current?.toBlob(function () {
-
-        })
-    }
 
 
-
-    function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
+    function onImageLoad() {
         if (aspect) {
-            const { width, height } = e.currentTarget
-            setCrop(centerAspectCrop(width, height, aspect))
+            const { width, height } = imgRef.current || {}
+            if(width && height){
+                setCrop(centerAspectCrop(width, height, aspect))
+            }
         }
     }
 
@@ -77,14 +77,17 @@ export default function ImageShape(props:Props) {
                 imgRef.current &&
                 (previewCanvasRef.current || preViewCanvas)
             ) {
+                const canvas: HTMLCanvasElement = preViewCanvas || previewCanvasRef.current as HTMLCanvasElement;
                 // We use canvasPreview as it's much faster than imgPreview.
                 canvasPreview(
                     imgRef.current as HTMLImageElement,
-                    preViewCanvas || previewCanvasRef.current as HTMLCanvasElement,
+                    canvas,
                     completedCrop,
                     scale,
                     rotate,
                 )
+
+                cropCallback(canvas)
             }
         },
         100,
@@ -105,13 +108,12 @@ export default function ImageShape(props:Props) {
         <div className="App">
             {!!imgSrc && (
                 <ReactCrop
-                    maxWidth={256}
-                    maxHeight={256}
+                    minWidth={128}
                     crop={crop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
                     aspect={aspect}
-                    circularCrop={true}
+                    circularCrop={false}
                 >
                     <img
                         crossOrigin="anonymous"
@@ -128,6 +130,7 @@ export default function ImageShape(props:Props) {
                     <canvas
                         ref={previewCanvasRef}
                         style={{
+                            display:"none",
                             border: '1px solid black',
                             objectFit: 'contain',
                             width: completedCrop.width,

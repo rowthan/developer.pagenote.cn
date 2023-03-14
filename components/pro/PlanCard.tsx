@@ -62,13 +62,11 @@ const RIGHTS: Right[] = [{
 
 
 export default function PlanCard(props: { info: PlanInfo, current: number,onClick:(info: PlanInfo)=>void }) {
-    const [books] = useBooks();
+    const [bookInfo] = useBooks();
     const {current, info,onClick} = props;
     const [user] = useUserInfo();
     const {title, description, price, duration, bg='indigo', role,unit='元'} = info;
     const disabled = current >= role
-
-    const endAtTime = books[0]?.endTime ? dayjs(books[0].endTime) : ''
 
     const canUpgrade = current < role;
     let buttonLabel = current === role ? `当前身份` : (canUpgrade ? '加入此身份' : '已高于此身份');

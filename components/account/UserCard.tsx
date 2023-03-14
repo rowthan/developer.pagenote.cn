@@ -3,21 +3,15 @@ import MoreSvg from "../../assets/svg/more.svg";
 import FreeSvg from 'assets/svg/free.svg'
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import VipSvg from 'assets/svg/vip.svg'
-import useWhoAmi from "../../hooks/useWhoAmi";
-import {useEffect, useState} from "react";
 import dayjs from "dayjs";
 import useBooks from "../../hooks/useBooks";
-import WhoAmIBoard from "../WhoAmIBoard";
-import BookList from "./BookList";
+import BookDetail from "./BookDetail";
 // import GitHubSvg from 'assets/svg/github.svg'
 // import NotionSvg from 'assets/svg//github.svg'
 
 export default function UserCard() {
     const [data,mutate] = useUserInfo();
-    const [bookList] = useBooks()
-    const [showDetail,setShowDetail] = useState(false)
-
-
+    const [bookInfo] = useBooks()
 
     function signout() {
         extApi.user.signout().then(function () {
@@ -25,16 +19,15 @@ export default function UserCard() {
         })
     }
 
-    const endAt = bookList.length>0 ? bookList[0].endTime : ''
+    const endAt = bookInfo.expiredAt;
     const endDay = endAt ? dayjs(endAt).format('YYYY-MM-DD') : ''
-    const endDayTip = dayjs(endAt).isAfter(dayjs(new Date('2032-01-01'))) ? '终身' : endDay
     return(
         <div className={'shadow rounded-lg p-2 min-w-80 bg-secondary'}>
             <div className={'flex justify-between'}>
                 <div className={'flex items-center mb-4'}>
                     <div className="avatar">
                         <div className="w-10 h-10 rounded-full bg-white ring ring-white ring-offset-base-100 ring-offset">
-                            <img src="https://pagenote.cn/favicon.ico" alt="Tailwind-CSS-Avatar-component" />
+                            <img src={data?.profile?.avatar||"https://pagenote.cn/favicon.ico"} alt={data?.profile?.nickname||"请登录"} />
                         </div>
                     </div>
                     <div className={'ml-4'}>
@@ -67,20 +60,15 @@ export default function UserCard() {
                     <a className={'tooltip tooltip-left'} data-tip={data?.profile?.pro ? '已解锁所有功能': '尚未解锁所有功能'}  href="https://pagenote.cn/pro-plan" target={'_blank'}>
                         {data?.profile?.pro ? <VipSvg width={24} height={24} /> : <FreeSvg width={24} height={24}/>}
                     </a>
+
                     {
-                        endDay && endDayTip &&
-                        <a onClick={()=>{setShowDetail(true)}} className={'text-xs tooltip block tooltip-left link'} data-tip={`点击查看详情`}>
-                            {endDayTip}
-                        </a>
+                        endDay &&
+                        <BookDetail>
+                            <a className={'text-xs tooltip block tooltip-left link'} data-tip={`点击查看详情`}>
+                                {bookInfo.expiredTip}
+                            </a>
+                        </BookDetail>
                     }
-                    <div className={`modal modal-${showDetail?'open':'close'}`}>
-                        <div className="modal-box">
-                            <BookList />
-                            <div className="modal-action">
-                                <button className="btn" onClick={()=>{setShowDetail(false)}}>关闭</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             {/*<div>*/}

@@ -2,12 +2,12 @@ import {ReactElement} from "react";
 
 interface Props {
     open: boolean,
-    keepNode: boolean,
+    keepNode?: boolean,
     children: ReactElement
     toggleOpen?: (open: boolean)=>void
 }
 export default function Modal(props:Props) {
-    const {open,keepNode,children,toggleOpen} = props;
+    const {open,keepNode=false,children,toggleOpen} = props;
     if(!open && !keepNode){
         return null;
     }

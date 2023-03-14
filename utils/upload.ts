@@ -14,9 +14,14 @@ export function UploadImage() {
           cacheDuration: 10 * 1000 * 60
         },
     }).then(function (res) {
-        console.log(res,'upload token')
         const data = res?.data?.json?.data?.ossKey;
         console.log(data,'ossKey')
+        if(!data){
+            return{
+                client: null,
+                cloud_space: ""
+            }
+        }
         const client = new OSS({
             region: data.region,
             accessKeyId: data.AccessKeyId,
