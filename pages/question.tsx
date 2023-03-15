@@ -79,13 +79,19 @@ export default () => {
                         ))
                     }
                 </div>
-                <div className={'flex justify-center mt-10'}>
+                <div className={'text-center mt-10'}>
+
                     <a
                         href={'/feedback'}
                         className="py-3 px-10 bg-yellow-400 text-gray-800 text-lg rounded-lg border-2 font-semibold border-gray-800 shadow-lg shadow-yellow-500/70">
                         未解决，提交问题
                     </a>
+
+                    <div className='mt-6'>
+                        <key-word>关注微信公众号</key-word>
+                    </div>
                 </div>
+
 
             </section>
 
