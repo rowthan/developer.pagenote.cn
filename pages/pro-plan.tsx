@@ -1,7 +1,8 @@
 import PlanCard, {PlanInfo} from "../components/pro/PlanCard";
 import Tip from "../components/pro/Tip";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
+import {createOrder} from "../service";
 
 const plans: PlanInfo[] = [{
     title: '免费/<key-word>种子用户<key-word>',
@@ -44,6 +45,12 @@ export default function ProPlan() {
             current = 1
         }
     }
+
+    useEffect(function () {
+        if(plan){
+            createOrder(plan?.price)
+        }
+    },[plan])
 
     const open = plan !== null;
     return(
