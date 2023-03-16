@@ -1,6 +1,12 @@
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import useCurrentTab from "hooks/useCurrentTab";
-import {checkIsBrowserAppStore, checkIsBrowserBasicUrl, checkIsLocalFile, checkIsReadMode} from "utils/check";
+import {
+    checkIsBrowserAppStore,
+    checkIsBrowserBasicUrl,
+    checkIsLocalFile,
+    checkIsPdf,
+    checkIsReadMode
+} from "utils/check";
 import {enablePagenote, refreshTab} from "utils/popup";
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from "hooks/useTabPagenoteState";
@@ -91,7 +97,7 @@ export default function EnableCheck() {
         return null;
     }
 
-    if (!tabState) {
+    if (!tabState || checkIsPdf(tab?.url||"")) {
         return <Waring tab={tab}/>
     }
 
@@ -100,17 +106,6 @@ export default function EnableCheck() {
         <div className={'mt-48 mx-auto'}>
             <div className={'flex justify-center'}>
                 <DisableButton/>
-                {/*<KeyboardTip command={'enable_light'}>*/}
-                {/*    <button onClick={enableInject}*/}
-                {/*            className={`w-60 relative btn btn-xl ${tabState.active ? 'btn-primary text-white' : "btn-outline"} rounded transition duration-500 ease-in-out`}>*/}
-                {/*        <img className={'bg-white rounded-lg'}*/}
-                {/*             src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}*/}
-                {/*             width={24} height={24} alt=""/>*/}
-                {/*        <span className={'ml-2'}>*/}
-                {/*        {tabState?.active ? '已启动' : '点击启动后开始标记'}*/}
-                {/*        </span>*/}
-                {/*    </button>*/}
-                {/*</KeyboardTip>*/}
             </div>
             <div className={'w-full m-auto my-2 align-center'}>
                 <div
@@ -158,23 +153,19 @@ function Waring(props: { tab?: Tab }) {
     const isHtmlFile = checkIsLocalFile(tab?.url)
     const isBrowserUrl = checkIsBrowserBasicUrl(tab?.url);
     const isAppstoreUrl = checkIsBrowserAppStore(tab?.url);
-    if (isBrowserUrl) {
+    const isPdfUrl = checkIsPdf(tab?.url||"");
+
+    const unSupportUrl = isBrowserUrl || isAppstoreUrl || isPdfUrl;
+    if (unSupportUrl) {
         return <div>
             <h3>点击切换标签页</h3>
             <WindowTabs/>
+            <div className={'text-gray-400'}>
+                <key-word>无法在此网页上使用</key-word>运行 PAGENOTE，请切换至其他标签页使用标记功能。
+            </div>
         </div>
     }
 
-    if (isAppstoreUrl) {
-        return (
-            <div>
-                <WindowTabs/>
-                <div className={'text-gray-400'}>
-                    浏览器不允许在此网页上使用插件，请切换至其他标签页使用标记功能。
-                </div>
-            </div>
-        )
-    }
     const isReadMode = checkIsReadMode(tab?.url);
     if(isReadMode){
         return (

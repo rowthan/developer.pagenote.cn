@@ -20,6 +20,10 @@ export function checkIsLocalFile(url?: string) {
     return /file:/.test(url)
 }
 
+export function checkIsPdf(url: string="") {
+    return /\.pdf$/.test(url)
+}
+
 export function checkIsInPopup() {
     return window.innerWidth < 800 || window.innerHeight < 600
 }

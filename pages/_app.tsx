@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from "next/head";
 import Script from "next/script";
+import {basePath} from "../const/env";
 
 // import {ThemeProvider} from "next-themes";
 
@@ -15,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
           <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;400;700&display=swap"
                 rel="stylesheet"/>
-          <Script src="/components.js"/>
+          <Script src={`${basePath}/components.js`}/>
         <Component {...pageProps} />
       </>
       // <ThemeProvider attribute='class'>
