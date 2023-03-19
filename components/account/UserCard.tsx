@@ -27,7 +27,9 @@ export default function UserCard() {
                 <div className={'flex items-center mb-4'}>
                     <div className="avatar">
                         <div className="w-10 h-10 rounded-full bg-white ring ring-white ring-offset-base-100 ring-offset">
-                            <img src={data?.profile?.avatar||"https://pagenote.cn/favicon.ico"} alt={data?.profile?.nickname||"请登录"} />
+                            <a target='_blank' href="https://developer.pagenote.cn/account">
+                                <img src={data?.profile?.avatar||"https://pagenote.cn/favicon.ico"} alt={data?.profile?.nickname||"请登录"} />
+                            </a>
                         </div>
                     </div>
                     <div className={'ml-4'}>
