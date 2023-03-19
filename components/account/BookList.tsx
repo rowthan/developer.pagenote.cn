@@ -6,7 +6,7 @@ export default function BookList() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="table table-compact w-full">
+            <table className="table table-compact w-full text-neutral">
                 <thead>
                 <tr>
                     <th>订阅周期</th>
@@ -15,13 +15,12 @@ export default function BookList() {
                 </thead>
                 <tbody>
                 {
-                    bookList.map((item, index) => (
+                    bookList?.list?.map((item, index) => (
                         <tr key={index}>
                             <th className={'text-xs'}>
-                                {dayjs(item.startTime).format('YYYY-MM-DD')} - {dayjs(item.endTime).format('YYYY-MM-DD')}
+                                {dayjs(item.startTime).format('YYYY/MM/DD')}-{dayjs(item.endTime).format('YYYY/MM/DD')}
                                 {
                                     item.giftDays > 0 && <span className={'ml-2'}>赠送{item.giftDays}天</span>
-
                                 }
                             </th>
                             <td>{item?.remark}</td>

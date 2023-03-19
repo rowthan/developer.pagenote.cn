@@ -1,6 +1,6 @@
-import {isLow} from "@pagenote/shared/lib/utils/compare";
 import useWhoAmi from "../../hooks/useWhoAmi";
 import React, {ReactElement, useEffect, useState} from "react";
+import { compare } from 'compare-versions';
 
 
 export default function CheckVersion({requireVersion,children,label}:{requireVersion: string,children:ReactElement,label?: string}) {
@@ -41,7 +41,7 @@ export default function CheckVersion({requireVersion,children,label}:{requireVer
         )
     }
     return(
-        !isLow(whoAmi.version,requireVersion) ?
+        compare(whoAmi.version,requireVersion,">=") ?
         children :
         <div className="mx-auto mt-20 card w-96 bg-neutral text-neutral-content">
             <div className="card-body items-center text-center">

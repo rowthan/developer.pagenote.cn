@@ -51,7 +51,7 @@ export default function () {
 
                     {
                         feedbackDetail &&
-                        <div className={`modal modal-${feedbackDetail?'open':'close'}`}>
+                        <div className={`modal modal-${feedbackDetail?'open':'onClose'}`}>
                             <div className="modal-box">
                                 <h3 className="font-bold text-lg">反馈详情:{feedbackDetail?.feedbackId}</h3>
                                 <div className="chat chat-start">

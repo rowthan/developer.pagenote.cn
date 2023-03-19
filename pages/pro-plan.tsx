@@ -6,7 +6,7 @@ import {createOrder} from "../service";
 
 const plans: PlanInfo[] = [{
     title: '免费/<key-word>种子用户<key-word>',
-    description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。",
+    description:"你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。<key-word>无垃圾广告<key-word>",
     price: 0,
     duration: '月',
     bg: 'green',

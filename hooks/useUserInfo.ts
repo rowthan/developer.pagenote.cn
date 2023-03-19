@@ -8,14 +8,16 @@ type UserInfo = {
 } & User
 
 
-function fetchInfo() {
-    return extApi.user.getUser(undefined).then(function (res) {
+export function fetchUserInfo(forceRefresh: boolean=false, header?: { runAt: number }) {
+    return extApi.user.getUser({
+        forceRefresh: forceRefresh,
+    },header).then(function (res) {
         return res.data
     })
 }
 
 export default function useUserInfo():[UserInfo|undefined,()=>void] {
-    const {data,mutate} = useSWR<UserInfo|undefined>('/user',fetchInfo);
+    const {data,mutate} = useSWR<UserInfo|undefined>('/user',()=>{return fetchUserInfo(false)});
 
     return [data,mutate]
 }

@@ -1,6 +1,6 @@
 import useBooks from "../../hooks/useBooks";
 import dayjs from "dayjs";
-import useUserInfo from "../../hooks/useUserInfo";
+import useUserInfo, {fetchUserInfo} from "../../hooks/useUserInfo";
 
 interface Right {
     label: string,
@@ -62,13 +62,11 @@ const RIGHTS: Right[] = [{
 
 
 export default function PlanCard(props: { info: PlanInfo, current: number,onClick:(info: PlanInfo)=>void }) {
-    const [books] = useBooks();
+    const [bookInfo] = useBooks();
     const {current, info,onClick} = props;
     const [user] = useUserInfo();
     const {title, description, price, duration, bg='indigo', role,unit='元'} = info;
     const disabled = current >= role
-
-    const endAtTime = books[0]?.endTime ? dayjs(books[0].endTime) : ''
 
     const canUpgrade = current < role;
     let buttonLabel = current === role ? `当前身份` : (canUpgrade ? '加入此身份' : '已高于此身份');
@@ -90,7 +88,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                     </div>
                     <h3 className="text-lg text-neutral font-semibold" dangerouslySetInnerHTML={{__html:title}}></h3>
                 </header>
-                <div className="text-sm mb-2 h-10">{description}</div>
+                <div className="text-sm mb-2 h-10" dangerouslySetInnerHTML={{__html: description}}></div>
                 <div className="font-bold mb-4">
                     <span className="text-2xl">￥</span>
                     <span className="text-3xl" x-text="annual ? '14' : '19'">
@@ -101,7 +99,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                 <button className={`font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-gray-200 rounded leading-5 shadow-sm transition duration-150 ease-in-out focus:outline-none  w-full hover:scale-105 duration-300
                     ${disabled ? 'border-gray-200 border-transparent focus-visible:ring-2 focus:outline-none bg-gray-100 text-gray-400 cursor-not-allowed'
                     : `hover:border-gray-300 focus-visible:ring-2 text-white bg-${bg}-500 hover:bg-${bg}-600`}`}
-                        onClick={()=>onClick(info)}
+                        onClick={()=>{onClick(info);fetchUserInfo(true)}}
                         disabled={disabled}>
                     {
                         disabled &&
