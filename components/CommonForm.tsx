@@ -1,12 +1,12 @@
 import {useForm} from "react-hook-form";
 import {RegisterOptions} from "react-hook-form/dist/types/validator";
-import {useEffect} from "react";
 
 export type CommonFormField = {
     type?: "text" | string
     name: string,
-    options?: RegisterOptions,
+    options?: RegisterOptions<any>,
     placeholder?: string
+    label?: string
 }
 interface Props {
     fields: CommonFormField[]
@@ -29,12 +29,24 @@ export default function CommonForm(props: Props) {
 
     return (
         <div>
-            <form className="flex flex-col gap-4 items-center" onSubmit={handleSubmit((data) => onSubmit(data))}>
+            <form className="flex flex-col gap-4 items-center text-gray-800" onSubmit={handleSubmit((data) => onSubmit(data))}>
                 {
-                    fields.map((item) => (
-                        <input type={item.type || "text"} className="p-2 m-5 mb-1 rounded-xl border"
-                               {...register(item.name, item.options)}
-                               placeholder={item.placeholder}/>
+                    fields.map((item,index) => (
+                        <div key={item.name} className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">{item.label}</span>
+                                {/*<span className="label-text-alt">Top Right label</span>*/}
+                            </label>
+                            <input type={item.type || "text"}
+                                   autoFocus={true}
+                                   className="p-2 mb-1 rounded-xl border"
+                                   {...register(item.name, item.options)}
+                                   placeholder={item.placeholder}/>
+                            {/*<label className="label">*/}
+                            {/*    <span className="label-text-alt">Bottom Left label</span>*/}
+                            {/*    <span className="label-text-alt">Bottom Right label</span>*/}
+                            {/*</label>*/}
+                        </div>
                     ))
                 }
 

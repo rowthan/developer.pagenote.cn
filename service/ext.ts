@@ -10,12 +10,6 @@ import LocalResource = localResource.LocalResource;
 
 const LIGHT_PLACE_KEY = 'plainData.steps'
 
-const getIntersection = (...arrs: (string[])[]) => {
-    return Array.from(new Set(arrs.reduce((total, arr) => {
-        return arr.filter(item => total.includes(item));
-    })));
-}
-
 function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Partial<WebPage>[] {
     const webpageMap = new Map<string, Partial<WebPage>>();
     webpage.forEach(function (item) {
@@ -44,6 +38,7 @@ function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Par
     return result;
 }
 
+const MAX_AGE = 60;
 async function searchInPage(keyword: string,operation: "$or"|"$and"){
     const regex = '.*' + (keyword) + '.*';
 
@@ -68,6 +63,10 @@ async function searchInPage(keyword: string,operation: "$or"|"$and"){
         pageSize:1000,
         sort:{
             updateAt: -1
+        }
+    },{
+        cacheControl:{
+            maxAge: MAX_AGE
         }
     });
 
@@ -97,6 +96,10 @@ async function searchInLight(keyword: string,operation: "$or"|"$and"){
         pageSize: 1000,
         sort:{
             updateAt: -1
+        }
+    },{
+        cacheControl:{
+            maxAge: MAX_AGE
         }
     })
     return lightResult?.data?.list||[];

@@ -1,5 +1,3 @@
-import {isLow} from "@pagenote/shared/lib/utils/compare";
-import useWhoAmi from "../../hooks/useWhoAmi";
 import React, {ReactElement} from "react";
 import useUserInfo from "../../hooks/useUserInfo";
 

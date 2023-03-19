@@ -1,6 +1,6 @@
 import useBooks from "../../hooks/useBooks";
 import dayjs from "dayjs";
-import useUserInfo from "../../hooks/useUserInfo";
+import useUserInfo, {fetchUserInfo} from "../../hooks/useUserInfo";
 
 interface Right {
     label: string,
@@ -99,7 +99,7 @@ export default function PlanCard(props: { info: PlanInfo, current: number,onClic
                 <button className={`font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-gray-200 rounded leading-5 shadow-sm transition duration-150 ease-in-out focus:outline-none  w-full hover:scale-105 duration-300
                     ${disabled ? 'border-gray-200 border-transparent focus-visible:ring-2 focus:outline-none bg-gray-100 text-gray-400 cursor-not-allowed'
                     : `hover:border-gray-300 focus-visible:ring-2 text-white bg-${bg}-500 hover:bg-${bg}-600`}`}
-                        onClick={()=>onClick(info)}
+                        onClick={()=>{onClick(info);fetchUserInfo(true)}}
                         disabled={disabled}>
                     {
                         disabled &&

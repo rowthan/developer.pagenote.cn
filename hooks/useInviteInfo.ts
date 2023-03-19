@@ -11,11 +11,12 @@ type InviteInfo = {
 }
 
 
-export function fetchInfo(forceRefresh: boolean=false) {
+export function fetchInfo() {
     return extApi.network.pagenote({
-        url: '/api/'
+        url: '/api/',
+        method: "GET"
     }).then(function (res) {
-        return res.data
+        return res.data.json
     })
 }
 

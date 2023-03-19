@@ -4,7 +4,7 @@ import VersionItem from "components/versions/VersionItem";
 
 
 export default function () {
-    const [versions = []] = useVersions();
+    const [versions] = useVersions();
     return (
         <BasicLayout title={'发布日志'} nav={false}>
             <section className="min-h-screen py-10 px-2 max-w-screen-lg m-auto">
@@ -17,7 +17,7 @@ export default function () {
                     </nav>
                     <ul>
                         {
-                            versions.map((item, index) => (
+                            versions.list.map((item, index) => (
                                 <li key={index}>
                                     <VersionItem version={item} initShowAll={index === 0}/>
                                 </li>

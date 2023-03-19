@@ -28,18 +28,17 @@ const authMap: Record<string, PlatInfo> = {
         bindUrl: NotionLoginUrl
     },
 }
-function fetchAuthList(cacheDuration=5 * 60 * 1000) {
+export function fetchAuthList(cacheDuration= 2 * 60) {
     return extApi.network.pagenote({
         data: {
             query:`query{authList{authType,authName}}`
         },
         method: 'GET',
         url: "/api/graph/user/",
-        _config:{
-            cacheDuration: cacheDuration,
-        }
     },{
-
+        cacheControl:{
+            maxAge: cacheDuration
+        }
     }).then(function (res) {
         const list = (res.data?.json?.data?.authList || []) as AuthInfo[];
         const authedMap: Record<string, AuthInfo> = {}
@@ -57,7 +56,7 @@ function fetchAuthList(cacheDuration=5 * 60 * 1000) {
 }
 
 export default function useAuthList():[AuthInfo[],()=>void,(cache: number)=>Promise<any>] {
-    const {data=[],mutate} = useSWR<AuthInfo[]>('/authList',fetchAuthList);
+    const {data=[],mutate} = useSWR<AuthInfo[]>('/authList',()=>fetchAuthList(5 * 60));
 
     return [data,mutate,fetchAuthList]
 }

@@ -11,7 +11,7 @@ export default function DeviceInfo() {
         extApi.commonAction.openTab({
             tab: {},
             reUse: true,
-            url: 'https://pagenote.cn/release'
+            url: 'https://developer.pagenote.cn/release'// TODO pagenote.cn
         })
     }
 

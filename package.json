@@ -11,15 +11,16 @@
     "start": "next start"
   },
   "dependencies": {
-    "@pagenote/shared": "1.11.9",
+    "@pagenote/shared": "1.11.10",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.7",
     "ali-oss": "^6.17.1",
     "classnames": "^2.3.2",
+    "compare-versions": "^6.0.0-rc.1",
     "daisyui": "^2.46.0",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.6",
-    "dexie": "^3.2.2",
+    "dexie": "^3.2.3",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "next": "latest",
@@ -33,6 +34,7 @@
     "use-delayed-render": "0.0.7"
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/ali-oss": "^6.16.7",
     "@types/chrome": "0.0.206",
     "@types/color": "^3.0.3",

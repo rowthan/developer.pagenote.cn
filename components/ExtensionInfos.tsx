@@ -47,7 +47,7 @@ export default function () {
                     </div>
                 </div>
 
-                <div className={`modal modal-${showDetail?'open':'close'}`}>
+                <div className={`modal modal-${showDetail?'open':'onClose'}`}>
                     <div className="modal-box">
                         <WhoAmIBoard />
                         <div className="modal-action">

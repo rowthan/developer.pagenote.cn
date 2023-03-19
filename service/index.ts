@@ -21,17 +21,20 @@ export function bindTransition(record: string, amount: number) {
     })
 }
 
-export function updateProfile(avatar: string){
+export type UpdateProfile = {
+    avatar?: string,
+    nickname?: string
+}
+export function updateProfile(updateInfo: UpdateProfile){
     return extApi.network.pagenote({
         url:"https://api-test.pagenote.cn/api/graph/user",
         data: {
-            mutation: `mutation{updateProfile(avatar:"${avatar}"){avatar}}`
+            mutation: `mutation makeUpdateConfig($avatar: String, $nickname: String) {updateProfile(avatar:$avatar,nickname:$nickname){avatar,nickname}}`,
+            variables: updateInfo
         },
         method:"POST",
-    }).then(function(res){
-        console.log('更新结果',res)
-        const url = res?.data?.json?.data?.updateProfile
-        return url;
+    },{
+        timeout: 10 * 1000
     })
 }
 
@@ -45,8 +48,9 @@ export function fetchVersions(){
             query: `query{versions(released:true){released,version,release_time,platform,tags,description,changelog}}`
         },
         method:"POST",
-        _config:{
-            cacheDuration: CACHE_DURATION
+    },{
+        cacheControl:{
+            maxAge: 3600 * 2
         }
     }).then(function(res){
         return res?.data?.json?.data?.versions || []
@@ -60,8 +64,9 @@ export function fetchVersionDetail(version:string){
             query: `query{versionDetail(version:"${version}"){_markdown,version,release_time,platform,tags,description,changelog}}`
         },
         method:"POST",
-        _config:{
-            cacheDuration: CACHE_DURATION
+    },{
+        cacheControl:{
+            maxAge: 3600
         }
     }).then(function(res){
         return res?.data?.json?.data?.versionDetail || null

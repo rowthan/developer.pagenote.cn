@@ -12,7 +12,7 @@ export default function Modal(props:Props) {
         return null;
     }
     return(
-        <div className={`modal modal-${props.open?'open':'close'}`}>
+        <div className={`modal modal-${props.open?'open':'onClose'}`}>
             <div className="modal-box">
                 {
                     toggleOpen &&

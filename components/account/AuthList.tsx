@@ -1,4 +1,4 @@
-import useAuthList from "../../hooks/useAuthList";
+import useAuthList, {fetchAuthList} from "../../hooks/useAuthList";
 
 export default function AuthList() {
     const [authList] = useAuthList()
@@ -16,8 +16,8 @@ export default function AuthList() {
                 </div>
                 <ul className="divide-y divide w-full">
                     {
-                        authList.map((item)=>(
-                            <li key={item.authType} className="flex justify-between items-center px-4 ">
+                        authList.map((item,index)=>(
+                            <li key={index} className="flex justify-between items-center px-4 ">
                                 <div className="flex flex-col items-center justify-center w-10 h-10 mr-4">
                                     <img alt="profil" src={item.platformIcon}
                                          className="mx-auto object-cover rounded-full h-6 w-6 bg-white"/>
@@ -30,7 +30,7 @@ export default function AuthList() {
                                 <div className="text-xs text-gray-600 dark:text-gray-200">
                                     {item.authName ? item.authName : <a className={'btn btn-outline btn-xs'} href={item.bindUrl}>未绑定</a>}
                                 </div>
-                                <a href={item.platformUrl} target={'_blank'} className="flex justify-end w-24 text-right">
+                                <a href={item.platformUrl} onClick={()=>{fetchAuthList(20)}} target={'_blank'} className="flex justify-end w-24 text-right">
                                     <svg width="20" fill="currentColor" height="20"
                                          className="text-gray-500 hover:text-gray-800 dark:hover:text-white dark:text-gray-200"
                                          viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">

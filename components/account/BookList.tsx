@@ -6,7 +6,7 @@ export default function BookList() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="table table-compact w-full">
+            <table className="table table-compact w-full text-neutral">
                 <thead>
                 <tr>
                     <th>订阅周期</th>

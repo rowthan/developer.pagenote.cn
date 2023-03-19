@@ -4,7 +4,7 @@ import { canvasPreview } from './canvasPreview'
 let previewUrl = ''
 
 function toBlob(canvas: HTMLCanvasElement): Promise<Blob | null> {
-    return new Promise((resolve:(res: Blob)=>void) => {
+    return new Promise((resolve:(res: Blob | null)=>void) => {
         canvas.toBlob(resolve)
     })
 }

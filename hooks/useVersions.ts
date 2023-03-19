@@ -1,11 +1,9 @@
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import useSWR from "swr";
-import debug from "debug";
-import { fetchVersions } from "service";
 import useWhoAmi from "./useWhoAmi";
-import {isLow} from "@pagenote/shared/lib/utils/compare";
+import { compare } from 'compare-versions';
 
-interface Version {
+export interface Version {
     title: string;
     version: string,
     release_time: Date,
@@ -15,10 +13,10 @@ interface Version {
     changelog: string,
     _markdown?: string
 }
-type BookInfo = {list: Version[],latest: string,isOut: boolean}
-export default function ():[BookInfo|undefined,()=>void] {
+type VersionInfo = {list: Version[],latest: string,isOut: boolean}
+export default function ():[VersionInfo,()=>void] {
     const [whoAmI] = useWhoAmi();
-    const {data} = useSWR<BookInfo>('/version/',fetchBookList,{
+    const {data} = useSWR<VersionInfo>('/version/',fetchVersionList,{
         fallbackData:{
             list:[],
             isOut: false,
@@ -26,15 +24,16 @@ export default function ():[BookInfo|undefined,()=>void] {
         }
     });
 
-    function fetchBookList(cacheDuration?: number) {
+    function fetchVersionList() {
         return extApi.network.pagenote({
             url:'/api/graph/site',
             method:'GET',
             data:{
                 query: `{versions(released:true){version_id,expect_release_time,released,version,title,release_time,platform,description,tags,changelog,expect_release_time,description}}`
             },
-            _config:{
-                cacheDuration: cacheDuration || 10 * 60 * 60 * 1000
+        },{
+            cacheControl:{
+                maxAge: 3600 * 24
             }
         }).then(function (res) {
             return {
@@ -51,7 +50,7 @@ export default function ():[BookInfo|undefined,()=>void] {
     return [{
         list: data?.list||[],
         latest: latestVersion?.version||"",
-        isOut: isLow(whoAmI?.version,latestVersion?.version||"0.0.0")
-    },fetchBookList]
+        isOut: compare(whoAmI?.version||'0',latestVersion?.version||"0","<")
+    },fetchVersionList]
 
 }
