@@ -34,7 +34,7 @@ export function fetchAuthList(cacheDuration= 2 * 60) {
             query:`query{authList{authType,authName}}`
         },
         method: 'GET',
-        url: "/api/graph/user/",
+        url: "/api/graph/auth/",
     },{
         cacheControl:{
             maxAge: cacheDuration
