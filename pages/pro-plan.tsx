@@ -58,7 +58,9 @@ export default function ProPlan() {
             <section className="flex flex-col justify-center antialiased  text-gray-600 min-h-screen">
                 <div className="h-full">
                     <div className="max-w-screen-lg	 mx-auto p-2">
-                        <h2 className="text-3xl text-neutral font-bold text-center mb-4">会员计划</h2>
+                        <h2 className="text-3xl text-neutral font-bold text-center mb-4">
+                            会员计划
+                        </h2>
 
                         <div className="grid grid-cols-12 gap-6">
                             {

@@ -14,7 +14,7 @@ export default function UserCard() {
     const [bookInfo] = useBooks()
 
     function signout() {
-        extApi.user.signout().then(function () {
+        extApi.user.signout(undefined).then(function () {
             mutate()
         })
     }

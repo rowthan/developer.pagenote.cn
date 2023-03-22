@@ -1,23 +1,41 @@
 import useUserInfo from "hooks/useUserInfo";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import CloseSvg from "../../assets/svg/close.svg";
 import {bindTransition} from "../../service";
 import {toast} from "../../utils/toast";
+import CommonForm from "../CommonForm";
 
 export default function (props: { onClose: () => void; amount: number;  }) {
     const {onClose,amount} = props
     const [paid,setPaid] = useState(false);
     const [userInfo] = useUserInfo();
     const [showButton,setShowButton] = useState(false)
+    const [loading,setLoading] = useState(false)
 
     function confirmPaid(){
         if(userInfo){
             bindTransition('',amount)
             setPaid(true);
         }else{
-            window.open('/signin.html')
-            toast('请先登录')
+            window.open('https://pagenote.cn/signin.html')
+            toast('请先登录后，返回此页面')
        }
+    }
+
+    function bindTransitionByUser(value:{recordId: string}) {
+        if(!userInfo){
+            toast('请先登录后，返回此页面')
+            window.open('https://pagenote.cn/signin.html')
+            return;
+        }
+        setLoading(true);
+        bindTransition(value.recordId,amount).then(function (res) {
+            setLoading(false)
+            toast(res.data.json.success ?"提交成功":"提交失败");
+            if(res?.data?.json?.success){
+                onClose()
+            }
+        })
     }
 
     useEffect(function () {
@@ -40,10 +58,17 @@ export default function (props: { onClose: () => void; amount: number;  }) {
                     className="inline-block py-8 px-5 md:px-10 bg-base-100 text-neutral  border-4 border-gray-900 text-center transform ">
                     {
                         paid ? <div>
-                            请稍后，我将尽快确认赞助信息，这可能需要几分钟，请注意查收邮件。
+                            若你已留言邮箱，无需其他操作，请稍后，我将尽快确认赞助信息，这可能需要几分钟。
                             <div className={'divider'}></div>
-                            <div className={'text-sm'}>超过12小时未绑定请联系我</div>
-                            <div className={'text-xs'}>忘记留邮箱/ID了？请在微信公众号留言。</div>
+                            <div className={'text-sm mb-2'}> 或手动提交支付凭证
+                                <CommonForm
+                                    loading={loading}
+                                    onSubmit={bindTransitionByUser}
+                                    fields={[{label:'支付订单号',name:"recordId",placeholder:"支付订单号或转账单号"}]} />
+                            </div>
+                            <div className={'text-xs'}>
+                                超过12小时未收到邮件通知，请在 <key-word>微信公众号</key-word> 留言联系我。
+                            </div>
                         </div>:
                             <div>
                                 <h1 className="mt-2 font-comic text-2xl md:text-4xl font-extrabold tracking-wider">
