@@ -64,7 +64,9 @@ export default function (props: { onClose: () => void; amount: number;  }) {
                                 <CommonForm
                                     loading={loading}
                                     onSubmit={bindTransitionByUser}
-                                    fields={[{label:'支付订单号',name:"recordId",placeholder:"支付订单号或转账单号"}]} />
+                                    fields={[{label:'支付订单号',name:"recordId",placeholder:"支付订单号或转账单号"}]}
+                                    value={{recordId: ""}}
+                                />
                             </div>
                             <div className={'text-xs'}>
                                 超过12小时未收到邮件通知，请在 <key-word>微信公众号</key-word> 留言联系我。
