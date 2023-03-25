@@ -3,6 +3,7 @@ import Tip from "../components/pro/Tip";
 import React, {useEffect, useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
 import {createOrder} from "../service";
+import BasicLayout from "../layouts/BasicLayout";
 
 const plans: PlanInfo[] = [{
     title: '免费/<key-word>种子用户<key-word>',
@@ -54,7 +55,7 @@ export default function ProPlan() {
 
     const open = plan !== null;
     return(
-        <div>
+        <BasicLayout title={'会员计划'} nav={false}>
             <section className="flex flex-col justify-center antialiased  text-gray-600 min-h-screen">
                 <div className="h-full">
                     <div className="max-w-screen-lg	 mx-auto p-2">
@@ -90,6 +91,6 @@ export default function ProPlan() {
                     </div>
                 }
             </section>
-        </div>
+        </BasicLayout>
     )
 }
