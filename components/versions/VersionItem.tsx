@@ -19,7 +19,7 @@ const BROWSER_MAP: Record<string, { icon: string, link: string }> = {
     },
     offline: {
         icon: "https://static.oschina.net/uploads/logo/chromium+engine_AIOBe.png",
-        link: "https://page-note.notion.site/PAGENOTE-0764216ae635435183140adafdc3ecf4"
+        link: "https://chrome.zzzmh.cn/info/hpekbddiphlmlfjebppjhemobaopekmp"
     },
     "360": {
         icon: "https://se3.360simg.com/t018dd8a53c0e2cf61c.png",

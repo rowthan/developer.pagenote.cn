@@ -38,7 +38,7 @@ function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Par
     return result;
 }
 
-const MAX_AGE = 60;
+const MAX_AGE = 120;
 async function searchInPage(keyword: string,operation: "$or"|"$and"){
     const regex = '.*' + (keyword) + '.*';
 
