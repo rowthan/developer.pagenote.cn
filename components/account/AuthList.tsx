@@ -1,7 +1,7 @@
-import useAuthList, {fetchAuthList} from "../../hooks/useAuthList";
+import useAuthList from "../../hooks/useAuthList";
 
 export default function AuthList() {
-    const [authList] = useAuthList()
+    const [authList,fetch] = useAuthList()
     return(
         <div>
             <div
@@ -30,7 +30,7 @@ export default function AuthList() {
                                 <div className="text-xs text-gray-600 dark:text-gray-200">
                                     {item.authName ? item.authName : <a className={'btn btn-outline btn-xs'} href={item.bindUrl}>未绑定</a>}
                                 </div>
-                                <a href={item.platformUrl} onClick={()=>{fetchAuthList(20)}} target={'_blank'} className="flex justify-end w-24 text-right">
+                                <a href={item.platformUrl} onClick={fetch} target={'_blank'} className="flex justify-end w-24 text-right">
                                     <svg width="20" fill="currentColor" height="20"
                                          className="text-gray-500 hover:text-gray-800 dark:hover:text-white dark:text-gray-200"
                                          viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">

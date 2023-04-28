@@ -9,7 +9,7 @@ export default function ():[BookInfo,()=>void] {
         list:[],
         expiredAt: undefined,
         expiredTip:""
-    },mutate} = useSWR<BookInfo>('/books',()=>fetchBookList(30 * 60),{
+    },mutate} = useSWR<BookInfo>('/books',()=>fetchBookList(30 * 60 * 1000),{
         fallbackData:{
             list:[],
             expiredAt: undefined,
@@ -26,7 +26,7 @@ export default function ():[BookInfo,()=>void] {
             },
         },{
             cacheControl:{
-                maxAge: cacheDuration || 0
+                maxAgeMillisecond: cacheDuration || 0
             }
         }).then(function (res) {
             const data = res.data.json;

@@ -11,6 +11,8 @@ export function UploadImage() {
         },
     },{
         cacheControl:{
+            maxAgeMillisecond: 60 * 1000 * 10,
+            // @ts-ignore
             maxAge: 60 * 10
         }
     }).then(function (res) {

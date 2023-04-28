@@ -26,7 +26,7 @@ export default function TodayRelated() {
             }
         },{
             cacheControl:{
-                maxAge: 60
+                maxAgeMillisecond: 60000
             }
         }).then(function (res) {
             setList(res?.data?.list||[])
