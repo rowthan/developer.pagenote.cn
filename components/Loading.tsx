@@ -1,3 +1,12 @@
+interface Node{
+    rounded: boolean
+    className: string,
+    children?: Node[]
+}
+interface LoadingProps {
+    nodes:Node[]
+}
+
 
 export default function Loading() {
     return(
