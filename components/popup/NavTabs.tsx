@@ -43,6 +43,7 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
     }
 
     function onKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
+        // POPUP 模式下，无效，页面被关掉
         if (e.key === 'Escape') {
             onChangeKeyword('')
         }
@@ -89,12 +90,12 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
                        }}
                        className={`input input-xs input-bordered w-44  ${isSearchPath ? '' : ''}`}/>
                 {
-                    keyword && 
-                    <span className="tooltip tooltip-left absolute right-5 " data-tip={'快捷键： Esc'}>
-                        <CloseSvg onClick={()=>{onChangeKeyword('');ref.current?.focus()}} 
+                    keyword &&
+                    <span className="absolute right-5 ">
+                        <CloseSvg onClick={()=>{onChangeKeyword('');ref.current?.focus()}}
                             className={'fill-current text-neutral'} />
                     </span>
-                    
+
                 }
             </div>
             <a href={`${whoAmi?.origin}/pagenote.html`} target={'_blank'}
