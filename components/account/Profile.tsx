@@ -39,7 +39,7 @@ export default function Profle(){
                 })
             }
         })
-        fetchUserInfo(true,{runAt: Date.now() + 10000})
+        fetchUserInfo(true)
     }
 
     return(

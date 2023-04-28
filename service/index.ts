@@ -50,8 +50,8 @@ export function fetchVersions(){
         method:"POST",
     },{
         cacheControl:{
-            maxAge: 3600 * 2,
             // @ts-ignore
+            maxAge: 3600 * 2,
             maxAgeMillisecond: 3600 * 1000
         }
     }).then(function(res){
@@ -68,8 +68,8 @@ export function fetchVersionDetail(version:string){
         method:"POST",
     },{
         cacheControl:{
+             // @ts-ignore
             maxAge: 3600,
-            // @ts-ignore
             maxAgeMillisecond: 3600 * 1000
         }
     }).then(function(res){

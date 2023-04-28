@@ -12,15 +12,17 @@ export default function Search(props: { keyword: string }) {
     const [limit,setLimit] = useState(20);
     const [selected,setSelected] = useState<string[]>([])
     const [batchModal,setBatchModal] = useState(false)
+    const [cost,setCost] = useState(0)
     const search = function () {
         // TODO 搜索所有tab 标签页 多关键词搜索🔍
         if (keyword.trim()) {
-            // console.time(keyword)
+            setCost(0)
+            const start = Date.now();
             searchInExt(keyword,(result)=>{
                 setList(result)
                 setSelected([])
                 setLimit(20)
-                // console.timeEnd(keyword)
+                setCost(Date.now()-start);
             })
         } else {
             setSelected([])
@@ -95,7 +97,7 @@ export default function Search(props: { keyword: string }) {
         })
     }
 
-    useLazyEffect(search, [keyword], 500)
+    useLazyEffect(search, [keyword], 400)
 
     const keywords = keyword.split(/\s+/);
     const selectedCnt = selected.length;
@@ -104,13 +106,24 @@ export default function Search(props: { keyword: string }) {
         <div className={'p-2 w-full h-full overflow-ellipsis'}>
             <div className={'text-gray-400 text-xs '}>
                 {
-                    keyword ? <span>PAGENOTE 为你找到  {
+                    keyword ? <div>
+
+                    <span>PAGENOTE 为你找到  {
                         keywords.map((item)=>(
                             <mark key={item} className="mx-1">{item}</mark>
                         ))
-                        }相关搜索标记约 {list.length} 个</span> :
+                        }相关搜索标记约 {list.length} 个。</span>
+                        {
+                            cost > 0 &&
+                            <span className="text-xs text-center">
+                                <span className="text-gray-400">搜索耗时：<b>{cost/1000}</b>s</span>
+                            </span>
+                        }
+                    </div> :
                         <span>请输入搜索词，在 PAGENOTE 中搜索</span>
                 }
+
+
                 <div className="my-4 flex items-center">
                     <input type="checkbox" onChange={toggleAll} checked={selectedCnt>0} className="checkbox mx-1"/>
                     <button onClick={()=>{setBatchModal(true)}} disabled={selectedCnt===0} className="btn btn-xs btn-primary mx-2">
@@ -138,6 +151,9 @@ export default function Search(props: { keyword: string }) {
                     <button onClick={()=>{setLimit(list.length)}} className={'link link-primary text-xs'}>展开所有</button>
                 </div>
             }
+
+            
+            
 
 
             <Modal open={batchModal} keepNode={false} toggleOpen={setBatchModal}>

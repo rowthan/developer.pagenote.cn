@@ -33,7 +33,7 @@ export default function ():[VersionInfo,()=>void] {
             },
         },{
             cacheControl:{
-                maxAge: 3600 * 24
+                maxAgeMillisecond: 3600 * 24 * 1000
             }
         }).then(function (res) {
             return {

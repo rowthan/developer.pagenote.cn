@@ -42,6 +42,12 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
         navigate('/search')
     }
 
+    function onKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Escape') {
+            onChangeKeyword('')
+        }
+    }
+
     useEffect(function () {
         if(!tab){
             return
@@ -76,13 +82,19 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
                        autoFocus={true}
                        value={keyword}
                        ref={ref}
+                       onKeyUp={onKeyUp}
                        onChange={(e) => {
                            navigate('/search');
                            onChangeKeyword(e.target.value)
                        }}
                        className={`input input-xs input-bordered w-44  ${isSearchPath ? '' : ''}`}/>
                 {
-                    keyword && <CloseSvg onClick={()=>{onChangeKeyword('');ref.current?.focus()}} className={'absolute right-5 fill-current text-neutral'} />
+                    keyword && 
+                    <span className="tooltip tooltip-left absolute right-5 " data-tip={'快捷键： Esc'}>
+                        <CloseSvg onClick={()=>{onChangeKeyword('');ref.current?.focus()}} 
+                            className={'fill-current text-neutral'} />
+                    </span>
+                    
                 }
             </div>
             <a href={`${whoAmi?.origin}/pagenote.html`} target={'_blank'}
