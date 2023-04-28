@@ -5,15 +5,20 @@
 
 ## 启动
 ```shell
+# 安装依赖
 npm install
 ```
 
 ```shell
+# 开发模式
 npm run dev
+# 打包全站
+npm run build
+# 仅打包插件内页面
+npm run build-ext
 ```
 
 注意： 仅 localhost 或 127.0.0.1 主域可以与 PAGENOTE 插件进行通信。
-0.24.0 版本后，支持用户授权后的其他域名页面，与 PAGENOTE 通信。
 [开发访问： http://localhost:3000](http://localhost:3000)
 
 ## 相关物料

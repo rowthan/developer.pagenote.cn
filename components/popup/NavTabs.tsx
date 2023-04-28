@@ -45,7 +45,9 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
     function onKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
         // POPUP 模式下，无效，页面被关掉
         if (e.key === 'Escape') {
-            onChangeKeyword('')
+            onChangeKeyword('');
+            e.stopPropagation();
+            e.preventDefault();
         }
     }
 
