@@ -38,7 +38,8 @@ function mergeWebpage(webpage: Partial<WebPage>[], lights: Partial<Step>[]): Par
     return result;
 }
 
-const MAX_AGE = 120;
+const MAX_AGE = 3600 * 1000; // 1小时缓存有效
+const RUN_AFTER = [0, 30 * 1000]; // 30秒后执行
 async function searchInPage(keyword: string,operation: "$or"|"$and"){
     const regex = '.*' + (keyword) + '.*';
 
@@ -66,7 +67,10 @@ async function searchInPage(keyword: string,operation: "$or"|"$and"){
         }
     },{
         cacheControl:{
-            maxAge: MAX_AGE
+            maxAgeMillisecond: MAX_AGE
+        },
+        scheduleControl:{
+            runAfterMillisecond: RUN_AFTER
         }
     });
 
@@ -99,7 +103,10 @@ async function searchInLight(keyword: string,operation: "$or"|"$and"){
         }
     },{
         cacheControl:{
-            maxAge: MAX_AGE
+            maxAgeMillisecond: MAX_AGE
+        },
+        scheduleControl:{
+            runAfterMillisecond: RUN_AFTER
         }
     })
     return lightResult?.data?.list||[];
@@ -134,6 +141,13 @@ async function searchInHTML(keyword: string,operation: "$or"|"$and"){
         },
         sort:{
             updateAt: -1
+        }
+    },{
+        cacheControl:{
+            maxAgeMillisecond: MAX_AGE
+        },
+        scheduleControl:{
+            runAfterMillisecond: RUN_AFTER
         }
     })
 
