@@ -42,7 +42,7 @@ export default function ExtensionData() {
                 tip={'产生的数据存储在浏览器中。当插件被卸载时，数据也一并清空。如要卸载，请注意备份备份。'}/>
             </div>} subLabel={'插件卸载时清空'} right={
                 <div>
-                    <label htmlFor="my-modal-3" className="mr-2 btn btn-outline btn-xs">备份</label>
+                    <label htmlFor="my-modal-3" className="mr-2 btn btn-outline btn-xs">导出备份</label>
                     <input type="checkbox" id="my-modal-3" className="modal-toggle" />
                     <label htmlFor="my-modal-3" className="modal">
                         <label htmlFor="" className="modal-box relative">
@@ -51,10 +51,10 @@ export default function ExtensionData() {
                         </label>
                     </label>
 
-                    <label htmlFor={'backup-input'} className={'btn btn-outline btn-xs mr-2'}>
+                    {/* <label htmlFor={'backup-input'} className={'btn btn-outline btn-xs mr-2'}>
                         <input id={'backup-input'} type="file" style={{width: "0px"}} onChange={onImportBackup}/>
                         导入
-                    </label>
+                    </label> */}
                 </div>
             }/>
             {
