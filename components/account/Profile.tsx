@@ -63,6 +63,9 @@ export default function Profle(){
                                 <button data-tip={'点击修改'} onClick={()=>{setProfileModal(true)}} className="text-gray-900 tooltip font-bold text-xl leading-8 my-1">
                                     {profile?.nickname}
                                 </button>
+                                <div className={'text-gray-400 text-xs'}>
+                                    {profile?.emailMask}
+                                </div>
                                 <Modal open={openProfileModal} toggleOpen={(open)=>{setProfileModal(open);refresh()}}>
                                     <UserInfoForm onChange={onChange} />
                                 </Modal>

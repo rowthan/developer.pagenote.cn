@@ -12,7 +12,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@pagenote/shared": "1.11.1-6.b",
+    "@pagenote/shared": "1.11.16",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.7",
     "ali-oss": "^6.17.1",

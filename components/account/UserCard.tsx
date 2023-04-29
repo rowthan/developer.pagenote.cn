@@ -41,10 +41,16 @@ export default function UserCard() {
                                             <span className={'font-bold'}>{data?.profile?.nickname}</span>
                                             <MoreSvg className={'inline fill-current dark:text-primary'} width={20} height={20} />
                                         </label>
-                                        <ul tabIndex={0} className="dropdown-content py-2 shadow bg-neutral text-sm rounded w-20">
-                                            <li className={'hover:bg-accent px-1'}>
+                                        <ul tabIndex={0} className="dropdown-content py-2 shadow bg-neutral text-sm rounded w-20 px-1">
+                                            <li className={'hover:bg-accent'}>
                                                 <button className={'block w-full text-base-100'} onClick={signout}>退出</button>
                                             </li>
+                                            {/*{*/}
+                                            {/*    data?.verify?.exp &&*/}
+                                            {/*    <li className={'text-xs text-gray-400'}>*/}
+                                            {/*       {dayjs(data?.verify?.exp * 1000).format('YYYY-MM-DD')}*/}
+                                            {/*    </li>*/}
+                                            {/*}*/}
                                             {/*<li className={'hover:bg-accent px-1'}><button onClick={signout}>编辑资料</button></li>*/}
                                         </ul>
                                     </div>

@@ -3,6 +3,7 @@ import DropFile from "components/backup/DropFile";
 import ExtensionData from "components/backup/extension/ExtensionData";
 import { useCallback, useState } from "react";
 import { ResolvedBackupData } from "types/backup";
+import BasicLayout from "../../layouts/BasicLayout";
 
 const dataMap = new Map<string,ResolvedBackupData>();
 export default function Data() {
@@ -14,24 +15,29 @@ export default function Data() {
 
 
     // backupSet 转换为 数组
-    const backupList = Array.from(backupSet)
-    
+    const backupList = Array.from(backupSet).sort(function (pre,next) {
+        return dataMap.get(next)?.error ? -1 : 1;
+    })
+
 
     return(
-        <div className={'max-w-3xl m-auto p-24'}>
-            <ExtensionData />
-            <DropFile onFileChange={onFileChange} />
-            <div className={'mt-4'}>
-                {
-                    backupList.map((id,index) => {
-                        return(
-                            <div key={id} className={'mt-4'}>
-                               <BackFileItem item={dataMap.get(id)} />
-                            </div>
-                        )
-                    })
-                }
+        <BasicLayout nav={false} title={'数据中心'}>
+            <div className={'max-w-3xl m-auto p-6'}>
+                <ExtensionData />
+                <DropFile onFileChange={onFileChange} />
+                <div className={'mt-4'}>
+                    {
+                        backupList.map((id,index) => {
+                            return(
+                                <div key={id} className={'mt-4'}>
+                                    <BackFileItem item={dataMap.get(id)} />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
-        </div>
+        </BasicLayout>
+
     )
 }

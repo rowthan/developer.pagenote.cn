@@ -2,7 +2,6 @@ import {user} from "@pagenote/shared/lib/extApi";
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import useSWR from "swr";
 import User = user.User;
-import { BaseMessageHeader } from "@pagenote/shared/lib/communication/base";
 
 type UserInfo = {
     leftPermanent?: number
@@ -10,8 +9,13 @@ type UserInfo = {
 
 
 export function fetchUserInfo(forceRefresh: boolean=false) {
-    return extApi.user.getUser({
-        forceRefresh: forceRefresh, // TODO 通过 cache 实现，删除 forceRefresh
+    return extApi.user.getUser(undefined,{
+        cacheControl:{
+            maxAgeMillisecond: forceRefresh ? 0 : 1000 * 60 * 60 * 24 * 2,
+        },
+        scheduleControl:{
+            runAfterMillisecond: [0, 600 * 1000]
+        }
     }).then(function (res) {
         return res.data
     })
