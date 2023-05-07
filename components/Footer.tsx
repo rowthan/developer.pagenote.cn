@@ -1,8 +1,9 @@
 import React from "react";
-import BiliSvg from '../assets/svg/bilibili.svg'
-import WechatSvg from '../assets/svg/wechat.svg'
-import GithubSvg from '../assets/svg/github.svg'
-import useWhoAmi from "../hooks/useWhoAmi";
+import BiliSvg from 'assets/svg/bilibili.svg'
+import WechatSvg from 'assets/svg/wechat.svg'
+import GithubSvg from 'assets/svg/github.svg'
+import EmailSvg from 'assets/svg/email.svg'
+import useWhoAmi from "hooks/useWhoAmi";
 import DeviceInfo from "./account/DeviceInfo";
 
 export default function Footer() {
@@ -31,6 +32,9 @@ export default function Footer() {
                       </a>
                       <a href='https://github.com/rowthan/developer.pagenote.cn' target='_blank'>
                           <GithubSvg width={24} height={24} />
+                      </a>
+                      <a href="mailto:pagenote@126.com">
+                          <EmailSvg width={24} height={24}/>
                       </a>
                   </div>
               </div>
