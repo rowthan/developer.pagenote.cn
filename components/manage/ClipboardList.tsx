@@ -5,14 +5,14 @@ import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import {toast} from "../../utils/toast";
 import {Pagination} from "@pagenote/shared/lib/@types/database";
-import {boxroom} from "@pagenote/shared/lib/extApi";
 import TipSvg from 'assets/svg/info.svg'
-import BoxItem = boxroom.BoxItem;
 import BasicSettingLine from "../setting/BasicSettingLine";
 import useSettings from "../../hooks/useSettings";
+import {box} from "@pagenote/shared/lib/extApi";
+import Box = box.Box;
 
 export default function ClipboardList() {
-    const [list, setList] = useState<BoxItem[]>([])
+    const [list, setList] = useState<Box[]>([])
     const {data: setting, update: updateSetting} = useSettings();
     const [pagination, setPagination] = useState<Pagination>({
         limit: 100,
@@ -70,7 +70,7 @@ export default function ClipboardList() {
             limit: 100,
         }).then((res) => {
             if (res.success) {
-                setList((res.data.list || []) as BoxItem[])
+                setList((res.data.list || []) as Box[])
                 setPagination({
                     limit: pagination.limit,
                     page: pagination.page,
