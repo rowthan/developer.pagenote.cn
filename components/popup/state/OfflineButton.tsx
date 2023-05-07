@@ -3,16 +3,16 @@ import OfflineSvg from "assets/svg/offline_download.svg";
 import TipInfoSvg from "assets/svg/info.svg";
 import useTabPagenoteState from "hooks/useTabPagenoteState";
 import {useEffect, useState} from "react";
-import {localResource} from "@pagenote/shared/lib/extApi";
-import LocalResource = localResource.LocalResource;
 import useCurrentTab from "hooks/useCurrentTab";
 import {toast} from "utils/toast";
 import {basePath} from "const/env";
+import {html} from "@pagenote/shared/lib/extApi";
+import OfflineHTML = html.OfflineHTML;
 
 export default function OfflineButton() {
     const [tabState] = useTabPagenoteState();
     const {tab} = useCurrentTab();
-    const [resourceList, setList] = useState<Partial<LocalResource>[]>([])
+    const [resourceList, setList] = useState<Partial<OfflineHTML>[]>([])
 
     function offlineHtml() {
         extApi.developer.requestFront({
@@ -35,7 +35,7 @@ export default function OfflineButton() {
         if (!tab?.url) {
             return
         }
-        extApi.localResource.query({
+        extApi.html.query({
             query: {
                 relatedPageUrl: tab.url
             },

@@ -5,8 +5,8 @@ import extApi from "@pagenote/shared/lib/pagenote-api";
 import set from 'lodash/set'
 import get from "lodash/get";
 import {throttle} from 'lodash'
-import {localResource} from "@pagenote/shared/lib/extApi";
-import LocalResource = localResource.LocalResource;
+import {html} from "@pagenote/shared/lib/extApi";
+import OfflineHTML = html.OfflineHTML;
 
 const LIGHT_PLACE_KEY = 'plainData.steps'
 
@@ -114,9 +114,9 @@ async function searchInLight(keyword: string,operation: "$or"|"$and"){
 
 async function searchInHTML(keyword: string,operation: "$or"|"$and"){
     const regex = '.*' + (keyword) + '.*';
-    const keys:( keyof LocalResource)[] = ['name']
+    const keys:( keyof OfflineHTML)[] = ['name']
     const orHtmlFilter: {
-        [key in keyof LocalResource]?: QueryValue
+        [key in keyof OfflineHTML]?: QueryValue
     }[] = keys.map(function (key) {
         return {
             [key]: {
@@ -126,7 +126,7 @@ async function searchInHTML(keyword: string,operation: "$or"|"$and"){
         }
     })
 
-    const htmlResult = await extApi.localResource.query({
+    const htmlResult = await extApi.html.query({
         query: {
             deleted: false,
             [operation]: orHtmlFilter,

@@ -6,14 +6,14 @@ import Script from "next/script";
 
 import dayjs from "dayjs";
 import TipInfo from "components/TipInfo";
-import {localResource} from "@pagenote/shared/lib/extApi";
-import LocalResource = localResource.LocalResource;
 import useWhoAmi from "hooks/useWhoAmi";
 import {basePath} from "const/env";
 import {appendCss, appendScript} from "utils/document";
 import LocalHTML from "components/offline/LocalHTML";
 import RedirectToExt from "components/RedirectToExt";
 import {contentToFile} from "@pagenote/shared/lib/utils/document";
+import {html} from "@pagenote/shared/lib/extApi";
+import OfflineHTML = html.OfflineHTML;
 
 function runScript(root?: Document | null) {
     if (!root) {
@@ -34,8 +34,8 @@ function runScript(root?: Document | null) {
 
 export default function Offline() {
     const {query} = useRouter();
-    const [resource, setResource] = useState<Partial<LocalResource> | undefined>();
-    const [relatedResource, setResourceList] = useState<Partial<LocalResource>[]>([])
+    const [resource, setResource] = useState<Partial<OfflineHTML> | undefined>();
+    const [relatedResource, setResourceList] = useState<Partial<OfflineHTML>[]>([])
     const [whoAmI] = useWhoAmi();
     const [loaded, setLoaded] = useState(false)
 
@@ -56,7 +56,7 @@ export default function Offline() {
                 relatedPageUrl: url,
             })
         }
-        extApi.localResource.query({
+        extApi.html.query({
             query: {
                 $or: queries
             },
@@ -108,7 +108,7 @@ export default function Offline() {
         if (!resource?.relatedPageUrl) {
             return;
         }
-        extApi.localResource.query({
+        extApi.html.query({
             query: {
                 relatedPageUrl: resource?.relatedPageUrl
             },
@@ -128,9 +128,7 @@ export default function Offline() {
     }
 
     function removeResource() {
-        extApi.localResource.remove({
-            keys: [resource?.resourceId || '']
-        }).then(function () {
+        extApi.html.remove([resource?.resourceId || '']).then(function () {
             window.location.reload()
         })
     }
