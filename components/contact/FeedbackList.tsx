@@ -75,7 +75,12 @@ export default function FeedbackList() {
                 <div className="chat chat-start">
                   <div className="chat-image avatar">
                     <div className="w-10 rounded-full">
-                      <Image alt="" src="https://pagenote.cn/favicon.ico" />
+                      <Image
+                        alt=""
+                        src="https://pagenote.cn/favicon.ico"
+                        width={40}
+                        height={40}
+                      />
                     </div>
                   </div>
                   <div className="chat-header">
@@ -93,7 +98,12 @@ export default function FeedbackList() {
                   <div className="chat chat-end">
                     <div className="chat-image avatar">
                       <div className="w-10 rounded-full">
-                        <Image alt={''} src="https://pagenote.cn/favicon.ico" />
+                        <Image
+                          alt={''}
+                          src="https://pagenote.cn/favicon.ico"
+                          width={40}
+                          height={40}
+                        />
                       </div>
                     </div>
                     <div className="chat-header">

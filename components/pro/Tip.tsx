@@ -99,6 +99,8 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
                   <Image
                     src="https://pagenote.cn/img/pay/alipay.png"
                     className="w-full"
+                    width={160}
+                    height={160}
                     alt=""
                   />
                 </div>
@@ -106,6 +108,8 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
                   <Image
                     src="https://pagenote.cn/img/pay/wechat-pay.png"
                     className="w-full"
+                    width={160}
+                    height={160}
                     alt=""
                   />
                 </div>

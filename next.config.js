@@ -5,6 +5,16 @@ module.exports = {
   env: {
     prefix: process.env.prefix || '',
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'pagenote.cn',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
