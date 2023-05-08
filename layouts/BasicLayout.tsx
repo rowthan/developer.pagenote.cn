@@ -10,7 +10,7 @@ import SettingSvg from 'assets/svg/setting.svg'
 import ShortCutInfo from "../components/ShortCutInfo";
 import useWhoAmi from "../hooks/useWhoAmi";
 import {useRouter} from "next/router";
-
+// core styles shared by all of react-notion-x (required)
 
 // 给普通用户访问的页面，基础layout
 export default function BasicLayout(props: PropsWithChildren<{ nav?: boolean, footer?: boolean, title?: string, description?: string, full?: boolean }>) {

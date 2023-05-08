@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,4 +10,14 @@ html{
     height: 100%;
     width: 100%;
     font-family: 'Noto Sans SC', sans-serif;
+}
+
+.notion-app .breadcrumbs{
+    overflow: hidden;
+}
+
+
+.notion-page-icon-hero.notion-page-icon-span{
+    margin-left: unset !important;
+    left: 16px;
 }
