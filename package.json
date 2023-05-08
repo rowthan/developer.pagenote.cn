@@ -9,7 +9,16 @@
     "revert-pages": "rm -rf pages && mv _pages pages",
     "build-dev-ext": "prefix=/web next build && next export",
     "build-ext": "npm run move-ext && prefix=/web next build && next export && npm run revert-pages",
-    "start": "next start"
+    "start": "next start",
+    "lint-fix": "next lint --fix",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "prettier --write",
+      "npm run lint-fix"
+    ]
   },
   "dependencies": {
     "@pagenote/shared": "1.11.1-6.b",
@@ -46,7 +55,13 @@
     "@types/react-dom": "18.0.6",
     "@types/wicg-file-system-access": "^2020.9.4",
     "autoprefixer": "^10.4.12",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.1",
+    "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
     "postcss": "^8.4.21",
+    "prettier": "^2.8.8",
     "react-router-dom": "^6.6.1",
     "tailwindcss": "^3.2.4",
     "typescript": "4.8.4"
