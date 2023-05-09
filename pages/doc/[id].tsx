@@ -35,17 +35,17 @@ export async function getStaticProps(props: { params: { id: string } }) {
   // If the route is like /posts/1, then params.id is 1
   const res = await fetch(`${DOC_API_HOST}/api/doc?id=${id}`)
   const { recordMap } = await res.json()
-
+  const title = get(
+    recordMap?.block[id]?.value?.properties?.title || null,
+    '0.0'
+  )
   // Pass post data to the page via props
   return {
     props: {
-      recordMap: recordMap,
-      title: get(
-        recordMap?.block[id]?.value?.properties || null,
-        'title[0][0]'
-      ),
+      recordMap: recordMap || null,
+      title: title || '',
     },
-    revalidate: 60 * 20,
+    revalidate: 60 * 10,
   }
 }
 
