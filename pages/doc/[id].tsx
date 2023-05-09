@@ -4,7 +4,7 @@ import Footer from 'components/Footer'
 import { ExtendedRecordMap } from 'notion-types'
 import Head from 'next/head'
 import { get } from 'lodash'
-import { DOC_API_HOST } from '../../const/env'
+import { DOC_API_HOST } from 'const/env'
 
 export async function getStaticPaths() {
   let pages = []
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
     const res = await fetch(`${DOC_API_HOST}/api/doc`)
     pages = (await res.json()).pages
   } catch (e) {
-    console.error(e, 'getStaticPaths')
+    console.error(e, 'getStaticPaths 请检查 /api/doc')
   }
 
   const paths = pages.map((post: { title?: string; id: string }) => {
@@ -40,9 +40,9 @@ export async function getStaticProps(props: { params: { id: string } }) {
   return {
     props: {
       recordMap: recordMap,
-      title: get(recordMap?.block[id] || {}, 'value.properties.title[0][0]'), // ToDo 语义化 URL path
+      title: get(recordMap?.block[id]?.value?.properties || {}, 'title[0][0]'), // ToDo 语义化 URL path
     },
-    revalidate: 60 * 2,
+    revalidate: 60 * 20,
   }
 }
 
@@ -51,7 +51,6 @@ export default function Page(props: {
   title: string
 }) {
   const { recordMap, title } = props
-  console.log(title)
   return (
     <Doc>
       <Head>

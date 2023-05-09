@@ -12,6 +12,7 @@ html{
     font-family: 'Noto Sans SC', sans-serif;
 }
 
+/*TODO 迁移至notion-doc.scss*/
 .notion-app .breadcrumbs{
     overflow: hidden;
 }
