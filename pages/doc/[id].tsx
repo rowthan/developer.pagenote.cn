@@ -4,12 +4,16 @@ import Footer from 'components/Footer'
 import { ExtendedRecordMap } from 'notion-types'
 import Head from 'next/head'
 import { get } from 'lodash'
-
-const DOC_API = 'http://localhost:3000/api/doc'
+import { DOC_API_HOST } from '../../const/env'
 
 export async function getStaticPaths() {
-  const res = await fetch(DOC_API)
-  const { pages = [] } = await res.json()
+  let pages = []
+  try {
+    const res = await fetch(`${DOC_API_HOST}/api/doc`)
+    pages = (await res.json()).pages
+  } catch (e) {
+    console.error(e, 'getStaticPaths')
+  }
 
   const paths = pages.map((post: { title?: string; id: string }) => {
     return {
@@ -29,7 +33,7 @@ export async function getStaticProps(props: { params: { id: string } }) {
   const { id } = params
   // params contains the post `id`.
   // If the route is like /posts/1, then params.id is 1
-  const res = await fetch(`${DOC_API}?id=${id}`)
+  const res = await fetch(`${DOC_API_HOST}/api/doc?id=${id}`)
   const { recordMap } = await res.json()
 
   // Pass post data to the page via props

@@ -2,10 +2,11 @@ import { NotionRenderer } from 'react-notion-x'
 import Doc from 'layouts/Doc'
 import { ExtendedRecordMap } from 'notion-types'
 import Footer from 'components/Footer'
+import { DOC_API_HOST } from 'const/env'
 
 const ROOT_PAGE_ID = 'cfd9af87021049349e0420bc708c4206'
 export const getStaticProps = async () => {
-  const res = await fetch(`http://localhost:3000/api/doc?id=${ROOT_PAGE_ID}`)
+  const res = await fetch(`${DOC_API_HOST}/api/doc?id=${ROOT_PAGE_ID}`)
   const data = await res.json()
   return {
     props: {
