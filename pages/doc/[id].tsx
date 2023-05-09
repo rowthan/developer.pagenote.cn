@@ -40,7 +40,10 @@ export async function getStaticProps(props: { params: { id: string } }) {
   return {
     props: {
       recordMap: recordMap,
-      title: get(recordMap?.block[id]?.value?.properties || {}, 'title[0][0]'),
+      title: get(
+        recordMap?.block[id]?.value?.properties || null,
+        'title[0][0]'
+      ),
     },
     revalidate: 60 * 20,
   }
