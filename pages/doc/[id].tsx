@@ -40,7 +40,7 @@ export async function getStaticProps(props: { params: { id: string } }) {
   return {
     props: {
       recordMap: recordMap,
-      title: get(recordMap?.block[id]?.value?.properties || {}, 'title[0][0]'), // ToDo 语义化 URL path
+      title: get(recordMap?.block[id]?.value?.properties || {}, 'title[0][0]'),
     },
     revalidate: 60 * 20,
   }
@@ -50,7 +50,7 @@ export default function Page(props: {
   recordMap: ExtendedRecordMap
   title: string
 }) {
-  const { recordMap, title } = props
+  const { recordMap, title } = props || {}
   return (
     <Doc>
       <Head>
@@ -62,6 +62,7 @@ export default function Page(props: {
         darkMode={true}
         footer={<Footer />}
         mapPageUrl={(pageID) => {
+          // ToDo 语义化 URL path
           return `/doc/${pageID}`
         }}
       />
