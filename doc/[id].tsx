@@ -1,6 +1,6 @@
 import { NotionRenderer } from 'react-notion-x'
-import Doc from '../../layouts/Doc'
-import Footer from '../../components/Footer'
+import Doc from 'layouts/Doc'
+import Footer from 'components/Footer'
 import { ExtendedRecordMap } from 'notion-types'
 import Head from 'next/head'
 import { get } from 'lodash'
