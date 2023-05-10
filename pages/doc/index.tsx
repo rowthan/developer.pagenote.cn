@@ -9,7 +9,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       recordMap: data.recordMap,
-      title: data.title,
+      title: data.title || null,
     },
     revalidate: 100, // In seconds
   }
