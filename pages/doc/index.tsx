@@ -16,7 +16,7 @@ export const getStaticProps = async () => {
 }
 
 function Page(props: { recordMap: ExtendedRecordMap; title: string }) {
-  const { recordMap, title } = props
+  const { recordMap, title = '' } = props
   return <NotionDoc recordMap={recordMap} title={title} />
 }
 export default Page

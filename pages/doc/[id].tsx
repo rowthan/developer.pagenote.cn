@@ -35,7 +35,7 @@ export async function getStaticProps(props: { params: { id: string } }) {
   return {
     props: {
       recordMap: recordMap || null,
-      title: title || '',
+      title: title || null,
     },
     revalidate: 60 * 10,
   }
