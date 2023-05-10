@@ -1,5 +1,4 @@
 import { ExtendedRecordMap } from 'notion-types'
-import { get } from 'lodash'
 import { DOC_API_HOST } from 'const/env'
 import NotionDoc from 'components/NotionDoc'
 
@@ -31,11 +30,7 @@ export async function getStaticProps(props: { params: { id: string } }) {
   // params contains the post `id`.
   // If the route is like /posts/1, then params.id is 1
   const res = await fetch(`${DOC_API_HOST}/api/doc?id=${id}`)
-  const { recordMap } = await res.json()
-  const title = get(
-    recordMap?.block[id]?.value?.properties?.title || null,
-    '0.0'
-  )
+  const { recordMap, title } = await res.json()
   // Pass post data to the page via props
   return {
     props: {
@@ -51,10 +46,5 @@ export default function Page(props: {
   title: string
 }) {
   const { recordMap, title } = props || {}
-  return (
-    <NotionDoc
-        recordMap={recordMap}
-        title={title}
-      />
-  )
+  return <NotionDoc recordMap={recordMap} title={title} />
 }

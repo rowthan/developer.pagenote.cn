@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { NotionAPI } from 'notion-client'
 import { Client } from '@notionhq/client'
+import { get } from 'lodash'
 
 const docNotion = new NotionAPI({})
 const NOTION_SECRET_KEY = process.env.NOTION_TOKEN
@@ -32,8 +33,14 @@ export default async function handler(
     }
 
     const recordMap = await docNotion.getPage(notionId)
+    const title =
+      get(
+        recordMap?.block[notionId]?.value?.properties?.title || null,
+        '0.0'
+      ) || null
     res.status(200).json({
       recordMap: recordMap,
+      title: title,
     })
   } else {
     const result = await notion.search({
