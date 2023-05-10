@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,4 +10,32 @@ html{
     height: 100%;
     width: 100%;
     font-family: 'Noto Sans SC', sans-serif;
+}
+
+/*TODO 迁移至notion-doc.scss*/
+.notion-app .breadcrumbs{
+    overflow: hidden;
+}
+
+
+.notion-page-icon-hero.notion-page-icon-span{
+    margin-left: unset !important;
+    left: calc(min(16px, 8vw));
+}
+
+.notion-full-width .notion-page-icon-hero.notion-page-icon-span{
+    left: calc(min(96px, 8vw));
+}
+
+@media screen and (max-width: 920px) {
+    .notion-page-cover-wrapper{
+        height: 200px !important;
+        max-height: 200px !important;
+        min-height: 200px !important;
+    }
+    .notion-page-cover-wrapper img.notion-page-cover {
+        height: 200px !important;
+        max-height: 200px !important;
+        min-height: 200px !important;
+    }
 }
