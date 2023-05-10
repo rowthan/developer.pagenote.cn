@@ -26,3 +26,16 @@ html{
 .notion-full-width .notion-page-icon-hero.notion-page-icon-span{
     left: calc(min(96px, 8vw));
 }
+
+@media screen and (max-width: 920px) {
+    .notion-page-cover-wrapper{
+        height: 200px !important;
+        max-height: 200px !important;
+        min-height: 200px !important;
+    }
+    .notion-page-cover-wrapper img.notion-page-cover {
+        height: 200px !important;
+        max-height: 200px !important;
+        min-height: 200px !important;
+    }
+}
