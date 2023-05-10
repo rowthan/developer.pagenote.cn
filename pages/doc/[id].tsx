@@ -1,11 +1,7 @@
-import { NotionRenderer } from 'react-notion-x'
-import Doc from 'layouts/Doc'
-import Footer from 'components/Footer'
 import { ExtendedRecordMap } from 'notion-types'
-import Head from 'next/head'
 import { get } from 'lodash'
 import { DOC_API_HOST } from 'const/env'
-import { useEffect, useState } from 'react'
+import NotionDoc from 'components/NotionDoc'
 
 export async function getStaticPaths() {
   let pages = []
@@ -55,32 +51,10 @@ export default function Page(props: {
   title: string
 }) {
   const { recordMap, title } = props || {}
-  const [dark, setDark] = useState<boolean>(function () {
-    return new Date().getHours() > 18
-  })
-
-  useEffect(function () {
-    const darkMode =
-      window?.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    setDark(darkMode)
-  }, [])
-
   return (
-    <Doc>
-      <Head>
-        <title>{title}</title>
-      </Head>
-      <NotionRenderer
+    <NotionDoc
         recordMap={recordMap}
-        fullPage={true}
-        darkMode={dark}
-        footer={<Footer />}
-        mapPageUrl={(pageID) => {
-          // ToDo 语义化 URL path
-          return `/doc/${pageID}`
-        }}
+        title={title}
       />
-    </Doc>
   )
 }

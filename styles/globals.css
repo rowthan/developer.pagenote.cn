@@ -20,5 +20,9 @@ html{
 
 .notion-page-icon-hero.notion-page-icon-span{
     margin-left: unset !important;
-    left: 16px;
+    left: calc(min(16px, 8vw));
+}
+
+.notion-full-width .notion-page-icon-hero.notion-page-icon-span{
+    left: calc(min(96px, 8vw));
 }
