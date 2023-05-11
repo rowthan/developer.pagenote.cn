@@ -43,7 +43,7 @@ export default function useDataStat():[StatInfo|undefined,()=>void] {
             }
         })
 
-        const clipboards = await extApi.boxroom.queryItems({})
+        const clipboards = await extApi.box.query({})
 
         return{
             lightsCnt: lights.data.total,

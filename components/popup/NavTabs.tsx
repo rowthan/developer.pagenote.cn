@@ -19,7 +19,7 @@ const tabs: Tab[] = [{
     outlink: '',
     link: '/'
 }, {
-    label: '剪切板',
+    label: '临时剪切板',
     outlink: '',
     link: '/clipboard'
 },

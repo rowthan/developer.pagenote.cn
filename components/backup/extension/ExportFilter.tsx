@@ -43,7 +43,7 @@ export default function ExportFilter() {
             const pages = (await extApi.lightpage.queryPages(find)).data.list;
             const lights = (await extApi.lightpage.queryLights(find)).data.list;
             const snapshots = (await extApi.lightpage.querySnapshots(find)).data.list;
-            const htmlList = (await extApi.localResource.query(find)).data.list
+            const htmlList = (await extApi.html.query(find)).data.list
             const backup: BackupData = {
                 backupId: `${Date.now()}`,
                 backup_at: Date.now(),

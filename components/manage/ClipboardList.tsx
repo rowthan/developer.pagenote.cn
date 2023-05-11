@@ -4,17 +4,15 @@ import {useEffect, useState} from "react";
 import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import {toast} from "../../utils/toast";
-import useClipboardSync from "../../hooks/useClipboardSync";
 import {Pagination} from "@pagenote/shared/lib/@types/database";
-import {boxroom} from "@pagenote/shared/lib/extApi";
 import TipSvg from 'assets/svg/info.svg'
-import BoxItem = boxroom.BoxItem;
 import BasicSettingLine from "../setting/BasicSettingLine";
 import useSettings from "../../hooks/useSettings";
+import {box} from "@pagenote/shared/lib/extApi";
+import Box = box.Box;
 
 export default function ClipboardList() {
-    const [list, setList] = useState<BoxItem[]>([])
-    const [syncInfo] = useClipboardSync();
+    const [list, setList] = useState<Box[]>([])
     const {data: setting, update: updateSetting} = useSettings();
     const [pagination, setPagination] = useState<Pagination>({
         limit: 100,
@@ -44,9 +42,7 @@ export default function ClipboardList() {
     }
 
     function batchDeleted() {
-        extApi.boxroom.removeItems({
-            ids: selected
-        }).then(function (res) {
+        extApi.box.remove(selected).then(function (res) {
             loadBoxList();
             if(res.success){
                 setSelected([])
@@ -65,7 +61,7 @@ export default function ClipboardList() {
 
 
     function loadBoxList() {
-        extApi.boxroom.queryItems({
+        extApi.box.query({
             sort:{
                 createAt: -1
             },
@@ -74,7 +70,7 @@ export default function ClipboardList() {
             limit: 100,
         }).then((res) => {
             if (res.success) {
-                setList((res.data.list || []) as BoxItem[])
+                setList((res.data.list || []) as Box[])
                 setPagination({
                     limit: pagination.limit,
                     page: pagination.page,
@@ -86,9 +82,7 @@ export default function ClipboardList() {
 
 
     function removeItem(key: string) {
-        extApi.boxroom.removeItems({
-            ids: [key],
-        }).then(function () {
+        extApi.box.remove([key]).then(function () {
             loadBoxList();
         })
     }
@@ -158,25 +152,13 @@ export default function ClipboardList() {
                     <div>
                         <TipSvg width={32} height={32} />
                         <div>
-                            <h3 className="font-bold">
-                                {
-                                    (syncInfo?.hasToken && syncInfo?.lastSyncAt) ? <span>与Notion同步于 {dayjs((syncInfo.lastSyncAt)).format('YYYY-MM-DD HH:mm:ss')}</span> : ''
-                                }
-                                {
-                                    !syncInfo?.hasToken &&
-                                    <span>尚未与 <a href="https://notion.so">Notion</a> 绑定(Beta功能)，授权后可 <a href="https://page-note.notion.site/Notion-PAGENOTE-6a7353124e9d4d49a6a2bed07acff3df">将剪切板数据同步至Notion</a></span>
-                                }
-                            </h3>
                             <div className="text-xs">共计 {list.length} 条剪切板数据。保留30天内、最多100条数据。</div>
                         </div>
                     </div>
                     <div className="flex-none">
-                        {
-                            syncInfo?.manageUrl ? <button className='btn btn-sm'><a target={'_blank'} href={syncInfo.manageUrl}>在Notion中查看</a></button> :
-                                <button className="btn btn-sm">
-                                    <a target='_blank' href="https://www.bilibili.com/video/BV1TR4y1Q7Yf">了解Notion 同步方法</a>
-                                </button>
-                        }
+                        <button className="btn btn-sm">
+                            <a target='_blank' href="https://www.bilibili.com/video/BV1TR4y1Q7Yf">了解Notion 同步方法</a>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,7 @@ export default function WebPageItem(props:{webpage: Partial<WebPage>, keyword: s
                 <HighLightText hideOnUnMatch={true} keyword={keyword} text={item.description||''} />
             </div>
             <div>
-                {item.plainData?.steps.map( (light)=>(
+                {(item?.plainData?.steps || []).map( (light)=>(
                     <div key={light.key} className={'text-sm p-1'}>
                         <span className={'badge badge-xs'} style={{backgroundColor: light.bg}}></span>
                         {/*<HighLightText keyword={keyword} text={light.pre || ''} />*/}
