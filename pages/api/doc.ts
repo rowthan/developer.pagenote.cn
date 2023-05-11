@@ -53,6 +53,8 @@ export default async function handler(
       pages: result.results.map(function (item) {
         return {
           id: item.id,
+          title: get(item, 'properties.path.url') || null,
+          // ...item,
         }
       }),
     })

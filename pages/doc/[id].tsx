@@ -11,7 +11,7 @@ export async function getStaticPaths() {
     console.error(e, 'getStaticPaths 请检查 /api/doc')
   }
 
-  const paths = pages.map((post: { title?: string; id: string }) => {
+  const paths = pages.map((post: { id: string }) => {
     return {
       params: { id: post.id },
     }

@@ -40,10 +40,13 @@ export default function NotionDoc(props: {
   })
 
   useEffect(function () {
+    console.log('check dark')
     const darkMode =
       window?.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
-    setDark(darkMode)
+    if (darkMode) {
+      setDark(true)
+    }
   }, [])
 
   return (
