@@ -1,22 +1,13 @@
-import { ExtendedRecordMap } from 'notion-types'
-import { DOC_API_HOST } from 'const/env'
-import NotionDoc from 'components/NotionDoc'
+import NotionDoc,{NotionDocProp} from 'components/NotionDoc'
+import { NOTION_BASE_ROOT_PAGE } from 'const/env'
+import { getNotionDocDetail } from 'service/doc'
 
-const ROOT_PAGE_ID = 'cfd9af87021049349e0420bc708c4206'
 export const getStaticProps = async () => {
-  const res = await fetch(`${DOC_API_HOST}/api/doc?id=${ROOT_PAGE_ID}`)
-  const data = await res.json()
-  return {
-    props: {
-      recordMap: data.recordMap,
-      title: data.title || null,
-    },
-    revalidate: 100, // In seconds
-  }
+  const data = await getNotionDocDetail(NOTION_BASE_ROOT_PAGE)
+  return data
 }
 
-function Page(props: { recordMap: ExtendedRecordMap; title: string }) {
-  const { recordMap, title = '' } = props
-  return <NotionDoc recordMap={recordMap} title={title} />
+function Page(props: NotionDocProp) {
+  return <NotionDoc {...props} />
 }
 export default Page
