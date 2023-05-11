@@ -5,55 +5,109 @@ import { Client } from '@notionhq/client'
 import { get } from 'lodash'
 
 const docNotion = new NotionAPI({})
-const NOTION_SECRET_KEY = process.env.NOTION_TOKEN
 const notion = new Client({
-  auth: NOTION_SECRET_KEY,
+  auth: process.env.NOTION_TOKEN,
 })
+
+
+async function fetchAllDocs(){
+  const result = await notion.search({
+    filter: {
+      property: 'object',
+      value: 'page',
+    },
+  })
+  return result;
+}
+
+async function fetchDocByPath(path: string): Promise<string|null>{
+
+  const {results} = await notion.search({
+    filter:{
+      property: 'object',
+      value:"database"
+    }
+  })
+
+  for(let i=0; i<results.length; i++){
+    console.log('search in table',i)
+    // @ts-ignore
+    const {id,properties} = results[i];
+    if(!properties.path){
+      continue;
+    }
+    const queryResult = await notion.databases.query({
+      database_id: id,
+      filter: {
+        property: 'path',
+        type: 'url',
+        url:{
+          equals: path,
+        }
+      },
+      page_size: 1,
+    })
+    if(queryResult.results[0]){
+      return queryResult.results[0].id
+    }
+  }
+
+  return null;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const pageId = (req.query.id || '').toString()
+  const notionIdOrUrlPath = (req.query.id || '').toString()
 
-  if (pageId) {
-    let notionId = pageId
-    // 非 page id ，查找对应的 notionid
-    if (!/^(\w|\d){8}/.test(pageId)) {
-      const result = await notion.search({
-        query: pageId,
-        filter: {
-          property: 'object',
-          value: 'page',
-        },
-        page_size: 1,
-      })
-      if (result.results[0]) {
-        notionId = result.results[0].id
+  // 基于文章ID 或 path 查询详情
+  if (notionIdOrUrlPath) {
+    let notionId = notionIdOrUrlPath
+    // 如果是 URL path，需要查询对应的 notion id
+    if (!/^(\w|\d){8}/.test(notionIdOrUrlPath) || notionIdOrUrlPath.length < 20) {
+      notionId = await fetchDocByPath(notionIdOrUrlPath) || '';
+      if(!notionId){
+        throw Error('找不到 notion 页面')
       }
     }
 
-    const recordMap = await docNotion.getPage(notionId)
-    const title =
-      get(
-        recordMap?.block[notionId]?.value?.properties?.title || null,
-        '0.0'
-      ) || null
+    // 基于notion 查询用于渲染的结构对象详情（非官方API）
+    // const recordMap = await docNotion.getPage(notionId);
+    // const notionPage = await notion.pages.retrieve({
+    //   page_id: notionId
+    // });
+    const [recordMap,notionPage] = await Promise.all([
+      docNotion.getPage(notionId),
+      notion.pages.retrieve({
+        page_id: notionId
+      })
+    ])
+    const properties = recordMap?.block[notionId]?.value?.properties
+    const title = get(properties, 'title.0.0') || null;
+    // const description = get(properties, 'description.0.0') || null;    
+    // console.log(notionPage.properties,'notionPage')
+    const path = get(notionPage, 'properties.path.url') || null;
+    const description = get(notionPage,'properties.description.rich_text[0].plain_text') || null;
+    const keywords = (get(notionPage,'properties.keywords.multi_select') || []).map(function(item){
+        //@ts-ignore
+        return item.name || ''
+    })
+
     res.status(200).json({
       recordMap: recordMap,
       title: title,
+      path: path,
+      description: description,
+      keywords: keywords,
     })
   } else {
-    const result = await notion.search({
-      filter: {
-        property: 'object',
-        value: 'page',
-      },
-    })
+    const result = await fetchAllDocs();
     return res.status(200).json({
       pages: result.results.map(function (item) {
         return {
           id: item.id,
-          title: get(item, 'properties.path.url') || null,
+          title: get(item, 'properties.title.title.0.plain_text') || null,
           // ...item,
         }
       }),
