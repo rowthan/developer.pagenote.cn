@@ -10,7 +10,8 @@ import SettingSvg from 'assets/svg/setting.svg'
 import ShortCutInfo from '../components/ShortCutInfo'
 import useWhoAmi from '../hooks/useWhoAmi'
 import { useRouter } from 'next/router'
-
+import ErrorBoundary from "../components/debug/ErrorBound";
+import Error from 'components/debug/ErrorTip';
 // 给普通用户访问的页面，基础layout
 export default function BasicLayout(
   props: PropsWithChildren<{
@@ -37,14 +38,14 @@ export default function BasicLayout(
       icon: <HelpSvg className={'fill-current inline'} />,
     },
   ]
-  if (['/ext/popup'].includes(pathname)) {
-    asideList.push({
-      label: '设置',
-      link: '#/setting',
-      icon: <SettingSvg className={'fill-current inline'} />,
-      target: '_self',
-    })
-  } else {
+    if(pathname.includes('/ext')){
+        asideList.push({
+            label: '设置',
+            link: '/ext/setting.html',
+            icon: <SettingSvg className={'fill-current inline'}/>,
+            target: '_blank'
+        },)
+    }else {
     asideList.push({
       label: '设置',
       link: 'https://developer.pagenote.cn//setting',
@@ -69,7 +70,7 @@ export default function BasicLayout(
   }
 
   return (
-    <div>
+    <ErrorBoundary fallback={Error}>
       <Head>
         <title>{meta.title}</title>
         <meta name="robots" content="follow, index" />
@@ -133,6 +134,6 @@ export default function BasicLayout(
           <ShortCutInfo />
         </label>
       </label>
-    </div>
+    </ErrorBoundary>
   )
 }
