@@ -1,0 +1,92 @@
+
+
+
+
+:root{
+  --gray-hue: 0 0%;
+
+  --l-0: 0%;
+  --l-10: 10%;
+  --l-20: 20%;
+  --l-30: 30%;
+  --l-40: 40%;
+  --l-50: 50%;
+  --l-60: 60%;
+  --l-70: 70%;
+  --l-80: 80%;
+  --l-90: 90%;
+  --l-100: 100%;
+
+
+  --l-bg: 100%;
+  --l-front: 15%;
+
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --l-0: 100%;
+    --l-10: 90%;
+    --l-20: 80%;
+    --l-30: 70%;
+    --l-40: 60%;
+    --l-60: 40%;
+    --l-70: 30%;
+    --l-80: 20%;
+    --l-90: 10%;
+    --l-100: 0%;
+
+
+    --l-bg: 25%;
+    --l-front: 95%;
+  }
+}
+
+body{
+  background: hsl(var(--gray-hue) var(--l-bg));
+  color: hsl(var(--gray-hue) var(--l-front));
+}
+
+//.text-color{
+//  color: hsl(var(--gray-hue) var(--l-front));
+//
+//  &-100{
+//    color: hsl(var(--gray-hue) calc(var(--l-10)));
+//  }
+//  &-200{
+//    color: hsl(var(--gray-hue) calc(var(--l-20)));
+//  }
+//  &-300{
+//    color: hsl(var(--gray-hue) calc(var(--l-30)));
+//  }
+//  &-400{
+//    color: hsl(var(--gray-hue) calc(var(--l-40)));
+//  }
+//}
+
+
+:root {
+  --dm: 1;
+
+  /* Example declaration: */
+  --l-offset: -10%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dm: -1;
+  }
+}
+
+.text-color{
+  &-300{
+    color: hsl(0 0% calc(var(--l-30) - var(--dm) * var(--l-offset)));
+  }
+  &-400{
+    color: hsl(0 0% calc(var(--l-30) - var(--dm) * var(--l-offset)));
+  }
+  &-500{
+    color: hsl(0 0% calc(var(--l-50) - var(--dm) * var(--l-offset)));
+  }
+  //color: hsl(0 0% calc(50% + var(--dm) * var(--l-offset)));
+}

@@ -1,0 +1,55 @@
+
+// 基于基本色，生成主题色 http://scg.ar-ch.org https://www.cnblogs.com/kaiye/p/7553041.html
+:root{
+    // --base-text-color: 0 0%;
+    // --base-bg-color: 0 0%;
+    // --base-text-l: 21.765%;
+    // --base-bg-l: 100%;
+
+    // --gray-base: 100%;
+    // --dm: 1;
+
+    // // color: hsl(228 4.5045% 21.765%);
+    // // background-color: hsl(0, 0%, 100%);
+    // color: hsl(var(--base-text-color) var(--base-text-l));
+    // background-color: hsl(var(--base-bg-color) var(--base-bg-l));
+
+    // background-color: hsl(0 0% 100%);//hsl(var(--base-bg-color) 100%);
+    // background-color: hsl(0 0% 100%);//hsl(var(--base-bg-color) 100%);
+}
+ 
+
+
+:root{
+    $base-text-color:#333333;
+    $base-bg-color: #ffffff;
+    color: $base-text-color;
+    background-color: $base-bg-color;
+    @for $i from 0 through 20 {
+        .text-color-#{$i*50}{
+            color: lighten($color: $base-text-color, $amount: $i * 5%)
+        }
+        .bg-color-#{$i*50}{
+            background-color: darken($color: $base-bg-color, $amount: $i * 5%)
+        }
+    }
+}
+
+ 
+@media (prefers-color-scheme: dark){
+    :root{
+        $base-text-color:#ffffff;
+        $base-bg-color: #333333;
+        color: $base-text-color;
+        background-color: $base-bg-color;
+
+        @for $i from 0 through 20 {
+            .text-color-#{$i*50}{
+                color: darken($color: $base-text-color, $amount: $i * 5%)
+            }
+            .bg-color-#{$i*50}{
+                background-color: lighten($color: $base-bg-color, $amount: $i * 5%)
+            }
+        }
+    }
+}

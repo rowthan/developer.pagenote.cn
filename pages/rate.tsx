@@ -1,11 +1,11 @@
-import BasicLayout from "../layouts/BasicLayout";
+import NotionDoc, { NotionDocProp } from 'components/NotionDoc'
+import { getNotionDocDetail } from 'service/doc'
 
-export default function () {
-    return(
-        <BasicLayout nav={false} title={'为 PAGENOTE 评分'} description={'为 PAGENOTE 评分，让更多人看见一页一记'}>
-            <div>
-                前往评分
-            </div>
-        </BasicLayout>
-    )
+export const getStaticProps = async () => {
+  return await getNotionDocDetail('rate')
 }
+
+function Rate(props: NotionDocProp) {
+  return <NotionDoc {...props} />
+}
+export default Rate

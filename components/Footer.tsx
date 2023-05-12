@@ -12,7 +12,12 @@ export default function Footer() {
       <footer className="footer gap-y-1 px-4 py-4 border-t bg-base-200 text-base-content border-base-300 flex md:justify-center">
         <div className="items-center grid-flow-col">
           <h2>PAGENOTE</h2>
-          <img src="/images/light-64.png" width={24} height={24} />
+          <Image
+            src="/images/light-64.png"
+            width={24}
+            height={24}
+            alt={'pagenote'}
+          />
           <p className="hidden md:block">小而美的网页标记工具.</p>
           <DeviceInfo />
         </div>
@@ -34,16 +39,24 @@ export default function Footer() {
                 />
               </div>
             </div>
-            <a href="https://space.bilibili.com/2089824747" target="_blank">
+            <a
+              href="https://space.bilibili.com/2089824747"
+              target="_blank"
+              aria-label={'哔哩哔哩 一用书生'}
+            >
               <BiliSvg width={24} height={24} />
             </a>
             <a
               href="https://github.com/rowthan/developer.pagenote.cn"
               target="_blank"
+              aria-label={'GitHub rowthan'}
             >
               <GithubSvg width={24} height={24} />
             </a>
-            <a href="mailto:pagenote@126.com">
+            <a
+              href="mailto:pagenote@126.com"
+              aria-label={'邮箱联系我： pagneote@126.com'}
+            >
               <EmailSvg width={24} height={24} />
             </a>
           </div>
