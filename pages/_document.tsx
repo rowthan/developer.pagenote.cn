@@ -1,5 +1,7 @@
 import { Html, Head, Main, NextScript } from 'next/document'
+import { TDK } from '../const/tdk'
 
+// 运行在服务端
 export default function Document() {
   return (
     <Html lang="zh">
@@ -19,15 +21,8 @@ export default function Document() {
           href="https://fonts.gstatic.com"
           crossOrigin={'crossOrigin'}
         />
-
-        <meta
-          name="description"
-          content="pagenote 一个小而美的网页标记工具。一款浏览器插件，支持在Firefox、Chrome、edge等浏览器中使用。"
-        />
-        <meta
-          name="keywords"
-          content="pagenote,小而美,标记,插件,Firefox,Chrome,Edge"
-        />
+        <meta name="description" content={TDK.common.description} />
+        <meta name="keywords" content={TDK.common.keywords} />
       </Head>
       <body>
         <Main />
