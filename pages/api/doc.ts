@@ -40,11 +40,29 @@ async function fetchDocByPath(path: string): Promise<string | null> {
     const queryResult = await notion.databases.query({
       database_id: id,
       filter: {
-        property: 'path',
-        type: 'url',
-        url: {
-          equals: path,
-        },
+        or: [
+          {
+            property: 'path',
+            type: 'url',
+            url: {
+              equals: path,
+            },
+          },
+          {
+            property: 'path',
+            type: 'url',
+            url: {
+              equals: '/' + path,
+            },
+          },
+          {
+            property: 'path',
+            type: 'url',
+            url: {
+              equals: path.replace(/^\//, ''),
+            },
+          },
+        ],
       },
       page_size: 1,
     })
@@ -58,7 +76,7 @@ async function fetchDocByPath(path: string): Promise<string | null> {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse
 ) {
   const notionIdOrUrlPath = (req.query.id || '').toString()
 
