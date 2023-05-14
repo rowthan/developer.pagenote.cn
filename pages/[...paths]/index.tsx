@@ -1,7 +1,8 @@
 import NotionDoc, { NotionDocProp } from 'components/NotionDoc'
 import computeStaticPaths, { getNotionDocDetail } from 'service/doc'
-
-import { DEFAULT_BASE_DOC_PATH } from '../../const/notion'
+import { DEFAULT_BASE_DOC_PATH } from 'const/notion'
+import NotFound from 'components/error/NotFound'
+import Footer from 'components/Footer'
 
 export async function getStaticPaths() {
   const pages = await computeStaticPaths()
@@ -30,8 +31,9 @@ export default function Page(props: NotionDocProp) {
   const { recordMap, title, path, keywords, description } = props || {}
   if (!recordMap) {
     return (
-      <div>
-        <p>doc not found</p>
+      <div className={'h-screen'}>
+        <NotFound />
+        <Footer />
       </div>
     )
   }
