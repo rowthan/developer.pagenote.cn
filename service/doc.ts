@@ -42,6 +42,7 @@ export default async function computeStaticPaths() {
   }
 
   return {
+    // todo 没有指定的页面不预先加载，修改 fallback 为 blocking
     paths: pages.map(function (item: { id: string; path?: string }) {
       let paths = [DEFAULT_BASE_DOC_PATH, item.id] //[`/${DEFAULT_BASE_DOC_PATH}/${item.id}`]
       // 如果有自定义路径，解析后封装至数组

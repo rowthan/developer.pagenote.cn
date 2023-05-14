@@ -10,7 +10,7 @@ interface Props {
 
 const plans: PlanInfo[] = [
   {
-    title: '免费/<key-word>种子用户<key-word>',
+    title: '免费/种子用户',
     description:
       '你现在能免费使用的功能，可以一直免费使用。除非该功能已下线。<key-word>无垃圾广告<key-word>',
     price: 0,
@@ -43,7 +43,7 @@ export default function Plans(props: Props) {
   const { children } = props
   const [userInfo] = useUserInfo()
   const [plan, setPlan] = useState<PlanInfo | null>(null)
-
+  const [activeIndex, setActiveIndex] = useState(1)
   let current = 0
   if (userInfo) {
     const pro = userInfo?.profile?.pro || 0
@@ -65,14 +65,32 @@ export default function Plans(props: Props) {
   const open = plan !== null
   return (
     <div className="">
-      <div className="grid grid-cols-12 gap-6">
+      <div className={'block md:hidden'}>
+        <div className="tabs m-auto my-2 justify-center">
+          {plans.map((item, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                setActiveIndex(index)
+              }}
+              className={`tab tab-bordered ${
+                activeIndex === index ? 'tab-active' : ''
+              }`}
+              dangerouslySetInnerHTML={{ __html: item.title }}
+            ></div>
+          ))}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 my-2">
         {plans.map((item, index) => (
-          <PlanCard
+          <div
             key={index}
-            info={item}
-            current={current}
-            onClick={setPlan}
-          />
+            className={`hidden md:block ${
+              activeIndex === index ? '!block' : ''
+            }`}
+          >
+            <PlanCard info={item} current={current} onClick={setPlan} />
+          </div>
         ))}
       </div>
       {children}
