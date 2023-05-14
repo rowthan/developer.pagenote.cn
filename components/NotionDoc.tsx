@@ -46,7 +46,7 @@ export type NotionDocProp = {
   path: string | null // SEO 优化映射路径
   description: string | null
   keywords: string[]
-}
+} & Partial<Parameters<typeof NotionRenderer>[0]>
 
 function getPathFromProperties(block?: Block) {
   if (!block) {
@@ -65,7 +65,7 @@ function getPathFromProperties(block?: Block) {
 }
 
 export default function NotionDoc(props: NotionDocProp) {
-  const { recordMap, title, description, keywords } = props || {}
+  const { recordMap, pageTitle, title, description, keywords } = props || {}
   const [dark, setDark] = useState<boolean>(false)
 
   useEffect(function () {
@@ -91,7 +91,6 @@ export default function NotionDoc(props: NotionDocProp) {
         ></meta>
       </Head>
       <NotionRenderer
-        recordMap={recordMap}
         components={{
           nextImage: Image,
           nextLink: Link,
@@ -101,6 +100,7 @@ export default function NotionDoc(props: NotionDocProp) {
           Modal,
           Pdf,
         }}
+        pageTitle={pageTitle}
         fullPage={true}
         darkMode={dark}
         footer={<Footer />}
@@ -113,6 +113,7 @@ export default function NotionDoc(props: NotionDocProp) {
           const path = getPathFromProperties(recordMap.block[pageID]?.value)
           return path || `/${DEFAULT_BASE_DOC_PATH}/${pageID}`
         }}
+        {...props}
       />
     </Doc>
   )
