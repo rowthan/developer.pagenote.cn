@@ -6,10 +6,15 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { get } from 'lodash'
-import { NOTION_BASE_ROOT_PAGE } from 'const/env'
 import { searchInNotion } from 'service/doc'
 import Image from 'next/image'
 import Link from 'next/link'
+import { TDK } from 'const/tdk'
+import {
+  DEFAULT_BASE_DOC_PATH,
+  DOC_ID_MAPPING,
+  NOTION_BASE_ROOT_PAGE,
+} from 'const/notion'
 
 const Code = dynamic(() =>
   import('react-notion-x/build/third-party/code').then((m) => m.Code)
@@ -54,16 +59,14 @@ function getPathFromProperties(block?: Block) {
     const value = get(prop, '0.1.0.1')
     // 无法从确定的属性值中获取，所以hack一下，遍历所有属性，进行判断后作为 path 来使用，可能存在误差。需要保证属性中只有一个URL类型的字段，否则可能导致异常
     if (plainText === value && tag === 'a') {
-      return plainText
+      return plainText[0] === '/' ? plainText : '/' + plainText
     }
   }
 }
 
 export default function NotionDoc(props: NotionDocProp) {
-  const { recordMap, title = '', description, keywords } = props || {}
-  const [dark, setDark] = useState<boolean>(function () {
-    return new Date().getHours() > 18
-  })
+  const { recordMap, title, description, keywords } = props || {}
+  const [dark, setDark] = useState<boolean>(false)
 
   useEffect(function () {
     const darkMode =
@@ -77,9 +80,15 @@ export default function NotionDoc(props: NotionDocProp) {
   return (
     <Doc>
       <Head>
-        <title>{title}</title>
-        <meta name="description" content={description || ''}></meta>
-        <meta name="keywords" content={keywords?.toString() || ''}></meta>
+        <title>{title || TDK.common.title}</title>
+        <meta
+          name="description"
+          content={description || TDK.common.description}
+        ></meta>
+        <meta
+          name="keywords"
+          content={keywords?.toString() || TDK.common.keywords}
+        ></meta>
       </Head>
       <NotionRenderer
         recordMap={recordMap}
@@ -98,13 +107,11 @@ export default function NotionDoc(props: NotionDocProp) {
         searchNotion={searchInNotion}
         rootPageId={NOTION_BASE_ROOT_PAGE}
         mapPageUrl={(pageID) => {
-          if (pageID === NOTION_BASE_ROOT_PAGE) {
-            return '/'
+          if (DOC_ID_MAPPING[pageID]) {
+            return DOC_ID_MAPPING[pageID]
           }
-          // console.log(pageID,recordMap.block[pageID])
-          // ToDo 语义化 URL path 没有找到明确的方法取到 path，从几个测试挂载在属性 i}_v 上
           const path = getPathFromProperties(recordMap.block[pageID]?.value)
-          return `/doc/${path || pageID}`
+          return path || `/${DEFAULT_BASE_DOC_PATH}/${pageID}`
         }}
       />
     </Doc>
