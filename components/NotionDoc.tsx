@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { get } from 'lodash'
 import { searchInNotion } from 'service/doc'
-import Image from 'next/image'
+//import Image from 'next/image'
 import Link from 'next/link'
 import { TDK } from 'const/tdk'
 import {
@@ -92,7 +92,7 @@ export default function NotionDoc(props: NotionDocProp) {
       </Head>
       <NotionRenderer
         components={{
-          nextImage: Image,
+          //nextImage: Image,
           nextLink: Link,
           Code,
           Collection,
