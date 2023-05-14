@@ -1,5 +1,6 @@
 import '../styles/globals.scss'
 import type { AppProps } from 'next/app'
+import { Analytics } from '@vercel/analytics/react'
 import Script from 'next/script'
 import { basePath } from '../const/env'
 import Head from 'next/head'
@@ -14,6 +15,7 @@ function ClientApp({ Component, pageProps }: AppProps) {
       </Head>
       <Component {...pageProps} />
       <Script src={`${basePath}/components.js`} />
+      <Analytics />
     </>
   )
 }

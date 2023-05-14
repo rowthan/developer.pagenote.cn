@@ -18,11 +18,11 @@ export async function getNotionDocDetail(id: string) {
   } catch (e) {
     console.error('error', e)
     return {
-      // notFound: true,
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
+      notFound: true,
+      // redirect: {
+      //   destination: '/500',
+      //   permanent: false,
+      // },
     }
   }
 }
