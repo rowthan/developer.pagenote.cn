@@ -5,6 +5,14 @@ module.exports = {
   env: {
     prefix: process.env.prefix || '',
   },
+  async rewrites() {
+    return [
+      {
+        source: '/:path*.html',
+        destination: '/:path*',
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {
