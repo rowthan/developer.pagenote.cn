@@ -12,7 +12,7 @@ export default function Setting() {
           <Router>
             <Routes>
               <Route path="/" element={<SettingCom />} />
-              <Route path="/setting/*" element={<SettingCom />} />
+              <Route path="*" element={<SettingCom />} />
             </Routes>
           </Router>
         </div>
