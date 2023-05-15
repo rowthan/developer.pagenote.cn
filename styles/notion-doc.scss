@@ -1,38 +1,36 @@
 
-
-
 .notion-app .breadcrumbs {
-    /*overflow: hidden;*/
-    width: 100%;
-    overflow: auto;
-    overflow-y: hidden;
+  /*overflow: hidden;*/
+  width: 100%;
+  overflow: auto;
+  overflow-y: hidden;
 }
 
 .notion-header .breadcrumb .title {
-    max-width: 160px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 .notion-page-icon-hero {
-    margin-left: unset !important;
-    left: calc(min(16px, 8vw)) !important;
+  margin-left: unset !important;
+  left: calc(min(16px, 8vw)) !important;
 }
 
 .notion-full-width .notion-page-icon-hero {
-    left: calc(min(96px, 8vw)) !important;
+  left: calc(min(96px, 8vw)) !important;
 }
 
 @media screen and (max-width: 920px) {
-    .notion-page-cover-wrapper{
-        height: 200px !important;
-        max-height: 200px !important;
-        min-height: 200px !important;
-    }
-    .notion-page-cover-wrapper img.notion-page-cover {
-        height: 200px !important;
-        max-height: 200px !important;
-        min-height: 200px !important;
-    }
+  .notion-page-cover-wrapper {
+    height: 200px !important;
+    max-height: 200px !important;
+    min-height: 200px !important;
+  }
+  .notion-page-cover-wrapper img.notion-page-cover {
+    height: 200px !important;
+    max-height: 200px !important;
+    min-height: 200px !important;
+  }
 }
