@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { NotionAPI } from 'notion-client'
 import { Client } from '@notionhq/client'
 import { get } from 'lodash'
+import {parsePageId} from 'notion-utils'
 
 const docNotion = new NotionAPI({})
 const notion = new Client({
@@ -99,16 +100,17 @@ export default async function handler(
     }
 
     // 基于notion 查询用于渲染的结构对象详情（非官方API）
-    // const recordMap = await docNotion.getPage(notionId);
-    // const notionPage = await notion.pages.retrieve({
-    //   page_id: notionId
-    // });
-    const [recordMap, notionPage] = await Promise.all([
-      docNotion.getPage(notionId),
-      notion.pages.retrieve({
+    notionId = parsePageId(notionId);
+    const recordMap = await docNotion.getPage(notionId);
+    let notionPage = null;
+    // 非 page 类不做查询，如 collection-page-view
+    if(recordMap.block[notionId]?.value.type==='page'){
+      notionPage = notion.pages.retrieve({
         page_id: notionId,
-      }),
-    ])
+      }).catch(function(e){
+        console.warn(e,'获取文章详情失败')
+      })
+    }
     const properties = recordMap?.block[notionId]?.value?.properties
     const title = get(properties, 'title.0.0') || null
     // const description = get(properties, 'description.0.0') || null;

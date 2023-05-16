@@ -5,7 +5,6 @@ import { Block, ExtendedRecordMap } from 'notion-types'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { get } from 'lodash'
 import { searchInNotion } from 'service/doc'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,6 +14,7 @@ import {
   DOC_ID_MAPPING,
   NOTION_BASE_ROOT_PAGE,
 } from 'const/notion'
+import { getPathFromProperties } from 'utils/notion'
 
 const Code = dynamic(() =>
   import('react-notion-x/build/third-party/code').then((m) => m.Code)
@@ -48,21 +48,7 @@ export type NotionDocProp = {
   keywords: string[]
 } & Partial<Parameters<typeof NotionRenderer>[0]>
 
-function getPathFromProperties(block?: Block) {
-  if (!block) {
-    return
-  }
-  for (let i in block.properties) {
-    const prop = block.properties[i]
-    const plainText = get(prop, '0.0')
-    const tag = get(prop, '0.1.0.0')
-    const value = get(prop, '0.1.0.1')
-    // 无法从确定的属性值中获取，所以hack一下，遍历所有属性，进行判断后作为 path 来使用，可能存在误差。需要保证属性中只有一个URL类型的字段，否则可能导致异常
-    if (plainText === value && tag === 'a') {
-      return plainText[0] === '/' ? plainText : '/' + plainText
-    }
-  }
-}
+
 
 export default function NotionDoc(props: NotionDocProp) {
   const { recordMap, pageTitle, title, description, keywords } = props || {}
