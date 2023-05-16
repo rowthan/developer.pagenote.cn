@@ -4,18 +4,21 @@ interface Props {
   src?: string
   fallback?: string
   alt?: string
+
   [key: string]: unknown
 }
+
+const DEFAULT_IMG = 'https://developer.pagenote.cn/images/light-128.png'
 export default function ImgFallback(props: Props) {
   const { src, fallback } = props
-  const [imgSrc, setImgSrc] = useState(src || '')
+  const [imgSrc, setImgSrc] = useState(function () {
+    return src || DEFAULT_IMG
+  })
   const [loading, setLoading] = useState(true)
-
-  useEffect(function () {}, [])
-
+  
   function onLoadError() {
     if (fallback) {
-      setImgSrc(fallback || '')
+      setImgSrc(fallback || DEFAULT_IMG)
     }
     setLoading(false)
   }
@@ -27,17 +30,17 @@ export default function ImgFallback(props: Props) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      {...props}
       alt={props.alt || '加载中'}
       onError={onLoadError}
       onLoad={onLoad}
       onLoadedData={onLoad}
       className={`${props.className} ${loading ? 'loading-block' : ''}`}
       src={imgSrc}
-      {...props}
     />
   )
 }
 
 ImgFallback.defaultProps = {
-  fallback: 'https://pagenote.cn/favicon.ico',
+  fallback: DEFAULT_IMG,
 }

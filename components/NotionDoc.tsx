@@ -66,15 +66,14 @@ function getPathFromProperties(block?: Block) {
 
 export default function NotionDoc(props: NotionDocProp) {
   const { recordMap, pageTitle, title, description, keywords } = props || {}
-  const [dark, setDark] = useState<boolean>(false)
-
+  const [dark, setDark] = useState<boolean>(function () {
+    return new Date().getHours() >= 19
+  })
   useEffect(function () {
     const darkMode =
       window?.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
-    if (darkMode) {
-      setDark(true)
-    }
+    setDark(darkMode)
   }, [])
 
   return (
