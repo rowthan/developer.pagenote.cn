@@ -1,30 +1,24 @@
 import useWhoAmi from '../../hooks/useWhoAmi'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { compare } from 'compare-versions'
+import useVersionValid from 'hooks/useVersionValid'
 
 export default function CheckVersion({
   requireVersion,
   children,
   label,
+  fallback,
 }: {
   requireVersion: string
   children: ReactElement
   label?: string
+  fallback?: ReactElement
 }) {
-  const [whoAmi, isLoading] = useWhoAmi()
-  const [valid, setValid] = useState(false)
+  const {installed,valid} = useVersionValid(requireVersion)
+  const [whoAmi] = useWhoAmi();
 
-  useEffect(function () {
-    setValid(window.location.protocol.indexOf('http') === -1)
-  }, [])
-
-  // 插件模式下，不做检测，直接返回 true
-  if (valid) {
-    return children
-  }
-
-  if (!whoAmi?.version) {
-    return (
+  if (!installed) {
+    return fallback || (
       <div className="m-auto mt-20 card w-96 bg-base-100 shadow-xl">
         {/*<figure className="px-10 pt-10">*/}
         {/*    <img src="https://placeimg.com/400/225/arch" alt="Shoes" className="rounded-xl" />*/}
@@ -46,12 +40,12 @@ export default function CheckVersion({
       </div>
     )
   }
-  return compare(whoAmi.version, requireVersion, '>=') ? (
+  return valid ? (
     children
   ) : (
-    <div className="mx-auto mt-20 card w-96 bg-neutral text-neutral-content">
+    fallback || <div className="mx-auto mt-20 card w-96 bg-neutral text-neutral-content">
       <div className="card-body items-center text-center">
-        <h2 className="card-title">当前PAGENOTE 版本({whoAmi.version})过低</h2>
+        <h2 className="card-title">当前PAGENOTE 版本({whoAmi?.version})过低</h2>
         <p>
           你需要升级至{requireVersion}才可继续访问当前
           {label && (

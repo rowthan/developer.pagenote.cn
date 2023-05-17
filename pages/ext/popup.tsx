@@ -53,8 +53,7 @@ export default function PopupPage() {
           'w-basic m-auto border border-black shadow rounded-lg overflow-hidden transform translate-x-0'
         }
       >
-        <CheckVersion requireVersion={'0.24.7'}>
-          <Router>
+        <Router>
             <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
             <div
               className={
@@ -94,7 +93,6 @@ export default function PopupPage() {
               </Routes>
             </div>
           </Router>
-        </CheckVersion>
       </div>
     </BasicLayout>
   )
