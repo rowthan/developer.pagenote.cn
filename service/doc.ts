@@ -1,5 +1,5 @@
 import { SearchParams } from 'notion-types'
-import { DEFAULT_BASE_DOC_PATH, DOC_API_HOST } from 'const/notion'
+import { DEFAULT_BASE_DOC_PATH, DOC_API_HOST } from 'notion.config'
 
 export async function getNotionDocDetail(id: string) {
   const res = await fetch(`${DOC_API_HOST}/api/doc?id=${id}`)

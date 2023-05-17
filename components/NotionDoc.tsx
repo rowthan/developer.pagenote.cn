@@ -9,11 +9,7 @@ import { searchInNotion } from 'service/doc'
 import Image from 'next/image'
 import Link from 'next/link'
 import { TDK } from 'const/tdk'
-import {
-  DEFAULT_BASE_DOC_PATH,
-  DOC_ID_MAPPING,
-  NOTION_BASE_ROOT_PAGE,
-} from 'const/notion'
+import { NOTION_BASE_ROOT_PAGE, DEFAULT_BASE_DOC_PATH } from 'notion.config'
 import { getPathFromProperties } from 'utils/notion'
 
 const Code = dynamic(() =>
@@ -92,8 +88,8 @@ export default function NotionDoc(props: NotionDocProp) {
         searchNotion={searchInNotion}
         rootPageId={NOTION_BASE_ROOT_PAGE}
         mapPageUrl={(pageID) => {
-          if (DOC_ID_MAPPING[pageID]) {
-            return DOC_ID_MAPPING[pageID]
+          if (pageID === NOTION_BASE_ROOT_PAGE) {
+            return '/'
           }
           const path = getPathFromProperties(recordMap.block[pageID]?.value)
           return path || `/${DEFAULT_BASE_DOC_PATH}/${pageID}`

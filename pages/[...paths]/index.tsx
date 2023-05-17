@@ -1,6 +1,6 @@
 import NotionDoc, { NotionDocProp } from 'components/NotionDoc'
 import computeStaticPaths, { getNotionDocDetail } from 'service/doc'
-import { DEFAULT_BASE_DOC_PATH } from 'const/notion'
+import { DEFAULT_BASE_DOC_PATH } from 'notion.config'
 import NotFound from 'components/error/NotFound'
 import Footer from 'components/Footer'
 
