@@ -1,9 +1,8 @@
 import NotionDoc, { NotionDocProp } from 'components/NotionDoc'
 import { getNotionDocDetail } from 'service/doc'
-import { PRO_PLAN_PAGE } from 'const/notion'
 
 export const getStaticProps = async () => {
-  return await getNotionDocDetail(PRO_PLAN_PAGE)
+  return await getNotionDocDetail('b29f947e-1df6-4468-982e-e36e8ad1009c')
 }
 
 function Rate(props: NotionDocProp) {

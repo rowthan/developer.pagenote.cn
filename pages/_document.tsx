@@ -21,6 +21,19 @@ export default function Document() {
           href="https://fonts.gstatic.com"
           crossOrigin={'crossOrigin'}
         />
+        <meta name="color-scheme" content="dark light" />
+        <meta name="theme-color" content="#4e88e5" />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: light)"
+          content="#4e88e5"
+        />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: dark)"
+          content="#4e88e5"
+        />
+
         <meta name="description" content={TDK.common.description} />
         <meta name="keywords" content={TDK.common.keywords} />
       </Head>

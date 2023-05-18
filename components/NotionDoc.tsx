@@ -5,16 +5,12 @@ import { Block, ExtendedRecordMap } from 'notion-types'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { get } from 'lodash'
 import { searchInNotion } from 'service/doc'
 //import Image from 'next/image'
 import Link from 'next/link'
 import { TDK } from 'const/tdk'
-import {
-  DEFAULT_BASE_DOC_PATH,
-  DOC_ID_MAPPING,
-  NOTION_BASE_ROOT_PAGE,
-} from 'const/notion'
+import { NOTION_BASE_ROOT_PAGE, DEFAULT_BASE_DOC_PATH } from 'notion.config'
+import { getPathFromProperties } from 'utils/notion'
 
 const Code = dynamic(() =>
   import('react-notion-x/build/third-party/code').then((m) => m.Code)
@@ -48,32 +44,28 @@ export type NotionDocProp = {
   keywords: string[]
 } & Partial<Parameters<typeof NotionRenderer>[0]>
 
-function getPathFromProperties(block?: Block) {
-  if (!block) {
-    return
-  }
-  for (let i in block.properties) {
-    const prop = block.properties[i]
-    const plainText = get(prop, '0.0')
-    const tag = get(prop, '0.1.0.0')
-    const value = get(prop, '0.1.0.1')
-    // 无法从确定的属性值中获取，所以hack一下，遍历所有属性，进行判断后作为 path 来使用，可能存在误差。需要保证属性中只有一个URL类型的字段，否则可能导致异常
-    if (plainText === value && tag === 'a') {
-      return plainText[0] === '/' ? plainText : '/' + plainText
-    }
-  }
-}
-
 export default function NotionDoc(props: NotionDocProp) {
   const { recordMap, pageTitle, title, description, keywords } = props || {}
-  const [dark, setDark] = useState<boolean>(function () {
-    return new Date().getHours() >= 19
-  })
-  useEffect(function () {
+  const [darkMode, setDark] = useState<boolean>(false)
+
+  function refreshDarkMode() {
     const darkMode =
-      window?.matchMedia &&
+      window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
     setDark(darkMode)
+  }
+
+  function listenDarkMode() {
+    const object = window.matchMedia('(prefers-color-scheme: dark)')
+    object.addEventListener('change', refreshDarkMode)
+    return function () {
+      object.removeEventListener('change', refreshDarkMode)
+    }
+  }
+
+  useEffect(function () {
+    refreshDarkMode()
+    return listenDarkMode()
   }, [])
 
   return (
@@ -101,13 +93,13 @@ export default function NotionDoc(props: NotionDocProp) {
         }}
         pageTitle={pageTitle}
         fullPage={true}
-        darkMode={dark}
+        darkMode={darkMode}
         footer={<Footer />}
         searchNotion={searchInNotion}
         rootPageId={NOTION_BASE_ROOT_PAGE}
         mapPageUrl={(pageID) => {
-          if (DOC_ID_MAPPING[pageID]) {
-            return DOC_ID_MAPPING[pageID]
+          if (pageID === NOTION_BASE_ROOT_PAGE) {
+            return '/'
           }
           const path = getPathFromProperties(recordMap.block[pageID]?.value)
           return path || `/${DEFAULT_BASE_DOC_PATH}/${pageID}`

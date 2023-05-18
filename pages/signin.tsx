@@ -7,28 +7,26 @@ import ExtensionInfos from "../components/ExtensionInfos";
 import AuthBottoms from "../components/account/AuthBottoms";
 import Signin from "../components/account/Signin";
 
-export default function () {
-    const [user, mutation] = useUserInfo();
+export default function SigninPage() {
+    // const [user, mutation] = useUserInfo();
 
-    function signout() {
-        extApi.user.signout().then(function () {
-            mutation()
-        })
-    }
+    // function signout() {
+    //     extApi.user.signout().then(function () {
+    //         mutation()
+    //     })
+    // }
 
-    function afterSign() {
-        setTimeout(function () {
-            mutation()
-        },2000)
-    }
+    // function afterSign() {
+    //     setTimeout(function () {
+    //         mutation()
+    //     },2000)
+    // }
 
     return (
         <BasicLayout nav={false } title={'登录 PAGENOTE'} description={'登录 PAGENOTE 账号'}>
-            <CheckVersion requireVersion={'0.24.2'}>
-                <div className={'m-auto'}>
-                    <Signin />
-                </div>
-            </CheckVersion>
+            <div className={'m-auto'}>
+                <Signin />
+            </div>
         </BasicLayout>
 
     )

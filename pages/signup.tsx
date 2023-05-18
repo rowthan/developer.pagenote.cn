@@ -1,6 +1,6 @@
-import CheckVersion from '../components/check/CheckVersion'
 import BasicLayout from '../layouts/BasicLayout'
 import SignUpForm from '../components/account/SignUpForm'
+
 
 export default function Signup() {
   return (
@@ -9,8 +9,7 @@ export default function Signup() {
       title={'注册 PAGENOTE'}
       description={'注册一个 PAGENOTE 账号'}
     >
-      <CheckVersion requireVersion={'0.24.2'}>
-        <div className={'m-auto w-96 pt-20 min-h-fill'}>
+      <div className={'m-auto w-96 pt-20 min-h-fill'}>
           <SignUpForm />
           <div className={'text-sm mt-6'}>
             <div>
@@ -35,7 +34,6 @@ export default function Signup() {
             </ul>
           </div>
         </div>
-      </CheckVersion>
     </BasicLayout>
   )
 }

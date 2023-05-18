@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { NotionAPI } from 'notion-client'
-import { NOTION_BASE_ROOT_PAGE } from '../../const/notion'
+import { NOTION_BASE_ROOT_PAGE } from 'notion.config'
 
 export default async function handler(
   req: NextApiRequest,

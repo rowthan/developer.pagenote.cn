@@ -5,6 +5,7 @@ import {toast} from "../../../utils/toast";
 import {useRouter} from "next/router";
 import useUserInfo from "../../../hooks/useUserInfo";
 import AuthBottoms from "../AuthBottoms";
+import CheckVersion from "components/check/CheckVersion";
 
 enum SubmitState {
     unset = 0,
@@ -19,7 +20,7 @@ interface FormData {
 }
 
 
-export default function (props: { onSuccess?: () => void, onError?: () => void, children?: ReactElement }) {
+export default function SignForm(props: { onSuccess?: () => void, onError?: () => void, children?: ReactElement }) {
     const {onError, onSuccess} = props;
     const [state, setState] = useState<SubmitState>(SubmitState.unset);
     const [user, mutation] = useUserInfo();
@@ -93,10 +94,15 @@ export default function (props: { onSuccess?: () => void, onError?: () => void, 
                        {...register('password', {required: true})}
                        placeholder="密码"/>
             </div>
-            <button
-                className={`bg-[#002074] rounded-xl py-2 text-white max-w-full px-10  hover:scale-105 duration-300 btn btn-sm ${state === SubmitState.loading ? 'loading' : ''}`}>
-                登录
-            </button>
+            <CheckVersion requireVersion="0.26.4" fallback={
+                <button className="btn btn-sm" disabled>此功能需要你安装PAGENOTE 0.26.4以上版本后使用</button>   
+            }>
+                <button
+                    className={`bg-[#002074] rounded-xl py-2 text-white max-w-full px-10  hover:scale-105 duration-300 btn btn-sm ${state === SubmitState.loading ? 'loading' : ''}`}>
+                    登录
+                </button>
+            </CheckVersion>
+            
             <div className={'text-error text-sm'}>
                 {tip}
             </div>

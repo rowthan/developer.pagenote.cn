@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import useUserInfo from '../../hooks/useUserInfo'
 import AuthBottoms from './AuthBottoms'
 import { basePath } from '../../const/env'
+import CheckVersion from 'components/check/CheckVersion'
+
 
 enum SubmitState {
   unset = 0,
@@ -162,15 +164,26 @@ export default function SignUpForm() {
       {/*  />*/}
       {/*</div>*/}
       <div className="flex justify-end mt-4 mb-10">
-        <button
-          disabled={loading}
-          className={`btn btn-sm btn-outline btn-info ${
-            loading ? 'loading' : ''
-          }`}
-          type="submit"
-        >
-          注册
-        </button>
+        <CheckVersion requireVersion='0.27.0' fallback={
+          <button
+            disabled
+            className={`btn btn-sm btn-outline btn-info`}
+            type="submit"
+          >
+            请 <a href="https://pagenote.cn/release">安装PAGENOTE</a> 0.25.0 以上版本后使用
+          </button>
+        }>
+          <button
+            disabled={loading}
+            className={`btn btn-sm btn-outline btn-info ${
+              loading ? 'loading' : ''
+            }`}
+            type="submit"
+          >
+            注册
+          </button>
+        </CheckVersion>
+        
       </div>
       <AuthBottoms type="signup" />
     </form>

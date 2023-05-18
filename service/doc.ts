@@ -1,5 +1,5 @@
 import { SearchParams } from 'notion-types'
-import { DEFAULT_BASE_DOC_PATH, DOC_API_HOST } from 'const/notion'
+import { DEFAULT_BASE_DOC_PATH, DOC_API_HOST } from 'notion.config'
 
 export async function getNotionDocDetail(id: string) {
   const res = await fetch(`${DOC_API_HOST}/api/doc?id=${id}`)
@@ -42,12 +42,11 @@ export default async function computeStaticPaths() {
   }
 
   return {
-    // todo 没有指定的页面不预先加载，修改 fallback 为 blocking
     paths: pages
       .sort(function (item) {
         return item.path ? -1 : 1 // 优先静态化定义 path 的页面
       })
-      .slice(0, 50) // 最多静态化50个
+      // .slice(0, 50) // 最多静态化50个
       .map(function (item) {
         let paths = [DEFAULT_BASE_DOC_PATH, item.id] //[`/${DEFAULT_BASE_DOC_PATH}/${item.id}`]
         // 如果有自定义路径，解析后封装至数组
@@ -65,8 +64,8 @@ export default async function computeStaticPaths() {
         }
       }),
     // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-true
-    fallback: true, // 立即返回，并尝试取重新生成
+    // fallback: true, // 立即返回，并尝试取重新生成
     // fallback: false, // 直接返回404，不会尝试重新刷新，新增的页面，需要重新部署才会生成
-    // fallback: 'blocking', // 阻塞并重新请求数据
+    fallback: 'blocking', // 阻塞响应并重新请求数据
   }
 }
