@@ -44,18 +44,28 @@ export type NotionDocProp = {
   keywords: string[]
 } & Partial<Parameters<typeof NotionRenderer>[0]>
 
-
-
 export default function NotionDoc(props: NotionDocProp) {
   const { recordMap, pageTitle, title, description, keywords } = props || {}
-  const [dark, setDark] = useState<boolean>(function () {
-    return new Date().getHours() >= 19
-  })
-  useEffect(function () {
+  const [darkMode, setDark] = useState<boolean>(false)
+
+  function refreshDarkMode() {
     const darkMode =
-      window?.matchMedia &&
+      window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
     setDark(darkMode)
+  }
+
+  function listenDarkMode() {
+    const object = window.matchMedia('(prefers-color-scheme: dark)')
+    object.addEventListener('change', refreshDarkMode)
+    return function () {
+      object.removeEventListener('change', refreshDarkMode)
+    }
+  }
+
+  useEffect(function () {
+    refreshDarkMode()
+    return listenDarkMode()
   }, [])
 
   return (
@@ -83,7 +93,7 @@ export default function NotionDoc(props: NotionDocProp) {
         }}
         pageTitle={pageTitle}
         fullPage={true}
-        darkMode={dark}
+        darkMode={darkMode}
         footer={<Footer />}
         searchNotion={searchInNotion}
         rootPageId={NOTION_BASE_ROOT_PAGE}
