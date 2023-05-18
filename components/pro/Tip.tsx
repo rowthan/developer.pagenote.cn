@@ -61,7 +61,7 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
               <div className={'divider'}></div>
               <div className={'text-sm mb-2'}>
                 {' '}
-                或手动提交支付凭证
+                或手动提交支付凭证(为保障你的体验，提交后将立即启用一日VIP，作者将在12小时内核准订单)
                 <CommonForm
                   loading={loading}
                   onSubmit={bindTransitionByUser}

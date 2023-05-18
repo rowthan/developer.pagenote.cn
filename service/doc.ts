@@ -46,7 +46,7 @@ export default async function computeStaticPaths() {
       .sort(function (item) {
         return item.path ? -1 : 1 // 优先静态化定义 path 的页面
       })
-      .slice(0, 50) // 最多静态化50个
+      // .slice(0, 50) // 最多静态化50个
       .map(function (item) {
         let paths = [DEFAULT_BASE_DOC_PATH, item.id] //[`/${DEFAULT_BASE_DOC_PATH}/${item.id}`]
         // 如果有自定义路径，解析后封装至数组
