@@ -7,6 +7,7 @@ import AuthBottoms from './AuthBottoms'
 import { basePath } from '../../const/env'
 import useVersionValid from '../../hooks/useVersionValid'
 import { unionFetch } from '../../service'
+import Link from 'next/link'
 
 enum SubmitState {
   unset = 0,
@@ -110,7 +111,7 @@ export default function SignUpForm() {
             <h3 className="font-bold">注册成功</h3>
             <div className="text-xs">
               登录密码已发送至你邮箱，请查收后{' '}
-              <a className={'link'} href={`${basePath}/signin.html`}>
+              <a className={'link'} href={`/signin`}>
                 登录
               </a>
             </div>
@@ -122,12 +123,9 @@ export default function SignUpForm() {
               查收邮件
             </a>
           )}
-          <a
-            className="btn btn-sm btn-primary"
-            href={`https://pagenote.cn/signin`}
-          >
+          <Link className="btn btn-sm btn-primary" href={`/signin`}>
             去登录
-          </a>
+          </Link>
         </div>
       </div>
     )
