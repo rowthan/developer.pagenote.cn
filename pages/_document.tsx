@@ -20,7 +20,7 @@ export default function Document() {
           crossOrigin={'crossOrigin'}
         />
         <meta name="color-scheme" content="dark light" />
-        <link rel="manifest" href="/manifest.json" />
+        {/*<link rel="manifest" href="/manifest.json" />*/}
         <meta name="theme-color" content="#4e88e5" />
         <meta
           name="theme-color"
