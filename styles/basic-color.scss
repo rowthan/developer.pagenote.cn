@@ -39,7 +39,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     $base-text-color: #ffffff;
-    $base-bg-color: #333333;
+    $base-bg-color: #202124;
     --base-front-color: #{$base-text-color} !important;
     --base-bg-color: #{$base-bg-color} !important;
 
@@ -55,7 +55,9 @@
   }
 }
 
-html, body {
+body {
   color: var(--base-front-color);
   background-color: var(--base-bg-color);
+  // color: CanvasText;
+  // background-color: Canvas
 }

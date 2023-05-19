@@ -6,6 +6,8 @@ export default function Empty(props: { children: ReactElement | string }) {
     <div>
       <div className="mt-20 mx-auto p-8">
         <Image
+          width={40}
+          height={40}
           src="https://pagenote.cn/favicon.ico"
           className="w-10 h-10 m-auto mb-8"
           alt={''}
