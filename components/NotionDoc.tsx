@@ -11,6 +11,8 @@ import Link from 'next/link'
 import { TDK } from 'const/tdk'
 import { NOTION_BASE_ROOT_PAGE, DEFAULT_BASE_DOC_PATH } from 'notion.config'
 import { getPathFromProperties } from 'utils/notion'
+import { useRouter } from 'next/router'
+import TDKHead from './TDKHead'
 
 const Code = dynamic(() =>
   import('react-notion-x/build/third-party/code').then((m) => m.Code)
@@ -47,6 +49,7 @@ export type NotionDocProp = {
 export default function NotionDoc(props: NotionDocProp) {
   const { recordMap, pageTitle, title, description, keywords } = props || {}
   const [darkMode, setDark] = useState<boolean>(false)
+  const router = useRouter()
 
   function refreshDarkMode() {
     const darkMode =
@@ -68,19 +71,18 @@ export default function NotionDoc(props: NotionDocProp) {
     return listenDarkMode()
   }, [])
 
+  const headTitle = title || TDK.common.title
+  const headDescription = description || TDK.common.description
+  const headKeywords = keywords?.toString() || TDK.common.keywords
+
   return (
     <Doc>
-      <Head>
-        <title>{title || TDK.common.title}</title>
-        <meta
-          name="description"
-          content={description || TDK.common.description}
-        ></meta>
-        <meta
-          name="keywords"
-          content={keywords?.toString() || TDK.common.keywords}
-        ></meta>
-      </Head>
+      <TDKHead
+        keywords={headKeywords}
+        title={headTitle}
+        description={headDescription}
+        url={TDK.common.origin + router.asPath}
+      ></TDKHead>
       <NotionRenderer
         components={{
           nextImage: Image,

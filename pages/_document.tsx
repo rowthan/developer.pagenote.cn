@@ -1,6 +1,4 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import { TDK } from '../const/tdk'
-
 // 运行在服务端
 export default function Document() {
   return (
@@ -34,9 +32,6 @@ export default function Document() {
           media="(prefers-color-scheme: dark)"
           content="#4e88e5"
         />
-
-        <meta name="description" content={TDK.common.description} />
-        <meta name="keywords" content={TDK.common.keywords} />
       </Head>
       <body>
         <Main />
