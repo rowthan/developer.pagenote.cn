@@ -1,13 +1,12 @@
 import { useForm } from 'react-hook-form'
-import { ReactElement, useState } from 'react'
+import { useState } from 'react'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import { toast } from '../../utils/toast'
-import { useRouter } from 'next/router'
 import useUserInfo from '../../hooks/useUserInfo'
 import AuthBottoms from './AuthBottoms'
 import { basePath } from '../../const/env'
-import CheckVersion from 'components/check/CheckVersion'
-
+import useVersionValid from '../../hooks/useVersionValid'
+import { unionFetch } from '../../service'
 
 enum SubmitState {
   unset = 0,
@@ -28,6 +27,7 @@ export default function SignUpForm() {
     email: '',
   })
   const [user, mutation] = useUserInfo()
+  const { installed } = useVersionValid()
   const {
     register,
     handleSubmit,
@@ -42,30 +42,34 @@ export default function SignUpForm() {
 
   function onSubmit(data: FormData) {
     setState(SubmitState.loading)
-    extApi.network
-      .pagenote(
-        {
-          url: '/api/register',
-          method: 'POST',
-          data: data,
-        },
-        {
-          timeout: 8000,
-        }
-      )
+    unionFetch<{
+      email: string
+      emailServer: string
+    }>(
+      {
+        url: '/api/register',
+        method: 'POST',
+        data: data,
+      },
+      installed
+    )
       .then(function (res) {
-        if (res?.success && res.data && res.data.json.success) {
+        if (res?.success && res.data) {
           setState(SubmitState.success)
-          setResult(res.data.json.data)
+          setResult(res.data)
         } else {
           if (res.status === 100) {
             return onSubmit(data)
           }
-          toast('注册失败，请重试。' + res?.data?.json?.errors)
+          toast('注册失败，请重试。' + res.errors)
         }
-        setState(SubmitState.unset)
+      })
+      .catch(function (reason) {
+        toast('注册失败，请重试。' + reason)
+        console.error(reason)
       })
       .finally(function () {
+        setState(SubmitState.unset)
         mutation()
       })
   }
@@ -164,26 +168,15 @@ export default function SignUpForm() {
       {/*  />*/}
       {/*</div>*/}
       <div className="flex justify-end mt-4 mb-10">
-        <CheckVersion requireVersion='0.27.0' fallback={
-          <button
-            disabled
-            className={`btn btn-sm btn-outline btn-info`}
-            type="submit"
-          >
-            请 <a href="https://pagenote.cn/release">安装PAGENOTE</a> 0.25.0 以上版本后使用
-          </button>
-        }>
-          <button
-            disabled={loading}
-            className={`btn btn-sm btn-outline btn-info ${
-              loading ? 'loading' : ''
-            }`}
-            type="submit"
-          >
-            注册
-          </button>
-        </CheckVersion>
-        
+        <button
+          disabled={loading}
+          className={`btn btn-sm btn-outline btn-info ${
+            loading ? 'loading' : ''
+          }`}
+          type="submit"
+        >
+          注册
+        </button>
       </div>
       <AuthBottoms type="signup" />
     </form>
