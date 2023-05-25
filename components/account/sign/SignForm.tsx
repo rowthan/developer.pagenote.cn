@@ -7,6 +7,7 @@ import useUserInfo from '../../../hooks/useUserInfo'
 import AuthBottoms from '../AuthBottoms'
 import CheckVersion from 'components/check/CheckVersion'
 
+
 enum SubmitState {
   unset = 0,
   loading = 1,

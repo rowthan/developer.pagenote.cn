@@ -5,8 +5,8 @@ import SignForm from './SignForm'
 export default function SigninPart() {
   return (
     <div className={'text-gray-500'}>
-      <h2 className="text-2xl font-bold text-color-100">登录</h2>
-      <p className="text-sm mt-4 text-color-100">已有账户啦，请登录</p>
+      <h2 className="text-2xl font-bold text-color-100">登录 PAGENOTE</h2>
+      {/* <p className="text-sm mt-4 text-color-100">已有账户啦，请登录</p> */}
       <SignForm />
 
       <div className="mt-7 grid grid-cols-3 items-center text-gray-500">
@@ -25,6 +25,9 @@ export default function SigninPart() {
         >
           注册
         </Link>
+      </div>
+      <div className='text-sm'>
+        <a target='_blank' href='/privacy' className='link link-primary'>隐私协议</a>
       </div>
     </div>
   )
