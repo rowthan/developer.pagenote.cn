@@ -1,7 +1,9 @@
 import BasicLayout from '../layouts/BasicLayout'
 import SignUpForm from '../components/account/SignUpForm'
+import Link from 'next/link'
 
 export default function Signup() {
+  // todo 删除注册
   return (
     <BasicLayout
       nav={false}
@@ -13,12 +15,9 @@ export default function Signup() {
         <div className={'text-sm mt-6'}>
           <div>
             已有账号，
-            <a
-              className={'link link-primary'}
-              href="https://pagenote.cn/signin"
-            >
+            <Link className={'link link-primary'} href="/signin">
               前往登录
-            </a>
+            </Link>
           </div>
           <ul className={'text-color-500 mt-6'}>
             <li>

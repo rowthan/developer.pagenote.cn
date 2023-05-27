@@ -2,6 +2,7 @@ import { type ReactNode, useEffect } from 'react'
 import useVersionValid from 'hooks/useVersionValid'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import useCurrentTab from 'hooks/useCurrentTab'
+import { useRouter } from 'next/router'
 
 interface Props {
   children?: ReactNode
@@ -9,11 +10,14 @@ interface Props {
 
 export default function CloseOnInstalled(props: Props) {
   const { children } = props
-  const { valid } = useVersionValid('0.26.5')
+  const router = useRouter()
+  const { valid } = useVersionValid(
+    router.query?.version?.toString() || '0.26.5'
+  )
   const { tab } = useCurrentTab()
   useEffect(
     function () {
-      if (valid && tab?.id) {
+      if (router.query && valid && tab?.id) {
         extApi.developer.chrome({
           namespace: 'tabs',
           type: 'remove',
@@ -21,7 +25,7 @@ export default function CloseOnInstalled(props: Props) {
         })
       }
     },
-    [valid, tab]
+    [valid, tab, router.query]
   )
   return <div className="">{children}</div>
 }

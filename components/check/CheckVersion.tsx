@@ -16,7 +16,7 @@ export default function CheckVersion({
   fallback?: ReactElement
 }) {
   const { installed, valid } = useVersionValid(requireVersion)
-  const [whoAmi] = useWhoAmi()
+  const [whoAmi] = useWhoAmi('9.9.9')
 
   if (!installed) {
     return fallback || <CheckFallback />

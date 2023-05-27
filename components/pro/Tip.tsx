@@ -5,6 +5,7 @@ import { bindTransition } from '../../service'
 import { toast } from 'utils/toast'
 import CommonForm from '../CommonForm'
 import Image from 'next/image'
+import CheckUser from 'components/check/CheckUser'
 
 export default function Tip(props: { onClose: () => void; amount: number }) {
   const { onClose, amount } = props
@@ -130,13 +131,16 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
                 支付
               </div>
 
-              <button
-                onClick={confirmPaid}
-                disabled={!showButton}
-                className="btn bg-red-500 hover:bg-red-600 text-white py-2 px-10 border-2 border-gray-900 mt-5 font-bold -skew-x-2"
-              >
-                支付好了点这里
-              </button>
+              <CheckUser fallback={<a className='btn btn-link btn-sm' href="https://pagenote.cn/signin" target="_blank">登录后绑定支付信息</a>}>
+                <button
+                  onClick={confirmPaid}
+                  disabled={!showButton}
+                  className="btn bg-red-500 hover:bg-red-600 text-white py-2 px-10 border-2 border-gray-900 mt-5 font-bold -skew-x-2"
+                >
+                  支付好了点这里
+                </button>
+              </CheckUser>
+              
             </div>
           )}
         </div>
