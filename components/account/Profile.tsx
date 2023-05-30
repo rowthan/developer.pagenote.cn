@@ -12,6 +12,7 @@ import UserInfoForm from './UserInfoForm'
 import Modal from '../Modal'
 import { toast } from '../../utils/toast'
 import CheckVersion from '../check/CheckVersion'
+import CheckUser from '../check/CheckUser'
 
 export default function Profle() {
   const [user, refresh] = useUserInfo()
@@ -45,17 +46,29 @@ export default function Profle() {
       <div className="container mx-auto my-5 p-5">
         <div className="md:flex no-wrap md:-mx-2 ">
           <div className="w-full md:w-3/12 md:mx-2">
-            <div className="bg-white p-3 border-t-4 border-green-400">
+            <div className="bg-white text-gray-950 p-3 border-t-4 border-green-400">
               <div className="image overflow-hidden relative group">
                 <div
                   className={'h-auto w-full mx-auto aspect-w-16 aspect-h-16'}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="w-full h-full mx-auto  object-cover"
-                    src={newImg || img}
-                    alt=""
-                  />
+                  <CheckUser
+                    fallback={
+                      <div>
+                        请
+                        <a href="/signin.html" className={'link'}>
+                          登录
+                        </a>
+                        后查看
+                      </div>
+                    }
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="w-full h-full mx-auto  object-cover"
+                      src={newImg || img}
+                      alt=""
+                    />
+                  </CheckUser>
                 </div>
                 <div
                   className={
