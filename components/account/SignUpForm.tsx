@@ -6,8 +6,8 @@ import useUserInfo from '../../hooks/useUserInfo'
 import AuthBottoms from './AuthBottoms'
 import { basePath } from '../../const/env'
 import useVersionValid from '../../hooks/useVersionValid'
-import { unionFetch } from '../../service'
 import Link from 'next/link'
+import { unionFetch } from '../../utils/fetch'
 
 enum SubmitState {
   unset = 0,

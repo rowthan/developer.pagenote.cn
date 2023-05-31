@@ -4,5 +4,8 @@
     "next/core-web-vitals",
     "prettier",
     "plugin:@next/next/recommended"
-  ]
+  ],
+  "rules": {
+    "@next/next/no-img-element":"off"
+  }
 }
