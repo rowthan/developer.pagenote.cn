@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import { network } from '@pagenote/shared/lib/extApi'
-import FetchRequest = network.FetchRequest
 
 export function createOrder(price?: number) {
   return extApi.network.pagenote({
@@ -108,32 +107,4 @@ export function getWordInfo(word: string) {
     }
     return keyword
   })
-}
-
-export function unionFetch<T>(
-  request: FetchRequest,
-  passExtension: boolean
-): Promise<{ success?: boolean; data?: T; status?: number; errors?: string }> {
-  if (passExtension) {
-    return extApi.network.pagenote(request).then(function (res) {
-      return res?.data?.json
-    })
-  } else {
-    request.url = /^http/.test(request.url)
-      ? request.url
-      : 'https://api.pagenote.cn' + request.url
-
-    if (request.method === 'POST') {
-      request.body = JSON.stringify(request.data)
-    }
-
-    return fetch(request.url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      ...request,
-    }).then(async function (res) {
-      return await res.json()
-    })
-  }
 }
