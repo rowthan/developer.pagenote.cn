@@ -67,7 +67,7 @@ export default function Gift(props: Props) {
     <div>
       <div className={'mt-10'}>
         <div className="mx-auto max-w-lg p-10" style={{ minWidth: '300px' }}>
-          <div className="w-full overflow-hidden rounded-xl relative transform transition ease-in-out duration-500 shadow-lg hover:shadow-2xl movie-item text-white movie-card">
+          <div className="w-full overflow-hidden rounded-xl relative transform transition ease-in-out duration-500 shadow-lg hover:shadow-2xl movie-item">
             <div className="absolute inset-0 z-10 transition duration-300 ease-in-out bg-gradient-to-t from-black via-gray-900 to-transparent"></div>
             <div className="relative cursor-pointer group z-10 px-10 pt-10 space-y-6">
               <div className="poster__info align-self-end w-full">
@@ -130,33 +130,35 @@ export default function Gift(props: Props) {
             />
             <form
               onSubmit={submit}
-              className="flex justify-center m-auto relative pb-10 space-x-4 z-10"
+              className="flex flex-col justify-center m-auto relative pb-10 space-x-4 z-10 lg:flex-row w-4/5"
             >
+              <div className={'contents'}>
+                <input
+                  type="text"
+                  readOnly
+                  className="hidden"
+                  name="giftId"
+                  defaultValue={giftId}
+                />
+                <input
+                  type="text"
+                  readOnly
+                  className="hidden"
+                  name="uid"
+                  defaultValue={uid}
+                />
+              </div>
+
               {!uid && (
                 <input
                   type="email"
                   autoFocus
                   required
                   name="email"
-                  className="p-2 mb-1 rounded-xl border text-black"
+                  className="p-2 mb-1 rounded-xl border m-auto"
                   placeholder="福利接收邮箱地址"
                 />
               )}
-              <input
-                type="text"
-                readOnly
-                className="hidden"
-                name="giftId"
-                defaultValue={giftId}
-              />
-              <input
-                type="text"
-                readOnly
-                className="hidden"
-                name="uid"
-                defaultValue={uid}
-              />
-
               <button
                 disabled={!available}
                 type={'submit'}
