@@ -13,7 +13,9 @@ export default function UserCard() {
 
   function signout() {
     extApi.user.signout(undefined).then(function () {
-      mutate()
+      setTimeout(function () {
+        mutate(null)
+      }, 500)
     })
   }
 

@@ -1,3 +1,4 @@
+import { NOTION_AUTH_CALLBACK } from 'site.config'
 import { unionFetch } from '../utils/fetch'
 
 /**请求登录*/
@@ -45,5 +46,23 @@ export function doSignInByValid(input: { publicText: string }, byExt: boolean) {
       },
     },
     byExt
+  )
+}
+
+type AuthResponse = {
+  pagenote_t: string
+  profile: { nickname: string; email: string }
+}
+
+export function authCodeToToken(code: string, authType: string) {
+  return unionFetch<{ oauth?: AuthResponse }>(
+    {
+      url: '/api/graph/auth',
+      method: 'GET',
+      data: {
+        query: `{oauth(code:"${code}",platform:"${authType}",redirectUri:"${NOTION_AUTH_CALLBACK}"){pagenote_t,profile{nickname,email}}}`,
+      },
+    },
+    false
   )
 }
