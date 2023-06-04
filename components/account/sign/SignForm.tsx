@@ -1,12 +1,16 @@
 import { useForm } from 'react-hook-form'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useCallback, useEffect, useState } from 'react'
 import extApi from '@pagenote/shared/lib/pagenote-api'
-import { toast } from '../../../utils/toast'
-import { useRouter } from 'next/router'
 import useUserInfo from '../../../hooks/useUserInfo'
-import AuthBottoms from '../AuthBottoms'
 import CheckVersion from 'components/check/CheckVersion'
-
+import {
+  confirmValidate,
+  doSignInByValid,
+  requestSignin,
+} from '../../../service/account'
+import useVersionValid from '../../../hooks/useVersionValid'
+import dayjs from 'dayjs'
+import useWhoAmi from '../../../hooks/useWhoAmi'
 
 enum SubmitState {
   unset = 0,
@@ -17,71 +21,110 @@ enum SubmitState {
 
 interface FormData {
   emailOrUid: string
-  password: string
+  validateText: string
+  publicText: string
 }
 
-export default function SignForm(props: {
-  onSuccess?: () => void
-  onError?: () => void
-  children?: ReactElement
-}) {
-  const { onError, onSuccess } = props
-  const [state, setState] = useState<SubmitState>(SubmitState.unset)
-  const [user, mutation] = useUserInfo()
+export default function SignForm(props: { children?: ReactElement }) {
+  const [state, setState] = useState<boolean>(false)
+  const [user, refresh, update] = useUserInfo()
+  const [publicText, setPublicText] = useState('')
   const [tip, setTip] = useState('')
+  const [whoAmI] = useWhoAmi()
   const {
     setValue,
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FormData>()
+  const { valid } = useVersionValid('0.26.4')
 
-  function onSubmit(data: FormData) {
+  function sendValidateText() {
+    setPublicText('')
     setTip('')
-    setState(SubmitState.loading)
+    setValue('validateText', '')
     let email = ''
     let uid = 0
+    const data = getValues()
     if (/@/.test(data.emailOrUid)) {
       email = data.emailOrUid
     } else {
       uid = Number(data.emailOrUid)
     }
-    extApi.user
-      .signin(
-        {
-          password: data.password,
-          token: '',
-          uid: uid,
-          email: email,
-        },
-        {
-          timeout: 8000,
-        }
-      )
+    setState(true)
+    const newPublicText = `signin_request_${dayjs(new Date()).format(
+      'YYYY-MM-DD-HH'
+    )}_${whoAmI?.did}`
+    requestSignin(
+      {
+        uid: uid,
+        email: email,
+        publicText: newPublicText,
+      },
+      false
+    )
       .then(function (res) {
-        console.log(res, '登录结果')
-        if (res?.success && res.data) {
-          setState(SubmitState.success)
-          onSuccess && onSuccess()
+        if (res.success) {
+          setPublicText(res.data?.sendSignInEmail?.publicText || '')
         } else {
-          if (res?.status === 100) {
-            return onSubmit(data)
-          }
-          onError && onError()
-          setTip(res?.error || '登录失败，请重试')
+          setTip(res.error || '请求失败，请重试')
         }
-        setState(SubmitState.unset)
       })
       .finally(function () {
-        mutation()
+        setState(false)
       })
   }
 
-  function signinout() {
-    extApi.user.signout().then(function () {
-      mutation()
+  function doSignin() {
+    const { validateText } = getValues()
+    setTip('')
+    setState(true)
+    confirmValidate(
+      {
+        publicText: publicText,
+        validateText: validateText,
+      },
+      false
+    ).then(function (res) {
+      console.log(res, '确认登录凭证')
+      if (res?.data?.confirmValidate?.validateStatus) {
+        setState(true)
+        console.log('获取 身份 token', publicText)
+        doSignInByValid(
+          {
+            publicText: publicText,
+          },
+          false
+        )
+          .then(function (signRes) {
+            const token = signRes?.data?.doSignInByValid?.pagenote_t
+            console.log('登录结果', token, signRes)
+            if (token) {
+              update(token)
+            }
+            if (signRes.error) {
+              setTip(signRes.error)
+            }
+          })
+          .finally(() => {
+            setState(false)
+          })
+      } else {
+        setTip(res?.error || '登录凭证错误❌')
+        setState(false)
+      }
     })
   }
+
+  const onSubmit = useCallback(() => {
+    console.log(publicText, 'submit', getValues())
+    if (!publicText) {
+      sendValidateText()
+    } else {
+      doSignin()
+    }
+  }, [publicText])
 
   useEffect(function () {
     const search = new URLSearchParams(window.location.search)
@@ -94,43 +137,57 @@ export default function SignForm(props: {
   return (
     <form
       className="flex flex-col gap-4 items-center"
-      onSubmit={handleSubmit((data) => onSubmit(data))}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <input
         type="text"
-        className="p-2 m-5 mb-1 rounded-xl border"
+        className="p-2 m-5 mb-1 rounded-xl border w-full"
         {...register('emailOrUid', { required: true })}
-        placeholder="email 或用户ID"
+        placeholder="你的 Email 或用户 ID"
       />
-      <div className="relative">
-        <input
-          type="password"
-          className="w-full p-2 rounded-xl border"
-          {...register('password', { required: true })}
-          placeholder="密码"
-        />
-      </div>
-      <CheckVersion
-        requireVersion="0.26.0"
-        fallback={
-          <button className="btn btn-sm" disabled>
-            此功能需要你安装PAGENOTE 0.26.0以上版本后使用
-          </button>
-        }
-      >
+      {publicText && (
+        <>
+          <div>
+            <div>
+              <div>
+                登录请求
+                <span className={'text-xs text-gray-300'}>({publicText})</span>
+              </div>
+              <div>
+                <span>凭证已发送至你的邮箱，请查收</span>
+                <button
+                  type={'button'}
+                  className={'btn btn-ghost btn-xs btn-outline ml-2'}
+                  onClick={sendValidateText}
+                >
+                  重新发送
+                </button>
+              </div>
+            </div>
+          </div>
+          <input
+            autoFocus={true}
+            type="text"
+            className="w-full p-2 rounded-xl border"
+            {...register('validateText', { required: true })}
+            placeholder={`从邮箱中获取 一次性登录凭证`}
+          />
+        </>
+      )}
+
+      <div>
         <button
+          disabled={state}
           className={`bg-[#002074] rounded-xl py-2 text-white max-w-full px-10  hover:scale-105 duration-300 btn btn-sm ${
-            state === SubmitState.loading ? 'loading' : ''
+            state ? 'loading' : ''
           }`}
+          type={'submit'}
         >
-          登录
+          {publicText ? '登录验证' : '请求登录'}
         </button>
-      </CheckVersion>
+      </div>
 
       <div className={'text-error text-sm'}>{tip}</div>
-      <div className=" text-xs border-b">
-        <a href="https://pagenote.cn/reset_password">忘记密码？..</a>
-      </div>
     </form>
   )
 }
