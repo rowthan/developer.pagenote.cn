@@ -30,7 +30,7 @@ export default function useUserInfo(): [
 
   function setToken(token: string) {
     return extApi.user.setUserToken(token).then(function () {
-      mutate
+      mutate()
     })
   }
 

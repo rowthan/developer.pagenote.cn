@@ -3,6 +3,7 @@ import useUserInfo from 'hooks/useUserInfo'
 import { authCodeToToken } from 'service/account'
 import { useRouter } from 'next/router'
 import { authMap } from 'hooks/useAuthList'
+import Link from 'next/link'
 
 enum STATUS {
   un_set = 0,
@@ -112,7 +113,9 @@ const Callback: React.FC<{ authType: AuthType }> = (props) => {
                 授权失败。
                 <div dangerouslySetInnerHTML={{ __html: tip }}></div>
                 <p>
-                  返回 <a href="/signin.html">重试一下</a>{' '}
+                  <Link href="/signin.html" className="link">
+                    返回重试
+                  </Link>
                 </p>
               </div>
             )}

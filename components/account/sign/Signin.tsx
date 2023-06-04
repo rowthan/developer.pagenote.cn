@@ -4,13 +4,13 @@ import SignForm from './SignForm'
 
 export default function SigninPart() {
   return (
-    <div className={'text-gray-500'}>
+    <div className={'text-gray-500 m-1'}>
       <h2 className="text-2xl font-bold text-color-100">登录/注册 PAGENOTE</h2>
       <SignForm />
 
       <div className="mt-7 grid grid-cols-3 items-center text-gray-500">
         <hr className="border-gray-500" />
-        <p className="text-center text-sm">OR</p>
+        <p className="text-center text-sm">通过第三方授权登录</p>
         <hr className="border-gray-500" />
       </div>
 
