@@ -12,10 +12,7 @@ enum STATUS {
   success = 3,
 }
 
-enum AuthType {
-  github = 'Github',
-  notion = 'notion',
-}
+type AuthType = 'GitHub' | 'notion'
 
 const Callback: React.FC<{ authType: AuthType }> = (props) => {
   const [serverUser, refresh, update] = useUserInfo()
