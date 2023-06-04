@@ -146,7 +146,7 @@ export default function Profle() {
         </div>
 
         <div className="w-full md:w-9/12 mx-2 h-64">
-          <div className="flex bg-white p-3 shadow-sm rounded-sm min-h-16">
+          <div className="flex bg-white text-gray-900 p-3 shadow-sm rounded-sm min-h-16">
             <Day />
             <div className={'ml-2'}>
               <h2>今日相关</h2>
