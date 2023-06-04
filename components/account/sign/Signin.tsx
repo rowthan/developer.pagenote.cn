@@ -10,6 +10,22 @@ export default function SigninPart() {
 
       <div className="mt-7 grid grid-cols-3 items-center text-gray-500">
         <hr className="border-gray-500" />
+        <p className="text-center text-sm">通过账号、密码登录</p>
+        <hr className="border-gray-500" />
+      </div>
+
+      <div className={'text-center text-xs'}>
+        <a
+          target="_blank"
+          href="https://pagenote.cn/signin"
+          className="ml-2 link link-primary"
+        >
+          旧版登录（将下线）
+        </a>
+      </div>
+
+      <div className="mt-7 grid grid-cols-3 items-center text-gray-500">
+        <hr className="border-gray-500" />
         <p className="text-center text-sm">通过第三方授权登录</p>
         <hr className="border-gray-500" />
       </div>

@@ -170,7 +170,7 @@ export default function SignForm(props: { children?: ReactElement }) {
             type="text"
             className="w-full p-2 rounded-xl border"
             {...register('validateText', { required: true })}
-            placeholder={`一次性登录凭证`}
+            placeholder={`从邮箱中获取 一次性登录凭证`}
           />
         </>
       )}
