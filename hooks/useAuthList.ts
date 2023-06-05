@@ -64,8 +64,12 @@ function fetchAuthList(cacheDuration = 2 * 60 * 1000) {
 }
 
 export default function useAuthList(): [AuthInfo[], () => void] {
-  const { data = [], mutate } = useSWR<AuthInfo[]>('/authList', () =>
-    fetchAuthList(60 * 1000)
+  const { data = [], mutate } = useSWR<AuthInfo[]>(
+    '/authList',
+    () => fetchAuthList(60 * 1000),
+    {
+      fallbackData: [],
+    }
   )
 
   return [data, mutate]

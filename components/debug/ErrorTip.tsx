@@ -1,4 +1,3 @@
-import Image from 'next/image'
 export default function ErrorTip(props: { error: string }) {
   const { error } = props
   return (
@@ -33,7 +32,12 @@ export default function ErrorTip(props: { error: string }) {
         <p className="text-slate-600 mt-5 lg:text-lg">
           {error}
           <br />
-          <Image src="https://pagenote.cn/img/wechat.jpg" alt="" />
+          <img
+            src="https://pagenote.cn/img/wechat.jpg"
+            alt=""
+            width={100}
+            height={100}
+          />
         </p>
       </div>
     </div>
