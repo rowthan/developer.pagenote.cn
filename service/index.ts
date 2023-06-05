@@ -31,7 +31,7 @@ export type UpdateProfile = {
 export function updateProfile(updateInfo: UpdateProfile) {
   return extApi.network.pagenote(
     {
-      url: 'https://api-test.pagenote.cn/api/graph/user',
+      url: '/api/graph/user',
       data: {
         mutation: `mutation makeUpdateConfig($avatar: String, $nickname: String) {updateProfile(avatar:$avatar,nickname:$nickname){avatar,nickname}}`,
         variables: updateInfo,

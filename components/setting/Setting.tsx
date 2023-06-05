@@ -9,7 +9,7 @@ export default function Setting() {
   return (
     <div className={'max-w-3xl m-auto'}>
       <div className={'mb-4'}>
-        <UserCard />
+        <UserCard editable={false} />
       </div>
 
       <div className="">

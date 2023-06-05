@@ -6,10 +6,20 @@ import VipSvg from 'assets/svg/vip.svg'
 import dayjs from 'dayjs'
 import useBooks from '../../hooks/useBooks'
 import BookDetail from './BookDetail'
+import React, { useState } from 'react'
+import Modal from '../Modal'
+import UserInfoForm from './UserInfoForm'
+import Avatar from './Avatar'
 
-export default function UserCard() {
+interface Props {
+  editable: boolean
+}
+
+export default function UserCard(props: Props) {
+  const { editable } = props
   const [data, mutate] = useUserInfo()
   const [bookInfo] = useBooks()
+  const [openProfileModal, setProfileModal] = useState(false)
 
   function signout() {
     extApi.user.signout(undefined).then(function () {
@@ -27,14 +37,18 @@ export default function UserCard() {
         <div className={'flex items-center mb-4'}>
           <div className="avatar">
             <div className="w-10 h-10 rounded-full bg-white ring ring-white ring-offset-base-100 ring-offset">
-              <a target="_blank" href="https://developer.pagenote.cn/account">
-                <img
-                  src={
-                    data?.profile?.avatar || 'https://pagenote.cn/favicon.ico'
-                  }
-                  alt={data?.profile?.nickname || '请登录'}
-                />
-              </a>
+              {editable ? (
+                <Avatar />
+              ) : (
+                <a target="_blank" href="https://developer.pagenote.cn/account">
+                  <img
+                    src={
+                      data?.profile?.avatar || 'https://pagenote.cn/favicon.ico'
+                    }
+                    alt={data?.profile?.nickname || '请登录'}
+                  />
+                </a>
+              )}
             </div>
           </div>
           <div className={'ml-4'}>
@@ -63,7 +77,16 @@ export default function UserCard() {
                         退出
                       </button>
                     </li>
-                    {/*<li className={'hover:bg-accent px-1'}><button onClick={signout}>编辑资料</button></li>*/}
+                    <li className={'hover:bg-accent px-1'}>
+                      <button
+                        className={'block w-full text-base-100'}
+                        onClick={() => {
+                          setProfileModal(true)
+                        }}
+                      >
+                        编辑资料
+                      </button>
+                    </li>
                   </ul>
                 </div>
                 <div className={'text-xs text-gray-100'}>
@@ -130,6 +153,15 @@ export default function UserCard() {
       {/*        </a>*/}
       {/*    </div>*/}
       {/*</div>*/}
+      <Modal
+        open={openProfileModal}
+        toggleOpen={(open) => {
+          setProfileModal(open)
+          mutate()
+        }}
+      >
+        <UserInfoForm />
+      </Modal>
     </div>
   )
 }
