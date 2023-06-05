@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
-import extApi from '@pagenote/shared/lib/pagenote-api'
 import useUserInfo from '../../../hooks/useUserInfo'
 import CheckVersion from 'components/check/CheckVersion'
 import {
@@ -183,7 +182,7 @@ export default function SignForm(props: { children?: ReactElement }) {
           }`}
           type={'submit'}
         >
-          {publicText ? '登录验证' : '请求登录'}
+          {publicText ? '验证' : '请求登录/注册'}
         </button>
       </div>
 

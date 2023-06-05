@@ -14,7 +14,7 @@ export function requestSignin(
       data: {
         mutation: `mutation{sendSignInEmail(uid:${
           uid || 0
-        },email:"${email}",publicText:"${publicText}"){publicText,validateStatus}}`,
+        },email:"${email.trim()}",publicText:"${publicText.trim()}"){publicText,validateStatus}}`,
       },
     },
     byExt
@@ -25,12 +25,13 @@ export function confirmValidate(
   input: { publicText: string; validateText: string },
   byExt: boolean
 ) {
+  const { publicText = '', validateText = '' } = input
   return unionFetch<{ confirmValidate?: { validateStatus?: number } }>(
     {
       url: '/api/graph/auth',
       method: 'POST',
       data: {
-        mutation: `mutation{confirmValidate(publicText:"${input.publicText}",validateText:"${input.validateText}"){validateStatus}}`,
+        mutation: `mutation{confirmValidate(publicText:"${publicText.trim()}",validateText:"${validateText.trim()}"){validateStatus}}`,
       },
     },
     byExt
@@ -38,12 +39,13 @@ export function confirmValidate(
 }
 
 export function doSignInByValid(input: { publicText: string }, byExt: boolean) {
+  const { publicText = '' } = input
   return unionFetch<{ doSignInByValid?: { pagenote_t?: string } }>(
     {
       url: '/api/graph/auth',
       method: 'POST',
       data: {
-        mutation: `mutation{doSignInByValid(publicText:"${input.publicText}"){pagenote_t,profile{nickname,email,uid}}}`,
+        mutation: `mutation{doSignInByValid(publicText:"${publicText.trim()}"){pagenote_t,profile{nickname,email,uid}}}`,
       },
     },
     byExt
@@ -61,7 +63,7 @@ export function authCodeToToken(code: string, authType: string) {
       url: '/api/graph/auth',
       method: 'GET',
       data: {
-        query: `{oauth(code:"${code}",platform:"${authType}",redirectUri:"${NOTION_AUTH_CALLBACK}"){pagenote_t,profile{nickname,email}}}`,
+        query: `{oauth(code:"${code?.trim()}",platform:"${authType}",redirectUri:"${NOTION_AUTH_CALLBACK}"){pagenote_t,profile{nickname,email}}}`,
       },
     },
     false
