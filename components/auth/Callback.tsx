@@ -1,9 +1,10 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useUserInfo from 'hooks/useUserInfo'
 import { authCodeToToken } from 'service/account'
 import { useRouter } from 'next/router'
 import { authMap } from 'hooks/useAuthList'
 import Link from 'next/link'
+import useVersionValid from '../../hooks/useVersionValid'
 
 enum STATUS {
   un_set = 0,
@@ -15,6 +16,7 @@ enum STATUS {
 type AuthType = 'GitHub' | 'notion'
 
 const Callback: React.FC<{ authType: AuthType }> = (props) => {
+  const { valid } = useVersionValid('0.26.4')
   const [serverUser, refresh, update] = useUserInfo()
   const [status, setStatus] = useState(STATUS.un_set)
   const [tip, setTip] = useState('')
@@ -29,7 +31,7 @@ const Callback: React.FC<{ authType: AuthType }> = (props) => {
     }
 
     setStatus(STATUS.exchanging)
-    authCodeToToken(code, authType)
+    authCodeToToken(code, authType, valid)
       .then(function (res) {
         if (res.error) {
           setTip(res.error)

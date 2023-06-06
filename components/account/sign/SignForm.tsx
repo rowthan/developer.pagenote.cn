@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 import useUserInfo from '../../../hooks/useUserInfo'
-import CheckVersion from 'components/check/CheckVersion'
 import {
   confirmValidate,
   doSignInByValid,
@@ -61,7 +60,7 @@ export default function SignForm(props: { children?: ReactElement }) {
         email: email,
         publicText: newPublicText,
       },
-      false
+      valid
     )
       .then(function (res) {
         if (res.success) {
@@ -84,7 +83,7 @@ export default function SignForm(props: { children?: ReactElement }) {
         publicText: publicText,
         validateText: validateText,
       },
-      false
+      valid
     ).then(function (res) {
       console.log(res, '确认登录凭证')
       if (res?.data?.confirmValidate?.validateStatus) {
@@ -94,7 +93,7 @@ export default function SignForm(props: { children?: ReactElement }) {
           {
             publicText: publicText,
           },
-          false
+          valid
         )
           .then(function (signRes) {
             const token = signRes?.data?.doSignInByValid?.pagenote_t

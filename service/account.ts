@@ -57,7 +57,11 @@ type AuthResponse = {
   profile: { nickname: string; email: string }
 }
 
-export function authCodeToToken(code: string, authType: string) {
+export function authCodeToToken(
+  code: string,
+  authType: string,
+  byExt: boolean
+) {
   return unionFetch<{ oauth?: AuthResponse }>(
     {
       url: '/api/graph/auth',
@@ -66,6 +70,6 @@ export function authCodeToToken(code: string, authType: string) {
         query: `{oauth(code:"${code?.trim()}",platform:"${authType}",redirectUri:"${NOTION_AUTH_CALLBACK}"){pagenote_t,profile{nickname,email}}}`,
       },
     },
-    false
+    byExt
   )
 }
