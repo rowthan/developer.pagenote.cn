@@ -46,7 +46,7 @@ export default function Avatar() {
         >
           <div
             className={
-              'cursor-pointer w-full bg-gray-300 text-white text-center'
+              'cursor-pointer w-full bg-gray-300 text-white text-center text-xs'
             }
           >
             替换
