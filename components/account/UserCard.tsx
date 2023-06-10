@@ -1,4 +1,4 @@
-import useUserInfo from '../../hooks/useUserInfo'
+import useUserInfo, { fetchUserInfo } from '../../hooks/useUserInfo'
 import MoreSvg from '../../assets/svg/more.svg'
 import FreeSvg from 'assets/svg/free.svg'
 import extApi from '@pagenote/shared/lib/pagenote-api'
@@ -17,16 +17,12 @@ interface Props {
 
 export default function UserCard(props: Props) {
   const { editable } = props
-  const [data, mutate] = useUserInfo()
+  const [data, mutate, setToken] = useUserInfo()
   const [bookInfo] = useBooks()
   const [openProfileModal, setProfileModal] = useState(false)
 
   function signout() {
-    extApi.user.signout(undefined).then(function () {
-      setTimeout(function () {
-        mutate(null)
-      }, 500)
-    })
+    setToken(null)
   }
 
   const endAt = bookInfo.expiredAt

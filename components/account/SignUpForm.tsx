@@ -1,10 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import extApi from '@pagenote/shared/lib/pagenote-api'
 import { toast } from '../../utils/toast'
 import useUserInfo from '../../hooks/useUserInfo'
 import AuthBottoms from './AuthBottoms'
-import { basePath } from '../../const/env'
 import useVersionValid from '../../hooks/useVersionValid'
 import Link from 'next/link'
 import { unionFetch } from '../../utils/fetch'
@@ -34,12 +32,6 @@ export default function SignUpForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>()
-
-  function signout() {
-    extApi.user.signout().then(function () {
-      mutation()
-    })
-  }
 
   function onSubmit(data: FormData) {
     setState(SubmitState.loading)
@@ -78,15 +70,7 @@ export default function SignUpForm() {
   const signed = !!user?.profile?.nickname
 
   if (signed) {
-    return (
-      <div>
-        你已经成功登录，请{' '}
-        <a className={'link'} onClick={signout}>
-          退出后
-        </a>{' '}
-        注册
-      </div>
-    )
+    return <div>你已经成功登录</div>
   }
 
   const registerSuccess = !!registerResult.emailServer || !!registerResult.email

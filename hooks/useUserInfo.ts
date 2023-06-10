@@ -8,29 +8,30 @@ type UserInfo = {
 } & User
 
 export function fetchUserInfo(forceRefresh: boolean = false) {
-  return extApi.user
-    .getUser(undefined, {
-      cacheControl: {
-        maxAgeMillisecond: forceRefresh ? 0 : 10000,
-      },
-    })
-    .then(function (res) {
-      return res.data
-    })
+  return extApi.user.getUser({ refresh: forceRefresh }).then(function (res) {
+    return res.data
+  })
 }
 
 export default function useUserInfo(): [
   UserInfo | undefined | null,
-  (user?: null | UserInfo) => void,
-  (token: string) => void
+  () => void,
+  (token: string | null) => void
 ] {
   const { data, mutate } = useSWR<UserInfo | undefined | null>('/user', () => {
     return fetchUserInfo(false)
   })
 
-  function setToken(token: string) {
+  function setToken(token: string | null) {
+    if (!token) {
+      // @ts-ignore
+      extApi.user.signout && extApi.user.signout()
+    }
+    // @ts-ignore
     return extApi.user.setUserToken(token).then(function () {
-      mutate()
+      fetchUserInfo(true).then(function () {
+        mutate()
+      })
     })
   }
 

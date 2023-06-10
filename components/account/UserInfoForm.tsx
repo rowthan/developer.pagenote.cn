@@ -1,9 +1,7 @@
-import { useForm } from 'react-hook-form'
-import { ReactElement, useEffect, useState } from 'react'
+import { useState } from 'react'
 import CommonForm, { CommonFormField } from 'components/CommonForm'
 import useUserInfo, { fetchUserInfo } from '../../hooks/useUserInfo'
-import { UpdateProfile, updateProfile } from '../../service'
-import { toast } from '../../utils/toast'
+import { updateProfile } from '../../service'
 
 enum SubmitState {
   unset = 0,
@@ -38,13 +36,8 @@ export default function UserInfoForm() {
       nickname: data.nickname,
     })
       .then(function () {
-        refresh({
-          ...user,
-          //@ts-ignore
-          profile: {
-            ...(user?.profile || {}),
-            nickname: data.nickname || '',
-          },
+        fetchUserInfo(true).then(function () {
+          refresh()
         })
       })
       .finally(function () {
