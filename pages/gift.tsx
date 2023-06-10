@@ -93,25 +93,25 @@ export default function Gift(props: Props) {
                       }}
                     ></div>
                   </div>
-                  <div className={`flex flex-row justify-between datos`}>
+                  <div className={`flex flex-row justify-between relative`}>
                     <div className="flex flex-col datos_col">
                       <div className="popularity">{gift?.bookDays}日VIP</div>
-                      <div className="text-sm text-gray-400">普通用户</div>
+                      <div className="text-sm text-gray-400">赞助者加倍</div>
                     </div>
-                    <div className="flex flex-col datos_col">
-                      <div className="release">
-                        {(gift?.bookDays || 0) * (gift?.paidRate || 1)}日VIP
-                      </div>
-                      <div className="text-sm text-gray-400">
-                        <key-word>赞助者</key-word>
-                      </div>
-                    </div>
-                    <div className="flex flex-col datos_col">
-                      <div className="release">{gift?.bookDays}积分</div>
-                      <div className="text-sm text-gray-400">
-                        <key-word>终身用户</key-word>
-                      </div>
-                    </div>
+                    {/*<div className="flex flex-col datos_col">*/}
+                    {/*  <div className="release">*/}
+                    {/*    {(gift?.bookDays || 0) * (gift?.paidRate || 1)}日VIP*/}
+                    {/*  </div>*/}
+                    {/*  <div className="text-sm text-gray-400">*/}
+                    {/*    <key-word>赞助者</key-word>*/}
+                    {/*  </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="flex flex-col datos_col">*/}
+                    {/*  <div className="release">{gift?.bookDays}积分</div>*/}
+                    {/*  <div className="text-sm text-gray-400">*/}
+                    {/*    <key-word>终身用户</key-word>*/}
+                    {/*  </div>*/}
+                    {/*</div>*/}
                   </div>
                   <div className="flex flex-col overview">
                     <div className="flex flex-col"></div>
