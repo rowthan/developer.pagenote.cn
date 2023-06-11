@@ -33,8 +33,8 @@ export default function ErrorTip(props: { error: string }) {
           {error}
           <br />
           <img
-            src="https://pagenote.cn/img/wechat.jpg"
-            alt=""
+            src="/images/wechat.jpg"
+            alt="wechat pagenote"
             width={100}
             height={100}
           />

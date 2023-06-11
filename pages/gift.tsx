@@ -52,7 +52,9 @@ export default function Gift(props: Props) {
     ? '正在拉取福利信息'
     : (gift ? gift.giftName : '') || '没有找到福利信息'
   const available = !isLoading && !!gift?.giftName && !gift.received
-  const bg = gift?.image || '/img/page/abstract-gift-card-1.png'
+  const bg =
+    gift?.image ||
+    'https://pagenote-public.oss-cn-beijing.aliyuncs.com/_static/abstract-gift-card-1.png'
   let label = '领取'
   if (gift?.expiredAt) {
     if (dayjs(new Date(gift.expiredAt)).isBefore(new Date())) {

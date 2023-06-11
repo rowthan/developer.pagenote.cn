@@ -97,21 +97,21 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
 
               <div className="carousel w-40 h-40 m-auto">
                 <div id="ali" className="carousel-item w-full">
-                  <Image
-                    src="https://pagenote.cn/img/pay/alipay.png"
+                  <img
+                    src="https://pagenote-public.oss-cn-beijing.aliyuncs.com/_static/alipay.png"
                     className="w-full"
                     width={160}
                     height={160}
-                    alt=""
+                    alt="alipay"
                   />
                 </div>
                 <div id="wechat" className="carousel-item w-full">
-                  <Image
-                    src="https://pagenote.cn/img/pay/wechat-pay.png"
+                  <img
+                    src="https://pagenote-public.oss-cn-beijing.aliyuncs.com/_static/wechat-pay.png"
                     className="w-full"
                     width={160}
                     height={160}
-                    alt=""
+                    alt="wechat pay"
                   />
                 </div>
               </div>
@@ -131,7 +131,17 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
                 支付
               </div>
 
-              <CheckUser fallback={<a className='btn btn-link btn-sm' href="https://pagenote.cn/signin" target="_blank">登录后绑定支付信息</a>}>
+              <CheckUser
+                fallback={
+                  <a
+                    className="btn btn-link btn-sm"
+                    href="https://pagenote.cn/signin"
+                    target="_blank"
+                  >
+                    登录后绑定支付信息
+                  </a>
+                }
+              >
                 <button
                   onClick={confirmPaid}
                   disabled={!showButton}
@@ -140,7 +150,6 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
                   支付好了点这里
                 </button>
               </CheckUser>
-              
             </div>
           )}
         </div>

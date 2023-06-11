@@ -29,10 +29,7 @@ export default function TDKHead(props: Props) {
       <meta property="og:title" content={headTitle}></meta>
       <meta property="og:description" content={headDescription} />
       <meta property="og:url" content={url || TDK.common.origin} />
-      <meta
-        property="og:image"
-        content="https://developer.pagenote.cn/images/og.svg"
-      />
+      <meta property="og:image" content="/images/og.svg" />
       {children}
     </Head>
   )
