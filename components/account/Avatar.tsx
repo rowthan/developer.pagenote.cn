@@ -41,7 +41,7 @@ export default function Avatar() {
       >
         <UploadTrigger
           onChange={(url) => {
-            onChange({ avatar: url })
+            onChange({ avatar: url + '?x-oss-process=style/avatar' })
           }}
         >
           <div
