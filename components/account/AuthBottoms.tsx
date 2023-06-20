@@ -6,8 +6,7 @@ const label = {
   bind: '绑定',
 }
 
-// @ts-ignore
-const AUTH_LIST = [
+export const AUTH_LIST = [
   {
     label: 'GitHub授权',
     link: `https://github.com/login/oauth/authorize?scope=user%20repo&client_id=Iv1.fbdc49e54f75d9af&allow_signup=true&redirect_uri=${GITHUB_AUTH_CALLBACK}`,
