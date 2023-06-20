@@ -3,36 +3,49 @@ import extApi from '@pagenote/shared/lib/pagenote-api'
 import { get } from 'lodash'
 
 type Storage = {
-  usage?: number
+  usage: number
 }
 export default function useStorage(
   dbName: string,
   tableName: string
-): [Storage | undefined] {
+): [Storage] {
   const { data } = useSWR<Storage>(
-    '/storage-local/' + dbName + tableName,
-    fetchData
+    '/storage/info/' + dbName + tableName,
+    fetchData,
+    {
+      fallback: {
+        usage: 0,
+      },
+    }
   )
 
-  function fetchData() {
-    let method = extApi.page.stat
-    if (get(extApi, tableName)) {
-      method = get(extApi, tableName)
-    }
-    return method(undefined, {
+  function fetchByTable() {
+    const header = {
       cacheControl: {
-        maxAgeMillisecond: 3600 * 24 * 1000,
+        maxAgeMillisecond: 3600 * 2 * 1000,
       },
       scheduleControl: {
         runAfterMillisecond: [0, 3600 * 1000],
       },
-    }).then(function (res) {
-      console.log(res, '统计结果')
-      return {
-        usage: res.data.usage,
-      }
+    }
+    switch (tableName) {
+      case 'webpage':
+        return extApi.page.stat(undefined, header)
+      case 'light':
+        return extApi.light.stat(undefined, header)
+      case 'snapshot':
+        return extApi.snapshot.stat(undefined, header)
+      case 'html':
+        return extApi.html.stat(undefined, header)
+    }
+    return extApi.page.stat(undefined, header)
+  }
+
+  function fetchData() {
+    return fetchByTable().then(function (res) {
+      return res.data || { usage: 0 }
     })
   }
 
-  return [data]
+  return [data || { usage: 0 }]
 }

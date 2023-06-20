@@ -7,10 +7,16 @@ import { resolveImportString } from '@pagenote/shared/lib/utils/data'
 import CloseSvg from '../../../assets/svg/close.svg'
 import ExportFilter from './ExportFilter'
 import ImportFilter from './ImportFilter'
+import useStorage from '../../../hooks/useStorage'
+import StorageInfo from './StorageInfo'
 
 export default function ExtensionData() {
   const [backupData, setBackupData] = useState<BackupData | null>(null)
   const [importState, setImportState] = useState(false)
+  const [pageStorage] = useStorage('lightpage', 'webpage')
+  const [lightStorage] = useStorage('lightpage', 'light')
+  const [snapshotStorage] = useStorage('lightpage', 'snapshot')
+  const [htmlStorage] = useStorage('resource', 'html')
 
   function onImportBackup(e: ChangeEvent<HTMLInputElement>) {
     const selectedFile = e.target?.files || []
@@ -37,6 +43,10 @@ export default function ExtensionData() {
 
   return (
     <>
+      <div className={'mb-4'}>
+        <StorageInfo />
+      </div>
+
       <BasicSettingLine
         label={
           <div>

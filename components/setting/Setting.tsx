@@ -4,6 +4,7 @@ import SettingHome from './SettingHome'
 import { Route, Routes } from 'react-router-dom'
 import React from 'react'
 import LightSetting from './LightSetting'
+import ImageCloud from '../backup/extension/ImageCloud'
 
 export default function Setting() {
   return (
@@ -17,6 +18,7 @@ export default function Setting() {
           <Route index element={<SettingHome />} />
           <Route path={'/light'} element={<LightSetting />} />
           <Route path={'/data'} element={<DataBackup />} />
+          <Route path={'/data/image-cloud'} element={<ImageCloud />} />
           <Route path={'*'} element={<SettingHome />} />
         </Routes>
       </div>

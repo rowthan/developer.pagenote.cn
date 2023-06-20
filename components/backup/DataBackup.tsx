@@ -3,13 +3,22 @@ import BasicSettingLine from '../setting/BasicSettingLine'
 import SettingDetail from '../setting/SettingDetail'
 import TipInfo from 'components/TipInfo'
 import ExtensionData from './extension/ExtensionData'
+import ImageCloud from './extension/ImageCloud'
 
 export default function DataBackup() {
   return (
     <SettingDetail label={'数据管理'}>
       <div className={' min-w-80'}>
         <ExtensionData />
-
+        <BasicSettingLine
+          label={
+            <span>
+              图床
+              <TipInfo tip={'数据存储的优化方式，极大降低存储空间占用'} />
+            </span>
+          }
+          path={'/setting/data/image-cloud'}
+        />
         <BasicSettingLine
           label={
             <span>
