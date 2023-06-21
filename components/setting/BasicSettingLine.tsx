@@ -1,6 +1,9 @@
 import React, { ReactElement, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import SettingMoreSvg from '../../assets/svg/right-more.svg'
+import { useRouter } from 'next/router'
+import { Route, Routes, useRoutes } from 'react-router-dom'
+import classNames from 'classnames'
 
 export default function BasicSettingLine(props: {
   label: string | ReactElement
@@ -11,6 +14,7 @@ export default function BasicSettingLine(props: {
 }) {
   const { label, path, right, subLabel, children } = props
   const [expand, setExpand] = useState(false)
+  const navigate = useNavigate()
 
   const Right = right || (
     <button
@@ -22,30 +26,30 @@ export default function BasicSettingLine(props: {
     </button>
   )
 
-  function Content() {
-    return (
-      <div
-        className={
-          'px-5  border-b border-base-200 hover:bg-base-200 bg-base-150 last-of-type:border-none'
-        }
-      >
-        <div className={'min-h-12 flex items-center justify-between'}>
-          <div className={'text-sm'}>
-            <div className={' leading-12 '}>{label}</div>
-            <div className={'text-xs text-gray-500'}>{subLabel}</div>
-          </div>
-          {Right}
-        </div>
-        <div className={''}>{children}</div>
-      </div>
-    )
+  function onClick() {
+    if (path) {
+      navigate(path)
+    }
   }
 
-  return path ? (
-    <NavLink to={path}>
-      <Content />
-    </NavLink>
-  ) : (
-    <Content />
+  return (
+    <div
+      onClick={onClick}
+      className={classNames(
+        'px-5 py-3 min-h-12 bg-color-50  border-b border-base-200 hover:bg-base-200 bg-base-150 last-of-type:border-none last:rounded-b-lg first:rounded-t-lg overflow-hidden',
+        {
+          'cursor-pointer': !!path,
+        }
+      )}
+    >
+      <div className={'flex items-center justify-between'}>
+        <div className={'text-sm'}>
+          <div className={' leading-12 '}>{label}</div>
+          <div className={'text-xs text-gray-500'}>{subLabel}</div>
+        </div>
+        {Right}
+      </div>
+      <div className={''}>{children}</div>
+    </div>
   )
 }
