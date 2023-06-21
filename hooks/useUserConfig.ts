@@ -30,7 +30,6 @@ export default function useUserConfig<T extends ConfigItem>(
         if (res.success) {
           //@ts-ignore
           const object = configArrayToObject(res?.data?.list || [])
-          console.log('object', object)
           return get(object, rootKey) as unknown as T
         }
         return null

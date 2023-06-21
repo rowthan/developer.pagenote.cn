@@ -35,7 +35,6 @@ export default function CloudStatus(props: Props) {
 
   useEffect(
     function () {
-      console.log(config, '--config')
       for (let i in config) {
         // @ts-ignore
         setValue(i, config[i])

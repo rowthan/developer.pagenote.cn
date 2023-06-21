@@ -8,7 +8,7 @@ import ImageCloud from '../backup/extension/ImageCloud'
 
 export default function Setting() {
   return (
-    <div className={'max-w-3xl m-auto'}>
+    <div className={'max-w-3xl m-auto p-5'}>
       <div className={'mb-4'}>
         <UserCard editable={false} />
       </div>

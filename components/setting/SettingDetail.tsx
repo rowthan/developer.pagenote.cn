@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import BackSvg from '../../assets/svg/back.svg'
 import React, { ReactElement } from 'react'
 
@@ -7,18 +7,23 @@ export default function SettingDetail(props: {
   label: string | ReactElement
 }) {
   const { children, label } = props
+  const navigate = useNavigate()
+
+  function back() {
+    history.back()
+  }
+
   return (
-    <div className={'shadow rounded-lg'}>
+    <div className={''}>
       <div className={'flex px-3 items-center py-2 mb-8'}>
-        <NavLink to={'/setting'}>
-          <aside
-            className={
-              'flex items-center justify-center w-8 h-8 rounded-full hover:bg-base-300'
-            }
-          >
-            <BackSvg className={'fill-current'} />
-          </aside>
-        </NavLink>
+        <aside
+          onClick={back}
+          className={
+            'flex items-center justify-center w-8 h-8 rounded-full hover:bg-base-300 cursor-pointer'
+          }
+        >
+          <BackSvg className={'fill-current'} />
+        </aside>
         <div className={'text-md ml-2'}>{label}</div>
       </div>
       <div className={''}>{children}</div>

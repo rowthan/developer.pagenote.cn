@@ -30,10 +30,7 @@ export default function ImageCloud(props: Props) {
         <div>
           <div className={' rounded-lg overflow-hidden bg-color-50'}>
             <BasicSettingLine
-              label={'图床'}
-              // subLabel={
-              //   '将快照图片上传至云端，生成图片链接。任何获得该链接的用户，都可以在互联网访问该资源。'
-              // }
+              label={'启用图片优化（图床）'}
               right={
                 <input
                   type="checkbox"
@@ -51,41 +48,39 @@ export default function ImageCloud(props: Props) {
           <div className={'mt-1 mx-5 text-xs text-color-400 mb-6'}>
             {enabled
               ? '将快照图片上传至云端，生成图片链接。任何获得该链接的用户，都可以在互联网访问该资源。'
-              : '优化图片存储'}
+              : '优化本机图片存储'}
           </div>
 
           {enabled && (
             <div>
               <div className={'mt-2 mx-5 text-xs text-color-400 mb-1'}>
-                图床服务（私人云优先）
+                图床服务
               </div>
               <div className={' rounded-lg overflow-hidden bg-color-50'}>
-                <BasicSettingLine
-                  label={
-                    <span>
-                      <span>私人云</span>
-                      <TipInfo
-                        tip={'你个人专属图床服务，最大程度的保证你的数据安全。'}
-                      />
-                    </span>
-                  }
-                  right={
-                    <div>
-                      <CloudStatus cloudServer={'customAliOss'} />
-                      <TipInfo
-                        className={'tooltip-left'}
-                        tip={'你自己的存储云空间'}
-                      />
-                    </div>
-                  }
-                />
+                {/*<BasicSettingLine*/}
+                {/*  label={*/}
+                {/*    <span>*/}
+                {/*      <span>私人云</span>*/}
+                {/*      <TipInfo*/}
+                {/*        tip={*/}
+                {/*          '由你指定数据云存储空间，最大程度的保证你的数据安全。'*/}
+                {/*        }*/}
+                {/*      />*/}
+                {/*    </span>*/}
+                {/*  }*/}
+                {/*  right={*/}
+                {/*    <div>*/}
+                {/*      <CloudStatus cloudServer={'customAliOss'} />*/}
+                {/*    </div>*/}
+                {/*  }*/}
+                {/*/>*/}
                 <BasicSettingLine
                   label={
                     <span>
                       PAGENOTE 云
                       <TipInfo
                         tip={
-                          '由PAGENOTE官方提供的基础服务。PAGENOTE 保证该服务的稳定。'
+                          'VIP 可用。由PAGENOTE官方提供的基础服务。PAGENOTE 保证该服务的稳定。'
                         }
                       />
                     </span>
@@ -105,7 +100,6 @@ export default function ImageCloud(props: Props) {
                       >
                         {oss?.cloud_space ? '已连接' : 'VIP 可用'}
                       </a>
-                      <TipInfo tip={'VIP 可用'} className={'tooltip-left'} />
                     </div>
                   }
                 />

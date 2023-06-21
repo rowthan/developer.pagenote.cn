@@ -1,6 +1,8 @@
-import { type ReactNode } from 'react'
+import React, { type ReactNode } from 'react'
 import useStorage from '../../../hooks/useStorage'
 import { getMb } from '../../../utils/size'
+import TipInfo from '../../TipInfo'
+import BasicSettingLine from '../../setting/BasicSettingLine'
 
 interface Props {
   children?: ReactNode
@@ -42,19 +44,23 @@ export default function StorageInfo(props: Props) {
       bg: '#4467a8',
     },
   ]
-  return (
-    <div className="px-5 py-2 bg-color-50 rounded">
-      <div className={'flex justify-between items-center'}>
-        <div className={'text-md'}>扩展应用存储空间</div>
-        <div className={'text-sm text-color-400'}>{getMb(total)} 已使用</div>
-      </div>
 
+  return (
+    <BasicSettingLine
+      label={'本插件'}
+      right={
+        <div className={'text-sm text-color-400'}>{getMb(total)} 已使用</div>
+      }
+    >
       <div className={'mt-2'}>
-        <div className={'flex w-full rounded overflow-hidden'}>
+        <div className={'flex w-full '}>
           {list.map((item) => (
             <div
-              className={'h-3 min-w-[1px]'}
+              className={
+                'h-3 min-w-[1px] tooltip tooltip-top first:rounded-l last:rounded-r'
+              }
               key={item.name}
+              data-tip={`${getMb(item.usage || 0)}`}
               style={{
                 width: `${(item.usage / total) * 100}%`,
                 backgroundColor: item.bg,
@@ -62,7 +68,7 @@ export default function StorageInfo(props: Props) {
             ></div>
           ))}
         </div>
-        <div className={'flex mt-2'}>
+        <div className={'flex mt-2 text-color-400'}>
           {list.map((item) => (
             <div
               className={'text-xs inline-flex items-center mr-4'}
@@ -79,7 +85,7 @@ export default function StorageInfo(props: Props) {
           ))}
         </div>
       </div>
-    </div>
+    </BasicSettingLine>
   )
 }
 
