@@ -4,6 +4,7 @@ import useWhoAmi from '../../hooks/useWhoAmi'
 import { checkIsInPopup } from '../../utils/check'
 import { BrowserType } from '@pagenote/shared/lib/utils/browser'
 import extApi from '@pagenote/shared/lib/pagenote-api'
+import { basePath } from '../../const/env'
 
 export default function SettingHome() {
   const [whoAmI] = useWhoAmi()
@@ -23,7 +24,14 @@ export default function SettingHome() {
   return (
     <div className={'shadow rounded-lg'}>
       <BasicSettingLine label={'画笔设置'} path={'/setting/light'} />
-      <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
+
+      <BasicSettingLine
+        label={'存储空间'}
+        path={'/setting/data'}
+        target={isFirefox ? '_blank' : ''}
+        href={isFirefox ? `${basePath}/ext/setting.html#/setting/data` : ''}
+      />
+
       <BasicSettingLine
         label={'插件版本'}
         right={

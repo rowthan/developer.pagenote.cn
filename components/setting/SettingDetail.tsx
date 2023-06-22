@@ -10,7 +10,11 @@ export default function SettingDetail(props: {
   const navigate = useNavigate()
 
   function back() {
-    history.back()
+    if (history.length > 1) {
+      history.back()
+    } else {
+      navigate('/setting')
+    }
   }
 
   return (

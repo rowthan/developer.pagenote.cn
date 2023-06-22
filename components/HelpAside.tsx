@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import HelpSvg from '../assets/svg/bangzhu.svg'
 import SettingSvg from '../assets/svg/setting.svg'
 import ShortCutInfo from './ShortCutInfo'
+import { basePath } from '../const/env'
 
 interface Props {
   children?: ReactNode
@@ -31,7 +32,7 @@ export default function HelpAside(props: Props) {
   if (pathname.includes('/ext')) {
     asideList.push({
       label: '设置',
-      link: '/ext/setting.html',
+      link: basePath + '/ext/setting.html',
       icon: <SettingSvg className={'fill-current inline'} />,
       target: '_blank',
     })

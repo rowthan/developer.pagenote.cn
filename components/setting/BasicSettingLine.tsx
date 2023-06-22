@@ -8,11 +8,14 @@ export default function BasicSettingLine(props: {
   label: string | ReactElement
   subLabel?: string
   path?: string
+  href?: string
   right?: ReactElement
   children?: ReactElement
   loading?: boolean
+  [key: string]: any
 }) {
-  const { label, path, right, subLabel, children, loading } = props
+  const { label, href, path, right, subLabel, children, loading, ...left } =
+    props
   const [expand, setExpand] = useState(false)
   const navigate = useNavigate()
 
@@ -36,15 +39,19 @@ export default function BasicSettingLine(props: {
     }
   }
 
+  const Tag = href ? 'a' : 'div'
+
   return (
-    <div
+    <Tag
       onClick={onClick}
+      href={href}
       className={classNames(
-        'px-5 py-3 min-h-12 bg-color-50  border-b border-base-200 hover:bg-base-200 bg-base-150 last-of-type:border-none last:rounded-b-lg first:rounded-t-lg overflow-hidden',
+        'block px-5 py-3 min-h-12 bg-color-50  border-b border-base-200 hover:bg-base-200 bg-base-150 last:rounded-b-lg first:rounded-t-lg overflow-hidden',
         {
           'cursor-pointer': !!path,
         }
       )}
+      {...left}
     >
       <div className={'flex items-center justify-between'}>
         <div className={'text-sm'}>
@@ -54,6 +61,6 @@ export default function BasicSettingLine(props: {
         {Right}
       </div>
       <div className={''}>{children}</div>
-    </div>
+    </Tag>
   )
 }
