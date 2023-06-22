@@ -1,38 +1,50 @@
 import OSS from 'ali-oss'
-import extApi from '@pagenote/shared/lib/pagenote-api/'
+import { fetchUploadToken } from '../hooks/useOssKey'
 
+export function getPublicUploadClient() {
+  return fetchUploadToken('public').then(function (data) {
+    if (!data) {
+      return {
+        client: null,
+        cloud_space: '',
+      }
+    }
+    const client = new OSS(data.key)
+    return {
+      client: client,
+      cloud_space: data.cloud_space,
+    }
+  })
+}
 
-export function UploadImage() {
-    return extApi.network.pagenote({
-        url:"https://api-test.pagenote.cn/api/graph/profile",
-        method:"GET",
-        data:{
-            query:`query{ossKey(spaceType:"public"){AccessKeyId,AccessKeySecret,SecurityToken,CloudSpace,bucket,region}}`
-        },
-    },{
-        cacheControl:{
-            maxAgeMillisecond: 60 * 1000 * 10,
-            // @ts-ignore
-            maxAge: 60 * 10
-        }
-    }).then(function (res) {
-        const data = res?.data?.json?.data?.ossKey;
-        if(!data){
-            return{
-                client: null,
-                cloud_space: ""
-            }
-        }
-        const client = new OSS({
-            region: data.region,
-            accessKeyId: data.AccessKeyId,
-            accessKeySecret: data.AccessKeySecret,
-            stsToken: data.SecurityToken,
-            bucket: data.bucket,
-        });
-        return {
-            client: client,
-            cloud_space: data.CloudSpace,
-        };
+export type OssCloudConfig = {
+  region: string
+  accessKeyId: string
+  accessKeySecret: string
+  bucket: string
+  stsToken?: string
+}
+
+export function checkCloudPut(
+  config: OssCloudConfig
+): Promise<{ name?: string; content?: string }> {
+  const client = new OSS(config)
+
+  const CheckFile = {
+    filename: '.connect-text.txt',
+    content: `hello it works. at ${new Date().toString()}`,
+  }
+  return client
+    .put(CheckFile.filename, new Blob([CheckFile.content]))
+    .then(async function (res) {
+      console.log('上传检测结果')
+      return {
+        name: res.name,
+        content: CheckFile.content,
+      }
+    })
+    .catch(function (reason) {
+      console.error(reason)
+      return {}
     })
 }

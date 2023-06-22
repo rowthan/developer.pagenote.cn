@@ -1,34 +1,59 @@
-import React, {ReactElement} from "react";
-import {NavLink} from "react-router-dom";
-import SettingMoreSvg from "../../assets/svg/right-more.svg";
+import React, { ReactElement, useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import SettingMoreSvg from '../../assets/svg/right-more.svg'
+import classNames from 'classnames'
+import Loading from '../loading/Loading'
 
-export default function BasicSettingLine(props: { label: string| ReactElement,subLabel?: string, path?: string, right?: ReactElement }) {
-    const {label, path, right,subLabel} = props;
+export default function BasicSettingLine(props: {
+  label: string | ReactElement
+  subLabel?: string
+  path?: string
+  right?: ReactElement
+  children?: ReactElement
+  loading?: boolean
+}) {
+  const { label, path, right, subLabel, children, loading } = props
+  const [expand, setExpand] = useState(false)
+  const navigate = useNavigate()
 
-    function Content() {
-        return (
-            <div
-                className={'px-5 min-h-12 border-b border-base-200 hover:bg-base-200 bg-base-150 flex items-center justify-between'}>
-                <div className={'text-sm'}>
-                    <div className={' leading-12 '}>{label}</div>
-                    <div className={'text-xs text-gray-500'}>{subLabel}</div>
-                </div>
-                {
-                    right ? right :
-                        <span
-                            className={'rounded-full hover:border hover:bg-base-300 w-6 h-6 flex items-center justify-center'}>
-                            <SettingMoreSvg className={'fill-current '}/>
-                        </span>
-                }
-            </div>
-        )
-    }
-
-    return (
-        path ?
-        <NavLink to={path}>
-            <Content/>
-        </NavLink> :
-        <Content/>
+  const Right = loading ? (
+    <Loading />
+  ) : (
+    right || (
+      <button
+        className={
+          'rounded-full hover:border hover:bg-base-300 w-6 h-6 flex items-center justify-center'
+        }
+      >
+        <SettingMoreSvg className={'fill-current '} />
+      </button>
     )
+  )
+
+  function onClick() {
+    if (path) {
+      navigate(path)
+    }
+  }
+
+  return (
+    <div
+      onClick={onClick}
+      className={classNames(
+        'px-5 py-3 min-h-12 bg-color-50  border-b border-base-200 hover:bg-base-200 bg-base-150 last-of-type:border-none last:rounded-b-lg first:rounded-t-lg overflow-hidden',
+        {
+          'cursor-pointer': !!path,
+        }
+      )}
+    >
+      <div className={'flex items-center justify-between'}>
+        <div className={'text-sm'}>
+          <div className={' leading-12 '}>{label}</div>
+          <div className={'text-xs text-gray-500'}>{subLabel}</div>
+        </div>
+        {Right}
+      </div>
+      <div className={''}>{children}</div>
+    </div>
+  )
 }

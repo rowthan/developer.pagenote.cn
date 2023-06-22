@@ -63,7 +63,7 @@ export default function SignForm(props: { children?: ReactElement }) {
       valid
     )
       .then(function (res) {
-        if (res.success) {
+        if (res?.success) {
           setPublicText(res.data?.sendSignInEmail?.publicText || '')
         } else {
           setTip(res.error || '请求失败，请重试')

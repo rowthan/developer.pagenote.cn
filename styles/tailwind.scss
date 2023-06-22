@@ -4,12 +4,18 @@
 
 
 @layer components {
-  .loading-block{
+  .loading-block {
     @apply bg-gray-200 animate-pulse;
-    @apply delay-100; // 间歇小于 100ms，不出loading动效，防止闪屏
+    @apply delay-100;
+    // 间歇小于 100ms，不出loading动效，防止闪屏
     animation-delay: 100ms;
+
     & > * {
       @apply invisible;
     }
+  }
+
+  .setting-line {
+
   }
 }

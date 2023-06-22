@@ -29,6 +29,7 @@ export default function useUserInfo(): [
     }
     // @ts-ignore
     return extApi.user.setUserToken(token).then(function () {
+      mutate()
       fetchUserInfo(true).then(function () {
         mutate()
       })

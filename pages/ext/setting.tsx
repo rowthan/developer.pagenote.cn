@@ -17,16 +17,14 @@ export default function Setting() {
 
   return (
     <BasicLayout nav={false} footer={true} title={'设置'} full={true}>
-      <CheckVersion requireVersion={'0.26.0'}>
-        <div className={'p-4'}>
-          <Router>
-            <Routes>
-              <Route path="/" element={<SettingCom />} />
-              <Route path="/setting/*" element={<SettingCom />} />
-            </Routes>
-          </Router>
-        </div>
-      </CheckVersion>
+      <div className={'p-4'}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<SettingCom />} />
+            <Route path="/setting/*" element={<SettingCom />} />
+          </Routes>
+        </Router>
+      </div>
     </BasicLayout>
   )
 }
