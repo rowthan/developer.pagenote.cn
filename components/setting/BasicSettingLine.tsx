@@ -1,9 +1,8 @@
 import React, { ReactElement, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import SettingMoreSvg from '../../assets/svg/right-more.svg'
-import { useRouter } from 'next/router'
-import { Route, Routes, useRoutes } from 'react-router-dom'
 import classNames from 'classnames'
+import Loading from '../loading/Loading'
 
 export default function BasicSettingLine(props: {
   label: string | ReactElement
@@ -11,19 +10,24 @@ export default function BasicSettingLine(props: {
   path?: string
   right?: ReactElement
   children?: ReactElement
+  loading?: boolean
 }) {
-  const { label, path, right, subLabel, children } = props
+  const { label, path, right, subLabel, children, loading } = props
   const [expand, setExpand] = useState(false)
   const navigate = useNavigate()
 
-  const Right = right || (
-    <button
-      className={
-        'rounded-full hover:border hover:bg-base-300 w-6 h-6 flex items-center justify-center'
-      }
-    >
-      <SettingMoreSvg className={'fill-current '} />
-    </button>
+  const Right = loading ? (
+    <Loading />
+  ) : (
+    right || (
+      <button
+        className={
+          'rounded-full hover:border hover:bg-base-300 w-6 h-6 flex items-center justify-center'
+        }
+      >
+        <SettingMoreSvg className={'fill-current '} />
+      </button>
+    )
   )
 
   function onClick() {

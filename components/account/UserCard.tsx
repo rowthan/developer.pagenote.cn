@@ -1,7 +1,6 @@
-import useUserInfo, { fetchUserInfo } from '../../hooks/useUserInfo'
+import useUserInfo from '../../hooks/useUserInfo'
 import MoreSvg from '../../assets/svg/more.svg'
 import FreeSvg from 'assets/svg/free.svg'
-import extApi from '@pagenote/shared/lib/pagenote-api'
 import VipSvg from 'assets/svg/vip.svg'
 import dayjs from 'dayjs'
 import useBooks from '../../hooks/useBooks'

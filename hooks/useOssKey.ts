@@ -7,14 +7,16 @@ interface OssConfig {
   cloud_space: string
 }
 
-export function fetchUploadToken() {
+type OssType = 'public' | 'private'
+
+export function fetchUploadToken(type: OssType) {
   return extApi.network
     .pagenote(
       {
         url: '/api/graph/profile',
         method: 'GET',
         data: {
-          query: `query{ossKey(spaceType:"public"){AccessKeyId,AccessKeySecret,SecurityToken,CloudSpace,bucket,region}}`,
+          query: `query{ossKey(spaceType:"${type}"){AccessKeyId,AccessKeySecret,SecurityToken,CloudSpace,bucket,region}}`,
         },
       },
       {
@@ -42,11 +44,17 @@ export function fetchUploadToken() {
     })
 }
 
-export default function useOssKey(): [OssConfig | undefined | null, boolean] {
+export default function useOssKey(
+  type: OssType
+): [OssConfig | undefined | null, boolean, boolean] {
   const { data, isLoading, mutate } = useSWR<OssConfig | null | undefined>(
-    '/oss-key',
-    fetchUploadToken
+    '/oss-key/official/' + type,
+    () => {
+      return fetchUploadToken(type)
+    }
   )
 
-  return [data, isLoading]
+  const connected = !!data?.cloud_space
+
+  return [data, isLoading, connected]
 }

@@ -5,10 +5,12 @@ import ExtensionData from './extension/ExtensionData'
 import { get } from 'lodash'
 import useUserConfig from '../../hooks/useUserConfig'
 import SettingMoreSvg from '../../assets/svg/right-more.svg'
+import useOssKey from '../../hooks/useOssKey'
 
 export default function DataBackup() {
   const [cloudConfig, setCloudConfig] = useUserConfig('cloud')
   const enabled = !!get(cloudConfig, 'enable')
+  const [oss, loading, connected] = useOssKey('private')
 
   return (
     <SettingDetail label={'数据管理'}>
@@ -19,7 +21,9 @@ export default function DataBackup() {
             label={<span>图片优化</span>}
             right={
               <div className={'flex items-center text-color-400'}>
-                <div className={'text-xs'}>{enabled ? '开' : '关'}</div>
+                <div className={'text-xs'}>
+                  {enabled ? (connected ? '开' : '未连接') : '关'}
+                </div>
                 <SettingMoreSvg className={'fill-current '} />
               </div>
             }

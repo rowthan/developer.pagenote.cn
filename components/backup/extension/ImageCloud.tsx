@@ -16,7 +16,7 @@ interface Props {
 export default function ImageCloud(props: Props) {
   const [cloudConfig, setCloudConfig] = useUserConfig('cloud')
   const [user] = useUserInfo()
-  const [oss] = useOssKey()
+  const [oss, loading, connected] = useOssKey('private')
   const enabled = !!get(cloudConfig, 'enable')
   return (
     <SettingDetail
@@ -54,7 +54,7 @@ export default function ImageCloud(props: Props) {
           {enabled && (
             <div>
               <div className={'mt-2 mx-5 text-xs text-color-400 mb-1'}>
-                图床服务
+                图床服务商
               </div>
               <div className={' rounded-lg overflow-hidden bg-color-50'}>
                 {/*<BasicSettingLine*/}
@@ -78,13 +78,10 @@ export default function ImageCloud(props: Props) {
                   label={
                     <span>
                       PAGENOTE 云
-                      <TipInfo
-                        tip={
-                          'VIP 可用。由PAGENOTE官方提供的基础服务。PAGENOTE 保证该服务的稳定。'
-                        }
-                      />
+                      <TipInfo tip={'VIP 可用。由PAGENOTE官方提供此服务。'} />
                     </span>
                   }
+                  loading={loading}
                   right={
                     <div>
                       <a
@@ -93,12 +90,12 @@ export default function ImageCloud(props: Props) {
                         className={classNames(
                           'btn btn-outline btn-xs text-sm btn-info font-normal',
                           {
-                            'btn-success': !!oss?.cloud_space,
-                            'btn-error': !oss?.cloud_space,
+                            'btn-success': connected,
+                            'btn-error': !connected,
                           }
                         )}
                       >
-                        {oss?.cloud_space ? '已连接' : 'VIP 可用'}
+                        {connected ? '已连接' : 'VIP 可用'}
                       </a>
                     </div>
                   }

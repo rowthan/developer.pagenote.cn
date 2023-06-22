@@ -8,8 +8,8 @@ type Storage = {
 export default function useStorage(
   dbName: string,
   tableName: string
-): [Storage] {
-  const { data } = useSWR<Storage>(
+): [Storage, boolean] {
+  const { data, isLoading } = useSWR<Storage>(
     '/storage/info/' + dbName + tableName,
     fetchData,
     {
@@ -25,7 +25,7 @@ export default function useStorage(
         maxAgeMillisecond: 3600 * 48 * 1000,
       },
       scheduleControl: {
-        runAfterMillisecond: [0, 3600 * 1000],
+        runAfterMillisecond: [0, 60 * 1000],
       },
     }
     switch (tableName) {
@@ -47,5 +47,5 @@ export default function useStorage(
     })
   }
 
-  return [data || { usage: 0 }]
+  return [data || { usage: 0 }, isLoading]
 }

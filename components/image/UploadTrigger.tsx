@@ -1,7 +1,7 @@
 import Modal from 'components/Modal'
 import React, { ReactElement, useRef, useState } from 'react'
 import ImageShape from './ImageShape'
-import { getUploadClient } from '../../utils/upload'
+import { getPublicUploadClient } from '../../utils/upload'
 import md5 from 'md5'
 import { ContentType } from '@pagenote/shared/lib/@types/data'
 import { toast } from '../../utils/toast'
@@ -30,7 +30,7 @@ export default function UploadTrigger(props: {
 
   function onCropFinished() {
     setUploading(true)
-    getUploadClient().then(function ({ client, cloud_space }) {
+    getPublicUploadClient().then(function ({ client, cloud_space }) {
       if (!cloud_space || !client) {
         toast('上传失败，请重试')
         return

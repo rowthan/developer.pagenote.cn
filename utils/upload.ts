@@ -1,8 +1,8 @@
 import OSS from 'ali-oss'
 import { fetchUploadToken } from '../hooks/useOssKey'
 
-export function getUploadClient() {
-  return fetchUploadToken().then(function (data) {
+export function getPublicUploadClient() {
+  return fetchUploadToken('public').then(function (data) {
     if (!data) {
       return {
         client: null,

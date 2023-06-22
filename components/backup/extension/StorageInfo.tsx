@@ -3,6 +3,7 @@ import useStorage from '../../../hooks/useStorage'
 import { getMb } from '../../../utils/size'
 import TipInfo from '../../TipInfo'
 import BasicSettingLine from '../../setting/BasicSettingLine'
+import Loading from 'components/loading/Loading'
 
 interface Props {
   children?: ReactNode
@@ -10,11 +11,12 @@ interface Props {
 
 export default function StorageInfo(props: Props) {
   const { children } = props
-  const [pageStorage] = useStorage('lightpage', 'webpage')
-  const [lightStorage] = useStorage('lightpage', 'light')
-  const [snapshotStorage] = useStorage('lightpage', 'snapshot')
-  const [htmlStorage] = useStorage('resource', 'html')
+  const [pageStorage, loadingPage] = useStorage('lightpage', 'webpage')
+  const [lightStorage, loadingLight] = useStorage('lightpage', 'light')
+  const [snapshotStorage, loadingSnapshot] = useStorage('lightpage', 'snapshot')
+  const [htmlStorage, loadingHtml] = useStorage('resource', 'html')
 
+  const loading = loadingHtml || loadingLight || loadingSnapshot || loadingPage
   const total =
     pageStorage?.usage +
     lightStorage?.usage +
@@ -83,6 +85,7 @@ export default function StorageInfo(props: Props) {
               <div>{item.name}</div>
             </div>
           ))}
+          {loading && <Loading />}
         </div>
       </div>
     </BasicSettingLine>
