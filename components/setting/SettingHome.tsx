@@ -9,9 +9,6 @@ import { basePath } from '../../const/env'
 export default function SettingHome() {
   const [whoAmI] = useWhoAmi()
 
-  const isFirefox =
-    whoAmI?.browserType === BrowserType.Firefox && checkIsInPopup()
-
   function openDataCenter() {
     extApi.commonAction.openTab({
       reUse: false,
@@ -25,12 +22,7 @@ export default function SettingHome() {
     <div className={'shadow rounded-lg'}>
       <BasicSettingLine label={'画笔设置'} path={'/setting/light'} />
 
-      <BasicSettingLine
-        label={'存储空间'}
-        path={'/setting/data'}
-        target={isFirefox ? '_blank' : ''}
-        href={isFirefox ? `${basePath}/ext/setting.html#/setting/data` : ''}
-      />
+      <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
 
       <BasicSettingLine
         label={'插件版本'}

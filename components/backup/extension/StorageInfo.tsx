@@ -1,7 +1,6 @@
 import React, { type ReactNode } from 'react'
-import useStorage from '../../../hooks/useStorage'
-import { getMb } from '../../../utils/size'
-import TipInfo from '../../TipInfo'
+import useStorage from 'hooks/useStorage'
+import { getMb } from 'utils/size'
 import BasicSettingLine from '../../setting/BasicSettingLine'
 import Loading from 'components/loading/Loading'
 
@@ -10,7 +9,6 @@ interface Props {
 }
 
 export default function StorageInfo(props: Props) {
-  const { children } = props
   const [pageStorage, loadingPage] = useStorage('lightpage', 'webpage')
   const [lightStorage, loadingLight] = useStorage('lightpage', 'light')
   const [snapshotStorage, loadingSnapshot] = useStorage('lightpage', 'snapshot')
@@ -22,7 +20,7 @@ export default function StorageInfo(props: Props) {
     lightStorage?.usage +
     snapshotStorage?.usage +
     htmlStorage?.usage +
-    1
+    1024
 
   const list = [
     {

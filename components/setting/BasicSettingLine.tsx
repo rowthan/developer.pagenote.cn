@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import SettingMoreSvg from '../../assets/svg/right-more.svg'
 import classNames from 'classnames'
 import Loading from '../loading/Loading'
@@ -8,14 +8,23 @@ export default function BasicSettingLine(props: {
   label: string | ReactElement
   subLabel?: string
   path?: string
-  href?: string
   right?: ReactElement
   children?: ReactElement
   loading?: boolean
-  [key: string]: any
+  onClick?: () => void
+  className?: string
 }) {
-  const { label, href, path, right, subLabel, children, loading, ...left } =
-    props
+  const {
+    className,
+    label,
+    path,
+    right,
+    onClick,
+    subLabel,
+    children,
+    loading,
+    ...left
+  } = props
   const [expand, setExpand] = useState(false)
   const navigate = useNavigate()
 
@@ -33,23 +42,22 @@ export default function BasicSettingLine(props: {
     )
   )
 
-  function onClick() {
+  function onClickRoot() {
     if (path) {
       navigate(path)
     }
+    onClick && onClick()
   }
 
-  const Tag = href ? 'a' : 'div'
-
   return (
-    <Tag
-      onClick={onClick}
-      href={href}
+    <div
+      onClick={onClickRoot}
       className={classNames(
         'block px-5 py-3 min-h-12 bg-color-50  border-b border-base-200 hover:bg-base-200 bg-base-150 last:rounded-b-lg first:rounded-t-lg overflow-hidden',
         {
           'cursor-pointer': !!path,
-        }
+        },
+        className
       )}
       {...left}
     >
@@ -61,6 +69,6 @@ export default function BasicSettingLine(props: {
         {Right}
       </div>
       <div className={''}>{children}</div>
-    </Tag>
+    </div>
   )
 }

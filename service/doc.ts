@@ -8,7 +8,7 @@ export async function getNotionDocDetail(id: string) {
     if (result.recordMap) {
       return {
         props: result,
-        revalidate: process.env.NODE_ENV === 'development' ? 60 : 60 * 60,
+        revalidate: process.env.NODE_ENV === 'development' ? 24 : 60 * 60, // 单位 秒
       }
     } else {
       return {
