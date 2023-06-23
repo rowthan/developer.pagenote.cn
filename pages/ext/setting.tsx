@@ -1,6 +1,5 @@
 import SettingCom from 'components/setting/Setting'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import CheckVersion from 'components/check/CheckVersion'
 import React, { useEffect, useState } from 'react'
 import BasicLayout from 'layouts/BasicLayout'
 
