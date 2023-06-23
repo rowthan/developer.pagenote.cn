@@ -87,7 +87,8 @@ const Callback: React.FC<{ authType: AuthType }> = (props) => {
               <img
                 width={36}
                 height={36}
-                className={'absolute -bottom-3 -right-3'}
+                className={'absolute -bottom-3 -right-3 bg-white rounded-full'}
+                crossOrigin={'anonymous'}
                 src={authMap[authType]?.platformIcon}
                 alt={authType}
               />

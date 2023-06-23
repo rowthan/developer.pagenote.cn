@@ -11,12 +11,14 @@ type AuthInfo = {
   avatar?: string
 } & PlatInfo
 
+const GitHubConfig = {
+  platformUrl: 'https://github.com/settings/installations',
+  platformIcon: 'https://github.githubassets.com/favicons/favicon.svg',
+  bindUrl: AUTH_LIST[0].link,
+}
 export const authMap: Record<string, PlatInfo> = {
-  github: {
-    platformUrl: 'https://github.com/settings/installations',
-    platformIcon: 'https://github.githubassets.com/favicons/favicon.svg',
-    bindUrl: AUTH_LIST[0].link,
-  },
+  GitHub: GitHubConfig,
+  github: GitHubConfig,
   notion: {
     platformUrl: 'https://www.notion.so/my-integrations',
     platformIcon: 'https://www.notion.so/images/favicon.ico',

@@ -10,7 +10,6 @@ import { basePath } from 'const/env'
 export default function ExtensionData() {
   const [whoAmI] = useWhoAmi()
 
-  console.log(whoAmI?.browserType, 'browser')
   // Firefox 失去焦点后，弹窗将自动关闭，会话中断
   const isFirefox = whoAmI?.browserType === BrowserType.Firefox
 
