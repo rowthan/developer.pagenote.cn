@@ -1,28 +1,20 @@
 import { PropsWithChildren } from 'react'
 import Head from 'next/head'
-// import {useTheme} from "next-themes";
-import Breadcrumbs from '../components/Breadcrumbs'
-import Footer from '../components/Footer'
 import ErrorBoundary from '../components/debug/ErrorBound'
 import Error from 'components/debug/ErrorTip'
 import HelpAside from '../components/HelpAside'
-// 给普通用户访问的页面，基础layout
-export default function BasicLayout(
+
+export default function ExtLayout(
   props: PropsWithChildren<{
-    nav?: boolean
-    footer?: boolean
     title?: string
     description?: string
-    full?: boolean
   }>
 ) {
-  // const { resolvedTheme, setTheme } = useTheme();
-
-  const { children, nav = true, footer = true, ...customMeta } = props
+  const { children, ...customMeta } = props
 
   const meta = {
     title: customMeta.title || '小而美的网页标记工具 PAGENOTE',
-    description: customMeta.description || `一页一记 pagenote，开发者中心.`,
+    description: customMeta.description || `一页一记 pagenote.`,
     type: 'website',
   }
 
@@ -42,14 +34,8 @@ export default function BasicLayout(
           type="image/x-icon"
         />
       </Head>
-      {nav && (
-        <nav>
-          <Breadcrumbs />
-        </nav>
-      )}
-      <main className="mx-auto relative min-h-fill">{children}</main>
+      {children}
       <HelpAside />
-      {footer && <Footer />}
     </ErrorBoundary>
   )
 }

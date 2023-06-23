@@ -1,28 +1,51 @@
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { WebPage } from '@pagenote/shared/lib/@types/data'
 import extApi from '@pagenote/shared/lib/pagenote-api'
+import { getPageDetail } from '../service/ext'
+import { useEffect } from 'react'
 
-export default function useWebpage(key: string) {
-  const { data, isLoading, mutate } = useSWR<WebPage | null>(
-    '/detail/' + key,
+export default function useWebpage(key: string = '') {
+  const { cache } = useSWRConfig()
+  const swrKey = '/page/detail/' + key
+  const { data, isLoading, mutate } = useSWR<Partial<WebPage> | null>(
+    swrKey,
     fetchInfo
   )
+
+  useEffect(function () {
+    return function () {
+      cache.delete(swrKey)
+    }
+  }, [])
+
   function fetchInfo() {
     if (!key) {
       return Promise.resolve(null)
     }
-    return extApi.lightpage
-      .getLightPageDetail({
-        key: key,
-      })
-      .then(function (res) {
-        return res.data
-      })
+    return getPageDetail(key)
   }
 
   return {
     data,
     isLoading,
     mutate,
+    updateServer: function (updateData: Partial<WebPage>) {
+      // 缓存内立即更新，然后调用服务端更新，拉取最新
+      mutate({
+        ...data,
+        ...updateData,
+      })
+
+      extApi.page
+        .update({
+          data: updateData,
+          query: {
+            key: key,
+          },
+        })
+        .then(function (res) {
+          mutate()
+        })
+    },
   }
 }

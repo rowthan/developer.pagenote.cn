@@ -19,7 +19,7 @@ export default function SettingDetail(props: {
 
   return (
     <div className={''}>
-      <div className={'flex px-3 items-center py-2 mb-8'}>
+      <div className={'flex px-1 items-center py-2 mb-8'}>
         <aside
           onClick={back}
           className={

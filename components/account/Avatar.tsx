@@ -1,8 +1,9 @@
-import React, { type ReactNode, useState } from 'react'
+import React, { useState } from 'react'
 import UploadTrigger from '../image/UploadTrigger'
 import useUserInfo, { fetchUserInfo } from '../../hooks/useUserInfo'
 import { updateProfile, UpdateProfile } from '../../service'
-import { toast } from '../../utils/toast'
+import { toast } from 'utils/toast'
+import { IMAGE_STYLE } from 'const/image'
 
 export default function Avatar() {
   const [user, refresh] = useUserInfo()
@@ -41,7 +42,7 @@ export default function Avatar() {
       >
         <UploadTrigger
           onChange={(url) => {
-            onChange({ avatar: url + '?x-oss-process=style/avatar' })
+            onChange({ avatar: url + '?' + IMAGE_STYLE.AVATAR })
           }}
         >
           <div

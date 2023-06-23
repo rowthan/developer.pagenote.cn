@@ -4,18 +4,23 @@
 
 
 @layer components {
-  .loading-block {
-    @apply bg-gray-200 animate-pulse;
-    @apply delay-100;
-    // 间歇小于 100ms，不出loading动效，防止闪屏
-    animation-delay: 100ms;
-
+  @keyframes laoding {
+    0%{
+      @apply bg-gray-200
+    }
+    50%{
+      opacity: 0.5;
+    }
+    100%{
+      @apply bg-gray-200
+    }
+  }
+  .loading-block{
+    // @apply animate-pulse;
+    animation: laoding 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation-delay: 300ms;
     & > * {
       @apply invisible;
     }
-  }
-
-  .setting-line {
-
   }
 }
