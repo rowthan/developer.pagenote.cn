@@ -15,7 +15,7 @@ export default function ImgFallback(props: Props) {
     return src || DEFAULT_IMG
   })
   const [loading, setLoading] = useState(true)
-  
+
   function onLoadError() {
     if (fallback) {
       setImgSrc(fallback || DEFAULT_IMG)
@@ -31,10 +31,11 @@ export default function ImgFallback(props: Props) {
     // eslint-disable-next-line @next/next/no-img-element
     <img
       {...props}
-      alt={props.alt || '加载中'}
+      alt={props.alt || (loading ? '加载中' : '')}
       onError={onLoadError}
       onLoad={onLoad}
       onLoadedData={onLoad}
+      onAbort={onLoad}
       className={`${props.className} ${loading ? 'loading-block' : ''}`}
       src={imgSrc}
     />

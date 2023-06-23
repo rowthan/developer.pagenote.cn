@@ -16,7 +16,7 @@ export default function Footer() {
             <h2>PAGENOTE</h2>
           </Link>
           <Link href="/">
-            <Image
+            <img
               src="/images/light-64.png"
               width={24}
               height={24}
@@ -46,14 +46,12 @@ export default function Footer() {
             </div>
             <a
               href="https://space.bilibili.com/2089824747"
-              target="_blank"
               aria-label={'哔哩哔哩 一用书生'}
             >
               <BiliSvg width={24} height={24} />
             </a>
             <a
               href="https://github.com/rowthan/developer.pagenote.cn"
-              target="_blank"
               aria-label={'GitHub rowthan'}
             >
               <GithubSvg width={24} height={24} />
