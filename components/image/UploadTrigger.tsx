@@ -40,7 +40,7 @@ export default function UploadTrigger(props: {
           if (!blob) {
             return
           }
-          const fileName = md5(`${cloud_space}${Date.now()}`) + '.jpeg'
+          const fileName = md5(`${Date.now()}`) + '.jpeg'
           client
             .put(
               `${cloud_space}/${fileName}`,

@@ -35,6 +35,10 @@ module.exports = {
       use: ['@svgr/webpack'],
     }) // 针对 SVG 的处理规则
 
+    config.externals.push({
+      'ali-oss': 'umd OSS',
+    })
+
     return config
   },
 }

@@ -1,5 +1,10 @@
-import OSS from 'ali-oss'
 import { fetchUploadToken } from '../hooks/useOssKey'
+import type OSS from 'ali-oss'
+
+function getClient(config: OssCloudConfig): OSS {
+  // @ts-ignore
+  return new window.OSS(config)
+}
 
 export function getPublicUploadClient() {
   return fetchUploadToken('public').then(function (data) {
@@ -9,7 +14,7 @@ export function getPublicUploadClient() {
         cloud_space: '',
       }
     }
-    const client = new OSS(data.key)
+    const client = getClient(data.key)
     return {
       client: client,
       cloud_space: data.cloud_space,
@@ -28,7 +33,7 @@ export type OssCloudConfig = {
 export function checkCloudPut(
   config: OssCloudConfig
 ): Promise<{ name?: string; content?: string }> {
-  const client = new OSS(config)
+  const client = getClient(config)
 
   const CheckFile = {
     filename: '.connect-text.txt',

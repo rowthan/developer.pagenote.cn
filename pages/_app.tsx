@@ -16,6 +16,7 @@ function ClientApp({ Component, pageProps }: AppProps) {
       </Head>
       <Component {...pageProps} />
       <Script src={`${basePath}/components.js`} />
+      <Script src={`${basePath}/lib/aliyun-oss-sdk.min.js`} />
       <Analytics />
     </StrictMode>
   )
