@@ -2,7 +2,6 @@ import BasicLayout from 'layouts/BasicLayout'
 import React, { useEffect, useState } from 'react'
 import CurrentTab from 'components/popup/CurrentTab'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import CheckVersion from 'components/check/CheckVersion'
 import NavTabs from 'components/popup/NavTabs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import useWhoAmi from 'hooks/useWhoAmi'
@@ -54,45 +53,43 @@ export default function PopupPage() {
         }
       >
         <Router>
-            <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-            <div
-              className={
-                'w-basic h-basic relative overflow-hidden overflow-y-auto '
-              }
-            >
-              <Routes>
-                <Route index element={<CurrentTab />} />
-                <Route path={'/tab'} element={<CurrentTab />} />
-                <Route
-                  path="/clipboard"
-                  element={
-                    <Suspense>
-                      {' '}
-                      <ClipboardList />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/search"
-                  element={
-                    <Suspense>
-                      <Search keyword={keyword} />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/setting/*"
-                  element={
-                    <Suspense>
-                      {' '}
-                      <Setting />
-                    </Suspense>
-                  }
-                />
-                <Route path="*" element={<CurrentTab />} />
-              </Routes>
-            </div>
-          </Router>
+          <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+          <div
+            className={
+              'w-basic h-basic relative overflow-hidden overflow-y-auto '
+            }
+          >
+            <Routes>
+              <Route index element={<CurrentTab />} />
+              <Route path={'/tab'} element={<CurrentTab />} />
+              <Route
+                path="/clipboard"
+                element={
+                  <Suspense>
+                    <ClipboardList />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Suspense>
+                    <Search keyword={keyword} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/setting/*"
+                element={
+                  <Suspense>
+                    <Setting />
+                  </Suspense>
+                }
+              />
+              <Route path="*" element={<CurrentTab />} />
+            </Routes>
+          </div>
+        </Router>
       </div>
     </BasicLayout>
   )
