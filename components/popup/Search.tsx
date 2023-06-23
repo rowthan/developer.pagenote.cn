@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { WebPage } from '@pagenote/shared/lib/@types/data'
-import extApi from '@pagenote/shared/lib/pagenote-api'
 import { useLazyEffect } from '../../hooks/userLazyEffect'
-import { searchInExt } from 'service/ext'
+import { batchExportByPageKeys, searchInExt } from 'service/ext'
 import WebPageItem from '../webpage/WebPageItem'
 import Modal from '../Modal'
 
@@ -48,54 +47,8 @@ export default function Search(props: { keyword: string }) {
     setSelected([...selected])
   }
 
-  // async function batchDeleted() {
-  //     const pages = selected.map(function (id) {
-  //         return {
-  //             key: id,
-  //             deleted: true
-  //         }
-  //     })
-  //     await extApi.lightpage.updatePages(pages);
-  //
-  //     const lights = selected.map(function (id) {
-  //         return {
-  //             pageKey: id,
-  //             deleted: true
-  //         }
-  //     })
-  //     await extApi.lightpage.updateLights(lights);
-  //
-  //     const htmls = selected.map(function (id) {
-  //         return {
-  //             relatedPageKey: id,
-  //             deleted: true
-  //         }
-  //     })
-  //     // await extApi.localResource.update(htmls);
-  // }
-
   function batchExport() {
-    const pageKey = {
-      $in: selected,
-    }
-    extApi.lightpage
-      .exportBackup({
-        htmlFilter: {
-          relatedPageKey: pageKey,
-        },
-        pageFilter: {
-          key: pageKey,
-        },
-        lightFilter: {
-          pageKey: pageKey,
-        },
-        snapshotFilter: {
-          pageKey: pageKey,
-        },
-      })
-      .then(function (res) {
-        console.log(res, '备份结果')
-      })
+    batchExportByPageKeys(selected)
   }
 
   useLazyEffect(search, [keyword], 400)
@@ -188,12 +141,12 @@ export default function Search(props: { keyword: string }) {
             及关联的标记、截图、离线HTML等相关信息
           </h2>
           <div className="my-2 text-right">
-            {/*<button onClick={batchDeleted} className={'btn btn-sm btn-error'}>删除</button>*/}
+            {/*<button onClick={batchUpdate} className={'btn btn-sm btn-error'}>删除</button>*/}
             <button
               onClick={batchExport}
               className={'btn btn-sm btn-primary ml-2'}
             >
-              备份备份
+              备份
             </button>
           </div>
         </>

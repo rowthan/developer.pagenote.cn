@@ -310,6 +310,7 @@ export type PageGroup = {
   groupName: string
   groupCnt: number
 }
+
 export function groupPages(groupType: keyof WebPage) {
   return extApi.page
     .group({
@@ -325,5 +326,51 @@ export function groupPages(groupType: keyof WebPage) {
         })
       }
       return group
+    })
+}
+
+export function batchExportByPageKeys(pageKeys: string[]) {
+  const pageKey = {
+    $in: pageKeys,
+  }
+  return extApi.lightpage.exportBackup({
+    htmlFilter: {
+      relatedPageKey: pageKey,
+    },
+    pageFilter: {
+      key: pageKey,
+    },
+    lightFilter: {
+      pageKey: pageKey,
+    },
+    snapshotFilter: {
+      pageKey: pageKey,
+    },
+  })
+}
+
+export async function batchUpdate(
+  pageKeys: string[],
+  update: { deleted: boolean }
+) {
+  // todo 删除 page 关联的其他数据，如 light 等
+  const result = await extApi.page.update({
+    query: {
+      key: {
+        $in: pageKeys,
+      },
+    },
+    data: update,
+  })
+  return result
+}
+
+export function getPageDetail(key: string) {
+  return extApi.lightpage
+    .getLightPageDetail({
+      key: key,
+    })
+    .then(function (res) {
+      return res.data
     })
 }
