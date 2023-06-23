@@ -129,7 +129,7 @@ export default function BackupList() {
       })
   }
 
-  function doBackup(backupId: string) {
+  function selectBackup(backupId: string) {
     setLoading(true)
     getBackupDetail(backupId).then(async function (res) {
       if (res) {
@@ -231,7 +231,7 @@ export default function BackupList() {
                           <button
                             disabled={loading}
                             onClick={() => {
-                              doBackup(item.backupId as string)
+                              selectBackup(item.backupId as string)
                             }}
                             className="m-2 btn btn-sm btn-success"
                           >

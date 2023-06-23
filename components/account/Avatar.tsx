@@ -1,9 +1,9 @@
-import React, { type ReactNode, useState } from 'react'
+import React, { useState } from 'react'
 import UploadTrigger from '../image/UploadTrigger'
 import useUserInfo, { fetchUserInfo } from '../../hooks/useUserInfo'
 import { updateProfile, UpdateProfile } from '../../service'
-import { toast } from '../../utils/toast'
-import { IMAGE_STYLE } from '../../const/image'
+import { toast } from 'utils/toast'
+import { IMAGE_STYLE } from 'const/image'
 
 export default function Avatar() {
   const [user, refresh] = useUserInfo()

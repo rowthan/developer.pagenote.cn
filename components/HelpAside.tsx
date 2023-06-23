@@ -1,4 +1,4 @@
-import { ReactComponentElement, type ReactNode } from 'react'
+import { ReactComponentElement, type ReactNode, useState } from 'react'
 import QuestionSvg from '../assets/svg/question.svg'
 import RateSvg from '../assets/svg/pingfen.svg'
 import useWhoAmi from '../hooks/useWhoAmi'
@@ -7,6 +7,7 @@ import HelpSvg from '../assets/svg/bangzhu.svg'
 import SettingSvg from '../assets/svg/setting.svg'
 import ShortCutInfo from './ShortCutInfo'
 import { basePath } from '../const/env'
+import Modal from './Modal'
 
 interface Props {
   children?: ReactNode
@@ -16,6 +17,7 @@ export default function HelpAside(props: Props) {
   const { children } = props
   const [whoAmi] = useWhoAmi()
   const { pathname } = useRouter()
+  const [showShortcut, setShortcut] = useState(false)
 
   const asideList: {
     label: string
@@ -77,23 +79,23 @@ export default function HelpAside(props: Props) {
                 </a>
               </li>
             ))}
-            <li className={'hover:bg-accent py-1 px-4'}>
-              <label htmlFor="shortcut-modal">
-                <a className={' flex items-center w-full text-base-100'}>
-                  <RateSvg className={'fill-current inline'} />
-                  <span>快捷键</span>
-                </a>
-              </label>
+            <li
+              className={'hover:bg-accent py-1 px-4'}
+              onClick={() => {
+                setShortcut(true)
+              }}
+            >
+              <a className={' flex items-center w-full text-base-100'}>
+                <RateSvg className={'fill-current inline'} />
+                <span>快捷键</span>
+              </a>
             </li>
           </ul>
         </div>
       </aside>
-      <input type="checkbox" id="shortcut-modal" className="modal-toggle" />
-      <label htmlFor="shortcut-modal" className="modal cursor-pointer">
-        <label className="modal-box relative" htmlFor="">
-          <ShortCutInfo />
-        </label>
-      </label>
+      <Modal open={showShortcut} toggleOpen={setShortcut}>
+        <ShortCutInfo />
+      </Modal>
     </div>
   )
 }
