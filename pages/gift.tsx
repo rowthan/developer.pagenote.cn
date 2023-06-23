@@ -51,7 +51,7 @@ export default function Gift(props: Props) {
   const title = isLoading
     ? '正在拉取福利信息'
     : (gift ? gift.giftName : '') || '没有找到福利信息'
-  const available = !isLoading && !!gift?.giftName && !gift.received
+  const available = !gift?.received
   const bg =
     gift?.image ||
     'https://pagenote-public.oss-cn-beijing.aliyuncs.com/_static/abstract-gift-card-1.png'
