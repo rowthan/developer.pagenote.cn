@@ -22,7 +22,7 @@ export default function useVersionValid(
     function () {
       setValid({
         installed:
-          window.location.protocol.indexOf('http') === -1 || !!whoAmi?.version,
+           !!whoAmi?.version || window.location.protocol.indexOf('http') === -1,
         valid: compare(whoAmi?.version || '0.0.0', requiredVersion, '>='),
       })
     },

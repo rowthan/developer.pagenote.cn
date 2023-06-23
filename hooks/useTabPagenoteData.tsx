@@ -1,30 +1,13 @@
-import { WebPage } from "@pagenote/shared/lib/@types/data";
-import useCurrentTab from "./useCurrentTab";
-import extApi from "@pagenote/shared/lib/pagenote-api";
-import {useEffect, useState} from "react";
+import { WebPage } from '@pagenote/shared/lib/@types/data'
+import useCurrentTab from './useCurrentTab'
+import useWebpage from './useWebpage'
 
-type TabState = {
-    connected: false,
-    active: false,
-    enabledCopy: false,
-}
-export default function useTabPagenoteData():[WebPage|undefined,()=>void] {
-    const {tab} = useCurrentTab();
-    const [data,setData] = useState<WebPage|undefined>()
+export default function useTabPagenoteData(): [
+  Partial<WebPage> | null | undefined,
+  () => void
+] {
+  const { tab } = useCurrentTab()
+  const { data, mutate } = useWebpage(tab?.url || '')
 
-    useEffect(function () {
-        fetchWebpage();
-    },[tab])
-
-    function fetchWebpage() {
-        if(tab?.url){
-            extApi.lightpage.getLightPageDetail({
-                key: tab?.url
-            }).then(function (res) {
-                setData(res.data)
-            })
-        }
-    }
-
-    return [data,fetchWebpage]
+  return [data, mutate]
 }
