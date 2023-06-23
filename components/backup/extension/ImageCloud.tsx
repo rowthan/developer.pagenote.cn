@@ -103,7 +103,7 @@ export default function ImageCloud(props: Props) {
               </div>
               <div className={'p-5 flex flex-row-reverse'}>
                 <a
-                  href="https://developer.pagenote.cn/privacy#51a07bcd45dc4e03be0b8301bf5a7bed"
+                  href="https://pagenote.cn/privacy#51a07bcd45dc4e03be0b8301bf5a7bed"
                   target={'_blank'}
                   className={'text-xs link-primary link'}
                 >

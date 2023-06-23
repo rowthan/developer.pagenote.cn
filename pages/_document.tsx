@@ -10,7 +10,7 @@ export default function Document() {
         />
         <link
           rel="shortcut icon"
-          href="https://developer.pagenote.cn/favicon.ico"
+          href="https://pagenote.cn/favicon.ico"
           type="image/x-icon"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

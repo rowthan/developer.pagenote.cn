@@ -8,7 +8,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const DEFAULT_IMG = 'https://developer.pagenote.cn/images/light-128.png'
+const DEFAULT_IMG = 'https://pagenote.cn/images/light-128.png'
 export default function ImgFallback(props: Props) {
   const { src, fallback } = props
   const [imgSrc, setImgSrc] = useState(function () {

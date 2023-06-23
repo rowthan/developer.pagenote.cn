@@ -25,7 +25,7 @@ export default function HelpAside(props: Props) {
   }[] = [
     {
       label: '帮助',
-      link: 'https://developer.pagenote.cn/question',
+      link: 'https://pagenote.cn/question',
       icon: <HelpSvg className={'fill-current inline'} />,
     },
   ]
@@ -39,7 +39,7 @@ export default function HelpAside(props: Props) {
   } else {
     asideList.push({
       label: '设置',
-      link: 'https://developer.pagenote.cn//setting',
+      link: 'https://pagenote.cn/setting',
       icon: <SettingSvg className={'fill-current inline'} />,
       target: '_self',
     })

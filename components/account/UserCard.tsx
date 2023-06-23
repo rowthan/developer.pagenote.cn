@@ -35,7 +35,7 @@ export default function UserCard(props: Props) {
               {editable ? (
                 <Avatar />
               ) : (
-                <a target="_blank" href="https://developer.pagenote.cn/account">
+                <a target="_blank" href="https://pagenote.cn/account">
                   <img
                     src={
                       data?.profile?.avatar || 'https://pagenote.cn/favicon.ico'

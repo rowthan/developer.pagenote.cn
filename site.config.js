@@ -1,7 +1,7 @@
 const isDev = process.env.NODE_ENV === 'development'
 
 const LOCAL_HOST = 'http://localhost:3000'
-const PRODUCT_HOST = 'https://developer.pagenote.cn'
+const PRODUCT_HOST = 'https://pagenote.cn'
 const AUTH_PAGE_HOST = isDev ? LOCAL_HOST : PRODUCT_HOST
 
 module.exports = {
