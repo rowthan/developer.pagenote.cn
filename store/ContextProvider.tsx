@@ -1,7 +1,14 @@
 import { createContext } from 'use-context-selector'
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { WebPage } from '@pagenote/shared/lib/@types/data'
 import { Query } from '@pagenote/shared/lib/@types/database'
+import localforage from 'localforage'
 
 type State = {
   // 分组方式
@@ -12,28 +19,39 @@ type State = {
   webpageFilter?: Query<WebPage>
   // 当前选中页面
   selectedPageKey?: string
+
+  // 批量选中页面
+  batchSelected?: Set<string>
 }
 
-const initState: State = {
+const initState: Required<State> = {
   groupType: 'categories',
-  groupFilterName: '',
-  selectedPageKey: '',
+  webpageFilter: {},
+  groupFilterName: '所有',
+  selectedPageKey: '', //https://pagneote.cn/release',
+  batchSelected: new Set(),
 }
 
 export const context = createContext<[State, Dispatch<SetStateAction<State>>]>(
   null as any
 )
 
+const STORE_KEY = 'pagenote_manage_state'
 const ContextProvider = (props: { children: React.ReactElement }) => {
-  const [innerState, setInnerState] = useState(function () {
-    const object = JSON.parse(
-      localStorage.getItem('pageManageState') || JSON.stringify(initState)
-    )
-    return {
-      ...initState,
-      ...object,
-    }
-  })
+  const [innerState, setInnerState] = useState<State>(initState)
+
+  useEffect(function () {
+    // 从历史缓存中恢复现场
+    localforage.getItem(STORE_KEY, function (error, res) {
+      if (res) {
+        const result = {
+          ...innerState,
+          ...res,
+        }
+        setInnerState(result)
+      }
+    })
+  }, [])
 
   // @ts-ignore
   const updateState: Dispatch<SetStateAction<State>> = useCallback(
@@ -42,8 +60,10 @@ const ContextProvider = (props: { children: React.ReactElement }) => {
         ...innerState,
         ...state,
       }
+      console.log(data.selectedPageKey, innerState.selectedPageKey)
       setInnerState(data)
-      localStorage.setItem('pageManageState', JSON.stringify(data))
+      // 保存现场
+      localforage.setItem(STORE_KEY, data)
     },
     [innerState]
   )

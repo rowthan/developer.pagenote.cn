@@ -30,6 +30,7 @@
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.6",
     "dexie": "^3.2.3",
+    "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "next": "latest",
