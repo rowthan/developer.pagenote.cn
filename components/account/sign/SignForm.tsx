@@ -23,6 +23,7 @@ interface FormData {
   publicText: string
 }
 
+const LAST_CACHE_EMAIL_KEY = 'last_signin_email'
 export default function SignForm(props: { children?: ReactElement }) {
   const [state, setState] = useState<boolean>(false)
   const [user, refresh, update] = useUserInfo()
@@ -54,6 +55,7 @@ export default function SignForm(props: { children?: ReactElement }) {
     const newPublicText = `signin_request_${dayjs(new Date()).format(
       'YYYY-MM-DD-HH'
     )}_${whoAmI?.did}`
+    localStorage.setItem(LAST_CACHE_EMAIL_KEY, `${email || uid || ''}`)
     requestSignin(
       {
         uid: uid,
@@ -127,9 +129,8 @@ export default function SignForm(props: { children?: ReactElement }) {
   useEffect(function () {
     const search = new URLSearchParams(window.location.search)
     const uid = search.get('uid')
-    if (uid) {
-      setValue('emailOrUid', uid)
-    }
+    const lastEmail = localStorage.getItem(LAST_CACHE_EMAIL_KEY)
+    setValue('emailOrUid', uid || lastEmail || '')
   }, [])
 
   return (
