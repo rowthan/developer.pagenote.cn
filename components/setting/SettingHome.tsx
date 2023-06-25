@@ -19,10 +19,12 @@ export default function SettingHome() {
   }
 
   return (
-    <div className={'shadow rounded-lg'}>
-      <BasicSettingLine label={'画笔设置'} path={'/setting/light'} />
+    <div className={''}>
+      <div>
+        <BasicSettingLine label={'画笔设置'} path={'/setting/light'} />
 
-      <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
+        <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
+      </div>
 
       {/*<BasicSettingLine*/}
       {/*  label={'插件版本'}*/}

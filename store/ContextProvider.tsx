@@ -41,6 +41,7 @@ const ContextProvider = (props: { children: React.ReactElement }) => {
   const [innerState, setInnerState] = useState<State>(initState)
 
   useEffect(function () {
+    console.log('init state')
     // 从历史缓存中恢复现场
     localforage.getItem(STORE_KEY, function (error, res) {
       if (res) {
@@ -60,7 +61,11 @@ const ContextProvider = (props: { children: React.ReactElement }) => {
         ...innerState,
         ...state,
       }
-      console.log(data.selectedPageKey, innerState.selectedPageKey)
+      console.log(
+        data.selectedPageKey,
+        innerState.selectedPageKey,
+        'update state'
+      )
       setInnerState(data)
       // 保存现场
       localforage.setItem(STORE_KEY, data)

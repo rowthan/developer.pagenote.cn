@@ -8,7 +8,8 @@ export default function Pagenote() {
   useEffect(
     function () {
       if (whoAmI?.origin) {
-        window.location.href = whoAmI.origin + '/pagenote.html'
+        window.location.href =
+          whoAmI.origin + '/pagenote.html' + window.location.hash
       }
     },
     [whoAmI]
