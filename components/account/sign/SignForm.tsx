@@ -11,6 +11,7 @@ import dayjs from 'dayjs'
 import useWhoAmi from '../../../hooks/useWhoAmi'
 import { AwesomeButton } from 'react-awesome-button'
 import 'react-awesome-button/dist/styles.css'
+import CheckVersion from '../../check/CheckVersion'
 
 enum SubmitState {
   unset = 0,
@@ -177,9 +178,18 @@ export default function SignForm(props: { children?: ReactElement }) {
       )}
 
       <div>
+        <CheckVersion
+          requireVersion={'0.26.0'}
+          fallback={
+            <a href={'/release'} className={'link link-primary'}>
+              请升级后登录
+            </a>
+          }
+        >
         <AwesomeButton disabled={state} type="primary" size="medium">
           {publicText ? '验证' : '请求登录/注册'}
         </AwesomeButton>
+        </CheckVersion>
       </div>
 
       <div className={'text-error text-sm'}>{tip}</div>

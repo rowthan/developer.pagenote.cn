@@ -1,4 +1,5 @@
 import { GITHUB_AUTH_CALLBACK, NOTION_AUTH_CALLBACK } from 'site.config'
+import useVersionValid from '../../hooks/useVersionValid'
 
 const label = {
   signin: '登录',
@@ -23,16 +24,19 @@ export default function AuthBottoms(props: {
   const actionName = label[type]
   const isSignin = type === 'signin'
   const isSignup = type === 'signup'
+  const { valid } = useVersionValid('0.26.4')
+
   return (
     <div>
       <>
         {AUTH_LIST.map((value, index) => (
           <button
+            disabled={!valid}
             key={index}
             onClick={() => {
               window.location.href = value.link
             }}
-            className="bg-color-50 text-color-100 border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300"
+            className="btn bg-color-50 text-color-100 border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300"
           >
             {value.label}
           </button>

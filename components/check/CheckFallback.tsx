@@ -13,7 +13,6 @@ export default function CheckFallback(props: Props) {
       {/*    <img src="https://placeimg.com/400/225/arch" alt="Shoes" className="rounded-xl" />*/}
       {/*</figure>*/}
       <div className="card-body items-center text-center">
-        <h2 className="card-title">当前浏览器未安装 PAGENOTE</h2>
         <p>未检测到 PAGENOTE，或版本过低</p>
         <div className="card-actions">
           <button className="btn btn-primary">

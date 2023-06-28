@@ -72,7 +72,7 @@ export default function DisableButton() {
     )
   }
 
-  const disableDomain = `${new URL(url).origin}/*`
+  const disableDomain = url ? `${new URL(url).origin}/*` : ''
   return (
     <div className={'flex justify-end'}>
       <label
