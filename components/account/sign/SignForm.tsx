@@ -27,10 +27,14 @@ interface FormData {
 }
 
 const LAST_CACHE_EMAIL_KEY = 'last_signin_email'
+const TOKEN_DURATION = 60 * 1000 * 10
 export default function SignForm(props: { children?: ReactElement }) {
   const [state, setState] = useState<boolean>(false)
   const [user, refresh, update] = useUserInfo()
-  const [publicText, setPublicText] = useState('')
+  const [tokenInfo, setTokenInfo] = useState({
+    publicText: '',
+    expiredAt: Date.now() + TOKEN_DURATION,
+  })
   const [tip, setTip] = useState('')
   const [whoAmI] = useWhoAmi()
   const {
@@ -43,7 +47,10 @@ export default function SignForm(props: { children?: ReactElement }) {
   const { valid } = useVersionValid('0.26.4')
 
   function sendValidateText() {
-    setPublicText('')
+    setTokenInfo({
+      publicText: '',
+      expiredAt: Date.now() + TOKEN_DURATION,
+    })
     setTip('')
     setValue('validateText', '')
     let email = ''
@@ -69,7 +76,10 @@ export default function SignForm(props: { children?: ReactElement }) {
     )
       .then(function (res) {
         if (res?.success) {
-          setPublicText(res.data?.sendSignInEmail?.publicText || '')
+          setTokenInfo({
+            publicText: res.data?.sendSignInEmail?.publicText || '',
+            expiredAt: Date.now() + TOKEN_DURATION,
+          })
         } else {
           setTip(res.error || '请求失败，请重试')
         }
@@ -85,7 +95,7 @@ export default function SignForm(props: { children?: ReactElement }) {
     setState(true)
     confirmValidate(
       {
-        publicText: publicText,
+        publicText: tokenInfo.publicText,
         validateText: validateText,
       },
       valid
@@ -93,10 +103,10 @@ export default function SignForm(props: { children?: ReactElement }) {
       console.log(res, '确认登录凭证')
       if (res?.data?.confirmValidate?.validateStatus) {
         setState(true)
-        console.log('获取 身份 token', publicText)
+        console.log('获取 身份 token', tokenInfo)
         doSignInByValid(
           {
-            publicText: publicText,
+            publicText: tokenInfo.publicText,
           },
           valid
         )
@@ -121,13 +131,13 @@ export default function SignForm(props: { children?: ReactElement }) {
   }
 
   const onSubmit = useCallback(() => {
-    console.log(publicText, 'submit', getValues())
-    if (!publicText) {
+    console.log(tokenInfo, 'submit', getValues())
+    if (!tokenInfo.publicText || tokenInfo.expiredAt < Date.now()) {
       sendValidateText()
     } else {
       doSignin()
     }
-  }, [publicText])
+  }, [tokenInfo])
 
   useEffect(function () {
     const search = new URLSearchParams(window.location.search)
@@ -136,6 +146,9 @@ export default function SignForm(props: { children?: ReactElement }) {
     setValue('emailOrUid', uid || lastEmail || '')
   }, [])
 
+  const publicTextValid = !!(
+    tokenInfo.publicText && tokenInfo.expiredAt > Date.now()
+  )
   return (
     <form
       className="flex flex-col gap-4 items-center"
@@ -147,13 +160,15 @@ export default function SignForm(props: { children?: ReactElement }) {
         {...register('emailOrUid', { required: true })}
         placeholder="你的 Email 或用户 ID"
       />
-      {publicText && (
+      {publicTextValid && (
         <>
           <div>
             <div>
               <div>
                 登录请求
-                <span className={'text-xs text-gray-300'}>({publicText})</span>
+                <span className={'text-xs text-gray-300'}>
+                  ({tokenInfo.publicText})
+                </span>
               </div>
               <div>
                 <span>凭证已发送至你的邮箱，请查收</span>
@@ -182,13 +197,13 @@ export default function SignForm(props: { children?: ReactElement }) {
           requireVersion={'0.26.0'}
           fallback={
             <a href={'/release'} className={'link link-primary'}>
-              请升级后登录
+              请升级插件后登录
             </a>
           }
         >
-        <AwesomeButton disabled={state} type="primary" size="medium">
-          {publicText ? '验证' : '请求登录/注册'}
-        </AwesomeButton>
+          <AwesomeButton disabled={state} type="primary" size="medium">
+            {publicTextValid ? '验证' : '请求登录/注册'}
+          </AwesomeButton>
         </CheckVersion>
       </div>
 

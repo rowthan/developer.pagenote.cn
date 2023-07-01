@@ -10,7 +10,7 @@ export interface VersionValid {
 export default function useVersionValid(
   requiredVersion = '0.0.1'
 ): VersionValid {
-  const [whoAmi] = useWhoAmi()
+  const [whoAmi] = useWhoAmi('0.26.5')
   const [validInfo, setValid] = useState<VersionValid>(function () {
     return {
       installed: !!whoAmi?.version,
@@ -22,7 +22,7 @@ export default function useVersionValid(
     function () {
       setValid({
         installed:
-           !!whoAmi?.version || window.location.protocol.indexOf('http') === -1,
+          !!whoAmi?.version || window.location.protocol.indexOf('http') === -1,
         valid: compare(whoAmi?.version || '0.0.0', requiredVersion, '>='),
       })
     },
