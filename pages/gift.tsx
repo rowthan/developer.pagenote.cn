@@ -64,7 +64,6 @@ export default function Gift(props: Props) {
   if (gift?.received) {
     label = '已领取'
   }
-  console.log(gift, 'gift')
   return (
     <div>
       <div className={'mt-10'}>
