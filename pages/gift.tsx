@@ -98,7 +98,10 @@ export default function Gift(props: Props) {
                   <div className={`flex flex-row justify-between relative`}>
                     <div className="flex flex-col datos_col">
                       <div className="popularity">{gift?.bookDays}日VIP</div>
-                      <div className="text-sm text-gray-400">赞助者加倍</div>
+                      {
+                        gift?.paidRate === 2 &&
+                        <div className="text-sm text-gray-400">赞助者加倍</div>
+                      }
                     </div>
                     {/*<div className="flex flex-col datos_col">*/}
                     {/*  <div className="release">*/}
