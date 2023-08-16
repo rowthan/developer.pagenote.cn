@@ -9,7 +9,7 @@ export async function getNotionDocDetail(id: string) {
     if (result.recordMap) {
       return {
         props: result,
-        revalidate: isDev ? 24 : 60 * 60, // 单位 秒
+        revalidate: isDev ? 60 : 2 * 60 * 60, // 单位 秒
       }
     } else {
       return {
@@ -42,12 +42,13 @@ export default async function computeStaticPaths() {
     console.error(e, 'getStaticPaths 请检查 /api/doc')
   }
 
+  console.log(pages.length, '待静态化页面数量')
   return {
     paths: pages
       .sort(function (item) {
         return item.path ? -1 : 1 // 优先静态化定义 path 的页面
       })
-      .slice(0, isDev ? 5 : 100) // 最多静态化50个
+      .slice(0, isDev ? 5 : 50) // 最多静态化50个
       .map(function (item) {
         let paths = [DEFAULT_BASE_DOC_PATH, item.id] //[`/${DEFAULT_BASE_DOC_PATH}/${item.id}`]
         // 如果有自定义路径，解析后封装至数组

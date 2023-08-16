@@ -32,7 +32,6 @@ async function fetchDocByPath(path: string): Promise<string | null> {
   })
 
   for (let i = 0; i < results.length; i++) {
-    console.log('search in table', i)
     // @ts-ignore
     const { id, properties } = results[i]
     if (!properties.path) {
@@ -137,15 +136,19 @@ export default async function handler(
   } else {
     const result = await fetchAllDocs()
     return res.status(200).json({
-      pages: result.results.map(function (item) {
-        const path = get(item, 'properties.path.url')
-        return {
-          id: item.id,
-          title: get(item, 'properties.title.title.0.plain_text') || null,
-          path: path,
-          // ...item,
-        }
-      }),
+      pages: result.results
+        .map(function (item) {
+          const path = get(item, 'properties.path.url')
+          return {
+            id: item.id,
+            title: get(item, 'properties.title.title.0.plain_text') || null,
+            path: path,
+            // ...item,
+          }
+        })
+        .sort(function (pre, next) {
+          return pre.title ? -1 : 1
+        }),
     })
   }
 }
