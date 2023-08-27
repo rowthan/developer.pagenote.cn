@@ -1,10 +1,8 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { onVisibilityChange } from '@pagenote/shared/lib/utils/document'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import { toast } from '../../utils/toast'
-import { Pagination } from '@pagenote/shared/lib/@types/database'
 import TipSvg from 'assets/svg/info.svg'
 import BasicSettingLine from '../setting/BasicSettingLine'
 import useSettings from '../../hooks/useSettings'
@@ -14,11 +12,6 @@ import Box = box.Box
 export default function ClipboardList() {
   const [list, setList] = useState<Box[]>([])
   const { data: setting, update: updateSetting } = useSettings()
-  const [pagination, setPagination] = useState<Pagination>({
-    limit: 100,
-    total: 0,
-    page: 0,
-  })
 
   const [selected, setSelected] = useState<string[]>([])
 
@@ -41,12 +34,18 @@ export default function ClipboardList() {
   }
 
   function batchDeleted() {
-    extApi.box.remove(selected).then(function (res) {
-      loadBoxList()
-      if (res.success) {
-        setSelected([])
-      }
-    })
+    extApi.table
+      .remove({
+        db: 'boxroom',
+        table: 'clipboard',
+        params: selected,
+      })
+      .then(function (res) {
+        loadBoxList()
+        if (res.success) {
+          setSelected([])
+        }
+      })
   }
 
   function batchCopy() {
@@ -60,31 +59,37 @@ export default function ClipboardList() {
   }
 
   function loadBoxList() {
-    extApi.box
+    extApi.table
       .query({
-        sort: {
-          createAt: -1,
+        db: 'boxroom',
+        table: 'clipboard',
+        params: {
+          sort: {
+            createAt: -1,
+          },
+          query: {},
+          skip: 0,
+          limit: 100,
         },
-        pageSize: 100,
-        page: 0,
-        limit: 100,
       })
       .then((res) => {
+        console.log(res)
         if (res.success) {
           setList((res.data.list || []) as Box[])
-          setPagination({
-            limit: pagination.limit,
-            page: pagination.page,
-            total: res.data.total,
-          })
         }
       })
   }
 
   function removeItem(key: string) {
-    extApi.box.remove([key]).then(function () {
-      loadBoxList()
-    })
+    extApi.table
+      .remove({
+        db: 'boxroom',
+        table: 'clipboard',
+        params: [key],
+      })
+      .then(function () {
+        loadBoxList()
+      })
   }
 
   function copyItem(text: string) {
@@ -93,17 +98,8 @@ export default function ClipboardList() {
   }
 
   useEffect(function () {
-    return onVisibilityChange(function () {
-      loadBoxList()
-    })
+    loadBoxList()
   }, [])
-
-  useEffect(
-    function () {
-      loadBoxList()
-    },
-    [pagination.page, pagination.limit]
-  )
 
   const selectedCnt = selected.length
   return (

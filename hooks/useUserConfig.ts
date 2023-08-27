@@ -5,7 +5,7 @@ import {
   configArrayToObject,
   objectToConfigArray,
 } from '@pagenote/shared/lib/pagenote-config/utils'
-import ConfigItem = config.ConfigItem
+import ConfigItem = config.ConfigValue
 import { get } from 'lodash'
 
 export default function useUserConfig<T extends ConfigItem>(

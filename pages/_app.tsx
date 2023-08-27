@@ -2,9 +2,9 @@ import '../styles/globals.scss'
 import type { AppProps } from 'next/app'
 import { Analytics } from '@vercel/analytics/react'
 import Script from 'next/script'
-import { basePath } from '../const/env'
+import { basePath } from 'const/env'
 import Head from 'next/head'
-import { TDK } from '../const/tdk'
+import { TDK } from 'const/tdk'
 import { StrictMode } from 'react'
 
 // 运行在客户端
