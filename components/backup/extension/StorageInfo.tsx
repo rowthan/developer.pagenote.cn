@@ -51,12 +51,6 @@ export default function StorageInfo(props: Props) {
       label={
         <span>
           <span>本机存储分析</span>
-          <span
-            className={'text-xs text-color-400 ml-1 tooltip tooltip-right'}
-            data-tip={whoAmI?.did}
-          >
-            {whoAmI?.did?.substring(0, 6)}
-          </span>
         </span>
       }
       right={
