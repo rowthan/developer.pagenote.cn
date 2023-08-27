@@ -24,16 +24,16 @@ export default function SettingHome() {
 
       <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
 
-      <BasicSettingLine
-        label={'插件版本'}
-        right={
-          <span className={'text-xs'}>
-            <a href="https://pagenote.cn/release" target={'_blank'}>
-              {whoAmI?.version || '-'}
-            </a>
-          </span>
-        }
-      />
+      {/*<BasicSettingLine*/}
+      {/*  label={'插件版本'}*/}
+      {/*  right={*/}
+      {/*    <span className={'text-xs'}>*/}
+      {/*      <a href="https://pagenote.cn/release" target={'_blank'}>*/}
+      {/*        {whoAmI?.version || '-'}*/}
+      {/*      </a>*/}
+      {/*    </span>*/}
+      {/*  }*/}
+      {/*/>*/}
     </div>
   )
 }

@@ -27,13 +27,18 @@ export default function ExtensionData() {
 
   return (
     <div className={'mb-4'}>
-      <StorageInfo />
-      <BasicSettingLine
-        className={isFirefox ? 'cursor-pointer' : ''}
-        label={'管理插件数据'}
-        onClick={onClick}
-        right={isFirefox ? undefined : <ImportAndExport />}
-      />
+      <div className={'text-sm text-color-200 mb-2'}>
+        你的数据在本机 ，不同设备之间不会相互同步。
+      </div>
+      <div>
+        <StorageInfo />
+        <BasicSettingLine
+          className={isFirefox ? 'cursor-pointer' : ''}
+          label={'管理插件数据'}
+          onClick={onClick}
+          right={isFirefox ? undefined : <ImportAndExport />}
+        />
+      </div>
     </div>
   )
 }

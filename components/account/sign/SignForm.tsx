@@ -9,6 +9,8 @@ import {
 import useVersionValid from '../../../hooks/useVersionValid'
 import dayjs from 'dayjs'
 import useWhoAmi from '../../../hooks/useWhoAmi'
+import { AwesomeButton } from 'react-awesome-button'
+import 'react-awesome-button/dist/styles.css'
 
 enum SubmitState {
   unset = 0,
@@ -175,15 +177,9 @@ export default function SignForm(props: { children?: ReactElement }) {
       )}
 
       <div>
-        <button
-          disabled={state}
-          className={`bg-[#002074] rounded-xl py-2 text-white max-w-full px-10  hover:scale-105 duration-300 btn btn-sm ${
-            state ? 'loading' : ''
-          }`}
-          type={'submit'}
-        >
+        <AwesomeButton disabled={state} type="primary" size="medium">
           {publicText ? '验证' : '请求登录/注册'}
-        </button>
+        </AwesomeButton>
       </div>
 
       <div className={'text-error text-sm'}>{tip}</div>

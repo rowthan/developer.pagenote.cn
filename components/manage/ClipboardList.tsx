@@ -198,21 +198,19 @@ export default function ClipboardList() {
           <div>
             <TipSvg width={32} height={32} />
             <div>
-              <div className="text-xs">
-                共计 {list.length} 条剪切板数据。保留30天内、最多100条数据。
-              </div>
+              <div className="text-xs">最多保留30天内、100条数据。</div>
             </div>
           </div>
-          <div className="flex-none">
-            <button className="btn btn-sm">
-              <a
-                target="_blank"
-                href="https://www.bilibili.com/video/BV1TR4y1Q7Yf"
-              >
-                了解Notion 同步方法
-              </a>
-            </button>
-          </div>
+          {/*<div className="flex-none">*/}
+          {/*  <button className="btn btn-sm">*/}
+          {/*    <a*/}
+          {/*      target="_blank"*/}
+          {/*      href="https://www.bilibili.com/video/BV1TR4y1Q7Yf"*/}
+          {/*    >*/}
+          {/*      了解Notion 同步方法*/}
+          {/*    </a>*/}
+          {/*  </button>*/}
+          {/*</div>*/}
         </div>
       </div>
     </div>

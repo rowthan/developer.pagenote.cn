@@ -6,7 +6,7 @@ import Loading from '../loading/Loading'
 
 export default function BasicSettingLine(props: {
   label: string | ReactElement
-  subLabel?: string
+  subLabel?: string | ReactElement
   path?: string
   right?: ReactElement
   children?: ReactElement

@@ -22,7 +22,7 @@ export default function useStorage(
   function fetchByTable() {
     const header = {
       cacheControl: {
-        maxAgeMillisecond: 3600 * 48 * 1000,
+        maxAgeMillisecond: 3600 * 1000,
       },
       scheduleControl: {
         runAfterMillisecond: [0, 60 * 1000],

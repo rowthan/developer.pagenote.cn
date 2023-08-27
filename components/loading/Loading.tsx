@@ -7,11 +7,14 @@ interface Props {
 }
 
 export default function Loading(props: Props) {
-  const { className } = props
+  const { className, children } = props
   return (
-    <LoadingSvg
-      className={`animate-spin fill-current text-color-100 ${className}`}
-    />
+    <div className={'text-xs text-color-200 flex'}>
+      <LoadingSvg
+        className={`animate-spin fill-current text-color-100 mr-2 ${className}`}
+      />
+      {children}
+    </div>
   )
 }
 

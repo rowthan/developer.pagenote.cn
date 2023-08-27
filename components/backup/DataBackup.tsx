@@ -19,6 +19,12 @@ export default function DataBackup() {
         <div>
           <BasicSettingLine
             label={<span>图片优化</span>}
+            subLabel={
+              <span>
+                可减少本机<b className={'border-b border-[#f6d647]'}>截图</b>
+                空间占用
+              </span>
+            }
             right={
               <div className={'flex items-center text-color-400'}>
                 <div className={'text-xs'}>

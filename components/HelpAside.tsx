@@ -53,6 +53,7 @@ export default function HelpAside(props: Props) {
       icon: <RateSvg className={'fill-current inline'} />,
     })
   }
+
   return (
     <div className="">
       {children}
@@ -67,7 +68,7 @@ export default function HelpAside(props: Props) {
             tabIndex={0}
             className="dropdown-content w-32 rounded right-4 mb-2 py-2 overflow-hidden bottom-full bg-neutral text-base-100 text-sm"
           >
-            {asideList.map((item, index) => (
+            {asideList.slice(0, 2).map((item, index) => (
               <li key={index} className={'hover:bg-accent py-1 px-4'}>
                 <a
                   className={' flex items-center w-full text-base-100'}

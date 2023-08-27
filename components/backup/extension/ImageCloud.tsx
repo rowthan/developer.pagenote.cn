@@ -22,7 +22,7 @@ export default function ImageCloud(props: Props) {
     <SettingDetail
       label={
         <div className={'flex items-center'}>
-          <span>图床（试运行）</span>
+          <span>图床</span>
         </div>
       }
     >

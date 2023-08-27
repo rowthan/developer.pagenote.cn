@@ -47,7 +47,7 @@ export default function StorageInfo(props: Props) {
 
   return (
     <BasicSettingLine
-      label={'本插件'}
+      label={'本机存储分析'}
       right={
         <div className={'text-sm text-color-400'}>{getMb(total)} 已使用</div>
       }
@@ -69,21 +69,26 @@ export default function StorageInfo(props: Props) {
           ))}
         </div>
         <div className={'flex mt-2 text-color-400'}>
-          {list.map((item) => (
-            <div
-              className={'text-xs inline-flex items-center mr-4'}
-              key={item.name}
-            >
-              <div
-                className={'w-2 h-2 rounded-full mr-1'}
-                style={{
-                  backgroundColor: item.bg,
-                }}
-              ></div>
-              <div>{item.name}</div>
+          {loading ? (
+            <div>
+              <Loading>正在统计中</Loading>
             </div>
-          ))}
-          {loading && <Loading />}
+          ) : (
+            list.map((item) => (
+              <div
+                className={'text-xs inline-flex items-center mr-4'}
+                key={item.name}
+              >
+                <div
+                  className={'w-2 h-2 rounded-full mr-1'}
+                  style={{
+                    backgroundColor: item.bg,
+                  }}
+                ></div>
+                <div>{item.name}</div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </BasicSettingLine>
