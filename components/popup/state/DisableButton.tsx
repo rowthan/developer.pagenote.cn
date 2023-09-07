@@ -77,7 +77,7 @@ export default function DisableButton() {
     <div className={'flex justify-end'}>
       <label
         htmlFor="disable-modal"
-        className={` w-60 rounded btn btn-xl ${
+        className={` rounded btn btn-xl ${
           tabState?.active ? 'btn-primary text-white' : 'btn-outline'
         }`}
       >

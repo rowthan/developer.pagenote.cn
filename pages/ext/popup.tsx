@@ -1,6 +1,5 @@
 import BasicLayout from 'layouts/BasicLayout'
 import React, { useEffect, useState } from 'react'
-import CurrentTab from 'components/popup/CurrentTab'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import NavTabs from 'components/popup/NavTabs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
@@ -10,6 +9,7 @@ import { Suspense, lazy } from 'react'
 const ClipboardList = lazy(() => import('components/manage/ClipboardList'))
 const Search = lazy(() => import('components/popup/Search'))
 const Setting = lazy(() => import('components/setting/Setting'))
+const CurrentTab = lazy(() => import('components/popup/state/EnableCheck'))
 
 const CACHE_SEARCH_KEY = 'popup_search'
 
@@ -60,8 +60,14 @@ export default function PopupPage() {
             }
           >
             <Routes>
-              <Route index element={<CurrentTab />} />
-              <Route path={'/tab'} element={<CurrentTab />} />
+              <Route
+                index
+                element={
+                  <Suspense>
+                    <CurrentTab />
+                  </Suspense>
+                }
+              />
               <Route
                 path="/clipboard"
                 element={
@@ -86,7 +92,14 @@ export default function PopupPage() {
                   </Suspense>
                 }
               />
-              <Route path="*" element={<CurrentTab />} />
+              <Route
+                path="*"
+                element={
+                  <Suspense>
+                    <CurrentTab />
+                  </Suspense>
+                }
+              />
             </Routes>
           </div>
         </Router>
