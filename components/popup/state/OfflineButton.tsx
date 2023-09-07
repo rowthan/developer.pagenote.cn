@@ -84,7 +84,7 @@ export default function OfflineButton() {
       离线化
       <span
         className={`tooltip tooltip-bottom tooltip-info align-bottom`}
-        data-tip={'将当前访问的网页永久保存为离线网页。'}
+        data-tip={`将当前访问的网页永久保存为离线网页。已离线${cnt}`}
       >
         <TipInfoSvg className={'fill-current'} />
       </span>
