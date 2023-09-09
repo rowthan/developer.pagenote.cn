@@ -45,7 +45,7 @@ export default function ExtensionInfos() {
             <a href="/manage/page">网页{stat?.pagesCnt}</a>;
             <a href="/manage/light">标记{stat?.lightsCnt}</a>; 截图
             {stat?.snapshotsCnt}；
-            <a href="/manage/clipboard">剪切板{stat?.clipboardCnt}</a>;
+            <a href="/ext/popup#/clipboard">剪切板{stat?.clipboardCnt}</a>;
             {/*↘︎ 90 (14%)*/}
           </div>
         </div>
