@@ -151,16 +151,16 @@ export default function SignUpForm() {
       {/*</div>*/}
       <div className="flex justify-end mt-4 mb-10">
         <button
-          disabled={loading}
-          className={`btn btn-sm btn-outline btn-info ${
-            loading ? 'loading' : ''
-          }`}
-          type="submit"
+            disabled={loading}
+            className={`btn btn-sm btn-outline btn-info ${
+                loading ? 'loading' : ''
+            }`}
+            type="submit"
         >
           注册
         </button>
       </div>
-      <AuthBottoms type="signup" />
+      <AuthBottoms/>
     </form>
   )
 }
