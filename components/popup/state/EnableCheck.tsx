@@ -10,23 +10,40 @@ import {
 import { enablePagenote, refreshTab } from 'utils/popup'
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from 'hooks/useTabPagenoteState'
-import UnlockCopySvg from 'assets/svg/wenjianfuzhi.svg'
-import CaptureSvg from 'assets/svg/jietu.svg'
-import { toast } from 'utils/toast'
+import {toast} from 'utils/toast'
 import useSettings from 'hooks/useSettings'
-import { useEffect } from 'react'
+import {useEffect} from 'react'
 import useTabPagenoteData from 'hooks/useTabPagenoteData'
 import Tab = chrome.tabs.Tab
-import KeyboardTip from 'components/KeyboardTip'
-import TipInfoSvg from 'assets/svg/info.svg'
 import WindowTabs from '../WindowTabs'
 import OfflineButton from './OfflineButton'
 import DisableButton from './DisableButton'
+import {TbCapture} from 'react-icons/tb'
+import ActionButton from "../../button/ActionButton";
+import {LuCopyCheck} from 'react-icons/lu'
+import useTableQuery from "../../../hooks/useTableQuery";
+import {SnapshotResource} from "@pagenote/shared/lib/@types/data";
+import {basePath} from "../../../const/env";
 
 export default function EnableCheck() {
   const [tabState, mutate, isLoading] = useTabPagenoteState()
-  const { tab } = useCurrentTab()
-  const [webpage, refresh] = useTabPagenoteData()
+  const {tab} = useCurrentTab()
+  const [snapshots = [], refresh] = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
+    limit: 100,
+    query: {
+      $or: [
+        {
+          pageKey: tab?.url
+        },
+        {
+          pageUrl: tab?.url
+        }
+      ]
+    },
+    sort: {
+      createAt: -1
+    }
+  })
 
   function enableInject() {
     if (tabState?.active) {
@@ -61,20 +78,24 @@ export default function EnableCheck() {
       toast('请在当前标签页启动后再截图')
       return
     }
+    if (snapshots.length > 4) {
+      alert('请删除历史截图，再创建新截图')
+      return;
+    }
 
     extApi.developer
-      .requestFront({
-        header: {
-          targetTabId: tab?.id,
-        },
-        params: {
-          fullPage: false,
-        },
-        type: 'runCaptureTab',
+        .requestFront({
+          header: {
+            targetTabId: tab?.id,
+          },
+          params: {
+            fullPage: false,
+          },
+          type: 'runCaptureTab',
       })
       .then(function (res) {
-        console.log('更新结果', res)
         refresh()
+        console.log('更新结果', res)
       })
   }
 
@@ -92,66 +113,55 @@ export default function EnableCheck() {
     return <Waring tab={tab} />
   }
 
-  const snapshotLength = webpage?.plainData?.snapshots?.length || 0
+  const snapshotLength = snapshots?.length || 0
   return (
-    <div className={'mt-48 mx-auto p-4'}>
-      <div className={'flex justify-center'}>
-        <DisableButton/>
-      </div>
-      <div className={'w-full m-auto my-2 align-center'}>
-        <div
-            className={`transform-gpu transition duration-500 ease-in-out flex justify-center`}
-        >
-
-
-          <KeyboardTip command={'enable_copy'}>
-            <button
+      <div className={'mt-24 mx-auto p-4'}>
+        <div className={'flex justify-center items-center'}>
+          <DisableButton/>
+          <ActionButton
+              active={tabState.enabledCopy}
               onClick={enableCopy}
-              className={`t btn btn-sm rounded text-xs  ml-1 w-33 ${
-                tabState.enabledCopy ? 'btn-primary text-white' : 'btn-outline'
-              }`}
-            >
-              <UnlockCopySvg />{' '}
-              {tabState.enabledCopy ? '已经解除限制' : '解除复制限制'}
-              <span
-                className={'tooltip tooltip-left tooltip-info'}
-                data-tip={'个别网站不允许选取、复制。为你破解该限制'}
-              >
-                <TipInfoSvg className={'fill-current'}/>
-              </span>
-            </button>
-          </KeyboardTip>
+              tip={'允许复制'}
+              keyboard={'enable_copy'}
+              className={'ml-2'}
+          >
+            <LuCopyCheck/>
+            {/*{tabState.enabledCopy ? '已经解除限制' : '解除复制限制'}*/}
+          </ActionButton>
         </div>
-      </div>
-      <div className={'flex justify-center w-full'}>
-        <OfflineButton/>
-      </div>
 
-      <div>
-        <div
-            className={'tooltip tooltip-bottom'}
-            data-tip={`${
-                snapshotLength ? `已截图${snapshotLength}` : '启动后可截图'
-            }`}
-        >
-          <KeyboardTip command={'capture'}>
-            <button
+
+        <div className={'mt-36'}>
+          <div className={'flex my-2'}>
+            <ActionButton
+                tip={'截图'}
                 disabled={!tabState?.active}
                 onClick={capture}
-                className={`relative btn btn-sm text-xs w-24 p-0 rounded btn-outline`}
+                active={snapshotLength > 0}
+                keyboard={'capture'}
             >
-              <CaptureSvg className={'inline-block'}/>
-              截图
-            </button>
-          </KeyboardTip>
+              <TbCapture/>
+            </ActionButton>
+            <div className={'ml-2 flex flex-wrap'}>
+              {
+                snapshots.map((item, index) => (
+                    <a href={`${basePath}/ext/img.html?id=${item.key}`} target={'_blank'} key={index}>
+                      <img className={'h-8 border-gray-100 border mx-1 mb-1'} src={item.uri || item.url} alt=""/>
+                    </a>
+                ))
+              }
+              {
+                  snapshots.length === 0 &&
+                  <span className={'text-sm text-color-200'}>保存当前网页为图片</span>
+              }
+            </div>
+          </div>
+          <div className={'my-2'}>
+            <OfflineButton/>
+          </div>
         </div>
-      </div>
 
-      {/*<div className={'absolute right-1 bottom-1 w-full'}>*/}
-      {/*    <DisableButton />*/}
-      {/*</div>*/}
-      {/*    标签- 智能标签 - 》（智能标签可以设置专属的定时动作-如按时打开、按时清理等）*/}
-    </div>
+      </div>
   )
 }
 

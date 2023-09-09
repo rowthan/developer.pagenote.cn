@@ -6,11 +6,12 @@ import Empty from "components/Empty";
 import Head from "next/head";
 import ForbiddenSvg from 'assets/svg/warn.svg'
 import useWhoAmi from "hooks/useWhoAmi";
+import extApi from "@pagenote/shared/lib/pagenote-api";
 
 export default function Img() {
     const router = useRouter();
     const [whoAmI] = useWhoAmi()
-    const images = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
+    const [images, refresh] = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
         limit: 1,
         query: {
             key: router.query.id?.toString() || '',
@@ -18,6 +19,19 @@ export default function Img() {
     })
 
     const image = images[0];
+
+    function removeImg(key: string = '') {
+        extApi.table.remove({
+            db: 'lightpage',
+            table: 'snapshot',
+            params: [key]
+        }).then(function () {
+            refresh()
+            setTimeout(function () {
+                window.close()
+            }, 2000)
+        })
+    }
 
     if (!whoAmI?.origin) {
         return <Empty>
@@ -39,17 +53,20 @@ export default function Img() {
                             <div className={'text-sm'}>
                                 {
                                     image?.uri ?
-                                        <div className={'flex'}>
-                                            <ForbiddenSvg height={24}/>
+                                        <span>
+                                            <ForbiddenSvg className={'inline-block'} height={24}/>
                                             <span className={'ml-1'}>隐私安全提示：请不要分享此
                                                 <span className={'tooltip tooltip-bottom'}
                                                       data-tip={image.uri}>图片链接</span>给其他人。
                                             </span>
-                                        </div> :
-                                        <div>
+                                        </span> :
+                                        <span>
                                             此图片仅可通过 PAGENOTE 插件查看，无法被互联网访问。
-                                        </div>
+                                        </span>
                                 }
+                                <button className={'btn btn-xs btn-warning inline-block'}
+                                        onClick={() => removeImg(image.key)}>删除此图片
+                                </button>
                             </div>
                             <img src={image.uri || image.url} alt={image.alt}/>
                         </>

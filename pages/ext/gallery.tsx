@@ -19,7 +19,7 @@ import {basePath} from "../../const/env";
 
 const breakpoints = [3840, 2400, 1080, 640, 384, 256, 128, 96, 64, 48];
 export default function Gallery() {
-  const images = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
+  const [images] = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
     limit: 100,
     query: {},
     sort: {
@@ -55,7 +55,7 @@ export default function Gallery() {
   })
 
   function onClickAlbum(index: number) {
-    window.open(`${basePath}/ext/img?id=${imageList[index].key}`)
+    window.open(`${basePath}/ext/img.html?id=${imageList[index].key}`)
   }
 
   return (
