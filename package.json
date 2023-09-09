@@ -45,10 +45,11 @@
     "react-images": "^1.2.0-beta.7",
     "react-lazy-images": "^1.1.0",
     "react-notion-x": "^6.16.0",
-    "react-photo-gallery": "^8.0.0",
+    "react-photo-album": "^2.3.0",
     "swr": "^2.0.0",
     "use-context-selector": "^1.4.1",
-    "use-delayed-render": "0.0.7"
+    "use-delayed-render": "0.0.7",
+    "yet-another-react-lightbox": "^3.12.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
