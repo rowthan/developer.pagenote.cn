@@ -94,33 +94,15 @@ export default function EnableCheck() {
 
   const snapshotLength = webpage?.plainData?.snapshots?.length || 0
   return (
-    <div className={'mt-48 mx-auto'}>
+    <div className={'mt-48 mx-auto p-4'}>
       <div className={'flex justify-center'}>
-        <DisableButton />
+        <DisableButton/>
       </div>
       <div className={'w-full m-auto my-2 align-center'}>
         <div
-          className={`transform-gpu transition duration-500 ease-in-out flex justify-center`}
+            className={`transform-gpu transition duration-500 ease-in-out flex justify-center`}
         >
-          <div
-            className={'tooltip tooltip-bottom'}
-            data-tip={`${
-              snapshotLength ? `已截图${snapshotLength}` : '启动后可截图'
-            }`}
-          >
-            <KeyboardTip command={'capture'}>
-              <button
-                disabled={!tabState?.active}
-                onClick={capture}
-                className={`relative btn btn-sm text-xs w-24 p-0 rounded ${
-                  snapshotLength > 0 ? 'btn-primary text-white' : 'btn-outline '
-                }`}
-              >
-                <CaptureSvg className={'inline-block'} />
-                截图
-              </button>
-            </KeyboardTip>
-          </div>
+
 
           <KeyboardTip command={'enable_copy'}>
             <button
@@ -135,14 +117,34 @@ export default function EnableCheck() {
                 className={'tooltip tooltip-left tooltip-info'}
                 data-tip={'个别网站不允许选取、复制。为你破解该限制'}
               >
-                <TipInfoSvg className={'fill-current'} />
+                <TipInfoSvg className={'fill-current'}/>
               </span>
             </button>
           </KeyboardTip>
         </div>
       </div>
       <div className={'flex justify-center w-full'}>
-        <OfflineButton />
+        <OfflineButton/>
+      </div>
+
+      <div>
+        <div
+            className={'tooltip tooltip-bottom'}
+            data-tip={`${
+                snapshotLength ? `已截图${snapshotLength}` : '启动后可截图'
+            }`}
+        >
+          <KeyboardTip command={'capture'}>
+            <button
+                disabled={!tabState?.active}
+                onClick={capture}
+                className={`relative btn btn-sm text-xs w-24 p-0 rounded btn-outline`}
+            >
+              <CaptureSvg className={'inline-block'}/>
+              截图
+            </button>
+          </KeyboardTip>
+        </div>
       </div>
 
       {/*<div className={'absolute right-1 bottom-1 w-full'}>*/}
