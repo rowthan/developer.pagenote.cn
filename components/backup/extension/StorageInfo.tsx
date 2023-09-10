@@ -3,6 +3,7 @@ import useStorage from 'hooks/useStorage'
 import { getMb } from 'utils/size'
 import BasicSettingLine from '../../setting/BasicSettingLine'
 import Loading from 'components/loading/Loading'
+import useWhoAmi from 'hooks/useWhoAmi'
 
 interface Props {
   children?: ReactNode
@@ -13,7 +14,7 @@ export default function StorageInfo(props: Props) {
   const [lightStorage, loadingLight] = useStorage('lightpage', 'light')
   const [snapshotStorage, loadingSnapshot] = useStorage('lightpage', 'snapshot')
   const [htmlStorage, loadingHtml] = useStorage('resource', 'html')
-
+  const [whoAmI] = useWhoAmi()
   const loading = loadingHtml || loadingLight || loadingSnapshot || loadingPage
   const total =
     pageStorage?.usage +
@@ -47,7 +48,11 @@ export default function StorageInfo(props: Props) {
 
   return (
     <BasicSettingLine
-      label={'本机存储分析'}
+      label={
+        <span>
+          <span>本机存储分析</span>
+        </span>
+      }
       right={
         <div className={'text-sm text-color-400'}>{getMb(total)} 已使用</div>
       }

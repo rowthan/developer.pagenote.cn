@@ -1,85 +1,88 @@
-import extApi from "@pagenote/shared/lib/pagenote-api";
-import OfflineSvg from "assets/svg/offline_download.svg";
-import TipInfoSvg from "assets/svg/info.svg";
-import useTabPagenoteState from "hooks/useTabPagenoteState";
-import {useEffect, useState} from "react";
-import useCurrentTab from "hooks/useCurrentTab";
-import {toast} from "utils/toast";
-import {basePath} from "const/env";
-import {html} from "@pagenote/shared/lib/extApi";
-import OfflineHTML = html.OfflineHTML;
+import extApi from '@pagenote/shared/lib/pagenote-api'
+import useTabPagenoteState from 'hooks/useTabPagenoteState'
+import {useEffect, useState} from 'react'
+import useCurrentTab from 'hooks/useCurrentTab'
+import {toast} from 'utils/toast'
+import {basePath} from 'const/env'
+import {html} from '@pagenote/shared/lib/extApi'
+import {RiDownloadCloudLine} from 'react-icons/ri'
+
+import OfflineHTML = html.OfflineHTML
+import ActionButton from "../../button/ActionButton";
+import dayjs from "dayjs";
+import useTableQuery from "../../../hooks/useTableQuery";
+import {SnapshotResource} from "@pagenote/shared/lib/@types/data";
 
 export default function OfflineButton() {
-    const [tabState] = useTabPagenoteState();
-    const {tab} = useCurrentTab();
-    const [resourceList, setList] = useState<Partial<OfflineHTML>[]>([])
+    const [tabState] = useTabPagenoteState()
+    const {tab} = useCurrentTab()
+    const [resourceList] = useTableQuery<OfflineHTML>('resource', 'html', {
+        limit: 9,
+        query: {
+            relatedPageUrl: tab?.url
+        },
+        projection: {
+            resourceId: 1,
+            relatedPageUrl: 1,
+        },
+    })
 
     function offlineHtml() {
-        extApi.developer.requestFront({
-            params: {
-                cssToInline: true,
-                imageToLocal: true,
-                removeScript: true
-            },
-            type: 'offlineHTML'
-        }).then(function (res) {
-            fetchResourceList()
-            toast(res.error || '离线化成功。')
-            setTimeout(function () {
-                window.close();
-            }, 1000)
-        })
-    }
-
-    function fetchResourceList() {
-        if (!tab?.url) {
-            return
+        if (resourceList.length > 4) {
+            alert('请删除历史离线版本后，再创建新版本')
+            return;
         }
-        extApi.html.query({
-            query: {
-                relatedPageUrl: tab.url
-            },
-            page: 0,
-            pageSize: 9999,
-            projection: {
-                resourceId: 1,
-                relatedPageUrl: 1,
-            }
-        }).then(function (res) {
-            if (res.success) {
-                setList(res.data.list || [])
-            }
-        })
+        extApi.developer
+            .requestFront({
+                params: {
+                    cssToInline: true,
+                    imageToLocal: true,
+                    removeScript: true,
+                },
+                type: 'offlineHTML',
+            })
+            .then(function (res) {
+                toast(res.error || '离线化成功。')
+                setTimeout(function () {
+                    window.close()
+                }, 1000)
+            })
     }
 
-    function gotoOffline(e: { stopPropagation: () => void; }) {
-        e.stopPropagation();
-        window.open(resourceList[0].localUrl || `${basePath}/ext/offline.html?id=${resourceList[0].resourceId}&url=${resourceList[0].relatedPageUrl}`)
+
+    function gotoOffline(resourceList: Partial<OfflineHTML>) {
+        window.open(
+            resourceList.localUrl ||
+            `${basePath}/ext/offline.html?id=${resourceList.resourceId}&url=${resourceList.relatedPageUrl}`
+        )
     }
 
-    useEffect(function () {
-        fetchResourceList();
-    }, [tab])
-
-    const cnt = resourceList.length;
+    const cnt = resourceList.length
     return (
-        <div className={'w-60 flex'}>
-            <button onClick={offlineHtml}
-                    disabled={!tabState?.connected}
-                    className={`w-full flex-shrink m-auto btn btn-sm rounded-none ${cnt > 0 ? "btn-primary text-white" : "btn-outline"}`}>
-                <OfflineSvg className={'fill-current'}/> 网页离线化
-                <span className={`tooltip tooltip-bottom tooltip-info align-bottom`}
-                      data-tip={'将当前访问的网页永久保存为离线网页。'}>
-                <TipInfoSvg className={'fill-current'}/>
-            </span>
-            </button>
-            {
-                cnt > 0 &&
-                <button data-tip={`点击查看${cnt}个历史快照`}
-                        className={'rounded-none tooltip btn btn-sm btn-outline btn-primary'}
-                        onClick={gotoOffline}>{resourceList.length}</button>
-            }
+        <div className={'flex'}>
+            <ActionButton
+                onClick={offlineHtml}
+                disabled={!tabState?.connected}
+                tip={'离线网页'}
+                active={cnt > 0}
+            >
+                <RiDownloadCloudLine/>
+            </ActionButton>
+            <div className={'ml-2'}>
+                {
+                    resourceList.map((item, index) => (
+                        <button onClick={() => {
+                            gotoOffline(item)
+                        }} className={'btn btn-sm border text-xs mx-1 mb-1'} key={index}>
+                            v.{dayjs(item.createAt).format('MM/DD')}
+                        </button>
+                    ))
+                }
+                {
+                    resourceList.length === 0 &&
+                    <span className={'text-sm text-color-200'}>保存当前网页为 HTML，离线状态下亦可访问。</span>
+                }
+            </div>
         </div>
-
     )
 }

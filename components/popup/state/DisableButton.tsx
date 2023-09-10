@@ -72,14 +72,14 @@ export default function DisableButton() {
     )
   }
 
-  const disableDomain = `${new URL(url).origin}/*`
+  const disableDomain = url ? `${new URL(url).origin}/*` : ''
   return (
     <div className={'flex justify-end'}>
       <label
-        htmlFor="disable-modal"
-        className={` w-60 rounded btn btn-xl ${
-          tabState?.active ? 'btn-primary text-white' : 'btn-outline'
-        }`}
+          htmlFor="disable-modal"
+          className={` rounded btn btn-sm ${
+              tabState?.active ? 'btn-primary text-white' : 'btn-outline'
+          }`}
       >
         <img
           className={'bg-white rounded-lg'}

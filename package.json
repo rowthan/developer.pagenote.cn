@@ -1,5 +1,5 @@
 {
-  "version": "0.26.5",
+  "version": "0.26.6",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,8 +23,6 @@
   "dependencies": {
     "@notionhq/client": "^2.2.5",
     "@pagenote/shared": "1.12.6",
-    "@svgr/webpack": "^6.5.1",
-    "@tailwindcss/typography": "^0.5.7",
     "@vercel/analytics": "^1.0.1",
     "classnames": "^2.3.2",
     "compare-versions": "^6.0.0-rc.1",
@@ -43,15 +41,21 @@
     "react-awesome-button": "^7.0.5",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.40.0",
+    "react-icons": "^4.11.0",
     "react-image-crop": "^10.0.9",
+    "react-images": "^1.2.0-beta.7",
     "react-lazy-images": "^1.1.0",
     "react-notion-x": "^6.16.0",
+    "react-photo-album": "^2.3.0",
     "swr": "^2.0.0",
     "use-context-selector": "^1.4.1",
-    "use-delayed-render": "0.0.7"
+    "use-delayed-render": "0.0.7",
+    "yet-another-react-lightbox": "^3.12.2"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/typography": "^0.5.7",
     "@types/ali-oss": "^6.16.7",
     "@types/chrome": "0.0.206",
     "@types/color": "^3.0.3",

@@ -12,7 +12,8 @@ export default function KeyboardTip(props:{command: string,children?: ReactEleme
     return(
         <div className={'relative w-fit h-fit group'}>
             {children}
-            <div className={'pointer-events-none flex items-center justify-center absolute left-0 top-0 w-full h-full  transition-all duration-200 opacity-10 group-hover:opacity-100'}>
+            <div
+                className={'pointer-events-none flex items-center justify-center absolute left-0 top-0 w-full h-full  transition-all duration-200 opacity-0 group-hover:opacity-100'}>
                 <span className={'kbd kbd-xs text-xs text-neutral'}>{shortcut}</span>
             </div>
         </div>

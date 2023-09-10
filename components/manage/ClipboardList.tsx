@@ -107,8 +107,12 @@ export default function ClipboardList() {
       <div className="mx-auto p-3">
         <div>
           <BasicSettingLine
-            label={'自动 Control C'}
-            subLabel={'自动复制的内容将出现在下方'}
+            label={'自动 Control C / 临时剪切板'}
+            subLabel={
+              <div>
+                临时剪切板历史内容将出现在下方。最多保留30天内、100条数据
+              </div>
+            }
             right={
               <input
                 type="checkbox"
@@ -189,25 +193,6 @@ export default function ClipboardList() {
             </div>
           )
         })}
-
-        <div className="alert shadow-lg">
-          <div>
-            <TipSvg width={32} height={32} />
-            <div>
-              <div className="text-xs">最多保留30天内、100条数据。</div>
-            </div>
-          </div>
-          {/*<div className="flex-none">*/}
-          {/*  <button className="btn btn-sm">*/}
-          {/*    <a*/}
-          {/*      target="_blank"*/}
-          {/*      href="https://www.bilibili.com/video/BV1TR4y1Q7Yf"*/}
-          {/*    >*/}
-          {/*      了解Notion 同步方法*/}
-          {/*    </a>*/}
-          {/*  </button>*/}
-          {/*</div>*/}
-        </div>
       </div>
     </div>
   )

@@ -27,7 +27,7 @@ export default function useGiftDetail(id: string) {
     return receiveGiftItem(
       {
         giftId: id,
-        email: userInfo.email || '',
+        email: userInfo?.email || '',
       },
       valid
     ).then(function (res) {
