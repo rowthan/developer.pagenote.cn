@@ -14,25 +14,25 @@ export default function ExportFilter() {
 
     async function exportData() {
         setDownloading(true);
-        const commonFilter = {
-            deleted: {
-                $ne: true
-            },
-        }
-        extApi.lightpage.exportBackup({
-            htmlFilter: selected.includes('html') ? commonFilter : {resourceId: "1"},
-            pageFilter: selected.includes('page') ? commonFilter : {key: "1"},
-            lightFilter: selected.includes('light') ? commonFilter : {key: "1"},
-            snapshotFilter: selected.includes('snapshot') ? commonFilter : {url: "1"},
-        }).then(function (res) {
-            console.log(res,'备份结果')
-            setDownloading(false)
-        })
+        // const commonFilter = {
+        //     deleted: {
+        //         $ne: true
+        //     },
+        // }
+        // extApi.lightpage.exportBackup({
+        //     htmlFilter: selected.includes('html') ? commonFilter : {resourceId: "1"},
+        //     pageFilter: selected.includes('page') ? commonFilter : {key: "1"},
+        //     lightFilter: selected.includes('light') ? commonFilter : {key: "1"},
+        //     snapshotFilter: selected.includes('snapshot') ? commonFilter : {url: "1"},
+        // }).then(function (res) {
+        //     console.log(res,'备份结果')
+        //     setDownloading(false)
+        // })
 
-        return;
+        // return;
 
 
-        const localDownload = false //whoAmI?.browserType===BrowserType.Firefox TODO v3升级时 Firefox不支持，需兼容
+        const localDownload = true //whoAmI?.browserType===BrowserType.Firefox TODO v3升级时 Firefox不支持，需兼容
         if (localDownload) {
             const find = {
                 limit: 999999999,
