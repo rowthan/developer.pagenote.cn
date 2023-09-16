@@ -7,8 +7,8 @@ type PlatInfo = { platformUrl: string; platformIcon: string; bindUrl: string }
 type AuthInfo = {
   authType: string
   authName: string
-
-  avatar?: string
+    authAvatar: string
+    avatar?: string
 } & PlatInfo
 
 const GitHubConfig = {
@@ -31,7 +31,7 @@ function fetchAuthList(cacheDuration = 2 * 60 * 1000) {
     .pagenote(
       {
         data: {
-          query: `query{authList{authType,authName}}`,
+            query: `query{authList{authType,authName,authId,authAvatar}}`,
         },
         method: 'GET',
         url: '/api/graph/auth/',
@@ -40,34 +40,21 @@ function fetchAuthList(cacheDuration = 2 * 60 * 1000) {
         cacheControl: {
           maxAgeMillisecond: cacheDuration,
         },
-        scheduleControl: {
-          runAfterMillisecond: [0, cacheDuration / 2],
-        },
       }
     )
     .then(function (res) {
       const list = (res.data?.json?.data?.authList || []) as AuthInfo[]
-      const authedMap: Record<string, AuthInfo> = {}
-      list.forEach(function (item) {
-        authedMap[item.authType.toLowerCase()] = {
-          ...item,
-          ...authMap[item.authType.toLowerCase()],
-        }
-      })
-
-      return ['github', 'notion'].map(function (item) {
-        return authedMap[item] || authMap[item]
-      })
+        return list;
     })
 }
 
 export default function useAuthList(): [AuthInfo[], () => void] {
   const { data = [], mutate } = useSWR<AuthInfo[]>(
-    '/authList',
-    () => fetchAuthList(60 * 1000),
-    {
-      fallbackData: [],
-    }
+      '/authList',
+      () => fetchAuthList(4000),
+      {
+          fallbackData: [],
+      }
   )
 
   return [data, mutate]
