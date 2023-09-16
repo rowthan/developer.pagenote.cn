@@ -64,7 +64,7 @@ export function authCodeToToken(
 ) {
   return unionFetch<{ oauth?: AuthResponse }>(
     {
-        url: 'http://localhost:3001/api/graph/auth',
+        url: '/api/graph/auth',
         method: 'GET',
         data: {
             query: `{oauth(code:"${code?.trim()}",platform:"${authType}",authType:"${authType}",redirectUri:"${NOTION_AUTH_CALLBACK}"){pagenote_t,profile{nickname,email}}}`,
