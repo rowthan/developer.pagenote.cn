@@ -5,11 +5,15 @@ import User = user.User
 
 type UserInfo = {
   leftPermanent?: number
-} & User
+} & User & {
+  profile: {
+    role?: number
+  }
+}
 
 export function fetchUserInfo(forceRefresh: boolean = false) {
   return extApi.user.getUser({ refresh: forceRefresh }).then(function (res) {
-    return res.data
+    return (res.data || null) as UserInfo
   })
 }
 
@@ -18,9 +22,7 @@ export default function useUserInfo(): [
   () => void,
   (token: string | null) => void
 ] {
-  const { data, mutate } = useSWR<UserInfo | undefined | null>('/user', () => {
-    return fetchUserInfo(false)
-  })
+  const {data, mutate} = useSWR<UserInfo | undefined | null>('/user', fetchUserInfo)
 
   function setToken(token: string | null) {
     // @ts-ignore

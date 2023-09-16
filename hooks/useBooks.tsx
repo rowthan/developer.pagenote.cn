@@ -1,6 +1,7 @@
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import useSWR from 'swr'
 import dayjs from 'dayjs'
+import useUserInfo from "./useUserInfo";
 
 interface Book {
   endTime: number
@@ -16,6 +17,7 @@ type BookInfo = {
   expiredTip?: string
 }
 export default function (): [BookInfo, () => void] {
+  const [userinfo] = useUserInfo()
   const {
     data = {
       list: [],
@@ -23,7 +25,12 @@ export default function (): [BookInfo, () => void] {
       expiredTip: '',
     },
     mutate,
-  } = useSWR<BookInfo>('/books', () => fetchBookList(2 * 60 * 1000), {
+  } = useSWR<BookInfo>(function () {
+    if (!userinfo?.profile?.uid) {
+      throw Error('wait for uid')
+    }
+    return '/books/' + userinfo?.profile?.uid
+  }, () => fetchBookList(2 * 60 * 1000), {
     fallbackData: {
       list: [],
       expiredAt: undefined,
@@ -34,13 +41,13 @@ export default function (): [BookInfo, () => void] {
   function fetchBookList(cacheDuration?: number) {
     return extApi.network
       .pagenote(
-        {
-          url: '/api/user',
-          method: 'GET',
-          data: {
-            query: `query{bookInfo{startTime,endTime,duration,remark,giftDays},profile{pro}}`,
+          {
+            url: '/api/graph/book',
+            method: 'GET',
+            data: {
+              query: `query{books{startTime,endTime,duration,remark,giftDays}}`,
+            },
           },
-        },
         {
           cacheControl: {
             maxAgeMillisecond: cacheDuration || 0,
@@ -51,15 +58,15 @@ export default function (): [BookInfo, () => void] {
         }
       )
       .then(function (res) {
-        const data = res.data.json
-        if (Array.isArray(data.data.bookInfo)) {
-          const endTime = data.data.bookInfo[0].endTime
+        const bookList = res.data?.json?.data.books
+        if (Array.isArray(bookList)) {
+          const endTime = bookList[0].endTime
           let tip = endTime ? dayjs(endTime).format('YYYY-MM-DD') : '-'
-          if ((data.data.profile?.pro || 0) > 9) {
+          if ((userinfo?.profile?.role || 0) > 9) {
             tip = '终身'
           }
           return {
-            list: data.data.bookInfo,
+            list: bookList,
             expiredAt: endTime ? new Date(endTime) : undefined,
             expiredTip: tip,
           }

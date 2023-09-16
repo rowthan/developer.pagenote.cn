@@ -46,7 +46,7 @@ export default function Plans(props: Props) {
   const [activeIndex, setActiveIndex] = useState(1)
   let current = 0
   if (userInfo) {
-    const pro = userInfo?.profile?.pro || 0
+    const pro = userInfo?.profile?.role || 0
     if (pro > 9) {
       current = 2
     } else if (pro > 1) {

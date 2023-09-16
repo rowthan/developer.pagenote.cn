@@ -1,5 +1,3 @@
-import useBooks from '../../hooks/useBooks'
-import dayjs from 'dayjs'
 import useUserInfo, { fetchUserInfo } from '../../hooks/useUserInfo'
 
 interface Right {
@@ -74,7 +72,6 @@ export default function PlanCard(props: {
   current: number
   onClick: (info: PlanInfo) => void
 }) {
-  const [bookInfo] = useBooks()
   const { current, info, onClick } = props
   const [user] = useUserInfo()
   const {

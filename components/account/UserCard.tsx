@@ -24,7 +24,6 @@ export default function UserCard(props: Props) {
   function signout() {
     setToken(null)
   }
-
   const endAt = bookInfo.expiredAt
   const endDay = endAt ? dayjs(endAt).format('YYYY-MM-DD') : ''
   return (
@@ -106,16 +105,16 @@ export default function UserCard(props: Props) {
           <a
             className={'tooltip tooltip-left'}
             data-tip={
-              data?.profile?.pro ? '已解锁所有功能' : '尚未解锁所有功能'
+              data?.profile?.role ? '已解锁所有功能' : '尚未解锁所有功能'
             }
             href="https://pagenote.cn/pro-plan"
             target={'_blank'}
           >
-            {data?.profile?.pro ? (
-              <VipSvg width={24} height={24} />
-            ) : (
-              <FreeSvg width={24} height={24} />
-            )}
+              {data?.profile?.role ? (
+                  <VipSvg width={24} height={24}/>
+              ) : (
+                  <FreeSvg width={24} height={24}/>
+              )}
           </a>
 
           {endDay && (
