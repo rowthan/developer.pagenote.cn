@@ -23,7 +23,7 @@ export default function DataBackup() {
             right={
               <div className={'flex items-center text-color-400'}>
                 <div className={'text-xs'}>
-                  {enabled ? (connected ? '开' : '未连接') : '关'}
+                  {enabled ? (connected ? '开启' : '关闭') : '禁用'}
                 </div>
                 <SettingMoreSvg className={'fill-current '} />
               </div>
