@@ -118,16 +118,6 @@ export default function EnableCheck() {
       <div className={'mt-24 mx-auto p-4'}>
         <div className={'flex justify-center items-center'}>
           <DisableButton/>
-          <ActionButton
-              active={tabState.enabledCopy}
-              onClick={enableCopy}
-              tip={'允许复制'}
-              keyboard={'enable_copy'}
-              className={'ml-2'}
-          >
-            <LuCopyCheck/>
-            {/*{tabState.enabledCopy ? '已经解除限制' : '解除复制限制'}*/}
-          </ActionButton>
         </div>
 
 
@@ -135,7 +125,7 @@ export default function EnableCheck() {
           <div className={'flex my-2'}>
             <ActionButton
                 tip={'截图'}
-                disabled={!tabState?.active}
+                disabled={!tabState?.connected}
                 onClick={capture}
                 active={snapshotLength > 0}
                 keyboard={'capture'}
@@ -150,15 +140,29 @@ export default function EnableCheck() {
                     </a>
                 ))
               }
-              {
-                  snapshots.length === 0 &&
-                  <span className={'text-sm text-color-200'}>保存当前网页为图片</span>
-              }
+                {
+                    snapshots.length === 0 &&
+                    <span className={'text-sm text-color-200'}>保存当前网页为图片</span>
+                }
             </div>
           </div>
-          <div className={'my-2'}>
-            <OfflineButton/>
-          </div>
+            <div className={'my-2'}>
+                <OfflineButton/>
+            </div>
+            <div className={'flex my-2'}>
+                <ActionButton
+                    active={tabState.enabledCopy}
+                    onClick={enableCopy}
+                    tip={'允许复制'}
+                    keyboard={'enable_copy'}
+                    className={''}
+                >
+                    <LuCopyCheck/>
+                </ActionButton>
+                <div className={'ml-2 text-sm text-color-200'}>
+                    一键破解禁止右键、选择、复制
+                </div>
+            </div>
         </div>
 
       </div>

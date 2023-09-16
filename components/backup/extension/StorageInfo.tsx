@@ -4,6 +4,7 @@ import { getMb } from 'utils/size'
 import BasicSettingLine from '../../setting/BasicSettingLine'
 import Loading from 'components/loading/Loading'
 import useWhoAmi from 'hooks/useWhoAmi'
+import {basePath} from "const/env";
 
 interface Props {
   children?: ReactNode
@@ -38,6 +39,7 @@ export default function StorageInfo(props: Props) {
       name: '截图',
       usage: snapshotStorage.usage,
       bg: '#f6d647',
+      link: `${basePath}/ext/gallery.html`
     },
     {
       name: '离线html',
@@ -85,12 +87,12 @@ export default function StorageInfo(props: Props) {
                 key={item.name}
               >
                 <div
-                  className={'w-2 h-2 rounded-full mr-1'}
-                  style={{
-                    backgroundColor: item.bg,
-                  }}
+                    className={'w-2 h-2 rounded-full mr-1'}
+                    style={{
+                      backgroundColor: item.bg,
+                    }}
                 ></div>
-                <div>{item.name}</div>
+                <a href={item.link} target={'_blank'}>{item.name}</a>
               </div>
             ))
           )}
