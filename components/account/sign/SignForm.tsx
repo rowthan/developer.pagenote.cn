@@ -81,7 +81,7 @@ export default function SignForm(props: { children?: ReactElement }) {
             expiredAt: Date.now() + TOKEN_DURATION,
           })
         } else {
-          setTip(res.error || '请求失败，请重试')
+          setTip(res?.error || '请求失败，请重试')
         }
       })
       .finally(function () {
@@ -193,18 +193,9 @@ export default function SignForm(props: { children?: ReactElement }) {
       )}
 
       <div>
-        <CheckVersion
-          requireVersion={'0.26.0'}
-          fallback={
-            <a href={'/release'} className={'link link-primary'}>
-              请升级插件后登录
-            </a>
-          }
-        >
-          <AwesomeButton disabled={state} type="primary" size="medium">
-            {publicTextValid ? '验证' : '请求登录/注册'}
-          </AwesomeButton>
-        </CheckVersion>
+        <AwesomeButton disabled={state} type="primary" size="medium">
+          {publicTextValid ? '验证' : '请求登录/注册'}
+        </AwesomeButton>
       </div>
 
       <div className={'text-error text-sm'}>{tip}</div>

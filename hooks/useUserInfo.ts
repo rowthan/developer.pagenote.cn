@@ -23,12 +23,8 @@ export default function useUserInfo(): [
   })
 
   function setToken(token: string | null) {
-    if (!token) {
-      // @ts-ignore
-      extApi.user.signout && extApi.user.signout()
-    }
     // @ts-ignore
-    return extApi.user.setUserToken(token).then(function () {
+    return extApi.user.setUserToken(token).then(function (res) {
       mutate()
       fetchUserInfo(true).then(function () {
         mutate()

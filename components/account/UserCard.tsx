@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import Modal from '../Modal'
 import UserInfoForm from './UserInfoForm'
 import Avatar from './Avatar'
+import {isExt} from "../../const/env";
 
 interface Props {
   editable: boolean
@@ -74,26 +75,26 @@ export default function UserCard(props: Props) {
                     </li>
                     <li className={'hover:bg-accent px-1'}>
                       <button
-                        className={'block w-full text-base-100'}
-                        onClick={() => {
-                          setProfileModal(true)
-                        }}
+                          className={'block w-full text-base-100'}
+                          onClick={() => {
+                              setProfileModal(true)
+                          }}
                       >
-                        编辑资料
+                          编辑资料
                       </button>
                     </li>
                   </ul>
                 </div>
-                <div className={'text-xs text-gray-100'}>
-                  {data?.profile?.emailMask}
-                </div>
+                  <div className={'text-xs text-gray-100'}>
+                      ID：{data?.profile?.uid}
+                  </div>
               </>
             ) : (
               <div>
                 <a
-                  target={'_blank'}
-                  href="https://pagenote.cn/signin"
-                  className={'btn btn-ghost btn-sm'}
+                    target={isExt ? '_blank' : '_self'}
+                    href="https://pagenote.cn/signin"
+                    className={'btn btn-ghost btn-sm'}
                 >
                   登录
                 </a>

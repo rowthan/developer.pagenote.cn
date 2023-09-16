@@ -33,7 +33,7 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
     setLoading(true)
     bindTransition(value.recordId, amount).then(function (res) {
       setLoading(false)
-      toast(res.data.json.success ? '提交成功' : '提交失败')
+      toast(res.data?.json?.success ? '提交成功' : '提交失败')
       if (res?.data?.json?.success) {
         onClose()
       }
