@@ -24,18 +24,18 @@ import {LuCopyCheck} from 'react-icons/lu'
 import useTableQuery from "../../../hooks/useTableQuery";
 import {SnapshotResource} from "@pagenote/shared/lib/@types/data";
 import {basePath} from "../../../const/env";
-import { Bookmark } from '@/components/bookmark'
+import {Bookmark} from '@/components/bookmark'
 import Tiptap from 'components/editor/TipTap'
 
 export default function EnableCheck() {
-  const [tabState, mutate, isLoading] = useTabPagenoteState()
-  const {tab} = useCurrentTab()
-  const [snapshots = [], refresh] = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
-    limit: 100,
-    query: {
-      $or: [
-        {
-          pageKey: tab?.url
+    const [tabState, mutate, isLoading] = useTabPagenoteState()
+    const {tab} = useCurrentTab()
+    const [snapshots = [], refresh] = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
+        limit: 100,
+        query: {
+            $or: [
+                {
+                    pageKey: tab?.url
         },
         {
           pageUrl: tab?.url
@@ -118,20 +118,20 @@ export default function EnableCheck() {
   const snapshotLength = snapshots?.length || 0
 
 
-  return (
-      <div className={'mx-auto p-4'}>
-        <Bookmark />
-        <Tiptap />
-        <div className={'flex justify-center items-center'}>
-          <DisableButton/>
-        </div>
+    return (
+        <div className={'mx-auto p-4'}>
+            <Bookmark/>
+            <Tiptap/>
+            <div className={'flex justify-center items-center'}>
+                <DisableButton/>
+            </div>
 
 
-        <div className={'mt-36'}>
-          <div className={'flex my-2'}>
-            <ActionButton
-                tip={'截图'}
-                disabled={!tabState?.connected}
+            <div className={'mt-36'}>
+                <div className={'flex my-2'}>
+                    <ActionButton
+                        tip={'截图'}
+                        disabled={!tabState?.connected}
                 onClick={capture}
                 active={snapshotLength > 0}
                 keyboard={'capture'}

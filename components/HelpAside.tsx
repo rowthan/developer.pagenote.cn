@@ -9,9 +9,9 @@ import ShortCutInfo from './ShortCutInfo'
 import { basePath } from '../const/env'
 import Modal from './Modal'
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@/components/ui/popover"
 
 interface Props {
@@ -63,49 +63,49 @@ export default function HelpAside(props: Props) {
     <div className="">
       {children}
       <aside className={'fixed right-4 bottom-6 pb-2'}>
-        <div className="dropdown dropdown-top dropdown-end">
+          <div className="dropdown dropdown-top dropdown-end">
 
-          <Popover>
-            <PopoverTrigger>
-              <button className={'rounded-full bg-neutral text-neutral-content'}>
-                <QuestionSvg className={'fill-current'} width={20} height={20} />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className='px-0'>
-                <ul
-                tabIndex={0}
-                className="dropdown-content w-32 rounded right-4 mb-2 py-2 overflow-hidden bottom-full text-sm"
-              >
-                {asideList.slice(0, 2).map((item, index) => (
-                  <li key={index} className={'hover:bg-accent py-1 px-2'}>
-                    <a
-                      className={' flex items-center w-full'}
-                      href={item.link}
-                      target={item.target || '_blank'}
-                    >
-                      {item.icon}
-                      <span>{item.label}</span>
-                    </a>
-                  </li>
-                ))}
-                <li
-                  className={'hover:bg-accent py-1 px-4'}
-                  onClick={() => {
-                    setShortcut(true)
-                  }}
-                >
-                  <a className={' flex items-center w-full'}>
-                    <RateSvg className={'fill-current inline'} />
-                    <span>快捷键</span>
-                  </a>
-                </li>
-              </ul>
+              <Popover>
+                  <PopoverTrigger>
+                      <button className={'rounded-full bg-neutral text-neutral-content'}>
+                          <QuestionSvg className={'fill-current'} width={20} height={20}/>
+                      </button>
+                  </PopoverTrigger>
+                  <PopoverContent className='px-0'>
+                      <ul
+                          tabIndex={0}
+                          className="dropdown-content w-32 rounded right-4 mb-2 py-2 overflow-hidden bottom-full text-sm"
+                      >
+                          {asideList.slice(0, 2).map((item, index) => (
+                              <li key={index} className={'hover:bg-accent py-1 px-2'}>
+                                  <a
+                                      className={' flex items-center w-full'}
+                                      href={item.link}
+                                      target={item.target || '_blank'}
+                                  >
+                                      {item.icon}
+                                      <span>{item.label}</span>
+                                  </a>
+                              </li>
+                          ))}
+                          <li
+                              className={'hover:bg-accent py-1 px-4'}
+                              onClick={() => {
+                                  setShortcut(true)
+                              }}
+                          >
+                              <a className={' flex items-center w-full'}>
+                                  <RateSvg className={'fill-current inline'}/>
+                                  <span>快捷键</span>
+                              </a>
+                          </li>
+                      </ul>
 
-            </PopoverContent>
-          </Popover>
+                  </PopoverContent>
+              </Popover>
 
-          
-        </div>
+
+          </div>
       </aside>
       <Modal open={showShortcut} toggleOpen={setShortcut}>
         <ShortCutInfo />

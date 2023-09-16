@@ -8,7 +8,7 @@ import useOfflineHtml from "hooks/useOfflineHtml";
 
 export default function LocalHTML() {
     const [group] = useOfflineHtml();
-    console.log(group,'group')
+    console.log(group, 'group')
 
     let list: { url: string, name?: string, versions: Partial<OfflineHTML>[] }[] = []
     for (let i in group) {
@@ -18,7 +18,7 @@ export default function LocalHTML() {
             versions: group[i],
         })
     }
-    list = list.sort(function (pre,next) {
+    list = list.sort(function (pre, next) {
         return pre.versions.length > next.versions.length ? 1 : -1
     })
 

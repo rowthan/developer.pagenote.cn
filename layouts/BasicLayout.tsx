@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 import ErrorBoundary from '../components/debug/ErrorBound'
 import Error from 'components/debug/ErrorTip'
 import HelpAside from '../components/HelpAside'
-import { isDev } from 'const/env'
+import {isDev} from 'const/env'
 // 给普通用户访问的页面，基础layout
 export default function BasicLayout(
   props: PropsWithChildren<{
@@ -22,9 +22,9 @@ export default function BasicLayout(
   const { children, nav = true, footer = true, ...customMeta } = props
 
   const meta = {
-    title: isDev ? '开发页面' : customMeta.title || '小而美的网页标记工具 PAGENOTE',
-    description: customMeta.description || `一页一记 pagenote，开发者中心.`,
-    type: 'website',
+      title: isDev ? '开发页面' : customMeta.title || '小而美的网页标记工具 PAGENOTE',
+      description: customMeta.description || `一页一记 pagenote，开发者中心.`,
+      type: 'website',
   }
 
   return (
