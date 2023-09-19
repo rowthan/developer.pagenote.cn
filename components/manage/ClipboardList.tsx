@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import { toast } from '../../utils/toast'
 import TipSvg from 'assets/svg/info.svg'
-import BasicSettingLine from '../setting/BasicSettingLine'
+import BasicSettingLine, {SettingSection} from '../setting/BasicSettingLine'
 import useSettings from '../../hooks/useSettings'
 import { box } from '@pagenote/shared/lib/extApi'
 import Box = box.Box
@@ -105,7 +105,7 @@ export default function ClipboardList() {
   return (
     <div>
       <div className="mx-auto p-3">
-        <div>
+        <SettingSection>
           <BasicSettingLine
             label={'自动 Control C / 临时剪切板'}
             subLabel={
@@ -124,7 +124,7 @@ export default function ClipboardList() {
               />
             }
           />
-        </div>
+        </SettingSection>
         <div className="my-4 flex items-center">
           <input
             type="checkbox"

@@ -6,13 +6,13 @@ export default function SigninPart() {
   const { valid } = useVersionValid('0.26.4')
 
   return (
-    <div className={'text-gray-500 m-1'}>
+    <div className={' m-1'}>
       <h2 className="text-2xl font-bold text-color-100">登录/注册 PAGENOTE</h2>
       <SignForm />
 
       {valid && (
         <div>
-          <div className="mt-7 grid grid-cols-3 items-center text-gray-500">
+          <div className="mt-7 grid grid-cols-3 items-center text-muted-foreground">
             <hr className="border-gray-500" />
             <p className="text-center text-sm">通过第三方授权登录</p>
             <hr className="border-gray-500" />

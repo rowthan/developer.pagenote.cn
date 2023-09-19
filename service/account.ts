@@ -2,19 +2,17 @@ import { NOTION_AUTH_CALLBACK } from 'site.config'
 import { unionFetch } from '../utils/fetch'
 
 /**请求登录*/
-export function requestSignin(
-  input: { uid?: number; email?: string; publicText?: string },
+export function requestValidate(
+  input: { uid?: number; email?: string; publicText?: string, validateType: string },
   byExt: boolean
 ) {
-  const { uid = 0, email = '', publicText = '' } = input
-  return unionFetch<{ sendSignInEmail?: { publicText: string } }>(
+  const { uid = 0, email = '', publicText = '',validateType } = input
+  return unionFetch<{ requestValidate?: { publicText: string } }>(
     {
       url: '/api/graph/auth',
       method: 'POST',
       data: {
-        mutation: `mutation{sendSignInEmail(uid:${
-          uid || 0
-        },email:"${email.trim()}",publicText:"${publicText.trim()}"){publicText,validateStatus}}`,
+        mutation: `mutation{requestValidate(uid:${uid || 0},email:"${email.trim()}",publicText:"${publicText.trim()}",validateType:"${validateType}"){publicText,validateStatus}}`,
       },
     },
     byExt
@@ -38,14 +36,14 @@ export function confirmValidate(
   )
 }
 
-export function doSignInByValid(input: { publicText: string }, byExt: boolean) {
-  const { publicText = '' } = input
+export function doSignInByValid(input: { publicText: string,validateText: string }, byExt: boolean) {
+  const { publicText = '',validateText } = input
   return unionFetch<{ doSignInByValid?: { pagenote_t?: string } }>(
     {
       url: '/api/graph/auth',
       method: 'POST',
       data: {
-        mutation: `mutation{doSignInByValid(publicText:"${publicText.trim()}"){pagenote_t,profile{nickname,email,uid}}}`,
+        mutation: `mutation{doSignInByValid(publicText:"${publicText.trim()}",validateText:"${validateText}"){pagenote_t,profile{nickname,email,uid}}}`,
       },
     },
     byExt

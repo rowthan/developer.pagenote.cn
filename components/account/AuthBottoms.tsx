@@ -1,4 +1,5 @@
 import { GITHUB_AUTH_CALLBACK, NOTION_AUTH_CALLBACK } from 'site.config'
+import {Button} from "../../@/components/ui/button";
 
 export const AUTH_LIST = [
   {
@@ -14,15 +15,16 @@ export default function AuthBottoms() {
   return (
     <div>
       {AUTH_LIST.map((value, index) => (
-        <button
+        <Button
           key={index}
           onClick={() => {
             window.location.href = value.link
           }}
-          className="btn bg-color-50 text-color-100 border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300"
+          variant={'outline'}
+          className=" py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300"
         >
           {value.label}
-        </button>
+        </Button>
       ))}
     </div>
   )

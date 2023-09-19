@@ -1,6 +1,6 @@
 import React from 'react'
 import StorageInfo from './StorageInfo'
-import BasicSettingLine from '../../setting/BasicSettingLine'
+import BasicSettingLine, {SettingSection} from '../../setting/BasicSettingLine'
 import ImportAndExport from './ImportAndExport'
 import { BrowserType } from '@pagenote/shared/lib/utils/browser'
 import { checkIsInPopup } from 'utils/check'
@@ -27,17 +27,17 @@ export default function ExtensionData() {
 
   return (
     <div className={'mb-4'}>
-      <div className={'text-sm text-color-200 mb-2'}>
+      <div className={'text-sm text-muted-foreground mb-2'}>
         你的数据在本机(
         <span
-          className={'text-xs text-color-400 ml-1 tooltip tooltip-right'}
+          className={'text-xs ml-1 tooltip tooltip-right'}
           data-tip={whoAmI?.did}
         >
           {whoAmI?.did?.substring(0, 6)}
         </span>
         ) ，不同设备之间不会相互同步。
       </div>
-      <div>
+      <SettingSection>
         <StorageInfo />
         <BasicSettingLine
           className={isFirefox ? 'cursor-pointer' : ''}
@@ -45,7 +45,7 @@ export default function ExtensionData() {
           onClick={onClick}
           right={isFirefox ? undefined : <ImportAndExport />}
         />
-      </div>
+      </SettingSection>
     </div>
   )
 }

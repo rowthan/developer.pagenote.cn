@@ -10,6 +10,7 @@ import Modal from '../Modal'
 import UserInfoForm from './UserInfoForm'
 import Avatar from './Avatar'
 import {isExt} from "../../const/env";
+import Nickname from "./Nickname";
 
 interface Props {
   editable: boolean
@@ -21,13 +22,10 @@ export default function UserCard(props: Props) {
   const [bookInfo] = useBooks()
   const [openProfileModal, setProfileModal] = useState(false)
 
-  function signout() {
-    setToken(null)
-  }
   const endAt = bookInfo.expiredAt
   const endDay = endAt ? dayjs(endAt).format('YYYY-MM-DD') : ''
   return (
-    <div className={'shadow rounded-lg p-2 min-w-80 w-full bg-secondary'}>
+    <div className={' rounded-lg p-2 min-w-80 w-full border text-card-foreground bg-[#63b3ed]'}>
       <div className={'flex justify-between'}>
         <div className={'flex items-center mb-4'}>
           <div className="avatar">
@@ -49,44 +47,7 @@ export default function UserCard(props: Props) {
           <div className={'ml-4'}>
             {data?.profile?.nickname ? (
               <>
-                <div className="dropdown dropdown-bottom dropdown-right	text-white">
-                  <label tabIndex={0} className="my-1 link">
-                    <span className={'font-bold'}>
-                      {data?.profile?.nickname}
-                    </span>
-                    <MoreSvg
-                      className={'inline fill-current dark:text-primary'}
-                      width={20}
-                      height={20}
-                    />
-                  </label>
-                  <ul
-                    tabIndex={0}
-                    className="dropdown-content py-2 shadow bg-neutral text-sm rounded w-20"
-                  >
-                    <li className={'hover:bg-accent px-1'}>
-                      <button
-                        className={'block w-full text-base-100'}
-                        onClick={signout}
-                      >
-                        退出
-                      </button>
-                    </li>
-                    <li className={'hover:bg-accent px-1'}>
-                      <button
-                          className={'block w-full text-base-100'}
-                          onClick={() => {
-                              setProfileModal(true)
-                          }}
-                      >
-                          编辑资料
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-                  <div className={'text-xs text-gray-100'}>
-                      ID：{data?.profile?.uid}
-                  </div>
+                  <Nickname nickname={data?.profile?.nickname} />
               </>
             ) : (
               <div>
@@ -129,25 +90,6 @@ export default function UserCard(props: Props) {
           )}
         </div>
       </div>
-      {/*<div>*/}
-      {/*    <div className="avatar-group -space-x-2">*/}
-      {/*        <a className="avatar">*/}
-      {/*            <div className="w-6">*/}
-      {/*                <GitHubSvg width={24} height={24} />*/}
-      {/*            </div>*/}
-      {/*        </a>*/}
-      {/*        <a className="avatar">*/}
-      {/*            <div className="w-6">*/}
-      {/*                <NotionSvg width={24} height={24} />*/}
-      {/*            </div>*/}
-      {/*        </a>*/}
-      {/*        <a className="avatar placeholder">*/}
-      {/*            <div className="w-6 bg-neutral-focus text-neutral-content">*/}
-      {/*                <span>+</span>*/}
-      {/*            </div>*/}
-      {/*        </a>*/}
-      {/*    </div>*/}
-      {/*</div>*/}
       <Modal
         open={openProfileModal}
         toggleOpen={(open) => {

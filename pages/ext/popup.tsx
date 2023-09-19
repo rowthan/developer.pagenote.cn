@@ -49,7 +49,7 @@ export default function PopupPage() {
     <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
       <div
         className={
-          'w-basic m-auto border border-black shadow rounded-lg overflow-hidden transform translate-x-0'
+          'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
         }
       >
         <Router>

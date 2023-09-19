@@ -24,8 +24,9 @@ import {LuCopyCheck} from 'react-icons/lu'
 import useTableQuery from "../../../hooks/useTableQuery";
 import {SnapshotResource} from "@pagenote/shared/lib/@types/data";
 import {basePath} from "../../../const/env";
-import {Bookmark} from '@/components/bookmark'
+import {Bookmark} from 'components/popup/bookmark'
 import Tiptap from 'components/editor/TipTap'
+import { Separator } from '@/components/ui/separator'
 
 export default function EnableCheck() {
     const [tabState, mutate, isLoading] = useTabPagenoteState()
@@ -35,11 +36,11 @@ export default function EnableCheck() {
         query: {
             $or: [
                 {
-                    pageKey: tab?.url
-        },
-        {
-          pageUrl: tab?.url
-        }
+                    pageKey: tab?.url || ' '
+            },
+            {
+              pageUrl: tab?.url || ' '
+            }
       ]
     },
     sort: {
@@ -121,10 +122,8 @@ export default function EnableCheck() {
     return (
         <div className={'mx-auto p-4'}>
             <Bookmark/>
-            <Tiptap/>
-            <div className={'flex justify-center items-center'}>
-                <DisableButton/>
-            </div>
+            <Separator />
+            {/*<Tiptap/>*/}
 
 
             <div className={'mt-36'}>

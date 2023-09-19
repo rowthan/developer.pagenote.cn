@@ -5,7 +5,7 @@ import Tab = chrome.tabs.Tab;
 type TabGroups = Tab[];
 type WindowMap = Map<number, TabGroups>
 export default function useCurrentTab(tabId?: number):{tab: Tab | undefined, windows: TabGroups[] | undefined} {
-    const {data: tab} = useSWR<Tab>(`/tab/currentTab/${tabId}`,getTabInfo,)
+    const {data: tab} = useSWR<Tab | undefined>(`/tab/currentTab/${tabId}`,getTabInfo,)
     const {data: windowTabs} = useSWR<TabGroups[]>(`/tab/windows/${tabId}`,getAllWindows,{
         fallbackData: []
     })
@@ -17,11 +17,16 @@ export default function useCurrentTab(tabId?: number):{tab: Tab | undefined, win
                 namespace: 'tabs',
                 args: [tabId]
             }).then(function (res) {
-                return res.data
+                return res.data as Tab
             })
         }
-        return extApi.commonAction.getCurrentTab().then(function (res) {
-            return res.data
+
+        return extApi.developer.chrome({
+            type: 'query',
+            namespace: 'tabs',
+            args:[{active: true, currentWindow: true}]
+        }).then(function (res) {
+            return (res.data || [])[0]
         })
     }
 

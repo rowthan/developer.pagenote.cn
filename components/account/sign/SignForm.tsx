@@ -4,7 +4,7 @@ import useUserInfo from '../../../hooks/useUserInfo'
 import {
   confirmValidate,
   doSignInByValid,
-  requestSignin,
+  requestValidate,
 } from '../../../service/account'
 import useVersionValid from '../../../hooks/useVersionValid'
 import dayjs from 'dayjs'
@@ -66,21 +66,23 @@ export default function SignForm(props: { children?: ReactElement }) {
       'YYYY-MM-DD-HH'
     )}_${whoAmI?.did}`
     localStorage.setItem(LAST_CACHE_EMAIL_KEY, `${email || uid || ''}`)
-    requestSignin(
+    requestValidate(
       {
         uid: uid,
         email: email,
         publicText: newPublicText,
+        validateType: 'signin'
       },
       valid
     )
       .then(function (res) {
         if (res?.success) {
           setTokenInfo({
-            publicText: res.data?.sendSignInEmail?.publicText || '',
+            publicText: res.data?.requestValidate?.publicText || '',
             expiredAt: Date.now() + TOKEN_DURATION,
           })
         } else {
+          console.error(res,'error')
           setTip(res?.error || '请求失败，请重试')
         }
       })
@@ -93,41 +95,26 @@ export default function SignForm(props: { children?: ReactElement }) {
     const { validateText } = getValues()
     setTip('')
     setState(true)
-    confirmValidate(
-      {
-        publicText: tokenInfo.publicText,
-        validateText: validateText,
-      },
-      valid
-    ).then(function (res) {
-      console.log(res, '确认登录凭证')
-      if (res?.data?.confirmValidate?.validateStatus) {
-        setState(true)
-        console.log('获取 身份 token', tokenInfo)
-        doSignInByValid(
-          {
-            publicText: tokenInfo.publicText,
-          },
-          valid
-        )
-          .then(function (signRes) {
-            const token = signRes?.data?.doSignInByValid?.pagenote_t
-            console.log('登录结果', token, signRes)
-            if (token) {
-              update(token)
-            }
-            if (signRes.error) {
-              setTip(signRes.error)
-            }
-          })
-          .finally(() => {
-            setState(false)
-          })
-      } else {
-        setTip(res?.error || '登录凭证错误❌')
-        setState(false)
-      }
-    })
+    doSignInByValid(
+        {
+          publicText: tokenInfo.publicText,
+          validateText: validateText,
+        },
+        valid
+    )
+        .then(function (signRes) {
+          const token = signRes?.data?.doSignInByValid?.pagenote_t
+          console.log('登录结果', token, signRes)
+          if (token) {
+            update(token)
+          }
+          if (signRes?.error) {
+            setTip(signRes.error)
+          }
+        })
+        .finally(() => {
+          setState(false)
+        })
   }
 
   const onSubmit = useCallback(() => {

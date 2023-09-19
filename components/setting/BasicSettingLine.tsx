@@ -1,9 +1,17 @@
-import React, { ReactElement, useState } from 'react'
+import React, {ReactElement, ReactNode, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import SettingMoreSvg from '../../assets/svg/right-more.svg'
 import classNames from 'classnames'
 import Loading from '../loading/Loading'
 
+
+export function SettingSection(props:{children: ReactNode}) {
+  return(
+      <div className={'border-card bg-card rounded-lg'}>
+        {props.children}
+      </div>
+  )
+}
 export default function BasicSettingLine(props: {
   label: string | ReactElement
   subLabel?: string | ReactElement
@@ -53,7 +61,7 @@ export default function BasicSettingLine(props: {
     <div
       onClick={onClickRoot}
       className={classNames(
-        'block px-5 py-3 min-h-12 bg-color-50  border-b border-base-200 hover:bg-base-200 bg-base-150 last:rounded-b-lg first:rounded-t-lg overflow-hidden',
+        'block px-5 py-3 min-h-12  bg-card border-b last:border-none border-base-200 hover:bg-accent last:rounded-b-lg first:rounded-t-lg overflow-hidden',
         {
           'cursor-pointer': !!path,
         },
@@ -64,7 +72,7 @@ export default function BasicSettingLine(props: {
       <div className={'flex items-center justify-between'}>
         <div className={'text-sm'}>
           <div className={' leading-12 '}>{label}</div>
-          <div className={'text-xs text-gray-500'}>{subLabel}</div>
+          <div className={'text-xs text-muted-foreground'}>{subLabel}</div>
         </div>
         {Right}
       </div>
