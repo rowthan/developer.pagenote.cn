@@ -110,8 +110,7 @@ const Callback: React.FC<{ authType: AuthType }> = (props) => {
             </div>
             {status === STATUS.fail && (
               <div className={'text-red-500'}>
-                授权失败。
-                <div dangerouslySetInnerHTML={{ __html: tip }}></div>
+                <div dangerouslySetInnerHTML={{__html: tip || '授权失败'}}></div>
                 <p>
                   <Link href="/signin.html" className="link">
                     返回重试

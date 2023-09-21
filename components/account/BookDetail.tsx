@@ -14,7 +14,7 @@ export default function BookDetail(props:{children: ReactElement}) {
     const [open, setOpen] = useState(false);
 
     return(
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={setOpen} modal={false}>
             <DialogTrigger asChild>
                 {props.children}
             </DialogTrigger>

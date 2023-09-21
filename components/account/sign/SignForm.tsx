@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 import useUserInfo from '../../../hooks/useUserInfo'
 import {
-  confirmValidate,
   doSignInByValid,
   requestValidate,
 } from '../../../service/account'
@@ -11,7 +10,6 @@ import dayjs from 'dayjs'
 import useWhoAmi from '../../../hooks/useWhoAmi'
 import { AwesomeButton } from 'react-awesome-button'
 import 'react-awesome-button/dist/styles.css'
-import CheckVersion from '../../check/CheckVersion'
 
 enum SubmitState {
   unset = 0,
@@ -63,7 +61,7 @@ export default function SignForm(props: { children?: ReactElement }) {
     }
     setState(true)
     const newPublicText = `signin_request_${dayjs(new Date()).format(
-      'YYYY-MM-DD-HH'
+      'YYYY-MM-DD-HH-m'
     )}_${whoAmI?.did}`
     localStorage.setItem(LAST_CACHE_EMAIL_KEY, `${email || uid || ''}`)
     requestValidate(

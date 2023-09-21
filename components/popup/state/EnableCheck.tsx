@@ -17,7 +17,6 @@ import useTabPagenoteData from 'hooks/useTabPagenoteData'
 import Tab = chrome.tabs.Tab
 import WindowTabs from '../WindowTabs'
 import OfflineButton from './OfflineButton'
-import DisableButton from './DisableButton'
 import {TbCapture} from 'react-icons/tb'
 import ActionButton from "../../button/ActionButton";
 import {LuCopyCheck} from 'react-icons/lu'
@@ -25,7 +24,6 @@ import useTableQuery from "../../../hooks/useTableQuery";
 import {SnapshotResource} from "@pagenote/shared/lib/@types/data";
 import {basePath} from "../../../const/env";
 import {Bookmark} from 'components/popup/bookmark'
-import Tiptap from 'components/editor/TipTap'
 import { Separator } from '@/components/ui/separator'
 
 export default function EnableCheck() {
@@ -88,41 +86,38 @@ export default function EnableCheck() {
 
     extApi.developer
         .requestFront({
-          header: {
-            targetTabId: tab?.id,
-          },
-          params: {
-            fullPage: false,
-          },
-          type: 'runCaptureTab',
-      })
-      .then(function (res) {
-        refresh()
-        console.log('更新结果', res)
-      })
+            header: {
+                targetTabId: tab?.id,
+            },
+            params: {
+                fullPage: false,
+            },
+            type: 'runCaptureTab',
+        })
+        .then(function (res) {
+            refresh()
+            console.log('更新结果', res)
+        })
   }
 
-  useEffect(function () {
-    setTimeout(function () {
-      mutate()
-    }, 200)
-  }, [])
+    useEffect(function () {
+        setTimeout(function () {
+            mutate()
+        }, 200)
+    }, [])
 
-  if (isLoading && !tabState) {
-    return null
-  }
 
-  if (!tabState || checkIsPdf(tab?.url || '')) {
-    return <Waring tab={tab} />
-  }
+    // if (!tabState || checkIsPdf(tab?.url || '')) {
+    //     return <Waring tab={tab}/>
+    // }
 
-  const snapshotLength = snapshots?.length || 0
+    const snapshotLength = snapshots?.length || 0
 
 
     return (
         <div className={'mx-auto p-4'}>
             <Bookmark/>
-            <Separator />
+            <Separator/>
             {/*<Tiptap/>*/}
 
 
@@ -156,7 +151,7 @@ export default function EnableCheck() {
             </div>
             <div className={'flex my-2'}>
                 <ActionButton
-                    active={tabState.enabledCopy}
+                    active={tabState?.enabledCopy}
                     onClick={enableCopy}
                     tip={'允许复制'}
                     keyboard={'enable_copy'}

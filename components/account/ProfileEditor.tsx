@@ -81,10 +81,7 @@ export function ProfileEditor(props:{close:()=>void}) {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" disabled={loading}>
-                    {
-                        loading && <ReloadIcon className={'mr-2 h-4 w-4 animate-spin'}/>
-                    }
+                <Button type="submit" disabled={loading} loading={loading}>
                     更新
                 </Button>
             </form>

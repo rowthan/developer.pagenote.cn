@@ -39,26 +39,48 @@ export function confirmValidate(
 export function doSignInByValid(input: { publicText: string,validateText: string }, byExt: boolean) {
   const { publicText = '',validateText } = input
   return unionFetch<{ doSignInByValid?: { pagenote_t?: string } }>(
-    {
-      url: '/api/graph/auth',
-      method: 'POST',
-      data: {
-        mutation: `mutation{doSignInByValid(publicText:"${publicText.trim()}",validateText:"${validateText}"){pagenote_t,profile{nickname,email,uid}}}`,
+      {
+          url: '/api/graph/auth',
+          method: 'POST',
+          data: {
+              mutation: `mutation{doSignInByValid(publicText:"${publicText.trim()}",validateText:"${validateText}"){pagenote_t,profile{nickname,email,uid}}}`,
+          },
       },
-    },
-    byExt
+      byExt
   )
 }
 
+
+export function unBindAuth(input: {
+    publicText: string,
+    validateText: string,
+    authType?: string,
+    authId?: string,
+}, byExt: boolean) {
+    return unionFetch<{ unBindAuth?: { success?: boolean } }>(
+        {
+            url: '/api/graph/auth',
+            method: 'POST',
+            data: {
+                mutation: `mutation make($authRequest: AuthRequest!) {unBindAuth(unbindRequest:$authRequest){success}}`,
+                variables: {
+                    authRequest: input
+                },
+            },
+        },
+        byExt
+    )
+}
+
 type AuthResponse = {
-  pagenote_t: string
-  profile: { nickname: string; email: string }
+    pagenote_t: string
+    profile: { nickname: string; email: string }
 }
 
 export function authCodeToToken(
-  code: string,
-  authType: string,
-  byExt: boolean
+    code: string,
+    authType: string,
+    byExt: boolean
 ) {
   return unionFetch<{ oauth?: AuthResponse }>(
     {

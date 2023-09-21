@@ -34,26 +34,26 @@ export const authMap: Record<string, PlatInfo> = {
     }
 }
 
-function fetchAuthList(cacheDuration = 2 * 60 * 1000) {
-  return extApi.network
-    .pagenote(
-      {
-        data: {
-            query: `query{authList{authType,authName,authId,authAvatar}}`,
-        },
-        method: 'GET',
-        url: '/api/graph/auth/',
-      },
-      {
-        cacheControl: {
-          maxAgeMillisecond: cacheDuration,
-        },
-      }
-    )
-    .then(function (res) {
-      const list = (res.data?.json?.data?.authList || []) as AuthInfo[]
-        return list;
-    })
+function fetchAuthList(cacheDuration = 2 * 1000) {
+    return extApi.network
+        .pagenote(
+            {
+                data: {
+                    query: `query{authList{authType,authName,authId,authAvatar}}`,
+                },
+                method: 'GET',
+                url: '/api/graph/auth/',
+            },
+            {
+                cacheControl: {
+                    maxAgeMillisecond: cacheDuration,
+                },
+            }
+        )
+        .then(function (res) {
+            const list = (res.data?.json?.data?.authList || []) as AuthInfo[]
+            return list;
+        })
 }
 
 export function unbindAuth(auth: AuthInfo, isExt: boolean) {
@@ -70,14 +70,18 @@ export function unbindAuth(auth: AuthInfo, isExt: boolean) {
     },isExt)
 }
 
-export default function useAuthList(): [AuthInfo[], () => void] {
-  const { data = [], mutate } = useSWR<AuthInfo[]>(
-      '/authList',
-      () => fetchAuthList(4000),
-      {
-          fallbackData: [],
-      }
-  )
+export default function useAuthList(): { data: AuthInfo[], mutate: () => void, isLoading: boolean } {
+    const {data = [], mutate, isLoading} = useSWR<AuthInfo[]>(
+        '/authList',
+        () => fetchAuthList(),
+        {
+            fallbackData: [],
+        }
+    )
 
-  return [data, mutate]
+    return {
+        data,
+        mutate,
+        isLoading
+    }
 }
