@@ -2,19 +2,17 @@ import { NOTION_AUTH_CALLBACK } from 'site.config'
 import { unionFetch } from '../utils/fetch'
 
 /**请求登录*/
-export function requestSignin(
-  input: { uid?: number; email?: string; publicText?: string },
+export function requestValidate(
+  input: { uid?: number; email?: string; publicText?: string, validateType: string },
   byExt: boolean
 ) {
-  const { uid = 0, email = '', publicText = '' } = input
-  return unionFetch<{ sendSignInEmail?: { publicText: string } }>(
+  const { uid = 0, email = '', publicText = '',validateType } = input
+  return unionFetch<{ requestValidate?: { publicText: string } }>(
     {
       url: '/api/graph/auth',
       method: 'POST',
       data: {
-        mutation: `mutation{sendSignInEmail(uid:${
-          uid || 0
-        },email:"${email.trim()}",publicText:"${publicText.trim()}"){publicText,validateStatus}}`,
+        mutation: `mutation{requestValidate(uid:${uid || 0},email:"${email.trim()}",publicText:"${publicText.trim()}",validateType:"${validateType}"){publicText,validateStatus}}`,
       },
     },
     byExt
@@ -38,29 +36,51 @@ export function confirmValidate(
   )
 }
 
-export function doSignInByValid(input: { publicText: string }, byExt: boolean) {
-  const { publicText = '' } = input
+export function doSignInByValid(input: { publicText: string,validateText: string }, byExt: boolean) {
+  const { publicText = '',validateText } = input
   return unionFetch<{ doSignInByValid?: { pagenote_t?: string } }>(
-    {
-      url: '/api/graph/auth',
-      method: 'POST',
-      data: {
-        mutation: `mutation{doSignInByValid(publicText:"${publicText.trim()}"){pagenote_t,profile{nickname,email,uid}}}`,
+      {
+          url: '/api/graph/auth',
+          method: 'POST',
+          data: {
+              mutation: `mutation{doSignInByValid(publicText:"${publicText.trim()}",validateText:"${validateText}"){pagenote_t,profile{nickname,email,uid}}}`,
+          },
       },
-    },
-    byExt
+      byExt
   )
 }
 
+
+export function unBindAuth(input: {
+    publicText: string,
+    validateText: string,
+    authType?: string,
+    authId?: string,
+}, byExt: boolean) {
+    return unionFetch<{ unBindAuth?: { success?: boolean } }>(
+        {
+            url: '/api/graph/auth',
+            method: 'POST',
+            data: {
+                mutation: `mutation make($authRequest: AuthRequest!) {unBindAuth(unbindRequest:$authRequest){success}}`,
+                variables: {
+                    authRequest: input
+                },
+            },
+        },
+        byExt
+    )
+}
+
 type AuthResponse = {
-  pagenote_t: string
-  profile: { nickname: string; email: string }
+    pagenote_t: string
+    profile: { nickname: string; email: string }
 }
 
 export function authCodeToToken(
-  code: string,
-  authType: string,
-  byExt: boolean
+    code: string,
+    authType: string,
+    byExt: boolean
 ) {
   return unionFetch<{ oauth?: AuthResponse }>(
     {

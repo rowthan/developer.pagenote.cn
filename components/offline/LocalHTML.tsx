@@ -1,34 +1,14 @@
-import {useEffect, useState} from "react";
-import extApi from "@pagenote/shared/lib/pagenote-api";
 import dayjs from "dayjs";
-import {onVisibilityChange} from "@pagenote/shared/lib/utils/document";
 import {getDomain} from "@pagenote/shared/lib/utils/filter";
 import {basePath} from "../../const/env";
 import Empty from "../Empty";
 import {html} from "@pagenote/shared/lib/extApi";
 import OfflineHTML = html.OfflineHTML;
+import useOfflineHtml from "hooks/useOfflineHtml";
 
 export default function LocalHTML() {
-    const [group, setGroup] = useState<Record<string, Partial<OfflineHTML>[]>>({});
-
-    useEffect(function () {
-        fetchList();
-        return onVisibilityChange(function () {
-            fetchList()
-        })
-    }, [])
-
-    function fetchList() {
-        extApi.html.group({
-            groupBy: 'relatedPageUrl',
-            projection: {
-                data: -1
-            },
-        }).then(function (res) {
-            setGroup(res.data)
-        })
-    }
-
+    const [group] = useOfflineHtml();
+    console.log(group, 'group')
 
     let list: { url: string, name?: string, versions: Partial<OfflineHTML>[] }[] = []
     for (let i in group) {
@@ -38,7 +18,7 @@ export default function LocalHTML() {
             versions: group[i],
         })
     }
-    list = list.sort(function (pre,next) {
+    list = list.sort(function (pre, next) {
         return pre.versions.length > next.versions.length ? 1 : -1
     })
 

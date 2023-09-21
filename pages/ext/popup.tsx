@@ -1,10 +1,11 @@
 import BasicLayout from 'layouts/BasicLayout'
-import React, { useEffect, useState } from 'react'
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 import NavTabs from 'components/popup/NavTabs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import useWhoAmi from 'hooks/useWhoAmi'
-import { Suspense, lazy } from 'react'
+import {Suspense, lazy} from 'react'
+import {useFirstMountState, useMount, useMountedState} from "react-use";
 
 const ClipboardList = lazy(() => import('components/manage/ClipboardList'))
 const Search = lazy(() => import('components/popup/Search'))
@@ -14,57 +15,58 @@ const CurrentTab = lazy(() => import('components/popup/state/EnableCheck'))
 const CACHE_SEARCH_KEY = 'popup_search'
 
 export default function PopupPage() {
-  const [keyword, setKeyword] = useState<string>('')
-  const [whoAmi, loading] = useWhoAmi()
+    const [keyword, setKeyword] = useState<string>('')
+    const [whoAmi] = useWhoAmi()
+    const mounted = useMountedState()
 
-  useEffect(function () {
-    setKeyword(localStorage.getItem(CACHE_SEARCH_KEY) || '')
-  }, [])
+    useEffect(function () {
+        setKeyword(localStorage.getItem(CACHE_SEARCH_KEY) || '')
+    }, [])
 
-  useEffect(
-    function () {
-      if (keyword) {
-        localStorage.setItem(CACHE_SEARCH_KEY, keyword)
-      }
-    },
-    [keyword]
-  )
-
-  useEffect(
-    function () {
-      if (whoAmi?.version) {
-        extApi.commonAction.setPersistentValue({
-          key: 'popup_version',
-          value: whoAmi?.version,
-        })
-      }
-    },
-    [whoAmi]
-  )
-
-  if (loading) {
-    return null
-  }
-  return (
-    <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
-      <div
-        className={
-          'w-basic m-auto border border-black shadow rounded-lg overflow-hidden transform translate-x-0'
-        }
-      >
-        <Router>
-          <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-          <div
-            className={
-              'w-basic h-basic relative overflow-hidden overflow-y-auto '
+    useEffect(
+        function () {
+            if (keyword) {
+                localStorage.setItem(CACHE_SEARCH_KEY, keyword)
             }
-          >
-            <Routes>
-              <Route
-                index
-                element={
-                  <Suspense>
-                    <CurrentTab />
+        },
+        [keyword]
+    )
+
+    useEffect(
+        function () {
+            if (whoAmi?.version) {
+                extApi.commonAction.setPersistentValue({
+                    key: 'popup_version',
+                    value: whoAmi?.version,
+                })
+            }
+        },
+        [whoAmi]
+    )
+
+    if (!mounted()) {
+        return null
+    }
+    return (
+        <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
+            <div
+                className={
+                    'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
+                }
+            >
+                <Router>
+                    <NavTabs keyword={keyword} onChangeKeyword={setKeyword}/>
+                    <div
+                        className={
+                            'w-basic h-basic relative overflow-hidden overflow-y-auto '
+                        }
+                    >
+                        <Routes>
+                            <Route
+                                index
+                                element={
+                                    <Suspense>
+                                        <CurrentTab/>
                   </Suspense>
                 }
               />

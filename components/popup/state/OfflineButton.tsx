@@ -12,6 +12,8 @@ import ActionButton from "../../button/ActionButton";
 import dayjs from "dayjs";
 import useTableQuery from "../../../hooks/useTableQuery";
 import {SnapshotResource} from "@pagenote/shared/lib/@types/data";
+import { Badge } from "@/components/ui/badge"
+import {Button} from "../../../@/components/ui/button";
 
 export default function OfflineButton() {
     const [tabState] = useTabPagenoteState()
@@ -42,7 +44,7 @@ export default function OfflineButton() {
                 type: 'offlineHTML',
             })
             .then(function (res) {
-                toast(res.error || '离线化成功。')
+                toast(res?.error || '离线化成功。')
                 setTimeout(function () {
                     window.close()
                 }, 1000)
@@ -71,11 +73,11 @@ export default function OfflineButton() {
             <div className={'ml-2'}>
                 {
                     resourceList.map((item, index) => (
-                        <button onClick={() => {
+                        <Button onClick={() => {
                             gotoOffline(item)
-                        }} className={'btn btn-sm border text-xs mx-1 mb-1'} key={index}>
+                        }} className={'text-xs mx-1 mb-1'} size={'sm'} variant="outline" key={index}>
                             v.{dayjs(item.createAt).format('MM/DD')}
-                        </button>
+                        </Button>
                     ))
                 }
                 {

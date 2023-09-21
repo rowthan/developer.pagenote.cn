@@ -3,9 +3,23 @@ import useCurrentTab from 'hooks/useCurrentTab'
 import useSettings from 'hooks/useSettings'
 import { refreshTab } from 'utils/popup'
 import useTabPagenoteState from 'hooks/useTabPagenoteState'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {Button} from "../../../@/components/ui/button";
 
 function checkDisabled(rule: string, url: string) {
   return rule === url || (rule.indexOf('*') > -1 && new RegExp(rule).test(url))
+}
+
+enum EnableType {
+  enable= 'enable',
+  disableDomain = 'disable-domain',
+  disableUrl = 'disable-url'
 }
 
 export default function DisableButton() {
@@ -73,6 +87,49 @@ export default function DisableButton() {
   }
 
   const disableDomain = url ? `${new URL(url).origin}/*` : ''
+
+  function onChangeDisableRule(type: EnableType) {
+    switch (type) {
+      case EnableType.disableDomain:
+        add(disableDomain);
+        break;
+      case EnableType.disableUrl:
+        add(url)
+        break;
+      case EnableType.enable:
+        disabledList.forEach(function (item) {
+          const matched = checkDisabled(item, url);
+          if(matched){
+            remove(item)
+          }
+        })
+        break;
+    }
+  }
+
+
+  let value = '';
+  if(tabState?.active){
+    value = EnableType.enable
+  }else if(set.has(disableDomain)){
+    value = EnableType.disableDomain
+  } else if(set.has(url)){
+    value = EnableType.disableUrl
+  }
+
+
+  return (
+      <Select value={value} onValueChange={onChangeDisableRule}>
+        <SelectTrigger className="w-auto" >
+          <span>{tabState?.active ? '已启用' : '未启用'}</span>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="disable-url">🚫禁用当前网页</SelectItem>
+          <SelectItem value="disable-domain">🚫禁用当前域名</SelectItem>
+          <SelectItem value="enable">✅在此网站启用</SelectItem>
+        </SelectContent>
+      </Select>
+  )
   return (
     <div className={'flex justify-end'}>
       <label
@@ -88,13 +145,15 @@ export default function DisableButton() {
           height={24}
           alt=""
         />
-        <span className={'ml-2 tooltip'} data-tip={'点击修改禁用规则'}>
-          {disabled ? (
-            '已禁用标记功能'
-          ) : (
-            <span>{tabState?.active ? '已启用' : '未启用'}</span>
-          )}
-        </span>
+        {/*<span className={'ml-2 tooltip'} data-tip={'点击修改禁用规则'}>*/}
+        {/*  {disabled ? (*/}
+        {/*    '已禁用标记功能'*/}
+        {/*  ) : (*/}
+        {/*    <span>{tabState?.active ? '已启用' : '未启用'}</span>*/}
+        {/*  )}*/}
+        {/*</span>*/}
+
+
       </label>
       <input type="checkbox" id="disable-modal" className="modal-toggle" />
       <label htmlFor="disable-modal" className="modal">

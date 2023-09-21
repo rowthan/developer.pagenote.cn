@@ -1,6 +1,6 @@
 import { type ReactNode, useState } from 'react'
 import SettingDetail from '../../setting/SettingDetail'
-import BasicSettingLine from '../../setting/BasicSettingLine'
+import BasicSettingLine, {SettingSection} from '../../setting/BasicSettingLine'
 import TipInfo from '../../TipInfo'
 import useUserConfig from '../../../hooks/useUserConfig'
 import { get } from 'lodash'
@@ -8,6 +8,7 @@ import CloudStatus from './CloudStatus'
 import classNames from 'classnames'
 import useUserInfo from '../../../hooks/useUserInfo'
 import useOssKey from '../../../hooks/useOssKey'
+import { Switch } from "@/components/ui/switch"
 
 interface Props {
   children?: ReactNode
@@ -28,13 +29,13 @@ export default function ImageCloud(props: Props) {
     >
       <div className={'px-1 pb-2'}>
         <div>
-          <div className={' rounded-lg overflow-hidden bg-color-50'}>
+          <SettingSection>
             <BasicSettingLine
               label={'启用图片优化（图床）'}
               right={
                 <input
                   type="checkbox"
-                  className="toggle toggle-primary "
+                  className="toggle toggle-info "
                   checked={enabled}
                   onChange={(e) => {
                     setCloudConfig({
@@ -44,8 +45,8 @@ export default function ImageCloud(props: Props) {
                 />
               }
             />
-          </div>
-          <div className={'mt-1 mx-5 text-xs text-color-400 mb-6'}>
+          </SettingSection>
+          <div className={'mt-1 mx-5 text-xs text-muted-foreground mb-6'}>
             {enabled
               ? '将快照图片上传至云端，生成图片链接。任何获得该链接的用户，都可以在互联网访问该资源。'
               : '优化本机图片存储'}
@@ -53,10 +54,10 @@ export default function ImageCloud(props: Props) {
 
           {enabled && (
             <div>
-              <div className={'mt-2 mx-5 text-xs text-color-400 mb-1'}>
+              <div className={'mt-2 mx-5 text-xs text-muted-foreground mb-1'}>
                 图床服务商
               </div>
-              <div className={' rounded-lg overflow-hidden bg-color-50'}>
+              <SettingSection>
                 {/*<BasicSettingLine*/}
                 {/*  label={*/}
                 {/*    <span>*/}
@@ -100,12 +101,12 @@ export default function ImageCloud(props: Props) {
                     </div>
                   }
                 />
-              </div>
+              </SettingSection>
               <div className={'p-5 flex flex-row-reverse'}>
                 <a
                   href="https://pagenote.cn/privacy#51a07bcd45dc4e03be0b8301bf5a7bed"
                   target={'_blank'}
-                  className={'text-xs link-primary link'}
+                  className={'text-xs link'}
                 >
                   隐私保护须知
                 </a>

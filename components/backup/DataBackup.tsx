@@ -1,5 +1,5 @@
 import React from 'react'
-import BasicSettingLine from '../setting/BasicSettingLine'
+import BasicSettingLine, {SettingSection} from '../setting/BasicSettingLine'
 import SettingDetail from '../setting/SettingDetail'
 import ExtensionData from './extension/ExtensionData'
 import { get } from 'lodash'
@@ -16,21 +16,21 @@ export default function DataBackup() {
     <SettingDetail label={'数据管理'}>
       <div className={' min-w-80'}>
         <ExtensionData />
-        <div>
+        <SettingSection>
           <BasicSettingLine
             label={<span>图片优化</span>}
             subLabel={<span>可减少本机截图空间占用</span>}
             right={
               <div className={'flex items-center text-color-400'}>
                 <div className={'text-xs'}>
-                  {enabled ? (connected ? '开' : '未连接') : '关'}
+                  {enabled ? (connected ? '开启' : '关闭') : '禁用'}
                 </div>
                 <SettingMoreSvg className={'fill-current '} />
               </div>
             }
             path={'/setting/data/image-cloud'}
           />
-        </div>
+        </SettingSection>
         {/*<BasicSettingLine*/}
         {/*  label={*/}
         {/*    <span>*/}
