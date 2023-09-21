@@ -7,14 +7,14 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger
-} from "../../@/components/ui/dialog";
-import {Button} from "../../@/components/ui/button";
+} from "@/components/ui/dialog";
+import {Button} from "@/components/ui/button";
 
-export default function BookDetail(props:{children: ReactElement}) {
+export default function BookDetail(props: { children: ReactElement }) {
     const [open, setOpen] = useState(false);
 
-    return(
-        <Dialog open={open} onOpenChange={setOpen} modal={false}>
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 {props.children}
             </DialogTrigger>
@@ -22,7 +22,7 @@ export default function BookDetail(props:{children: ReactElement}) {
                 <DialogHeader>
                     <DialogTitle>VIP 详情</DialogTitle>
                     <DialogDescription>
-                        查看详情
+                        有效期记录
                     </DialogDescription>
                 </DialogHeader>
                 <BookList />
