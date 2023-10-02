@@ -4,7 +4,6 @@ import { keys } from 'lodash'
 type ReceiveGiftRequest = { email?: string; giftId: string }
 export const receiveGiftItem = function (
   info: ReceiveGiftRequest,
-  byExt: boolean
 ) {
   return unionFetch<{ gotGift: { received: boolean } }>(
     {
@@ -14,7 +13,6 @@ export const receiveGiftItem = function (
         mutation: `mutation{gotGift(giftId:"${info.giftId}",email:"${info.email}"){received}}`,
       },
     },
-    byExt
   )
 }
 
@@ -34,7 +32,6 @@ export type GiftDetail = typeof demoGiftDetail
 
 export const fetchGiftItem = function (
   giftId: ReceiveGiftRequest['giftId'],
-  byExt: boolean
 ) {
   return unionFetch<{ gift: GiftDetail }>(
     {
@@ -44,7 +41,6 @@ export const fetchGiftItem = function (
         query: `{gift(giftId:"${giftId}"){${keys(demoGiftDetail).toString()}}}`,
       },
     },
-    byExt,
     {
       cacheControl: {
         maxAgeMillisecond: 10 * 1000,

@@ -45,11 +45,11 @@ const RIGHTS: Right[] = [
     allowFor: [1, 2],
     visibleFor: [0, 1, 2],
   },
-  {
-    label: '与 Notion 同步',
-    allowFor: [1, 2],
-    visibleFor: [0, 1, 2],
-  },
+  // {
+  //   label: '与 Notion 同步',
+  //   allowFor: [1, 2],
+  //   visibleFor: [0, 1, 2],
+  // },
   {
     label: '网页离线化',
     allowFor: [1, 2],
@@ -95,44 +95,46 @@ export default function PlanCard(props: {
   }
 
   return (
-    <div className="relative text-neutral !bg-opacity-0 bg-blue-500 bg-green-500 bg-indigo-500 shadow-md rounded-sm border border-gray-200">
       <div
-        className={`absolute top-0 left-0 right-0 h-0.5 bg-${bg}-500`}
-        aria-hidden="true"
-      ></div>
-      <div className="px-5 pt-5 pb-6 border-b border-gray-200">
-        <header className="flex items-center mb-2">
-          <div
-            className={`w-6 h-6 rounded-full flex-shrink-0 bg-${bg}-500 bg-gradient-to-tr from-${bg}-500 to-${bg}-300 mr-3`}
-          >
-            <svg className="w-6 h-6 fill-white" viewBox="0 0 24 24">
-              <path d="M12 17a.833.833 0 01-.833-.833 3.333 3.333 0 00-3.334-3.334.833.833 0 110-1.666 3.333 3.333 0 003.334-3.334.833.833 0 111.666 0 3.333 3.333 0 003.334 3.334.833.833 0 110 1.666 3.333 3.333 0 00-3.334 3.334c0 .46-.373.833-.833.833z" />
-            </svg>
-          </div>
-          <h3
-            className="text-lg text-neutral font-semibold"
-            dangerouslySetInnerHTML={{ __html: title }}
-          ></h3>
-        </header>
+          className="relative !bg-opacity-0 bg-blue-500 bg-green-500 bg-indigo-500 shadow-md rounded-sm border border-gray-200">
         <div
-          className="text-sm mb-2 h-10"
-          dangerouslySetInnerHTML={{ __html: description }}
+            className={`absolute top-0 left-0 right-0 h-0.5 bg-${bg}-500`}
+            aria-hidden="true"
         ></div>
-        <div className="font-bold mb-4">
-          <span className="text-2xl">￥</span>
-          <span className="text-3xl" x-text="annual ? '14' : '19'">
+        <div className="px-5 pt-5 pb-6 border-b border-gray-200">
+          <header className="flex items-center mb-2">
+            <div
+                className={`w-6 h-6 rounded-full flex-shrink-0 bg-${bg}-500 bg-gradient-to-tr from-${bg}-500 to-${bg}-300 mr-3`}
+            >
+              <svg className="w-6 h-6 fill-white" viewBox="0 0 24 24">
+                <path
+                    d="M12 17a.833.833 0 01-.833-.833 3.333 3.333 0 00-3.334-3.334.833.833 0 110-1.666 3.333 3.333 0 003.334-3.334.833.833 0 111.666 0 3.333 3.333 0 003.334 3.334.833.833 0 110 1.666 3.333 3.333 0 00-3.334 3.334c0 .46-.373.833-.833.833z"/>
+              </svg>
+            </div>
+            <h3
+                className="text-lg font-semibold"
+                dangerouslySetInnerHTML={{__html: title}}
+            ></h3>
+          </header>
+          <div
+              className="text-sm mb-2 h-10"
+              dangerouslySetInnerHTML={{__html: description}}
+          ></div>
+          <div className="font-bold mb-4">
+            <span className="text-2xl">￥</span>
+            <span className="text-3xl" x-text="annual ? '14' : '19'">
             {price}
-            {unit}
+              {unit}
           </span>
-          <span className="text-gray-500 font-medium text-sm">/{duration}</span>
-        </div>
-        <button
-          className={`font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-gray-200 rounded leading-5 shadow-sm transition duration-150 ease-in-out focus:outline-none  w-full hover:scale-105 duration-300
+            <span className=" font-medium text-sm">/{duration}</span>
+          </div>
+          <button
+              className={`font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-gray-200 rounded leading-5 shadow-sm transition duration-150 ease-in-out focus:outline-none  w-full hover:scale-105 duration-300
                     ${
-                      disabled
-                        ? 'border-gray-200 border-transparent focus-visible:ring-2 focus:outline-none bg-gray-100 text-gray-400 cursor-not-allowed'
-                        : `hover:border-gray-300 focus-visible:ring-2 text-white bg-${bg}-500 hover:bg-${bg}-600`
-                    }`}
+                  disabled
+                      ? ' focus-visible:ring-2 focus:outline-none  cursor-not-allowed'
+                      : `hover:border-gray-300 focus-visible:ring-2  bg-${bg}-500 hover:bg-${bg}-600`
+              }`}
           onClick={() => {
             onClick(info)
             fetchUserInfo(true)

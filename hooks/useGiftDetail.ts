@@ -3,7 +3,7 @@ import { fetchGiftItem, GiftDetail, receiveGiftItem } from '../service/gift'
 import useVersionValid from './useVersionValid'
 
 export function fetchData(id: string, byExt: boolean) {
-  return fetchGiftItem(id, byExt).then(function (res) {
+  return fetchGiftItem(id).then(function (res) {
     return res?.data?.gift || null
   })
 }
@@ -29,7 +29,6 @@ export default function useGiftDetail(id: string) {
         giftId: id,
         email: userInfo?.email || '',
       },
-      valid
     ).then(function (res) {
       // @ts-ignore
       data.mutate({

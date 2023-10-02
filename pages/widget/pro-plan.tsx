@@ -4,7 +4,7 @@ import React from 'react'
 export default function ProPlan() {
   return (
     <Plans>
-      <div className="p-2 text-color-300">
+      <div className="p-2 text-muted-foreground">
         <ul>
           <li>
             VIP可优先使用部分功能，普通用户会滞后一段时间，限制会逐步放开。

@@ -40,10 +40,8 @@ export default class ErrorBoundary extends React.Component<{
     if (this.state.hasError) {
       // @ts-ignore
       return this.props.fallback({ error: this.state.error })
-      // You can render any custom fallback UI\
     }
 
-    // @ts-ignore
     return this.props.children
   }
 }

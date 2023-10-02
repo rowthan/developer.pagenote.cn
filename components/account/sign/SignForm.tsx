@@ -1,15 +1,16 @@
-import { useForm } from 'react-hook-form'
-import { ReactElement, useCallback, useEffect, useState } from 'react'
+import {useForm} from 'react-hook-form'
+import {useCallback, useEffect, useState} from 'react'
 import useUserInfo from '../../../hooks/useUserInfo'
 import {
-  doSignInByValid,
+  authCodeToToken,
   requestValidate,
 } from '../../../service/account'
 import useVersionValid from '../../../hooks/useVersionValid'
 import dayjs from 'dayjs'
 import useWhoAmi from '../../../hooks/useWhoAmi'
-import { AwesomeButton } from 'react-awesome-button'
 import 'react-awesome-button/dist/styles.css'
+import {Button} from "../../../@/components/ui/button";
+import {toast} from "../../../@/components/ui/use-toast";
 
 enum SubmitState {
   unset = 0,
@@ -26,7 +27,7 @@ interface FormData {
 
 const LAST_CACHE_EMAIL_KEY = 'last_signin_email'
 const TOKEN_DURATION = 60 * 1000 * 10
-export default function SignForm(props: { children?: ReactElement }) {
+export default function SignForm(props: { onFinished?: () => void, validateType: 'signin' | 'bindEmail' }) {
   const [state, setState] = useState<boolean>(false)
   const [user, refresh, update] = useUserInfo()
   const [tokenInfo, setTokenInfo] = useState({
@@ -69,9 +70,8 @@ export default function SignForm(props: { children?: ReactElement }) {
         uid: uid,
         email: email,
         publicText: newPublicText,
-        validateType: 'signin'
+        validateType: props.validateType || 'signin'
       },
-      valid
     )
       .then(function (res) {
         if (res?.success) {
@@ -93,18 +93,25 @@ export default function SignForm(props: { children?: ReactElement }) {
     const { validateText } = getValues()
     setTip('')
     setState(true)
-    doSignInByValid(
+    authCodeToToken(
         {
           publicText: tokenInfo.publicText,
           validateText: validateText,
+          validateType: props.validateType || 'signin',
+          authType: 'email'
         },
-        valid
     )
         .then(function (signRes) {
-          const token = signRes?.data?.doSignInByValid?.pagenote_t
+          const token = signRes?.data?.oauth?.pagenote_t
           console.log('登录结果', token, signRes)
           if (token) {
             update(token)
+            toast({
+              title: '登录成功，正在跳转中'
+            });
+            setTimeout(function () {
+              props.onFinished && props.onFinished()
+            }, 2000)
           }
           if (signRes?.error) {
             setTip(signRes.error)
@@ -150,7 +157,7 @@ export default function SignForm(props: { children?: ReactElement }) {
           <div>
             <div>
               <div>
-                登录请求
+                验证请求
                 <span className={'text-xs text-gray-300'}>
                   ({tokenInfo.publicText})
                 </span>
@@ -178,9 +185,9 @@ export default function SignForm(props: { children?: ReactElement }) {
       )}
 
       <div>
-        <AwesomeButton disabled={state} type="primary" size="medium">
-          {publicTextValid ? '验证' : '请求登录/注册'}
-        </AwesomeButton>
+        <Button disabled={state} loading={state}>
+          {publicTextValid ? '验证' : '请求'}
+        </Button>
       </div>
 
       <div className={'text-error text-sm'}>{tip}</div>

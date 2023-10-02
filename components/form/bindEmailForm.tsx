@@ -18,7 +18,6 @@ import {toast} from "../../@/components/ui/use-toast";
 
 interface Props {
     children?: ReactNode;
-    auth: AuthInfo
     onFinished: ()=>void
 }
 
@@ -32,8 +31,8 @@ const FormSchema = z.object({
     publicText: z.string(),
 })
 
-export default function UnbindForm(props: Props) {
-    const {auth, onFinished} = props;
+export default function BindEmailForm(props: Props) {
+    const {children, onFinished} = props;
     const [loading, setLoading] = useState(false)
     const [userinfo] = useUserInfo()
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -48,13 +47,13 @@ export default function UnbindForm(props: Props) {
         setLoading(true)
         form.clearErrors()
         requestValidate({
-            publicText: auth.authId,
-            validateType: 'unbind',
+            publicText: '',
+            validateType: 'bindEmail',
             uid: userinfo?.profile?.uid,
         }).then(function (res) {
             form.setValue('publicText', res?.data?.requestValidate?.publicText || '')
             setLoading(false)
-            if (res?.error) {
+            if(res?.error){
                 toast({
                     variant: 'destructive',
                     title: '请求失败',
@@ -67,33 +66,7 @@ export default function UnbindForm(props: Props) {
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
         setLoading(true)
-        const unbindForm = {
-            ...data,
-            authId: auth.authId,
-            authType: auth.authType,
-        }
 
-        unBindAuth(unbindForm).then(function (res) {
-            if (!res) {
-                form.setError('validateText', {
-                    message: '请求超时，请重试'
-                })
-                return;
-            }
-            if (res?.error) {
-                form.setError('validateText', {
-                    message: res?.error?.toString()
-                })
-            } else if (res?.data?.unBindAuth?.success) {
-                toast({
-                    title: "已成功取消绑定",
-                    description: '第三方账号信息已从 PAGENOTE 删除'
-                })
-                onFinished()
-            }
-        }).finally(function () {
-            setLoading(false)
-        })
     }
 
     const values = form.getValues()
@@ -102,7 +75,7 @@ export default function UnbindForm(props: Props) {
         <>
             <Button loading={loading} disabled={loading} type={'button'} onClick={requestValidateCode}>
                 {
-                    values.publicText ? `验证码已发送至你邮箱，请查收。点击重新请求` : '请求验证码'
+                    values.publicText ? '验证码已发送至你邮箱，请查收。点击重新请求' : '请求验证码'
                 }
             </Button>
             {
@@ -124,6 +97,7 @@ export default function UnbindForm(props: Props) {
                                 </FormItem>
                             )}
                         />
+                        {children}
                     </form>
                 </Form>
             }
@@ -131,4 +105,4 @@ export default function UnbindForm(props: Props) {
     );
 }
 
-UnbindForm.defaultProps = {}
+BindEmailForm.defaultProps = {}

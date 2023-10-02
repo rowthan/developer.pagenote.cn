@@ -1,15 +1,16 @@
 import dayjs from 'dayjs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
-import { network } from '@pagenote/shared/lib/extApi'
+import {SERVER_API_HOST} from 'site.config'
+import {unionFetch} from "../utils/fetch";
 
 export function createOrder(price?: number) {
-  return extApi.network.pagenote({
-    url: '/api/graph/site',
-    data: {
-      mutation: `mutation{active(id:"createOrder",remark:"${price}"){id}}`,
-    },
-    method: 'POST',
-  })
+    return extApi.network.pagenote({
+        url: '/api/graph/site',
+        data: {
+            mutation: `mutation{active(id:"createOrder",remark:"${price}"){id}}`,
+        },
+        method: 'POST',
+    })
 }
 
 export function bindTransition(record: string, amount: number) {
@@ -29,19 +30,24 @@ export type UpdateProfile = {
 }
 
 export function updateProfile(updateInfo: UpdateProfile) {
-  return extApi.network.pagenote(
-    {
-      url: '/api/graph/user',
-      data: {
-        mutation: `mutation makeUpdateConfig($avatar: String, $nickname: String) {updateProfile(avatar:$avatar,nickname:$nickname){avatar,nickname}}`,
-        variables: updateInfo,
-      },
-      method: 'POST',
-    },
-    {
-      timeout: 10 * 1000,
-    }
-  )
+    return unionFetch<{
+        updateProfile: {
+            avatar: string,
+            nickname: string
+        }
+    }>(
+        {
+            url: '/api/graph/user',
+            data: {
+                mutation: `mutation makeUpdateConfig($avatar: String, $nickname: String) {updateProfile(avatar:$avatar,nickname:$nickname){avatar,nickname}}`,
+                variables: updateInfo,
+            },
+            method: 'POST',
+        },
+        {
+            timeout: 10 * 1000,
+        }
+    )
 }
 
 const CACHE_DURATION = 60 * 1000 * 10
@@ -93,11 +99,10 @@ export function fetchVersionDetail(version: string) {
 }
 
 export function getWordInfo(word: string) {
-  const HOST = 'https://api.pagenote.cn'
   return fetch(
-    `${HOST}/api/graph/profile?` +
+      `${SERVER_API_HOST}/api/graph/profile?` +
       new URLSearchParams({
-        query: `{keyword(keyword:"${word}"){markdown}}`,
+          query: `{keyword(keyword:"${word}"){markdown}}`,
       })
   ).then(async function (res) {
     const data = await res.json()
