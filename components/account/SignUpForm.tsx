@@ -26,7 +26,6 @@ export default function SignUpForm() {
     email: '',
   })
   const [user, mutation] = useUserInfo()
-  const { installed } = useVersionValid()
   const {
     register,
     handleSubmit,
@@ -44,7 +43,6 @@ export default function SignUpForm() {
         method: 'POST',
         data: data,
       },
-      installed
     )
       .then(function (res) {
         if (res?.success && res.data) {

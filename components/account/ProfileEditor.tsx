@@ -50,8 +50,8 @@ export function ProfileEditor(props:{close:()=>void}) {
                 })
                 setLoading(false)
                 console.log(result, '更新结果')
-                const title = result.data.json.error || '已提交更新请求'
-                if(result.data?.json?.success){
+                const title = result?.error || '已提交更新请求'
+                if (result?.success) {
                     props.close();
                 }
                 toast({

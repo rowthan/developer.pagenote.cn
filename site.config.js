@@ -7,6 +7,5 @@ const AUTH_PAGE_HOST = isDev ? LOCAL_HOST : PRODUCT_HOST
 module.exports = {
   // SERVER_API_HOST: 'http://localhost:3001', //'https://api.pagenote.cn',
   SERVER_API_HOST: 'https://api.pagenote.cn',
-  GITHUB_AUTH_CALLBACK: AUTH_PAGE_HOST + '/oauth/callback_github',
-  NOTION_AUTH_CALLBACK: AUTH_PAGE_HOST + '/oauth/callback_notion',
+  SERVER_WEB_HOST: AUTH_PAGE_HOST
 }

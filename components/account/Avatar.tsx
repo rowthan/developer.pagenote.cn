@@ -16,8 +16,8 @@ export default function Avatar() {
       if (updateInfo.avatar) {
         setNewImg(newImg)
       }
-      if (res?.data?.json?.error) {
-        toast(res.data.json.error)
+      if (res?.error) {
+        toast(res?.error)
       } else {
         fetchUserInfo(true).then(function (res) {
           console.log('refresh force', res)

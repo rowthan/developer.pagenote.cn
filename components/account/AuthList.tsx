@@ -1,5 +1,4 @@
-import useAuthList, {authMap} from 'hooks/useAuthList'
-import {AUTH_LIST} from "./AuthBottoms";
+import useAuthList from 'hooks/useAuthList'
 import {
     Dialog,
     DialogContent,
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import UnbindForm from "../form/UnbindForm";
 import Loading from "../loading/Loading";
+import {AuthConfig, AuthType} from "../../const/oauth";
 
 export default function AuthList() {
     const {data: authList = [], mutate: fetch, isLoading} = useAuthList();
@@ -30,10 +30,10 @@ export default function AuthList() {
             <Card className={'shadow-none'}>
                 <CardHeader className={'border-b'}>
                     <CardTitle>
-                        账号管理
+                        登录管理
                     </CardTitle>
                     <CardDescription>
-                        与当前账号关联账号。
+                        可以通过以下平台登录 PAGENOTE 账号。
                     </CardDescription>
                 </CardHeader>
                 {
@@ -44,8 +44,8 @@ export default function AuthList() {
                         <li key={index} className="flex justify-between items-center px-4 hover:bg-accent">
                             <div className="flex flex-col items-center justify-center w-10 h-10 mr-4">
                                 <img
-                                    alt="profil"
-                                    src={authMap[item.authType]?.platformIcon}
+                                    alt={item.authType}
+                                    src={AuthConfig[item.authType]?.icon}
                                     className="mx-auto object-cover rounded-full h-6 w-6 bg-white"
                                 />
                             </div>
@@ -66,7 +66,7 @@ export default function AuthList() {
                                     </div>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuItem disabled={item.authType === 'email'} onClick={() => {
+                                    <DropdownMenuItem onClick={() => {
                                         setIndex(index)
                                     }}>
                                         取消绑定
@@ -83,11 +83,11 @@ export default function AuthList() {
                     <DropdownMenuContent className="w-full">
                         <DropdownMenuGroup>
                             {
-                                AUTH_LIST.map((item) => (
-                                    <DropdownMenuItem key={item.label} onClick={() => {
-                                        window.open(item.link)
+                                [AuthType.GITHUB, AuthType.NOTION, AuthType.EMAIL].map((item) => (
+                                    <DropdownMenuItem key={AuthConfig[item].label} onClick={() => {
+                                        window.open(AuthConfig[item].link)
                                     }}>
-                                        {item.label}
+                                        {AuthConfig[item].label}
                                     </DropdownMenuItem>
                                 ))
                             }
@@ -97,7 +97,6 @@ export default function AuthList() {
             </Card>
 
             <Dialog open={!!activeAuth} onOpenChange={(open) => {
-                console.log(open, 'on close')
                 setIndex(-1)
             }}>
                 <DialogContent>
