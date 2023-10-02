@@ -10,17 +10,18 @@ import Link from 'next/link'
 export default function Footer() {
   return (
     <>
-      <footer className="footer gap-y-1 px-4 py-4 border-t bg-base-200 text-base-content border-base-300 flex md:justify-center">
+      <footer
+          className="footer gap-y-1 px-4 py-4 border-t bg-accent text-base-content border-base-300 flex md:justify-center">
         <div className="items-center grid-flow-col">
           <Link href="/">
             <h2>PAGENOTE</h2>
           </Link>
           <Link href="/">
             <img
-              src="/images/light-64.png"
-              width={24}
-              height={24}
-              alt={'pagenote'}
+                src="/images/light-64.png"
+                width={24}
+                height={24}
+                alt={'pagenote'}
             />
           </Link>
           <a className="hidden md:block">小而美的网页标记工具.</a>
