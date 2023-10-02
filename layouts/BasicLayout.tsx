@@ -19,41 +19,44 @@ export default function BasicLayout(
     full?: boolean
   }>
 ) {
-  // const { resolvedTheme, setTheme } = useTheme();
+    // const { resolvedTheme, setTheme } = useTheme();
 
-  const { children, nav = true, footer = true, ...customMeta } = props
+    const {children, nav = true, footer = true, ...customMeta} = props
 
-  const meta = {
-      title: isDev ? '开发页面-'+customMeta.title : customMeta.title || '小而美的网页标记工具 PAGENOTE',
-      description: customMeta.description || `一页一记 pagenote，开发者中心.`,
-      type: 'website',
-  }
+    const meta = {
+        title: isDev ? '开发页面-' + customMeta.title : customMeta.title || '小而美的网页标记工具 PAGENOTE',
+        description: customMeta.description || `一页一记 pagenote，开发者中心.`,
+        type: 'website',
+    }
 
-  return (
-    <ErrorBoundary fallback={Error}>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="robots" content="follow, index" />
-        <meta content={meta.description} name="description" />
-        <meta property="og:type" content={meta.type} />
-        <meta property="og:site_name" content="PAGENOTE" />
-        <meta property="og:description" content={meta.description} />
-        <meta property="og:title" content={meta.title} />
-        <link
-          rel="shortcut icon"
-          href="https://pagenote.cn/favicon.ico"
-          type="image/x-icon"
-        />
-      </Head>
-      {nav && (
-        <nav>
-          <Breadcrumbs />
-        </nav>
-      )}
-      <main className="mx-auto relative min-h-fill">{children}</main>
-      <HelpAside />
-      {footer && <Footer />}
-        <Toaster />
-    </ErrorBoundary>
-  )
+    return (
+        // @ts-ignore
+        <ErrorBoundary fallback={Error}>
+            <>
+                <Head>
+                    <title>{meta.title}</title>
+                    <meta name="robots" content="follow, index"/>
+                    <meta content={meta.description} name="description"/>
+                    <meta property="og:type" content={meta.type}/>
+                    <meta property="og:site_name" content="PAGENOTE"/>
+                    <meta property="og:description" content={meta.description}/>
+                    <meta property="og:title" content={meta.title}/>
+                    <link
+                        rel="shortcut icon"
+                        href="https://pagenote.cn/favicon.ico"
+                        type="image/x-icon"
+                    />
+                </Head>
+                {nav && (
+                    <nav>
+                        <Breadcrumbs/>
+                    </nav>
+                )}
+                <main className="mx-auto relative min-h-fill">{children}</main>
+                <HelpAside/>
+                {footer && <Footer/>}
+                <Toaster/>
+            </>
+        </ErrorBoundary>
+    )
 }
