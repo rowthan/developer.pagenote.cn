@@ -1,17 +1,63 @@
-import {useEditor, EditorContent} from '@tiptap/react'
+import {Color} from '@tiptap/extension-color'
+import Placeholder from '@tiptap/extension-placeholder'
+import ListItem from '@tiptap/extension-list-item'
+import TextStyle from '@tiptap/extension-text-style'
+import {EditorProvider} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import React from 'react'
+import {EditorOptions} from "@tiptap/core/src/types";
 
-const Tiptap = () => {
-    const editor = useEditor({
-        extensions: [
-            StarterKit,
-        ],
-        content: '<p>Hello World! 🌎️</p>',
-    })
+
+const extensions = [
+    Color.configure({types: [TextStyle.name, ListItem.name]}),
+    // @ts-ignore
+    TextStyle.configure({types: [ListItem.name]}),
+    StarterKit.configure({
+        bulletList: {
+            keepMarks: true,
+            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
+        orderedList: {
+            keepMarks: true,
+            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
+    }),
+    Placeholder.configure({
+        placeholder: () => {
+            return '在此网页上留下关联备忘录'
+        },
+    }),
+]
+
+export interface EditorChangeContent {
+    htmlContent: string,
+    jsonContent?: Object,
+}
+
+export interface EditorProps {
+    htmlContent: string,
+    jsonContent?: Object,
+    onUpdate: (content: EditorChangeContent) => void
+}
+
+function Editor(props: EditorProps) {
+    const onUpdate: EditorOptions['onUpdate'] = function (data) {
+        props.onUpdate({
+            htmlContent: data.editor.getHTML(),
+            jsonContent: data.editor.getJSON(),
+        })
+        console.log(data, data.editor.getJSON())
+        return undefined
+    }
 
     return (
-        <EditorContent editor={editor}/>
+        // @ts-ignore
+        <EditorProvider onUpdate={onUpdate}
+                        extensions={extensions}
+                        content={props.htmlContent}>
+            <div className={'children'}></div>
+        </EditorProvider>
     )
 }
 
-export default Tiptap
+export default Editor
