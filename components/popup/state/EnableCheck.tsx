@@ -7,56 +7,20 @@ import {
   checkIsPdf,
   checkIsReadMode,
 } from 'utils/check'
-import { enablePagenote, refreshTab } from 'utils/popup'
+import { refreshTab } from 'utils/popup'
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from 'hooks/useTabPagenoteState'
-import {toast} from 'utils/toast'
-import useSettings from 'hooks/useSettings'
-import {useEffect} from 'react'
-import useTabPagenoteData from 'hooks/useTabPagenoteData'
+import { useEffect } from 'react'
 import Tab = chrome.tabs.Tab
 import WindowTabs from '../WindowTabs'
-import OfflineButton from './OfflineButton'
-import {TbCapture} from 'react-icons/tb'
-import ActionButton from "../../button/ActionButton";
-import {LuCopyCheck} from 'react-icons/lu'
-import useTableQuery from "../../../hooks/useTableQuery";
-import {SnapshotResource} from "@pagenote/shared/lib/@types/data";
-import {basePath} from "../../../const/env";
-import {Bookmark} from 'components/popup/bookmark'
-import { Separator } from '@/components/ui/separator'
+import ActionButton from '../../button/ActionButton'
+import { LuCopyCheck } from 'react-icons/lu'
+import { Bookmark } from 'components/popup/Bookmark'
+import PageMemo from '../PageMemo'
 
 export default function EnableCheck() {
-    const [tabState, mutate, isLoading] = useTabPagenoteState()
-    const {tab} = useCurrentTab()
-    const [snapshots = [], refresh] = useTableQuery<SnapshotResource>('lightpage', 'snapshot', {
-        limit: 100,
-        query: {
-            $or: [
-                {
-                    pageKey: tab?.url || ' '
-            },
-            {
-              pageUrl: tab?.url || ' '
-            }
-      ]
-    },
-    sort: {
-      createAt: -1
-    }
-  })
-
-  function enableInject() {
-    if (tabState?.active) {
-      return
-    }
-    enablePagenote(tab?.id).then(function () {
-      setTimeout(function () {
-        mutate()
-      }, 500)
-      toast('已成功开启')
-    })
-  }
+  const [tabState, mutate, isLoading] = useTabPagenoteState()
+  const { tab } = useCurrentTab()
 
   function enableCopy() {
     if (tabState?.enabledCopy) {
@@ -74,98 +38,31 @@ export default function EnableCheck() {
       })
   }
 
-  function capture() {
-    if (!tabState?.active) {
-      toast('请在当前标签页启动后再截图')
-      return
-    }
-    if (snapshots.length > 4) {
-      alert('请删除历史截图，再创建新截图')
-      return;
-    }
+  useEffect(function () {
+    setTimeout(function () {
+      mutate()
+    }, 200)
+  }, [])
 
-    extApi.developer
-        .requestFront({
-            header: {
-                targetTabId: tab?.id,
-            },
-            params: {
-                fullPage: false,
-            },
-            type: 'runCaptureTab',
-        })
-        .then(function (res) {
-            refresh()
-            console.log('更新结果', res)
-        })
-  }
-
-    useEffect(function () {
-        setTimeout(function () {
-            mutate()
-        }, 200)
-    }, [])
-
-
-    // if (!tabState || checkIsPdf(tab?.url || '')) {
-    //     return <Waring tab={tab}/>
-    // }
-
-    const snapshotLength = snapshots?.length || 0
-
-
-    return (
-        <div className={'mx-auto p-4'}>
-            <Bookmark/>
-            <Separator/>
-            {/*<Tiptap/>*/}
-
-
-            <div className={'mt-36'}>
-                <div className={'flex my-2'}>
-                    <ActionButton
-                        tip={'截图'}
-                        disabled={!tabState?.connected}
-                onClick={capture}
-                active={snapshotLength > 0}
-                keyboard={'capture'}
-            >
-              <TbCapture/>
-            </ActionButton>
-            <div className={'ml-2 flex flex-wrap'}>
-              {
-                snapshots.map((item, index) => (
-                    <a href={`${basePath}/ext/img.html?id=${item.key}`} target={'_blank'} key={index}>
-                      <img className={'h-8 border-gray-100 border mx-1 mb-1'} src={item.uri || item.url} alt=""/>
-                    </a>
-                ))
-              }
-                {
-                    snapshots.length === 0 &&
-                    <span className={'text-sm text-color-200'}>保存当前网页为图片</span>
-                }
-            </div>
-          </div>
-            <div className={'my-2'}>
-                <OfflineButton/>
-            </div>
-            <div className={'flex my-2'}>
-                <ActionButton
-                    active={tabState?.enabledCopy}
-                    onClick={enableCopy}
-                    tip={'允许复制'}
-                    keyboard={'enable_copy'}
-                    className={''}
-                >
-                    <LuCopyCheck/>
-                </ActionButton>
-                <div className={'ml-2 text-sm text-color-200'}>
-                    一键破解禁止右键、选择、复制
-                </div>
-            </div>
-        </div>
-
+  return (
+    <div className={'mx-auto '}>
+      <div className={'p-2'}>
+        <Bookmark />
+        <PageMemo url={tab?.url || ''} />
       </div>
+
+      <div className={'absolute flex gap-3 bottom-2 left-2 w-full'}>
+        <ActionButton
+          active={tabState?.enabledCopy}
+          onClick={enableCopy}
+          tip={'允许复制'}
+          keyboard={'enable_copy'}
+          className={''}
+        >
+          <LuCopyCheck />
+        </ActionButton>
+      </div>
+    </div>
   )
 }
 
