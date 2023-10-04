@@ -28,8 +28,8 @@ export default function Img() {
         }).then(function () {
             refresh()
             setTimeout(function () {
-                window.close()
-            }, 2000)
+              window.close()
+            }, 200)
         })
     }
 
