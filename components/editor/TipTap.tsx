@@ -5,7 +5,7 @@ import TextStyle from '@tiptap/extension-text-style'
 import {EditorProvider} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import React from 'react'
-import {EditorOptions} from "@tiptap/core/src/types";
+// import {EditorOptions} from "@tiptap/core/src/types";
 
 
 const extensions = [
@@ -41,23 +41,27 @@ export interface EditorProps {
 }
 
 function Editor(props: EditorProps) {
-    const onUpdate: EditorOptions['onUpdate'] = function (data) {
-        props.onUpdate({
-            htmlContent: data.editor.getHTML(),
-            jsonContent: data.editor.getJSON(),
-        })
-        console.log(data, data.editor.getJSON())
-        return undefined
-    }
+  const onUpdate = function (data: {
+    editor: { getHTML: () => any; getJSON: () => any }
+  }) {
+    props.onUpdate({
+      htmlContent: data.editor.getHTML(),
+      jsonContent: data.editor.getJSON(),
+    })
+    console.log(data, data.editor.getJSON())
+    return undefined
+  }
 
-    return (
-        // @ts-ignore
-        <EditorProvider onUpdate={onUpdate}
-                        extensions={extensions}
-                        content={props.htmlContent}>
-            <div className={'children'}></div>
-        </EditorProvider>
-    )
+  return (
+    // @ts-ignore
+    <EditorProvider
+      onUpdate={onUpdate}
+      extensions={extensions}
+      content={props.htmlContent}
+    >
+      <div className={'children'}></div>
+    </EditorProvider>
+  )
 }
 
 export default Editor
