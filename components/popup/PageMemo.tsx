@@ -79,16 +79,24 @@ export default function PageMemo(props: Props) {
     }
 
     return (
-        <div className="mt-3 rounded min-h-10 border border-accent text-sm">
-            {
-                notes.map((item)=>(
-                    <div key={item.key} className={'min-h-[40px] max-h-[340px] overflow-auto'}>
-                        <Tiptap htmlContent={item.html||''} onUpdate={(data)=>{onUpdate(data,item.key)}}/>
-                    </div>
-                ))
+      <div className="mt-3 rounded min-h-10 border border-accent text-sm">
+        {notes.map((item) => (
+          <div
+            key={item.key}
+            className={
+              'min-h-[40px] max-h-[340px] overflow-auto bg-[#fbf4edc7] dark:bg-[#4c3d2fc7]'
             }
-        </div>
-    );
+          >
+            <Tiptap
+              htmlContent={item.html || ''}
+              onUpdate={(data) => {
+                onUpdate(data, item.key)
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    )
 }
 
 PageMemo.defaultProps = {}
