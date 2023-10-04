@@ -15,6 +15,8 @@ export default function StorageInfo(props: Props) {
   const [lightStorage, loadingLight] = useStorage('lightpage', 'light')
   const [snapshotStorage, loadingSnapshot] = useStorage('lightpage', 'snapshot')
   const [htmlStorage, loadingHtml] = useStorage('resource', 'html')
+  const [noteStorage] = useStorage('lightpage', 'note')
+
   const [whoAmI] = useWhoAmi()
   const loading = loadingHtml || loadingLight || loadingSnapshot || loadingPage
   const total =
@@ -39,12 +41,17 @@ export default function StorageInfo(props: Props) {
       name: '截图',
       usage: snapshotStorage.usage,
       bg: '#f6d647',
-      link: `${basePath}/ext/gallery.html`
+      link: `${basePath}/ext/gallery.html`,
     },
     {
       name: '离线html',
       usage: htmlStorage.usage,
       bg: '#4467a8',
+    },
+    {
+      name: '备忘录',
+      usage: noteStorage.usage,
+      bg: '#b47d41',
     },
   ]
 
@@ -87,12 +94,14 @@ export default function StorageInfo(props: Props) {
                 key={item.name}
               >
                 <div
-                    className={'w-2 h-2 rounded-full mr-1'}
-                    style={{
-                      backgroundColor: item.bg,
-                    }}
+                  className={'w-2 h-2 rounded-full mr-1'}
+                  style={{
+                    backgroundColor: item.bg,
+                  }}
                 ></div>
-                <a href={item.link} target={'_blank'}>{item.name}</a>
+                <a href={item.link} target={'_blank'}>
+                  {item.name}
+                </a>
               </div>
             ))
           )}

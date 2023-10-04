@@ -55,6 +55,7 @@ function Editor(props: EditorProps) {
   return (
     // @ts-ignore
     <EditorProvider
+      autofocus={true}
       onUpdate={onUpdate}
       extensions={extensions}
       content={props.htmlContent}
