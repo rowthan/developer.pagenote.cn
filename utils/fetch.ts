@@ -26,7 +26,7 @@ export async function unionFetch<T>(
   if (byExtFlag) {
     return extApi.network.pagenote(request, header).then(function (res) {
       // 代理超时，重新请求
-      if (res.status === RESPONSE_STATUS_CODE.TIMEOUT) {
+      if (res?.status === RESPONSE_STATUS_CODE.TIMEOUT) {
         console.log('timeout retry')
         checkExtAlive()
         if (!retry) {
