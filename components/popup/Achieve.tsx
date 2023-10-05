@@ -1,5 +1,5 @@
 import React from 'react'
-import { OfflineButton, CaptureButton, LightInfo } from './state/OfflineButton'
+import { PageInfo, CaptureButton, LightInfo } from './state/PageInfo'
 
 interface Props {
   pageKey?: string
@@ -10,7 +10,7 @@ export default function Achieve() {
     <div className="">
       <div className={'flex gap-8'}>
         <CaptureButton />
-        <OfflineButton />
+        <PageInfo />
         <LightInfo />
       </div>
     </div>

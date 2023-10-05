@@ -10,8 +10,10 @@ import OfflineHTML = html.OfflineHTML
 import useTableQuery from 'hooks/useTableQuery'
 import { SnapshotResource, Step } from '@pagenote/shared/lib/@types/data'
 import { TbCapture } from 'react-icons/tb'
+import { CameraIcon } from '@radix-ui/react-icons'
 import DisableButton from './DisableButton'
 import KeyboardTip from '../../KeyboardTip'
+import IconButton from '../../button/IconButton'
 
 function Item(props: {
   left: ReactNode
@@ -20,29 +22,21 @@ function Item(props: {
   right: ReactNode
 }) {
   return (
-    <div className={'inline-flex items-center gap-1 text-muted-foreground'}>
-      <div
-        onClick={props.leftClick}
-        className={
-          'cursor-pointer hover:bg-muted hover:text-accent-foreground rounded-md'
-        }
-      >
-        {props.left}
-      </div>
-      <div
-        onClick={props.rightClick}
-        className={
-          'px-1 text-xs cursor-pointer hover:bg-muted hover:text-accent-foreground'
-        }
-      >
+    <div
+      className={
+        'inline-flex items-center gap-1 text-muted-foreground min-w-[60px]'
+      }
+    >
+      <IconButton onClick={props.leftClick}>{props.left}</IconButton>
+      <IconButton onClick={props.rightClick} className={'px-1 text-xs'}>
         {props.right}
-      </div>
+      </IconButton>
     </div>
   )
 }
 
-export function OfflineButton() {
-  const { tab } = useCurrentTab()
+export function PageInfo() {
+  const {tab} = useCurrentTab()
   const [resourceList] = useTableQuery<OfflineHTML>('resource', 'html', {
     limit: 9,
     query: {
@@ -186,7 +180,7 @@ export function CaptureButton(props: Props) {
       left={
         <KeyboardTip command={'capture'} tip={'截图网页'}>
           <span>
-            <TbCapture />
+            <CameraIcon />
           </span>
         </KeyboardTip>
       }
