@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageInfo, CaptureButton, LightInfo } from './state/PageInfo'
+import { CaptureButton, LightInfo, PageInfo } from './state/PageInfo'
 
 interface Props {
   pageKey?: string
@@ -8,7 +8,7 @@ interface Props {
 export default function Achieve() {
   return (
     <div className="">
-      <div className={'flex gap-8'}>
+      <div className={'flex gap-4 items-center'}>
         <CaptureButton />
         <PageInfo />
         <LightInfo />

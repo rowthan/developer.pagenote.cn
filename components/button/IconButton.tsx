@@ -1,5 +1,6 @@
-import { type ReactNode } from 'react'
 import * as React from 'react'
+import { type ReactNode } from 'react'
+import classNames from 'classnames'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode
@@ -11,7 +12,11 @@ function IconButton(props: Props, ref) {
   return (
     <button
       {...left}
-      className={`px-1 inline-block hover:bg-muted hover:text-accent-foreground rounded-md ${className}`}
+      className={classNames(
+        `inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 z-10 inline-block hover:bg-muted hover:text-accent-foreground rounded-md ${className}`,
+        'hover:shadow',
+        'p-1'
+      )}
     >
       {children}
     </button>

@@ -36,12 +36,18 @@ export default function useWebpage(key: string = '') {
         ...updateData,
       })
 
-      extApi.page
-        .update({
-          data: updateData,
-          query: {
-            key: key,
-          },
+      const webpage: Partial<WebPage> = {
+        key: key,
+        url: key,
+        ...data,
+        ...updateData,
+      }
+
+      extApi.table
+        .put({
+          db: 'lightpage',
+          table: 'webpage',
+          params: [webpage],
         })
         .then(function (res) {
           mutate()

@@ -4,16 +4,13 @@ import useCurrentTab from 'hooks/useCurrentTab'
 import { toast } from 'utils/toast'
 import { basePath } from 'const/env'
 import { html } from '@pagenote/shared/lib/extApi'
-import { RiDownloadCloudLine } from 'react-icons/ri'
-
-import OfflineHTML = html.OfflineHTML
+import { CameraIcon, CardStackPlusIcon } from '@radix-ui/react-icons'
 import useTableQuery from 'hooks/useTableQuery'
 import { SnapshotResource, Step } from '@pagenote/shared/lib/@types/data'
-import { TbCapture } from 'react-icons/tb'
-import { CameraIcon } from '@radix-ui/react-icons'
 import DisableButton from './DisableButton'
 import KeyboardTip from '../../KeyboardTip'
 import IconButton from '../../button/IconButton'
+import OfflineHTML = html.OfflineHTML
 
 function Item(props: {
   left: ReactNode
@@ -24,11 +21,11 @@ function Item(props: {
   return (
     <div
       className={
-        'inline-flex items-center gap-1 text-muted-foreground min-w-[60px]'
+        'inline-flex items-center gap-[2px] text-muted-foreground min-w-[40px]'
       }
     >
       <IconButton onClick={props.leftClick}>{props.left}</IconButton>
-      <IconButton onClick={props.rightClick} className={'px-1 text-xs'}>
+      <IconButton onClick={props.rightClick} className={'text-xs'}>
         {props.right}
       </IconButton>
     </div>
@@ -84,7 +81,7 @@ export function PageInfo() {
       left={
         <KeyboardTip tip={'存档网页'}>
           <span>
-            <RiDownloadCloudLine />
+            <CardStackPlusIcon />
           </span>
         </KeyboardTip>
       }

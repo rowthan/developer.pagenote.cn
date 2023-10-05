@@ -26,7 +26,9 @@ npm run build-ext
 > 为了保证组件的简单、通用，请尽量使用以下 css 套件完成样式绘制，组件推荐 shadcn。
 
 * [tailwind css ](https://www.tailwindcss.cn/docs/preflight)
-* [shadcn](https://ui.shadcn.com/)
+* [组件库 shadcn](https://ui.shadcn.com/)
+* [图标库](https://www.radix-ui.com/icons)
+* [图标库]()
 
 ## todo
 

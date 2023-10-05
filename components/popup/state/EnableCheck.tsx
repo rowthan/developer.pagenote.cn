@@ -10,13 +10,14 @@ import {
 import { refreshTab } from 'utils/popup'
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from 'hooks/useTabPagenoteState'
-import { useEffect } from 'react'
-import Tab = chrome.tabs.Tab
+import { useEffect, useMemo } from 'react'
 import WindowTabs from '../WindowTabs'
 import ActionButton from '../../button/ActionButton'
 import { LuCopyCheck } from 'react-icons/lu'
 import { Bookmark } from 'components/popup/Bookmark'
 import PageMemo from '../PageMemo'
+import Tagfy from '../../tag/Tagfy'
+import Tab = chrome.tabs.Tab
 
 export default function EnableCheck() {
   const [tabState, mutate, isLoading] = useTabPagenoteState()
@@ -49,6 +50,14 @@ export default function EnableCheck() {
       <div className={'p-2'}>
         <Bookmark />
         <PageMemo url={tab?.url || ''} />
+        <div className={'my-4'}>
+          {useMemo(
+            () => (
+              <Tagfy pageKey={tab?.url || ''} />
+            ),
+            [tab?.url]
+          )}
+        </div>
       </div>
 
       <div className={'absolute flex gap-3 bottom-2 left-2 w-full'}>
