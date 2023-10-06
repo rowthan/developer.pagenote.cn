@@ -19,11 +19,8 @@ import {
   removeBackup,
 } from './db'
 import { pick } from 'next/dist/lib/pick'
-import UploadBackup from './UploadBackup'
 import { toast } from '../../utils/toast'
 import { importLights, importPages, importSnapshots } from './api'
-import DeveloperTip from '../DeveloperTip'
-import { developerTask } from '../../const/developerTask'
 
 const PAGE_SIZE = 50
 export default function BackupList() {
@@ -162,8 +159,8 @@ export default function BackupList() {
           pages: pages,
           snapshots: snapshots,
           remark: `共计 ${lights.length} 个标记； ${pages.length} 个网页; ${snapshots.length} 个截图快照`,
-          resources: [],
           size: 0,
+          items: [],
           version: BackupVersion.version4,
         })
           .then(function () {
@@ -261,18 +258,16 @@ export default function BackupList() {
           <tfoot>
             <tr>
               <th>共计{backupList.length}</th>
-              <th colSpan={3}>
-                <UploadBackup onUpload={loadList} />
-              </th>
+              <th colSpan={3}>{/*<UploadBackup onUpload={loadList} />*/}</th>
               <th colSpan={2}>
-                <button
-                  disabled={loading}
-                  onClick={createNewBackup}
-                  className="btn btn-outline btn-success"
-                >
-                  创建新的 备份时间节点
-                </button>
-                <DeveloperTip taskInfo={developerTask.importPart} />
+                {/*<button*/}
+                {/*  disabled={loading}*/}
+                {/*  onClick={createNewBackup}*/}
+                {/*  className="btn btn-outline btn-success"*/}
+                {/*>*/}
+                {/*  创建新的 备份时间节点*/}
+                {/*</button>*/}
+                {/*<DeveloperTip taskInfo={developerTask.importPart} />*/}
 
                 {loading && (
                   <div className="fixed bottom-0 max-w-lg alert alert-info shadow-lg">

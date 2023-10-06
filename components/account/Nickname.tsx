@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,8 +5,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import useUserInfo from "../../hooks/useUserInfo";
+} from '@/components/ui/dropdown-menu'
+import useUserInfo from '../../hooks/useUserInfo'
 import {
   Dialog,
   DialogContent,
@@ -15,52 +14,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import React, {useState} from "react";
-import {ProfileEditor} from "./ProfileEditor";
+} from '@/components/ui/dialog'
+import React, { useState } from 'react'
+import { ProfileEditor } from './ProfileEditor'
+import { DialogPortal } from '@radix-ui/react-dialog'
 
 interface Props {
   nickname: string
 }
+
 export default function Nickname(props: Props) {
   const [data, mutate, setToken] = useUserInfo()
-  const [open,setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+
   function signout() {
     setToken(null)
   }
+
   return (
-      <>
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="link" >{data?.profile.nickname}</Button>
+          <DropdownMenuTrigger>
+            <span>{data?.profile.nickname}</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
-              <div className={'p-1'}>
-                用户ID：{data?.profile?.uid}
-              </div>
+              <div className={'p-1'}>用户ID：{data?.profile?.uid}</div>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={()=>{setOpen(true)}}>编辑资料</DropdownMenuItem>
+            <DialogTrigger asChild>
+              <DropdownMenuItem>编辑资料</DropdownMenuItem>
+            </DialogTrigger>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={signout}>
-              退出账号
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={signout}>退出账号</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Dialog onOpenChange={setOpen} open={open}>
-          <DialogTrigger asChild>
-          </DialogTrigger>
+
+        <DialogPortal>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>更新账号信息</DialogTitle>
-              <DialogDescription>
-
-              </DialogDescription>
+              <DialogDescription></DialogDescription>
             </DialogHeader>
-            <ProfileEditor close={()=>{setOpen(false)}}/>
+            <ProfileEditor
+              close={() => {
+                setOpen(false)
+              }}
+            />
           </DialogContent>
-        </Dialog>
-      </>
+        </DialogPortal>
+      </Dialog>
+    </>
   )
 }

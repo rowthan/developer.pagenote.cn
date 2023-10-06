@@ -30,33 +30,38 @@ export default function BasicLayout(
     }
 
     return (
-        // @ts-ignore
-        <ErrorBoundary fallback={Error}>
-            <>
-                <Head>
-                    <title>{meta.title}</title>
-                    <meta name="robots" content="follow, index"/>
-                    <meta content={meta.description} name="description"/>
-                    <meta property="og:type" content={meta.type}/>
-                    <meta property="og:site_name" content="PAGENOTE"/>
-                    <meta property="og:description" content={meta.description}/>
-                    <meta property="og:title" content={meta.title}/>
-                    <link
-                        rel="shortcut icon"
-                        href="https://pagenote.cn/favicon.ico"
-                        type="image/x-icon"
-                    />
-                </Head>
-                {nav && (
-                    <nav>
-                        <Breadcrumbs/>
-                    </nav>
-                )}
-                <main className="mx-auto relative min-h-fill">{children}</main>
-                <HelpAside/>
-                {footer && <Footer/>}
-                <Toaster/>
-            </>
-        </ErrorBoundary>
+      // @ts-ignore
+      <ErrorBoundary fallback={Error}>
+        <>
+          <Head>
+            <title>{meta.title}</title>
+            <meta name="robots" content="follow, index" />
+            <meta content={meta.description} name="description" />
+            <meta
+              name={'keywords'}
+              content="pagenote,小而美,网页标记,插件,浏览器"
+            />
+
+            <meta property="og:type" content={meta.type} />
+            <meta property="og:site_name" content="PAGENOTE" />
+            <meta property="og:description" content={meta.description} />
+            <meta property="og:title" content={meta.title} />
+            <link
+              rel="shortcut icon"
+              href="https://pagenote.cn/favicon.ico"
+              type="image/x-icon"
+            />
+          </Head>
+          {nav && (
+            <nav>
+              <Breadcrumbs />
+            </nav>
+          )}
+          <main className="mx-auto relative min-h-fill">{children}</main>
+          <HelpAside />
+          {footer && <Footer />}
+          <Toaster />
+        </>
+      </ErrorBoundary>
     )
 }

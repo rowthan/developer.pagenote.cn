@@ -13,13 +13,9 @@ export default function useWhoAmi(
   })
 
   function fetchInfo() {
-    return extApi.user
-      .getWhoAmI(undefined, {
-        timeout: 2000,
-      })
-      .then(function (res) {
-        return res.data || {}
-      })
+    return extApi.user.getWhoAmI().then(function (res) {
+      return res.data || {}
+    })
   }
 
   return [data, isLoading]

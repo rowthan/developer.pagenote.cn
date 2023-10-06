@@ -1,25 +1,27 @@
-import Tab = chrome.tabs.Tab;
-import extApi from "@pagenote/shared/lib/pagenote-api";
+import Tab = chrome.tabs.Tab
+import extApi from '@pagenote/shared/lib/pagenote-api'
 
-export function refreshTab(tab?:Tab) {
-    function callback() {
-        setTimeout(function () {
-            window.location.reload();
-        },1000)
+export function refreshTab(tab?: Tab) {
+  function callback() {
+    setTimeout(function () {
+      window.location.reload()
+    }, 1000)
+  }
+  if (tab?.id) {
+    if (chrome?.tabs) {
+      chrome?.tabs?.reload(tab?.id, {}, callback)
+    } else {
+      extApi.developer
+        .chrome({
+          namespace: 'tabs',
+          type: 'reload',
+          args: [tab?.id],
+        })
+        .then(function () {
+          callback()
+        })
     }
-    if (tab?.id) {
-        if(chrome?.tabs){
-            chrome?.tabs?.reload(tab?.id, {}, callback)
-        }else{
-            extApi.developer.chrome({
-                namespace: 'tabs',
-                type: 'reload',
-                args: [tab?.id],
-            }).then(function () {
-                callback()
-            })
-        }
-    }
+  }
 }
 
 export function focus(tab: Tab) {
@@ -63,20 +65,6 @@ export function focus(tab: Tab) {
     }
 }
 
-export function fetchStatus(tabId?: number) {
-    // @ts-ignore
-    return extApi.developer.requestFront({
-        type: 'fetchStatus',
-        params: undefined,
-        // @ts-ignore
-        header:{
-            targetTabId: tabId,
-            timeout: 2000,
-        }
-    }).then(function (res) {
-        return res.data
-    })
-}
 
 export function enablePagenote(tabId?: number) {
     return extApi.developer.requestFront({
