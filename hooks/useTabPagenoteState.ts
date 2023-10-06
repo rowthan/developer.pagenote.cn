@@ -21,6 +21,7 @@ type TabState = {
   connected: false
   active: false
   enabledCopy: false
+  keywords?: string[]
 }
 export default function useTabPagenoteState(
   tabId?: number
