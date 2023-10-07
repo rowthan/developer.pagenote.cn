@@ -114,15 +114,17 @@ export default function Tagfy(props: Props) {
             <div className={'mt-2'}>
               <h3>
                 推荐标签
-                <Button
-                  onClick={() => {
-                    addTag(keywords)
-                  }}
-                  variant={'link'}
-                  size={'sm'}
-                >
-                  一键采纳
-                </Button>
+                {keywords.length > 0 && (
+                  <Button
+                    onClick={() => {
+                      addTag(keywords)
+                    }}
+                    variant={'link'}
+                    size={'sm'}
+                  >
+                    一键采纳
+                  </Button>
+                )}
               </h3>
               {keywords.map((word, index) =>
                 set.has(word) ? null : (

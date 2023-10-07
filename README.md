@@ -5,8 +5,8 @@
 ## 启动
 
 ```shell
-# 安装依赖, 推荐使用 pnpm 
-pnpm install
+# 安装依赖, 推荐使用 yarn 
+yarn install
 ```
 
 ```shell
@@ -27,8 +27,8 @@ npm run build-ext
 
 * [tailwind css ](https://www.tailwindcss.cn/docs/preflight)
 * [组件库 shadcn](https://ui.shadcn.com/)
-* [图标库](https://www.radix-ui.com/icons)
-* [图标库]()
+* [图标库1](https://www.radix-ui.com/icons)
+* [图标库2](https://react-icons.github.io/react-icons/search?q=link)
 
 ## todo
 

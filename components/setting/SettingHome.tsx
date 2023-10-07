@@ -1,5 +1,5 @@
 import React from 'react'
-import BasicSettingLine, {SettingSection} from './BasicSettingLine'
+import BasicSettingLine, { SettingSection } from './BasicSettingLine'
 import useWhoAmi from '../../hooks/useWhoAmi'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 
@@ -21,16 +21,16 @@ export default function SettingHome() {
 
       <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
 
-      {/*<BasicSettingLine*/}
-      {/*  label={'插件版本'}*/}
-      {/*  right={*/}
-      {/*    <span className={'text-xs'}>*/}
-      {/*      <a href="https://pagenote.cn/release" target={'_blank'}>*/}
-      {/*        {whoAmI?.version || '-'}*/}
-      {/*      </a>*/}
-      {/*    </span>*/}
-      {/*  }*/}
-      {/*/>*/}
+      <BasicSettingLine
+        label={'插件版本'}
+        right={
+          <span className={'text-xs'}>
+            <a href="https://pagenote.cn/release" target={'_blank'}>
+              {whoAmI?.version || '-'}
+            </a>
+          </span>
+        }
+      />
     </SettingSection>
   )
 }

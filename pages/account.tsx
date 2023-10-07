@@ -1,5 +1,5 @@
 import Profle from 'components/account/Profile'
-import BasicLayout from '../layouts/BasicLayout'
+import BasicLayout from 'layouts/BasicLayout'
 
 export default function Account() {
   return (
