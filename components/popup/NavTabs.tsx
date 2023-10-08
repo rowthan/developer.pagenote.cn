@@ -1,33 +1,35 @@
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
-import OutLink from "assets/svg/outlink.svg";
-import HomeSvg from "assets/svg/home.svg";
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import OutLink from 'assets/svg/outlink.svg'
+import HomeSvg from 'assets/svg/home.svg'
 import CloseSvg from 'assets/svg/close.svg'
-import React, {useEffect, useRef} from "react";
-import useWhoAmi from "hooks/useWhoAmi";
-import useCurrentTab from "../../hooks/useCurrentTab";
-import {getSearchKeyFormUrl} from "../../utils/search-engine";
-import useConfig from "../../hooks/useConfig";
+import React, { useEffect, useRef } from 'react'
+import useWhoAmi from 'hooks/useWhoAmi'
+import useCurrentTab from '../../hooks/useCurrentTab'
+import { getSearchKeyFormUrl } from '../../utils/search-engine'
+import useConfig from '../../hooks/useConfig'
 
 interface Tab {
-    label: string,
-    outlink: string,
-    link: string,
+  label: string
+  outlink: string
+  link: string
 }
 
-const tabs: Tab[] = [{
+const tabs: Tab[] = [
+  {
     label: '标签页',
     outlink: '',
-    link: '/'
-}, {
+    link: '/',
+  },
+  {
     label: '临时剪切板',
     outlink: '',
-    link: '/clipboard'
-},
-    {
-        label: '设置',
-        outlink: "",
-        link: '/setting'
-    }
+    link: '/clipboard',
+  },
+  {
+    label: '设置',
+    outlink: '',
+    link: '/setting',
+  },
 ]
 export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyword: string) => void }) {
     const [whoAmi] = useWhoAmi();
@@ -117,7 +119,7 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
           className={`link absolute right-5 top-1 tooltip tooltip-left flex`}
         >
           <HomeSvg
-            className={'fill-current text-secondary hover:text-primary'}
+            className={'fill-current  hover:text-accent-foreground'}
             width={24}
             height={24}
           />

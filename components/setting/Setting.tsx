@@ -10,7 +10,7 @@ import SettingDetail from './SettingDetail'
 
 export default function Setting() {
   return (
-    <div className={'max-w-3xl m-auto p-5'}>
+    <div className={'max-w-3xl m-auto p-3'}>
       <div className={'mb-4'}>
         <UserCard editable={false} />
       </div>

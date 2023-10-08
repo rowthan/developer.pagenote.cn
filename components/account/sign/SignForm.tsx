@@ -1,16 +1,12 @@
-import {useForm} from 'react-hook-form'
-import {useCallback, useEffect, useState} from 'react'
+import { useForm } from 'react-hook-form'
+import { useCallback, useEffect, useState } from 'react'
 import useUserInfo from '../../../hooks/useUserInfo'
-import {
-  authCodeToToken,
-  requestValidate,
-} from '../../../service/account'
+import { authCodeToToken, requestValidate } from '../../../service/account'
 import useVersionValid from '../../../hooks/useVersionValid'
-import dayjs from 'dayjs'
 import useWhoAmi from '../../../hooks/useWhoAmi'
 import 'react-awesome-button/dist/styles.css'
-import {Button} from "../../../@/components/ui/button";
-import {toast} from "../../../@/components/ui/use-toast";
+import { Button } from '../../../@/components/ui/button'
+import { toast } from '../../../@/components/ui/use-toast'
 
 enum SubmitState {
   unset = 0,
@@ -61,9 +57,7 @@ export default function SignForm(props: { onFinished?: () => void, validateType:
       uid = Number(data.emailOrUid)
     }
     setState(true)
-    const newPublicText = `signin_request_${dayjs(new Date()).format(
-      'YYYY-MM-DD-HH-m'
-    )}_${whoAmI?.did}`
+    const newPublicText = `signin_request_${whoAmI?.did}`
     localStorage.setItem(LAST_CACHE_EMAIL_KEY, `${email || uid || ''}`)
     requestValidate(
       {

@@ -47,7 +47,7 @@ export default function EnableCheck() {
 
   return (
     <div className={'mx-auto '}>
-      <div className={'p-2'}>
+      <div className={'p-3'}>
         <Bookmark />
         <PageMemo url={tab?.url || ''} />
         <div className={'my-4'}>
