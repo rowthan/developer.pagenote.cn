@@ -1,22 +1,26 @@
-import React, {ReactElement, ReactNode, useState} from 'react'
+import React, { ReactElement, ReactNode, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SettingMoreSvg from '../../assets/svg/right-more.svg'
 import classNames from 'classnames'
 import Loading from '../loading/Loading'
 
-
-export function SettingSection(props:{children: ReactNode}) {
-  return(
-      <div className={'border-card bg-card rounded-lg'}>
-        {props.children}
-      </div>
+export function SettingSection(props: {
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <div
+      className={classNames('border-card bg-card rounded-lg', props.className)}
+    >
+      {props.children}
+    </div>
   )
 }
 export default function BasicSettingLine(props: {
   label: string | ReactElement
   subLabel?: string | ReactElement
   path?: string
-  right?: ReactElement
+  right?: ReactNode
   children?: ReactElement
   loading?: boolean
   onClick?: () => void

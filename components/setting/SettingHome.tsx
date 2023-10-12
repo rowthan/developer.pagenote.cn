@@ -15,22 +15,44 @@ export default function SettingHome() {
     window.close()
   }
 
+  function openShortCutSetting() {
+    if (!whoAmI?.extensionShortcutUrl) {
+      alert('当前浏览器不支持直达插件设置中心')
+      return
+    }
+    extApi.developer.chrome({
+      namespace: 'tabs',
+      type: 'create',
+      args: [
+        {
+          url: whoAmI?.extensionShortcutUrl,
+        },
+      ],
+    })
+  }
+
   return (
-    <SettingSection>
-      <BasicSettingLine label={'画笔设置'} path={'/setting/light'} />
+    <>
+      <SettingSection>
+        <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
 
-      <BasicSettingLine label={'存储空间'} path={'/setting/data'} />
+        <BasicSettingLine label={'画笔设置'} path={'/setting/light'} />
 
-      <BasicSettingLine
-        label={'插件版本'}
-        right={
-          <span className={'text-xs'}>
-            <a href="https://pagenote.cn/release" target={'_blank'}>
-              {whoAmI?.version || '-'}
-            </a>
-          </span>
-        }
-      />
-    </SettingSection>
+        <BasicSettingLine label={'快捷键'} path={'/setting/shortcut'} />
+      </SettingSection>
+
+      <SettingSection className={'mt-6'}>
+        <BasicSettingLine
+          label={'插件版本'}
+          right={
+            <span className={'text-xs'}>
+              <a href="https://pagenote.cn/release" target={'_blank'}>
+                {whoAmI?.version || '-'}
+              </a>
+            </span>
+          }
+        />
+      </SettingSection>
+    </>
   )
 }

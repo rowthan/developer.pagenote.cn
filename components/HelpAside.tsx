@@ -1,4 +1,4 @@
-import { ReactComponentElement, type ReactNode, useState } from 'react'
+import { ReactComponentElement, type ReactNode } from 'react'
 import {
   Popover,
   PopoverContent,
@@ -10,9 +10,7 @@ import RateSvg from '../assets/svg/pingfen.svg'
 import { useRouter } from 'next/router'
 import HelpSvg from '../assets/svg/bangzhu.svg'
 import SettingSvg from '../assets/svg/setting.svg'
-import ShortCutInfo from './ShortCutInfo'
 import { basePath, isExt } from '../const/env'
-import Modal from './Modal'
 
 interface Props {
   children?: ReactNode
@@ -21,7 +19,6 @@ interface Props {
 export default function HelpAside(props: Props) {
     const {children} = props
     const {pathname} = useRouter()
-    const [showShortcut, setShortcut] = useState(false)
     const mounted = useMountedState();
     const asideList: {
         label: string
@@ -56,14 +53,6 @@ export default function HelpAside(props: Props) {
         label: '评分',
         link: 'https://pagenote.cn/rate',
         icon: <RateSvg className={'fill-current inline'} />,
-      })
-    } else {
-      asideList.push({
-        label: '快捷键',
-        icon: <RateSvg className={'fill-current inline'} />,
-        onClick: function () {
-          setShortcut(true)
-        },
       })
     }
 
@@ -108,9 +97,6 @@ export default function HelpAside(props: Props) {
             </Popover>
           )}
         </aside>
-        <Modal open={showShortcut} toggleOpen={setShortcut}>
-          <ShortCutInfo />
-        </Modal>
       </div>
     )
 }

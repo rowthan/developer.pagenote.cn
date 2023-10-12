@@ -7,6 +7,7 @@ import LightSetting from './LightSetting'
 import ImageCloud from '../backup/extension/ImageCloud'
 import ImportAndExport from '../backup/extension/ImportAndExport'
 import SettingDetail from './SettingDetail'
+import Shortcut from './Shortcut'
 
 export default function Setting() {
   return (
@@ -19,6 +20,7 @@ export default function Setting() {
         <Routes>
           <Route index element={<SettingHome />} />
           <Route path={'/light'} element={<LightSetting />} />
+          <Route path={'/shortcut'} element={<Shortcut />} />
           <Route path={'/data'} element={<DataBackup />} />
           <Route
             path={'/data/backup'}
