@@ -1,5 +1,4 @@
 import useUserInfo from '../../hooks/useUserInfo'
-import MoreSvg from '../../assets/svg/more.svg'
 import FreeSvg from 'assets/svg/free.svg'
 import VipSvg from 'assets/svg/vip.svg'
 import dayjs from 'dayjs'
@@ -9,8 +8,8 @@ import React, { useState } from 'react'
 import Modal from '../Modal'
 import UserInfoForm from './UserInfoForm'
 import Avatar from './Avatar'
-import {isExt} from "../../const/env";
-import Nickname from "./Nickname";
+import { isExt } from '../../const/env'
+import Nickname from './Nickname'
 
 interface Props {
   editable: boolean
@@ -25,7 +24,11 @@ export default function UserCard(props: Props) {
   const endAt = bookInfo.expiredAt
   const endDay = endAt ? dayjs(endAt).format('YYYY-MM-DD') : ''
   return (
-    <div className={' rounded-lg p-2 min-w-80 w-full border text-card-foreground bg-[#63b3ed]'}>
+    <div
+      className={
+        ' rounded-lg p-2 min-w-80 w-full border text-card-foreground bg-[#63b3ed]'
+      }
+    >
       <div className={'flex justify-between'}>
         <div className={'flex items-center mb-4'}>
           <div className="avatar">
@@ -47,14 +50,14 @@ export default function UserCard(props: Props) {
           <div className={'ml-4'}>
             {data?.profile?.nickname ? (
               <>
-                  <Nickname nickname={data?.profile?.nickname} />
+                <Nickname nickname={data?.profile?.nickname} />
               </>
             ) : (
               <div>
                 <a
-                    target={isExt ? '_blank' : '_self'}
-                    href="https://pagenote.cn/signin"
-                    className={'btn btn-ghost btn-sm'}
+                  target={isExt ? '_blank' : '_self'}
+                  href="https://pagenote.cn/signin"
+                  className={'btn btn-ghost btn-sm'}
                 >
                   登录
                 </a>
@@ -65,17 +68,15 @@ export default function UserCard(props: Props) {
         <div className={'text-right'}>
           <a
             className={'tooltip tooltip-left'}
-            data-tip={
-              data?.profile?.role ? '已解锁所有功能' : '尚未解锁所有功能'
-            }
+            data-tip={data?.profile?.role ? 'VIP' : '尚未解锁所有功能'}
             href="https://pagenote.cn/pro-plan"
             target={'_blank'}
           >
-              {data?.profile?.role ? (
-                  <VipSvg width={24} height={24}/>
-              ) : (
-                  <FreeSvg width={24} height={24}/>
-              )}
+            {data?.profile?.role ? (
+              <VipSvg width={24} height={24} />
+            ) : (
+              <FreeSvg width={24} height={24} />
+            )}
           </a>
 
           {endDay && (
