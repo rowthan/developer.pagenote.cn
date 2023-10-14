@@ -11,14 +11,17 @@ import useTabPagenoteState from '../../hooks/useTabPagenoteState'
 import Achieve from './Achieve'
 
 export function Bookmark() {
-  const { tab } = useCurrentTab()
+  const {tab} = useCurrentTab()
   const [content] = useTabPagenoteState()
 
   return (
     <div className="w-full p-4 bg-card rounded flex flex-col gap-2">
       <div className={'flex justify-start items-start gap-2.5'}>
         <Avatar className={'rounded'}>
-          <AvatarImage src={tab?.favIconUrl} alt={tab?.title} />
+          <AvatarImage
+            src={tab?.favIconUrl || 'https://pagenote.cn/favicon.ico'}
+            alt={tab?.title}
+          />
           <AvatarFallback>{tab?.title}</AvatarFallback>
         </Avatar>
 

@@ -5,18 +5,19 @@ import Head from 'next/head'
 import NotFound from 'components/error/NotFound'
 
 const redirectMap: Record<string, string> = {
-    '/log': '/developer/log',
-    '/projects': '/developer/project',
-    '/feedback': '/contact/feedback',
-    '/debug': '',
-    '/demo': '/developer/demo',
-    '/trash': '/manage/trash',
-    '/page': '/manage/page',
-    '/light': '/manage/light',
-    '/manage/pages': '/manage/page',
-    '/setting': '/ext/setting',
-    '/pagenote': '/ext/manage',
-    '/signup': '/signin'
+  '/log': '/developer/log',
+  '/projects': '/developer/project',
+  '/feedback': '/contact/feedback',
+  '/debug': '',
+  '/demo': '/developer/demo',
+  '/trash': '/manage/trash',
+  '/page': '/manage/page',
+  '/light': '/manage/light',
+  '/manage/pages': '/manage/page',
+  '/setting': '/ext/setting',
+  '/pagenote': '/ext/manage',
+  '/signup': '/signin',
+  '/me': '/pagenote',
 }
 
 export default function Custom404() {
