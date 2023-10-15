@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import useTableQuery from '../../hooks/useTableQuery'
+import useTableQuery from '../../hooks/table/useTableQuery'
 import { SnapshotResource } from '@pagenote/shared/lib/@types/data'
 import useTabPagenoteData from '../../hooks/useTabPagenoteData'
 import { TbCapture } from 'react-icons/tb'

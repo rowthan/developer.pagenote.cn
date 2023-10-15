@@ -1,11 +1,11 @@
 import BasicLayout from 'layouts/BasicLayout'
-import React, { useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import NavTabs from 'components/popup/NavTabs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import useWhoAmi from 'hooks/useWhoAmi'
-import { Suspense, lazy } from 'react'
 import { useMountedState } from 'react-use'
+import useCurrentTab from '../../hooks/useCurrentTab'
 import RedirectToExt from '../../components/RedirectToExt'
 
 const ClipboardList = lazy(() => import('components/manage/ClipboardList'))
@@ -19,6 +19,7 @@ export default function PopupPage() {
   const [keyword, setKeyword] = useState<string>('')
   const [whoAmi] = useWhoAmi()
   const mounted = useMountedState()
+  const { tab } = useCurrentTab()
 
   useEffect(function () {
     setKeyword(localStorage.getItem(CACHE_SEARCH_KEY) || '')
@@ -49,66 +50,69 @@ export default function PopupPage() {
     return null
   }
   return (
-    <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
-      <RedirectToExt>
-        <div
-          className={
-            'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
-          }
-        >
-          <Router>
-            <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-            <div
-              className={
-                'w-full h-basic relative overflow-hidden overflow-y-auto '
-              }
-            >
-              <Routes>
-                <Route
-                  index
-                  element={
-                    <Suspense>
-                      <CurrentTab />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/clipboard"
-                  element={
-                    <Suspense>
-                      <ClipboardList />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/search"
-                  element={
-                    <Suspense>
-                      <Search keyword={keyword} />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/setting/*"
-                  element={
-                    <Suspense>
-                      <Setting />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="*"
-                  element={
-                    <Suspense>
-                      <CurrentTab />
-                    </Suspense>
-                  }
-                />
-              </Routes>
-            </div>
-          </Router>
-        </div>
-      </RedirectToExt>
+    <BasicLayout
+      nav={false}
+      footer={false}
+      title={'当前标签页-' + tab?.title}
+      full={true}
+    >
+      <div
+        className={
+          'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
+        }
+      >
+        <Router>
+          <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+          <div
+            className={
+              'w-full h-basic relative overflow-hidden overflow-y-auto '
+            }
+          >
+            <Routes>
+              <Route
+                index
+                element={
+                  <Suspense>
+                    <CurrentTab />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/clipboard"
+                element={
+                  <Suspense>
+                    <ClipboardList />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Suspense>
+                    <Search keyword={keyword} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/setting/*"
+                element={
+                  <Suspense>
+                    <Setting />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <Suspense>
+                    <CurrentTab />
+                  </Suspense>
+                }
+              />
+            </Routes>
+          </div>
+        </Router>
+      </div>
     </BasicLayout>
   )
 }
