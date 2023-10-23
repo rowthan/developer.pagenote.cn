@@ -19,7 +19,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import UnbindForm from '../form/UnbindForm'
@@ -36,13 +35,17 @@ export default function AuthList() {
 
   const activeAuth = authList[index]
 
+  function gotoAuth(authType: AuthType) {
+    window.open(AuthConfig[authType].link)
+  }
+
   return (
     <div>
       <Card className={'shadow-none'}>
         <CardHeader className={'border-b relative'}>
-          <CardTitle>登录管理</CardTitle>
+          <CardTitle>账号关联</CardTitle>
           <CardDescription>
-            可以通过以下平台登录 PAGENOTE 账号。
+            选择其他平台账号与 PAGENOTE 插件绑定关联。
           </CardDescription>
           <div className={'absolute right-2 top-2'}>
             <DropdownMenu>
@@ -79,31 +82,52 @@ export default function AuthList() {
                   className="mx-auto object-cover rounded-full h-6 w-6 bg-white"
                 />
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="flex text-xs text-gray-600 dark:text-gray-200">
-                    <button className={'tooltip '} data-tip={item.authEmail}>
-                      {item.authName}
-                    </button>
-                    {item.authAvatar && (
-                      <img
-                        alt="profil"
-                        src={item.authAvatar}
-                        className="mx-auto ml-1 object-cover rounded-full h-6 w-6 bg-white"
-                      />
-                    )}
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem
+
+              <div className={'flex text-sm'}>
+                {item.valid ? (
+                  <span className={'tooltip'} data-tip={'已验证'}>
+                    ✅
+                  </span>
+                ) : (
+                  <button
+                    className={'text-destructive tooltip'}
+                    data-tip={'点击前往验证'}
                     onClick={() => {
-                      setIndex(index)
+                      gotoAuth(item.authType)
                     }}
                   >
-                    取消绑定
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                    ❌未验证
+                  </button>
+                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div className="flex text-xs text-gray-600 dark:text-gray-200">
+                      <button
+                        className={'tooltip ml-1'}
+                        data-tip={item.authEmail}
+                      >
+                        {item.authName}
+                      </button>
+                      {item.authAvatar && (
+                        <img
+                          alt="profil"
+                          src={item.authAvatar}
+                          className="mx-auto ml-1 object-cover rounded-full h-6 w-6 bg-white"
+                        />
+                      )}
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setIndex(index)
+                      }}
+                    >
+                      取消绑定关系
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </li>
           ))}
         </ul>
@@ -120,7 +144,7 @@ export default function AuthList() {
                   <DropdownMenuItem
                     key={AuthConfig[item].label}
                     onClick={() => {
-                      window.open(AuthConfig[item].link)
+                      gotoAuth(item)
                     }}
                   >
                     {AuthConfig[item].label}
