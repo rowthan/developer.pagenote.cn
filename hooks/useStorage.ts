@@ -1,6 +1,5 @@
 import useSWR from 'swr'
 import extApi from '@pagenote/shared/lib/pagenote-api'
-import { get } from 'lodash'
 
 type Storage = {
   usage: number
@@ -28,17 +27,14 @@ export default function useStorage(
         runAfterMillisecond: [0, 60 * 1000],
       },
     }
-    switch (tableName) {
-      case 'webpage':
-        return extApi.page.stat(undefined, header)
-      case 'light':
-        return extApi.light.stat(undefined, header)
-      case 'snapshot':
-        return extApi.snapshot.stat(undefined, header)
-      case 'html':
-        return extApi.html.stat(undefined, header)
-    }
-    return extApi.page.stat(undefined, header)
+    return extApi.table.stat(
+      {
+        db: dbName,
+        table: tableName,
+        params: undefined,
+      },
+      header
+    )
   }
 
   function fetchData() {

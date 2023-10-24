@@ -4,7 +4,8 @@ import { getMb } from 'utils/size'
 import BasicSettingLine from '../../setting/BasicSettingLine'
 import Loading from 'components/loading/Loading'
 import useWhoAmi from 'hooks/useWhoAmi'
-import {basePath} from "const/env";
+import { basePath } from 'const/env'
+import classNames from 'classnames'
 
 interface Props {
   children?: ReactNode
@@ -31,11 +32,13 @@ export default function StorageInfo(props: Props) {
       name: '网页',
       usage: pageStorage.usage,
       bg: '#ff3a51',
+      link: `/pagenote.html`,
     },
     {
       name: '标记',
       usage: lightStorage.usage,
       bg: '#f17c3b',
+      link: `/pagenote.html`,
     },
     {
       name: '截图',
@@ -47,6 +50,7 @@ export default function StorageInfo(props: Props) {
       name: '离线html',
       usage: htmlStorage.usage,
       bg: '#4467a8',
+      link: `${basePath}/ext/offline.html`,
     },
     {
       name: '备忘录',
@@ -99,7 +103,13 @@ export default function StorageInfo(props: Props) {
                     backgroundColor: item.bg,
                   }}
                 ></div>
-                <a href={item.link} target={'_blank'}>
+                <a
+                  href={item.link}
+                  className={classNames({
+                    'hover:underline': !!item.link,
+                  })}
+                  target={'_blank'}
+                >
                   {item.name}
                 </a>
               </div>

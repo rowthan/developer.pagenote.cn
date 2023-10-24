@@ -1,27 +1,30 @@
-import {Collection, dbTableMap} from "const/collection";
-import useSWR from "swr";
-import extApi from "@pagenote/shared/lib/pagenote-api";
-
+import { Collection, dbTableMap } from 'const/collection'
+import useSWR from 'swr'
+import extApi from '@pagenote/shared/lib/pagenote-api'
 
 export default function useKeys<T>(collection: Collection, key: string) {
-  const {data = [], mutate} = useSWR(function () {
+  const { data = [], mutate } = useSWR(function () {
     return `/table/keys/${collection}/${key}`
   }, fetchData)
 
   function fetchData() {
     return extApi.table
-      .keys({
-        ...dbTableMap[collection],
-        params: {
-          key: key
+      .keys(
+        {
+          ...dbTableMap[collection],
+          params: {
+            //   @ts-ignore todo
+            key: key,
+          },
         },
-      },{
-          cacheControl:{
-              maxAgeMillisecond: 1000 * 60 * 30
-          }
-      })
+        {
+          cacheControl: {
+            maxAgeMillisecond: 1000 * 60 * 30,
+          },
+        }
+      )
       .then(function (res) {
-          console.log(res,'keys')
+        console.log(res, 'keys')
         return res.data
       })
   }
