@@ -1,14 +1,16 @@
-import { isDev } from '../const/env'
-import { DEFAULT_BASE_DOC_PATH } from '../const/notion'
+import { isDev } from '../../const/env'
+import { DEFAULT_BASE_DOC_PATH } from '../../const/notion'
+import { getCacheContent } from './cache'
 
 // 制定获取 notion 数据源的接口；默认请求自身服务。
-const WEB_HOST = process.env.WEB_HOST || 'http://localhost:3000'
+const WEB_HOST = process.env.WEB_HOST
 
 export async function getNotionDocDetail(id: string, notFound: boolean = true) {
-  const res = await fetch(`${WEB_HOST}/api/doc?id=${id}`)
   try {
-    const result = await res.json()
-    if (result.recordMap) {
+    const result =
+      getCacheContent(id) ||
+      (await (await fetch(`${WEB_HOST}/api/doc?id=${id}`)).json())
+    if (result?.recordMap) {
       return {
         props: result,
         revalidate: isDev ? 60 : 2 * 60 * 60, // 单位 秒
@@ -33,8 +35,9 @@ export async function getNotionDocDetail(id: string, notFound: boolean = true) {
 export async function computeStaticPaths() {
   let pages: { path?: string; title?: string; id: string }[] = []
   try {
-    const res = await fetch(`${WEB_HOST}/api/docs`)
-    pages = (await res.json()).pages
+    pages =
+      getCacheContent('docs') ||
+      await(await fetch(`${WEB_HOST}/api/docs`)).json()
   } catch (e) {
     console.error(e, 'getStaticPaths 请检查 /api/doc')
   }

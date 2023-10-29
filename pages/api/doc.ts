@@ -73,10 +73,9 @@ export default async function handler(
   const notionIdOrUrlPath = (req.query.id || '').toString()
 
   /**容灾控制，当 notion 服务器不可用时，启用缓存作为数据兜底处理*/
-  const cacheFileName = `.cache/${notionIdOrUrlPath}.json`
-  const cacheContent = getCacheContent(cacheFileName)
+  const cacheContent = getCacheContent(notionIdOrUrlPath)
   if (cacheContent) {
-    return res.status(200).json(JSON.parse(cacheContent))
+    return res.status(200).json(cacheContent)
   }
 
   // 基于文章ID 或 path 查询详情
@@ -137,7 +136,7 @@ export default async function handler(
   }
 
   /**只有本地运行才有 fs 的写入能力；线上服务器不具备写文件能力*/
-  writeCacheFile(cacheFileName, JSON.stringify(responseData))
+  writeCacheFile(notionIdOrUrlPath, responseData)
 
   res.status(200).json(responseData)
 }

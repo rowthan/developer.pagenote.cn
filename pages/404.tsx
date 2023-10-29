@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Head from 'next/head'
-import { getNotionDocDetail } from '../service/doc'
+import { getNotionDocDetail } from '../service/server/doc'
 import { SEO_REVERT_MAP } from '../const/notion'
 import NotionDoc, { NotionDocProp } from '../components/NotionDoc'
 

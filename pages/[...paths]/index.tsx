@@ -1,5 +1,5 @@
 import NotionDoc, { NotionDocProp } from 'components/NotionDoc'
-import { getNotionDocDetail, computeStaticPaths } from 'service/doc'
+import { getNotionDocDetail, computeStaticPaths } from 'service/server/doc'
 import NotFound from 'components/error/NotFound'
 import Footer from 'components/Footer'
 import { SEO_REVERT_MAP } from 'const/notion'
