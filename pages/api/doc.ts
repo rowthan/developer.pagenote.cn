@@ -12,7 +12,11 @@ import {SEO_REVERT_MAP} from "../../const/notion";
  * 根据 path ，搜索对应的文档
  * */
 async function fetchDocByPath(path: string): Promise<string | null> {
-  const {results} = await getOfficialNotion().search({
+  const officialNotion = getOfficialNotion()
+  if (!officialNotion) {
+    return null
+  }
+  const { results } = await officialNotion.search({
     filter: {
       property: 'object',
       value: 'database',
@@ -25,7 +29,7 @@ async function fetchDocByPath(path: string): Promise<string | null> {
     if (!properties.path) {
       continue
     }
-    const queryResult = await getOfficialNotion().databases.query({
+    const queryResult = await officialNotion.databases.query({
       database_id: id,
       filter: {
         or: [
@@ -100,9 +104,9 @@ export default async function handler(
    * 非 page 类不做查询，如 collection-page-view
    * */
   let notionPage = null
-  if (recordMap.block[notionId]?.value.type === 'page') {
+  if (recordMap.block[notionId]?.value.type === 'page' && getOfficialNotion()) {
     notionPage = await getOfficialNotion()
-      .pages.retrieve({
+      ?.pages.retrieve({
         page_id: notionId,
       })
       .catch(function (e) {
