@@ -4,7 +4,7 @@ import { DEFAULT_BASE_DOC_PATH } from '../const/notion'
 // 制定获取 notion 数据源的接口；默认请求自身服务。
 const WEB_HOST = process.env.WEB_HOST || 'http://localhost:3000'
 
-export async function getNotionDocDetail(id: string) {
+export async function getNotionDocDetail(id: string, notFound: boolean = true) {
   const res = await fetch(`${WEB_HOST}/api/doc?id=${id}`)
   try {
     const result = await res.json()
@@ -21,7 +21,7 @@ export async function getNotionDocDetail(id: string) {
   } catch (e) {
     console.error('error', e)
     return {
-      notFound: true,
+      notFound: notFound,
       // redirect: {
       //   destination: '/500',
       //   permanent: false,

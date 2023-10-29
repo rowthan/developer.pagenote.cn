@@ -23,7 +23,7 @@ const redirectMap: Record<string, string> = {
 }
 
 export const getStaticProps = async () => {
-  return await getNotionDocDetail(SEO_REVERT_MAP['/404'])
+  return await getNotionDocDetail(SEO_REVERT_MAP['/404'], false)
 }
 
 export default function Custom404(props: NotionDocProp) {
