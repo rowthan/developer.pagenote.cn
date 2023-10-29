@@ -1,11 +1,9 @@
 import NotionDoc, { NotionDocProp } from 'components/NotionDoc'
-import { getNotionDocDetail } from 'service/doc'
-import { NOTION_BASE_ROOT_PAGE } from 'notion.config'
+import { getNotionDocDetail } from 'service/server/doc'
+import { SEO_REVERT_MAP } from '../const/notion'
 
 export const getStaticProps = async () => {
-  return await getNotionDocDetail(
-    NOTION_BASE_ROOT_PAGE || '1d452a26cb2b48ea836dd623016b9afd'
-  )
+  return await getNotionDocDetail(SEO_REVERT_MAP['/'])
 }
 
 export default function Page(props: NotionDocProp) {

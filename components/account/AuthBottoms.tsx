@@ -8,7 +8,7 @@ export default function AuthBottoms() {
             <Button
                 key={index}
                 onClick={() => {
-                  window.location.href = AuthConfig[value].link
+                  window.location.href = AuthConfig[value].getAuthLInk()
                 }}
                 variant={'outline'}
                 className=" py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300"

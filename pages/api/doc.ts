@@ -1,30 +1,22 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { NotionAPI } from 'notion-client'
-import { Client } from '@notionhq/client'
-import { get } from 'lodash'
-import { parsePageId } from 'notion-utils'
+import type {NextApiRequest, NextApiResponse} from 'next'
+import {get} from 'lodash'
+import {parsePageId} from 'notion-utils'
+import {getOfficialNotion, getUnOfficialNotion} from "../../service/server/notion";
+import {getCacheContent, writeCacheFile} from "../../service/server/cache";
+import {SEO_REVERT_MAP} from "../../const/notion";
 
-const docNotion = new NotionAPI({})
-const notion = new Client({
-  auth: process.env.NOTION_TOKEN,
-})
 
-async function fetchAllDocs() {
-  return await notion.search({
-    filter: {
-      property: 'object',
-      value: 'page',
-    },
-    sort: {
-      timestamp: 'last_edited_time',
-      direction: 'descending',
-    },
-  })
-}
-
+/**
+ * SEO 优化处理：
+ * 根据 path ，搜索对应的文档
+ * */
 async function fetchDocByPath(path: string): Promise<string | null> {
-  const { results } = await notion.search({
+  const officialNotion = getOfficialNotion()
+  if (!officialNotion) {
+    return null
+  }
+  const { results } = await officialNotion.search({
     filter: {
       property: 'object',
       value: 'database',
@@ -37,7 +29,7 @@ async function fetchDocByPath(path: string): Promise<string | null> {
     if (!properties.path) {
       continue
     }
-    const queryResult = await notion.databases.query({
+    const queryResult = await officialNotion.databases.query({
       database_id: id,
       filter: {
         or: [
@@ -80,75 +72,71 @@ export default async function handler(
 ) {
   const notionIdOrUrlPath = (req.query.id || '').toString()
 
-  // 基于文章ID 或 path 查询详情
-  if (notionIdOrUrlPath) {
-    let notionId = notionIdOrUrlPath
-    // 如果是 URL path，需要查询对应的 notion id
-    if (
-      !/^(\w|\d){8}/.test(notionIdOrUrlPath) ||
-      notionIdOrUrlPath.length < 20
-    ) {
-      notionId = (await fetchDocByPath(notionIdOrUrlPath)) || ''
-      if (!notionId) {
-        console.error(notionIdOrUrlPath, 'no page')
-        // throw Error('找不到 notion 页面')
-        return res.status(200).json({
-          title: '404 not found',
-        })
-      }
-    }
-
-    // 基于notion 查询用于渲染的结构对象详情（非官方API）
-    notionId = parsePageId(notionId)
-    const recordMap = await docNotion.getPage(notionId)
-    let notionPage = null
-    // 非 page 类不做查询，如 collection-page-view
-    if (recordMap.block[notionId]?.value.type === 'page') {
-      notionPage = await notion.pages
-        .retrieve({
-          page_id: notionId,
-        })
-        .catch(function (e) {
-          console.warn(e, '获取文章详情失败')
-        })
-    }
-    const properties = recordMap?.block[notionId]?.value?.properties
-    const title = get(properties, 'title.0.0') || null
-    // const description = get(properties, 'description.0.0') || null;
-    // console.log(notionPage.properties,'notionPage')
-    const path = get(notionPage, 'properties.path.url') || null
-    const description =
-      get(notionPage, 'properties.description.rich_text[0].plain_text') || null
-    const keywords = (
-      get(notionPage, 'properties.keywords.multi_select') || []
-    ).map(function (item) {
-      //@ts-ignore
-      return item.name || ''
-    })
-
-    res.status(200).json({
-      recordMap: recordMap,
-      title: title,
-      path: path,
-      description: description,
-      keywords: keywords,
-    })
-  } else {
-    const result = await fetchAllDocs()
-    return res.status(200).json({
-      pages: result.results
-        .map(function (item) {
-          const path = get(item, 'properties.path.url')
-          return {
-            id: item.id,
-            title: get(item, 'properties.title.title.0.plain_text') || null,
-            path: path,
-            // ...item,
-          }
-        })
-        .sort(function (pre, next) {
-          return pre.title ? -1 : 1
-        }),
-    })
+  /**容灾控制，当 notion 服务器不可用时，启用缓存作为数据兜底处理*/
+  const cacheContent = getCacheContent(notionIdOrUrlPath)
+  if (cacheContent) {
+    return res.status(200).json(cacheContent)
   }
+
+  // 基于文章ID 或 path 查询详情
+  let notionId = notionIdOrUrlPath
+  // 如果是 URL path，需要查询对应的 notion id
+  if (!/^(\w|\d){8}/.test(notionIdOrUrlPath) || notionIdOrUrlPath.length < 20) {
+    notionId =
+      SEO_REVERT_MAP[notionIdOrUrlPath] ||
+      (await fetchDocByPath(notionIdOrUrlPath)) ||
+      ''
+    if (!notionId) {
+      console.error(notionIdOrUrlPath, 'no page')
+      // throw Error('找不到 notion 页面')
+      return res.status(200).json({
+        title: '404 not found',
+      })
+    }
+  }
+
+  // 基于notion 查询用于渲染的结构对象详情（非官方API）
+  notionId = parsePageId(notionId)
+  const recordMap = await getUnOfficialNotion().getPage(notionId)
+  /**
+   * 为了通过获取 page 的property属性 title path description keywords
+   * 非 page 类不做查询，如 collection-page-view
+   * */
+  let notionPage = null
+  if (recordMap.block[notionId]?.value.type === 'page' && getOfficialNotion()) {
+    notionPage = await getOfficialNotion()
+      ?.pages.retrieve({
+        page_id: notionId,
+      })
+      .catch(function (e) {
+        console.warn(e, '获取文章详情失败')
+      })
+  }
+  const properties = recordMap?.block[notionId]?.value?.properties
+  const title = get(properties, 'title.0.0') || null
+  // const description = get(properties, 'description.0.0') || null;
+  // console.log(notionPage.properties,'notionPage')
+  const path = get(notionPage, 'properties.path.url') || null
+  const description =
+    get(notionPage, 'properties.description.rich_text[0].plain_text') || null
+  const keywords = (
+    get(notionPage, 'properties.keywords.multi_select') || []
+  ).map(function (item) {
+    //@ts-ignore
+    return item.name || ''
+  })
+
+  /**格式化相应对象*/
+  const responseData = {
+    recordMap: recordMap,
+    title: title,
+    path: path,
+    description: description,
+    keywords: keywords,
+  }
+
+  /**只有本地运行才有 fs 的写入能力；线上服务器不具备写文件能力*/
+  writeCacheFile(notionIdOrUrlPath, responseData)
+
+  res.status(200).json(responseData)
 }

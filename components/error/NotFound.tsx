@@ -17,7 +17,7 @@ export default function NotFound(props: Props) {
           <div className="items-center justify-between md:flex">
             <div className=" space-x-4 md:flex md:items-center md:justify-end">
               <a
-                href="https://pagenote.cn/feedback"
+                href="https://pagenote.cn/author"
                 className="px-6 py-2 text-white text-center uppercase transition duration-200 ease-in bg-blue-400 border border-blue-400 w-36 hover:bg-blue-500 focus:outline-none"
               >
                 帮助

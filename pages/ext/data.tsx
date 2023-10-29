@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { basePath } from '../../const/env'
+import { basePath } from 'const/env'
 
 export default function Data() {
   useEffect(() => {

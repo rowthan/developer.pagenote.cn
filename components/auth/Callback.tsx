@@ -33,24 +33,24 @@ const Callback: React.FC<{ authType: AuthType }> = (props) => {
     authCodeToToken({
       code,
       authType,
-      redirectUri: AuthConfig[authType].redirectUri
+      redirectUri: AuthConfig[authType].redirectUri(),
     })
-        .then(function (res) {
-          if (res.error) {
-            setTip(res.error)
-          }
+      .then(function (res) {
+        if (res.error) {
+          setTip(res.error)
+        }
 
-          const token = res.data?.oauth?.pagenote_t
-          if (token) {
-            setStatus(STATUS.success)
-            update(token)
-          } else {
-            setStatus(STATUS.fail)
-          }
-        })
-        .catch(function (error) {
+        const token = res.data?.oauth?.pagenote_t
+        if (token) {
+          setStatus(STATUS.success)
+          update(token)
+        } else {
           setStatus(STATUS.fail)
-        })
+        }
+      })
+      .catch(function (error) {
+        setStatus(STATUS.fail)
+      })
   }
 
   useEffect(() => {

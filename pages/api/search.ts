@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { NotionAPI } from 'notion-client'
-import { NOTION_BASE_ROOT_PAGE } from 'notion.config'
+import { SEO_REVERT_MAP } from 'const/notion'
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default async function handler(
   const api = new NotionAPI()
   const output = await api.search({
     query: keyword,
-    ancestorId: NOTION_BASE_ROOT_PAGE,
+    ancestorId: SEO_REVERT_MAP['/'],
   })
   return res.status(200).json(output)
 }

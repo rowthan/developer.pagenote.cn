@@ -1,12 +1,16 @@
-import { SearchParams } from 'notion-types'
-import { DEFAULT_BASE_DOC_PATH, DOC_API_HOST } from 'notion.config'
-import { isDev } from '../const/env'
+import { isDev } from '../../const/env'
+import { DEFAULT_BASE_DOC_PATH } from '../../const/notion'
+import { getCacheContent } from './cache'
 
-export async function getNotionDocDetail(id: string) {
-  const res = await fetch(`${DOC_API_HOST}/api/doc?id=${id}`)
+// 制定获取 notion 数据源的接口；默认请求自身服务。
+const WEB_HOST = process.env.WEB_HOST
+
+export async function getNotionDocDetail(id: string, notFound: boolean = true) {
   try {
-    const result = await res.json()
-    if (result.recordMap) {
+    const result =
+      getCacheContent(id) ||
+      (await (await fetch(`${WEB_HOST}/api/doc?id=${id}`)).json())
+    if (result?.recordMap) {
       return {
         props: result,
         revalidate: isDev ? 60 : 2 * 60 * 60, // 单位 秒
@@ -19,7 +23,7 @@ export async function getNotionDocDetail(id: string) {
   } catch (e) {
     console.error('error', e)
     return {
-      notFound: true,
+      notFound: notFound,
       // redirect: {
       //   destination: '/500',
       //   permanent: false,
@@ -28,16 +32,12 @@ export async function getNotionDocDetail(id: string) {
   }
 }
 
-export async function searchInNotion(filter: SearchParams) {
-  const res = await fetch(`${DOC_API_HOST}/api/search?keyword=${filter.query}`)
-  return await res.json()
-}
-
-export default async function computeStaticPaths() {
+export async function computeStaticPaths() {
   let pages: { path?: string; title?: string; id: string }[] = []
   try {
-    const res = await fetch(`${DOC_API_HOST}/api/doc`)
-    pages = (await res.json()).pages
+    pages =
+      getCacheContent('docs') ||
+      await(await fetch(`${WEB_HOST}/api/docs`)).json()
   } catch (e) {
     console.error(e, 'getStaticPaths 请检查 /api/doc')
   }
