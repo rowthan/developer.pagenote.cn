@@ -1,14 +1,13 @@
 import { NotionRenderer } from 'react-notion-x'
 import Doc from 'layouts/Doc'
 import Footer from 'components/Footer'
-import { ExtendedRecordMap } from 'notion-types'
+import { ExtendedRecordMap, SearchParams } from 'notion-types'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { searchInNotion } from 'service/doc'
 //import Image from 'next/image'
 import Link from 'next/link'
 import { TDK } from 'const/tdk'
-import { NOTION_BASE_ROOT_PAGE, DEFAULT_BASE_DOC_PATH } from 'notion.config'
+import { DEFAULT_BASE_DOC_PATH, SEO_MAP, SEO_REVERT_MAP } from 'const/notion'
 import { getPathFromProperties } from 'utils/notion'
 import { useRouter } from 'next/router'
 import TDKHead from './TDKHead'
@@ -57,56 +56,61 @@ export default function NotionDoc(props: NotionDocProp) {
     setDark(darkMode)
   }
 
-  function listenDarkMode() {
-    const object = window.matchMedia('(prefers-color-scheme: dark)')
-    object.addEventListener('change', refreshDarkMode)
-    return function () {
-      object.removeEventListener('change', refreshDarkMode)
+    function listenDarkMode() {
+      const object = window.matchMedia('(prefers-color-scheme: dark)')
+      object.addEventListener('change', refreshDarkMode)
+      return function () {
+        object.removeEventListener('change', refreshDarkMode)
+      }
     }
-  }
 
-  useEffect(function () {
-    refreshDarkMode()
-    return listenDarkMode()
-  }, [])
+    async function searchInNotion(filter: SearchParams) {
+      const res = await fetch(`/api/search?keyword=${filter.query}`)
+      return await res.json()
+    }
 
-  const headTitle = title || TDK.common.title
-  const headDescription = description || TDK.common.description
-  const headKeywords = keywords?.toString() || TDK.common.keywords
+    useEffect(function () {
+      refreshDarkMode()
+      return listenDarkMode()
+    }, [])
 
-  return (
-    <Doc>
-      <TDKHead
-        keywords={headKeywords}
-        title={headTitle}
-        description={headDescription}
-        url={TDK.common.origin + router.asPath}
-      ></TDKHead>
-      <NotionRenderer
-        components={{
-          //nextImage: Image,
-          nextLink: Link,
-          Code,
-          Collection,
-          Equation,
-          Modal,
-          Pdf,
-        }}
-        pageTitle={pageTitle}
-        fullPage={true}
-        darkMode={darkMode}
-        footer={<Footer />}
-        searchNotion={searchInNotion}
-        rootPageId={NOTION_BASE_ROOT_PAGE}
-        mapPageUrl={(pageID) => {
-          if (pageID === NOTION_BASE_ROOT_PAGE) {
-            return '/'
-          }
-          const path = getPathFromProperties(recordMap.block[pageID]?.value)
-          return path || `/${DEFAULT_BASE_DOC_PATH}/${pageID}`
-        }}
-        {...props}
-      />
-    </Doc>
-  )
+    const headTitle = title || TDK.common.title
+    const headDescription = description || TDK.common.description
+    const headKeywords = keywords?.toString() || TDK.common.keywords
+
+    return (
+      <Doc>
+        <TDKHead
+          keywords={headKeywords}
+          title={headTitle}
+          description={headDescription}
+          url={TDK.common.origin + router.asPath}
+        ></TDKHead>
+        <NotionRenderer
+          components={{
+            //nextImage: Image,
+            nextLink: Link,
+            Code,
+            Collection,
+            Equation,
+            Modal,
+            Pdf,
+          }}
+          pageTitle={pageTitle}
+          fullPage={true}
+          darkMode={darkMode}
+          footer={<Footer />}
+          searchNotion={searchInNotion}
+          rootPageId={SEO_REVERT_MAP['/']}
+          mapPageUrl={(pageID: string) => {
+            if (SEO_MAP[pageID] as string) {
+              return SEO_MAP[pageID]
+            }
+            const path = getPathFromProperties(recordMap.block[pageID]?.value)
+            return path || `/${DEFAULT_BASE_DOC_PATH}/${pageID}`
+          }}
+          {...props}
+        />
+      </Doc>
+    )
 }

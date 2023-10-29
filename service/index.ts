@@ -1,16 +1,15 @@
 import dayjs from 'dayjs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
-import {SERVER_API_HOST} from 'site.config'
-import {unionFetch} from "../utils/fetch";
+import { unionFetch } from '../utils/fetch'
 
 export function createOrder(price?: number) {
-    return extApi.network.pagenote({
-        url: '/api/graph/site',
-        data: {
-            mutation: `mutation{active(id:"createOrder",remark:"${price}"){id}}`,
-        },
-        method: 'POST',
-    })
+  return extApi.network.pagenote({
+    url: '/api/graph/site',
+    data: {
+      mutation: `mutation{active(id:"createOrder",remark:"${price}"){id}}`,
+    },
+    method: 'POST',
+  })
 }
 
 export function bindTransition(record: string, amount: number) {
@@ -100,9 +99,9 @@ export function fetchVersionDetail(version: string) {
 
 export function getWordInfo(word: string) {
   return fetch(
-      `${SERVER_API_HOST}/api/graph/profile?` +
+    `/api/graph/profile?` +
       new URLSearchParams({
-          query: `{keyword(keyword:"${word}"){markdown}}`,
+        query: `{keyword(keyword:"${word}"){markdown}}`,
       })
   ).then(async function (res) {
     const data = await res.json()

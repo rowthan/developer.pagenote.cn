@@ -1,9 +1,11 @@
-import { SearchParams } from 'notion-types'
-import { DEFAULT_BASE_DOC_PATH, DOC_API_HOST } from 'notion.config'
 import { isDev } from '../const/env'
+import { DEFAULT_BASE_DOC_PATH } from '../const/notion'
+
+// 制定获取 notion 数据源的接口；默认请求自身服务。
+const WEB_HOST = process.env.WEB_HOST || 'http://localhost:3000'
 
 export async function getNotionDocDetail(id: string) {
-  const res = await fetch(`${DOC_API_HOST}/api/doc?id=${id}`)
+  const res = await fetch(`${WEB_HOST}/api/doc?id=${id}`)
   try {
     const result = await res.json()
     if (result.recordMap) {
@@ -28,15 +30,10 @@ export async function getNotionDocDetail(id: string) {
   }
 }
 
-export async function searchInNotion(filter: SearchParams) {
-  const res = await fetch(`${DOC_API_HOST}/api/search?keyword=${filter.query}`)
-  return await res.json()
-}
-
-export default async function computeStaticPaths() {
+export async function computeStaticPaths() {
   let pages: { path?: string; title?: string; id: string }[] = []
   try {
-    const res = await fetch(`${DOC_API_HOST}/api/doc`)
+    const res = await fetch(`${WEB_HOST}/api/docs`)
     pages = (await res.json()).pages
   } catch (e) {
     console.error(e, 'getStaticPaths 请检查 /api/doc')

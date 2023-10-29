@@ -1,8 +1,9 @@
-import Footer from 'components/Footer'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Head from 'next/head'
-import NotFound from 'components/error/NotFound'
+import { getNotionDocDetail } from '../service/doc'
+import { SEO_REVERT_MAP } from '../const/notion'
+import NotionDoc, { NotionDocProp } from '../components/NotionDoc'
 
 const redirectMap: Record<string, string> = {
   '/log': '/developer/log',
@@ -18,9 +19,14 @@ const redirectMap: Record<string, string> = {
   '/pagenote': '/ext/manage',
   '/signup': '/signin',
   '/me': '/pagenote',
+  '/welcome': '/',
 }
 
-export default function Custom404() {
+export const getStaticProps = async () => {
+  return await getNotionDocDetail(SEO_REVERT_MAP['/404'])
+}
+
+export default function Custom404(props: NotionDocProp) {
   const router = useRouter()
 
   useEffect(
@@ -43,12 +49,7 @@ export default function Custom404() {
       <Head>
         <title>闯入了一片无人之境-404</title>
       </Head>
-      <main className="relative h-screen ">
-        <div className="container relative z-10 flex items-center px-6 py-24 mx-auto md:px-12">
-          <NotFound />
-        </div>
-        <Footer />
-      </main>
+      <NotionDoc {...props} />
     </div>
   )
 }

@@ -1,28 +1,35 @@
 import extApi from '@pagenote/shared/lib/pagenote-api'
-import {network} from '@pagenote/shared/lib/extApi'
+import { network } from '@pagenote/shared/lib/extApi'
 import FetchRequest = network.FetchRequest
-import {SERVER_API_HOST} from 'site.config.js'
-import {BaseMessageHeader, RESPONSE_STATUS_CODE} from '@pagenote/shared/lib/communication/base'
+import {
+  BaseMessageHeader,
+  RESPONSE_STATUS_CODE,
+} from '@pagenote/shared/lib/communication/base'
 
-let byExtFlag: boolean | null = null;
+let byExtFlag: boolean | null = null
 
 async function checkExtAlive() {
-  const result = await extApi.user.getWhoAmI();
-  byExtFlag = !!result?.data?.version;
+  const result = await extApi.user.getWhoAmI()
+  byExtFlag = !!result?.data?.version
 }
 
 export async function unionFetch<T>(
-    request: FetchRequest,
-    header?: Partial<BaseMessageHeader>,
-    retry?: boolean
-): Promise<{ success?: boolean; data?: T; status?: number; errors?: { message: string }[], error?: string }> {
-  request.url = /^http/.test(request.url)
-      ? request.url
-      : SERVER_API_HOST + request.url
-
+  request: FetchRequest,
+  header?: Partial<BaseMessageHeader>,
+  retry?: boolean
+): Promise<{
+  success?: boolean
+  data?: T
+  status?: number
+  errors?: { message: string }[]
+  error?: string
+}> {
   if (byExtFlag === null) {
     await checkExtAlive()
   }
+  request.url = /^http/.test(request.url)
+    ? request.url
+    : process.env.API_HOST + request.url
   if (byExtFlag) {
     return extApi.network.pagenote(request, header).then(function (res) {
       // 代理超时，重新请求
