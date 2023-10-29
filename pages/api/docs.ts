@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { get } from 'lodash'
-import { getOfficialNotion } from '../../service/server/notion'
-import { getCacheContent, writeCacheFile } from '../../service/server/cache'
+import { getOfficialNotion } from 'service/server/notion'
+import { getCacheContent, writeCacheFile } from 'service/server/cache'
 
 async function fetchAllDocs() {
   return await getOfficialNotion()?.search({
