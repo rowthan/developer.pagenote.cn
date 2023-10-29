@@ -1,5 +1,4 @@
-import fs from "fs";
-
+import fs from 'fs'
 
 export function writeCacheFile(id: string, content: Object) {
   const filePath = `.cache/${id}.json`
@@ -17,9 +16,19 @@ export function writeCacheFile(id: string, content: Object) {
   }
 }
 
-export function getCacheContent(id: string) {
+/**
+ * isFallback： 不启用缓存的情况下，notion 相应失败的兜底处理
+ * */
+export function getCacheContent(id: string, isFallback = false) {
+  if (isFallback) {
+    console.warn('notion 服务异常')
+  }
+
   const cacheFileName = `.cache/${id}.json`
-  if (process.env.ENABLE_CACHE && fs.existsSync(cacheFileName)) {
+  if (
+      (process.env.ENABLE_CACHE || isFallback) &&
+      fs.existsSync(cacheFileName)
+  ) {
     const cacheData = fs.readFileSync(cacheFileName, {
       encoding: 'utf-8',
     })

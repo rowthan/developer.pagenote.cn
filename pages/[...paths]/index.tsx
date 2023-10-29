@@ -1,8 +1,11 @@
 import NotionDoc, { NotionDocProp } from 'components/NotionDoc'
-import { getNotionDocDetail, computeStaticPaths } from 'service/server/doc'
+import {
+  computeStaticPaths,
+  getNotionDocDetail,
+} from '../../service/server/doc'
 import NotFound from 'components/error/NotFound'
 import Footer from 'components/Footer'
-import { SEO_REVERT_MAP } from 'const/notion'
+import { DEFAULT_BASE_DOC_PATH } from 'const/notion'
 
 export async function getStaticPaths() {
   const pages = await computeStaticPaths()
@@ -20,10 +23,9 @@ export async function getStaticProps(props: { params: { paths: string[] } }) {
   const { params } = props
   const basepath = params.paths[0]
   let id = `/${params.paths.join('/')}`
-  if (basepath === SEO_REVERT_MAP['/']) {
+  if (basepath === DEFAULT_BASE_DOC_PATH) {
     id = params.paths[1]
   }
-  console.log('getStaticProps id::', id)
   return await getNotionDocDetail(id)
 }
 
