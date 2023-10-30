@@ -138,7 +138,7 @@ export default function Search(props: { keyword: string }) {
           <h2>
             批量操作 {selectedCnt} 个网页
             <br />
-            及关联的标记、截图、离线HTML等相关信息
+            及关联的标记、截图、存档HTML等相关信息
           </h2>
           <div className="my-2 text-right">
             {/*<button onClick={batchUpdate} className={'btn btn-sm btn-error'}>删除</button>*/}

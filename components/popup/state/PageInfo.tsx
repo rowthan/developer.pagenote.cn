@@ -47,7 +47,7 @@ export function PageInfo() {
 
   function offlineHtml() {
     if (resourceList.length > 4) {
-      alert('请删除历史离线版本后，再创建新版本')
+      alert('请删除历史存档版本后，再创建新版本')
       return
     }
     extApi.developer
@@ -60,7 +60,7 @@ export function PageInfo() {
         type: 'offlineHTML',
       })
       .then(function (res) {
-        toast(res?.error || '离线化成功。')
+        toast(res?.error || '存档成功。')
         setTimeout(function () {
           window.close()
         }, 1000)

@@ -47,7 +47,7 @@ export default function StorageInfo(props: Props) {
       link: `${basePath}/ext/gallery.html`,
     },
     {
-      name: '离线html',
+      name: '存档html',
       usage: htmlStorage.usage,
       bg: '#4467a8',
       link: `${basePath}/ext/offline.html`,

@@ -51,7 +51,7 @@ const RIGHTS: Right[] = [
   //   visibleFor: [0, 1, 2],
   // },
   {
-    label: '网页离线化',
+    label: '网页离线存档',
     allowFor: [1, 2],
     visibleFor: [0, 1, 2],
   },
