@@ -14,6 +14,7 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/plugins/thumbnails.css'
 import { basePath } from '../../const/env'
 import { useRouter } from 'next/router'
+import RedirectToExt from 'components/RedirectToExt'
 
 const breakpoints = [3840, 2400, 1080, 640, 384, 256, 128, 96, 64, 48]
 export default function Gallery() {
@@ -63,21 +64,23 @@ export default function Gallery() {
       <Head>
         <title>网页截图</title>
       </Head>
-      <div className="bg-gray-200 p-4">
-        <PhotoAlbum
-          layout="rows"
-          photos={imageList}
-          onClick={({ index }) => onClickAlbum(index)}
-        />
-        <Lightbox
-          slides={imageList}
-          open={index >= 0}
-          index={index}
-          close={() => setIndex(-1)}
-          // enable optional lightbox plugins
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-      </div>
+      <RedirectToExt>
+        <div className="bg-gray-200 p-4">
+          <PhotoAlbum
+            layout="rows"
+            photos={imageList}
+            onClick={({ index }) => onClickAlbum(index)}
+          />
+          <Lightbox
+            slides={imageList}
+            open={index >= 0}
+            index={index}
+            close={() => setIndex(-1)}
+            // enable optional lightbox plugins
+            plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+          />
+        </div>
+      </RedirectToExt>
     </>
   )
 }

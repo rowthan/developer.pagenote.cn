@@ -152,88 +152,125 @@ export default function Offline() {
 
     const withoutId = !query.id && !query.url
 
-    return <RedirectToExt>
+    return (
+      <RedirectToExt>
         <>
-        <Head>
+          <Head>
             <script src="/rollup/open_api_bridge.js"></script>
-            <title>【pagenote离线网页】{resource?.name}</title>
-        </Head>
+            <title>【pagenote存档网页】{resource?.name}</title>
+          </Head>
 
-        {
-            withoutId ? <LocalHTML/> :
-            (
-                resource ?
-                    <div className="alert alert-info shadow-lg">
-                        <div className={'select-none'}>
-                            <TipInfo tip={'断网也可以访问，永久保存'}/>
-                            <div>你正在访问网页（<a
-                                className={'link link-error max-w-lg overflow-hidden overflow-ellipsis inline-block align-bottom whitespace-nowrap'}
-                                href={resource?.originUrl}
-                                target={'_blank'}>{resource?.originUrl}</a>）的离线快照版本。
-                            </div>
-                            <div className={'ml-2'}>
-                                <a href={'https://pagenote.cn/feedback'} target={'_blank'}>
-                                    <button className={'tooltip tooltip-left btn btn-sm btn-outline'}
-                                            data-tip={'离线版与在线版内容不一致？'}>反馈
-                                    </button>
-                                </a>
-                            </div>
-                        </div>
-                        <div>
-                            <select value={resource?.resourceId}
-                                    onChange={(e) => {
-                                        onChangeResourceId(e.target.value)
-                                    }}
-                                    className="select select-ghost w-52 max-w-xs">
-                                {
-                                    relatedResource.map((item, index) => {
-                                        const value = dayjs(item.createAt).format('YYYY/MM/DD HH:mm:ss')
-                                        return (
-                                            <option key={index} className="step step-primary"
-                                                    value={item.resourceId}
-                                                    data-content={item.resourceId === resource?.resourceId ? "✓" : index + 1}>
-                                                {value}
-                                                {/*<span*/}
-                                                {/*    data-tip={`记录于${dayjs(item.createAt).format('YYYY/MM/DD HH:mm:ss')}`}*/}
-                                                {/*    className={`tooltip tooltip-bottom badge badge-sm  ${item.resourceId === resource?.resourceId ? 'badge-primary' : 'badge-outline'}`}>*/}
-                                                {/*    */}
-                                                {/*</span>*/}
-                                            </option>
-                                        )
-                                    })
-                                }
-                            </select>
+          {withoutId ? (
+            <LocalHTML />
+          ) : resource ? (
+            <div className="alert alert-info shadow-lg">
+              <div className={'select-none'}>
+                <TipInfo tip={'断网也可以访问，永久保存'} />
+                <div>
+                  你正在访问网页（
+                  <a
+                    className={
+                      'link link-error max-w-lg overflow-hidden overflow-ellipsis inline-block align-bottom whitespace-nowrap'
+                    }
+                    href={resource?.originUrl}
+                    target={'_blank'}
+                  >
+                    {resource?.originUrl}
+                  </a>
+                  ）的离线快照版本。
+                </div>
+                <div className={'ml-2'}>
+                  <a href={'https://pagenote.cn/feedback'} target={'_blank'}>
+                    <button
+                      className={'tooltip tooltip-left btn btn-sm btn-outline'}
+                      data-tip={'离线版与在线版内容不一致？'}
+                    >
+                      反馈
+                    </button>
+                  </a>
+                </div>
+              </div>
+              <div>
+                <select
+                  value={resource?.resourceId}
+                  onChange={(e) => {
+                    onChangeResourceId(e.target.value)
+                  }}
+                  className="select select-ghost w-52 max-w-xs"
+                >
+                  {relatedResource.map((item, index) => {
+                    const value = dayjs(item.createAt).format(
+                      'YYYY/MM/DD HH:mm:ss'
+                    )
+                    return (
+                      <option
+                        key={index}
+                        className="step step-primary"
+                        value={item.resourceId}
+                        data-content={
+                          item.resourceId === resource?.resourceId
+                            ? '✓'
+                            : index + 1
+                        }
+                      >
+                        {value}
+                        {/*<span*/}
+                        {/*    data-tip={`记录于${dayjs(item.createAt).format('YYYY/MM/DD HH:mm:ss')}`}*/}
+                        {/*    className={`tooltip tooltip-bottom badge badge-sm  ${item.resourceId === resource?.resourceId ? 'badge-primary' : 'badge-outline'}`}>*/}
+                        {/*    */}
+                        {/*</span>*/}
+                      </option>
+                    )
+                  })}
+                </select>
 
-                            {/* The button to open modal */}
-                            <label htmlFor="remove-modal" className="btn btn-error btn-sm">
-                                删除此版本
-                            </label>
-                            <button onClick={downloadHtml} className='btn btn-primary btn-sm ml-2'>
-                                下载为HTML文件
-                            </button>
+                {/* The button to open modal */}
+                <label htmlFor="remove-modal" className="btn btn-error btn-sm">
+                  删除此版本
+                </label>
+                <button
+                  onClick={downloadHtml}
+                  className="btn btn-primary btn-sm ml-2"
+                >
+                  下载为HTML文件
+                </button>
 
-                            {/* Put this part before </body> tag */}
-                            <input type="checkbox" id="remove-modal" className="modal-toggle"/>
-                            <label htmlFor="remove-modal" className="modal cursor-pointer">
-                                <label className="modal-box relative" htmlFor="">
-                                    <h3 className="text-lg font-bold">删除后不可恢复!</h3>
-                                    <p className="py-4">
-                                        仅删除当前离线网页。仍可以在原始网页中查看、管理笔记。
-                                    </p>
-                                    <div className="modal-action">
-                                        <button onClick={removeResource} className="btn btn-error">确认删除!
-                                        </button>
-                                    </div>
-                                </label>
-                            </label>
-                        </div>
-                    </div> :
-                    <div className="alert alert-error shadow-lg">
-                        没有找到离线网页数据，请检查。<a className={'btn btn-primary'}
-                                                       href={`${basePath}/ext/offline.html`}>重新选择</a>
+                {/* Put this part before </body> tag */}
+                <input
+                  type="checkbox"
+                  id="remove-modal"
+                  className="modal-toggle"
+                />
+                <label htmlFor="remove-modal" className="modal cursor-pointer">
+                  <label className="modal-box relative" htmlFor="">
+                    <h3 className="text-lg font-bold">删除后不可恢复!</h3>
+                    <p className="py-4">
+                      仅删除当前离线网页。仍可以在原始网页中查看、管理笔记。
+                    </p>
+                    <div className="modal-action">
+                      <button
+                        onClick={removeResource}
+                        className="btn btn-error"
+                      >
+                        确认删除!
+                      </button>
                     </div>
-            )
-        }
+                  </label>
+                </label>
+              </div>
+            </div>
+          ) : (
+            <div className="alert alert-error shadow-lg">
+              没有找到离线网页数据，请检查。
+              <a
+                className={'btn btn-primary'}
+                href={`${basePath}/ext/offline.html`}
+              >
+                重新选择
+              </a>
+            </div>
+          )}
         </>
-    </RedirectToExt>;
+      </RedirectToExt>
+    )
 }

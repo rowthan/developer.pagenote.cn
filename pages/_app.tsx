@@ -17,7 +17,7 @@ function ClientApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <Script src={`${basePath}/components.js`} />
       <Script src={`${basePath}/lib/aliyun-oss-sdk.min.js`} />
-      {!isExt && <Analytics />}
+      {!isExt && !isDev && <Analytics />}
     </StrictMode>
   )
 }
