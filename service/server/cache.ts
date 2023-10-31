@@ -1,18 +1,23 @@
 import fs from 'fs'
+import * as path from 'path'
 
 export function writeCacheFile(id: string, content: Object) {
   const filePath = `.cache/${id}.json`
+  const directoryPath = path.dirname(filePath)
+
   if (process.env.NODE_ENV === 'development') {
-    fs.writeFile(
-      filePath,
-      JSON.stringify(content),
-      {
-        encoding: 'utf8',
-      },
-      function (res) {
-        console.log('cached success')
-      }
-    )
+    fs.mkdir(directoryPath, { recursive: true }, function () {
+      fs.writeFile(
+        filePath,
+        JSON.stringify(content),
+        {
+          encoding: 'utf8',
+        },
+        function (res) {
+          console.log('cached success:', filePath)
+        }
+      )
+    })
   }
 }
 

@@ -7,7 +7,7 @@ const WEB_HOST = process.env.WEB_HOST
 
 export async function getNotionDocDetail(id: string, notFound: boolean = true) {
   // 静态资源 .xxx 不执行查询
-  if (/\./.test(id)) {
+  if (/\.js|css|html|php|png|jpg|txt/.test(id)) {
     return {
       notFound: true,
     }
