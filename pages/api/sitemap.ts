@@ -32,7 +32,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const files = readDirectoryRecursive('.cache/')
+  const files = readDirectoryRecursive('../../.cache/')
   let urlList = ''
   files.forEach(function (item) {
     if (item.length < 24) {
