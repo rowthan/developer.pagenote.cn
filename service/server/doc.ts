@@ -46,7 +46,8 @@ export async function computeStaticPaths() {
   try {
     pages =
       getCacheContent('docs') ||
-      await(await fetch(`${WEB_HOST}/api/docs`)).json()
+      await(await fetch(`${WEB_HOST}/api/docs`)).json() ||
+      getCacheContent('docs', true)
   } catch (e) {
     console.error(e, 'getStaticPaths 请检查 /api/doc')
   }

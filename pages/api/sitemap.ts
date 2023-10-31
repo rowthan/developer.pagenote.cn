@@ -4,8 +4,7 @@ import dayjs from 'dayjs'
 import path from 'path';
 
 function readDirectoryRecursive(directoryPath: string) {
-  console.log(path.resolve(directoryPath))
-  const files = fs.readdirSync(path.resolve(directoryPath))
+  const files = fs.readdirSync(directoryPath)
 
   const fileList: string[] = [];
   files.forEach((file) => {
@@ -31,7 +30,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const files = readDirectoryRecursive('.cache/')
+  const files = readDirectoryRecursive(path.join(process.cwd(), '.cache/'))
   let urlList = ''
   files.forEach(function (item) {
     if (item.length < 24) {

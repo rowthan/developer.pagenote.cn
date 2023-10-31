@@ -2,7 +2,7 @@ import fs from 'fs'
 import * as path from 'path'
 
 export function writeCacheFile(id: string, content: Object) {
-  const filePath = `.cache/${id}.json`
+  const filePath = path.join(process.cwd(), '.cache', `${id}.json`)
   const directoryPath = path.dirname(filePath)
 
   if (process.env.NODE_ENV === 'development') {
@@ -24,12 +24,9 @@ export function writeCacheFile(id: string, content: Object) {
 /**
  * isFallback： 不启用缓存的情况下，notion 相应失败的兜底处理
  * */
-export function getCacheContent(id: string, isFallback = false) {
-  if (isFallback) {
-    console.warn('notion 服务异常')
-  }
+export function getCacheContent(id: string, forceEnableCache = false) {
   const cacheFileName = path.join(process.cwd(), '.cache', `${id}.json`)
-  if (process.env.ENABLE_CACHE || isFallback) {
+  if (process.env.ENABLE_CACHE || forceEnableCache) {
     const exists = fs.existsSync(cacheFileName)
     console.log(cacheFileName, 'check local cache: ', exists)
     if (exists) {
