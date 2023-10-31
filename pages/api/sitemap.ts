@@ -34,17 +34,15 @@ export default async function handler(
   const files = readDirectoryRecursive(path.join(process.cwd(), '.cache'))
   let urlList = ''
   files.forEach(function (item) {
-    if (item.length < 24) {
-      const path = item.replace('.cache/', '').replace('.json', '')
+    const path = item.replace('.cache/', '').replace('.json', '')
 
-      urlList += `
+    urlList += `
         <url>
             <loc>https://pagenote.cn/${path}</loc>
             <priority>1</priority>
             <lastmod>${dayjs().format('YYYY-MM-DD')}</lastmod>
             <changefreq>daily</changefreq>
         </url> `
-    }
   })
 
 
