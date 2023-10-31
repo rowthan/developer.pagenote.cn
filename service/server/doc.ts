@@ -6,10 +6,16 @@ import { getCacheContent } from './cache'
 const WEB_HOST = process.env.WEB_HOST
 
 export async function getNotionDocDetail(id: string, notFound: boolean = true) {
+  // 静态资源 .xxx 不执行查询
+  if (/\./.test(id)) {
+    return {
+      notFound: true,
+    }
+  }
   try {
     const result =
       getCacheContent(id) ||
-      (await (await fetch(`${WEB_HOST}/api/doc?id=${id}`)).json()) ||
+      await(await fetch(`${WEB_HOST}/api/doc?id=${id}`)).json() ||
       getCacheContent(id, true)
     console.log('getStaticProps id::', id)
 
