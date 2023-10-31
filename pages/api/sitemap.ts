@@ -5,6 +5,7 @@ import path from 'path';
 
 function readDirectoryRecursive(directoryPath: string) {
   const files = fs.readdirSync(directoryPath)
+  console.log(files, directoryPath)
 
   const fileList: string[] = [];
   files.forEach((file) => {
@@ -30,7 +31,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const files = readDirectoryRecursive(path.join(process.cwd(), '.cache/'))
+  const files = readDirectoryRecursive(path.join(process.cwd(), '.cache'))
   let urlList = ''
   files.forEach(function (item) {
     if (item.length < 24) {
