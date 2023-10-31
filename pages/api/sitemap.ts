@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import path from 'path';
 
 function readDirectoryRecursive(directoryPath: string) {
+  console.log(path.resolve(directoryPath))
   const files = fs.readdirSync(path.resolve(directoryPath))
 
   const fileList: string[] = [];
@@ -12,10 +13,8 @@ function readDirectoryRecursive(directoryPath: string) {
     const stats = fs.statSync(filePath);
 
     if (stats.isDirectory()) {
-      console.log('dirc', filePath)
       // 如果是子目录，则递归读取子目录
       const subPaths = readDirectoryRecursive(filePath);
-      console.log(subPaths,'sub paths')
       fileList.push(...subPaths);
     } else {
       // 如果是文件，则进行相应的操作
@@ -32,7 +31,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const files = readDirectoryRecursive('../../.cache/')
+  const files = readDirectoryRecursive('.cache/')
   let urlList = ''
   files.forEach(function (item) {
     if (item.length < 24) {
