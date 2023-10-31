@@ -30,16 +30,17 @@ export function getCacheContent(id: string, isFallback = false) {
   }
 
   const cacheFileName = `.cache/${id}.json`
-  if (
-      (process.env.ENABLE_CACHE || isFallback) &&
-      fs.existsSync(cacheFileName)
-  ) {
-    const cacheData = fs.readFileSync(cacheFileName, {
-      encoding: 'utf-8',
-    })
-    if (cacheData) {
-      console.log('response with cache:', cacheFileName)
-      return cacheData ? JSON.parse(cacheData) : null
+  if (process.env.ENABLE_CACHE || isFallback) {
+    const exists = fs.existsSync(cacheFileName)
+    console.log(cacheFileName, 'check local cache: ', exists)
+    if (exists) {
+      const cacheData = fs.readFileSync(cacheFileName, {
+        encoding: 'utf-8',
+      })
+      if (cacheData) {
+        console.log('response with cache:', cacheFileName)
+        return cacheData ? JSON.parse(cacheData) : null
+      }
     }
   }
 }
