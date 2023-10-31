@@ -28,8 +28,7 @@ export function getCacheContent(id: string, isFallback = false) {
   if (isFallback) {
     console.warn('notion 服务异常')
   }
-
-  const cacheFileName = `.cache/${id}.json`
+  const cacheFileName = path.join(process.cwd(), '.cache', `${id}.json`)
   if (process.env.ENABLE_CACHE || isFallback) {
     const exists = fs.existsSync(cacheFileName)
     console.log(cacheFileName, 'check local cache: ', exists)
