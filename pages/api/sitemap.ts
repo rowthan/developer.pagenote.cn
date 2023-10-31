@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import path from 'path';
 
 function readDirectoryRecursive(directoryPath: string) {
-  const files = fs.readdirSync(directoryPath);
+  const files = fs.readdirSync(path.resolve(directoryPath))
 
   const fileList: string[] = [];
   files.forEach((file) => {
@@ -32,13 +32,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const files = readDirectoryRecursive('.cache');
+  const files = readDirectoryRecursive('.cache/')
   let urlList = ''
-  files.forEach(function(item){
-    if(item.length < 24){
-        const path = item.replace('.cache/','').replace('.json','')
+  files.forEach(function (item) {
+    if (item.length < 24) {
+      const path = item.replace('.cache/', '').replace('.json', '')
 
-        urlList += `
+      urlList += `
         <url>
             <loc>https://pagenote.cn/${path}</loc>
             <priority>1</priority>
