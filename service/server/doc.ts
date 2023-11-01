@@ -7,7 +7,7 @@ const WEB_HOST = process.env.WEB_HOST
 
 export async function getNotionDocDetail(id: string, notFound: boolean = true) {
   // 静态资源 .xxx 不执行查询
-  if (/\.js|css|html|php|png|jpg|txt/.test(id)) {
+  if (/\.js|css|html|php|png|jpg|jsp|txt/.test(id)) {
     return {
       notFound: true,
     }
@@ -22,7 +22,7 @@ export async function getNotionDocDetail(id: string, notFound: boolean = true) {
     if (result?.recordMap) {
       return {
         props: result,
-        revalidate: isDev ? 60 : 2 * 60 * 60, // 单位 秒
+        revalidate: isDev ? 60 : 30 * 60 * 60, // 单位 秒
       }
     } else {
       return {
