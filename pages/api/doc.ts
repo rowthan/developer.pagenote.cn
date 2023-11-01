@@ -71,13 +71,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const notionIdOrUrlPath = (req.query.id || '').toString()
-
-  /**容灾控制，当 notion 服务器不可用时，启用缓存作为数据兜底处理*/
-  const cacheContent = getCacheContent(notionIdOrUrlPath)
-  if (cacheContent) {
-    return res.status(200).json(cacheContent)
-  }
-
   // 基于文章ID 或 path 查询详情
   let notionId = notionIdOrUrlPath
   // 如果是 URL path，需要查询对应的 notion id

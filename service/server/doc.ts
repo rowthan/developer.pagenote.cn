@@ -7,7 +7,7 @@ const WEB_HOST = process.env.WEB_HOST
 
 export async function getNotionDocDetail(id: string, notFound: boolean = true) {
   // 静态资源 .xxx 不执行查询
-  if (/\.js|css|html|php|png|jpg|txt/.test(id)) {
+  if (/\.js|css|html|php|png|jpg|jsp|txt/.test(id)) {
     return {
       notFound: true,
     }
@@ -22,7 +22,7 @@ export async function getNotionDocDetail(id: string, notFound: boolean = true) {
     if (result?.recordMap) {
       return {
         props: result,
-        revalidate: isDev ? 60 : 2 * 60 * 60, // 单位 秒
+        revalidate: isDev ? 60 : 30 * 60 * 60, // 单位 秒
       }
     } else {
       return {
@@ -46,34 +46,37 @@ export async function computeStaticPaths() {
   try {
     pages =
       getCacheContent('docs') ||
-      await(await fetch(`${WEB_HOST}/api/docs`)).json()
+      await(await fetch(`${WEB_HOST}/api/docs`)).json() ||
+      getCacheContent('docs', true)
   } catch (e) {
     console.error(e, 'getStaticPaths 请检查 /api/doc')
   }
 
-  console.log(pages.length, '待静态化页面数量')
+  const paths = pages
+    .filter(function (item) {
+      return !!item.path
+    })
+    .slice(0, isDev ? 5 : 20) // 最多静态化
+    .map(function (item) {
+      let paths = [DEFAULT_BASE_DOC_PATH, item.id] //[`/${DEFAULT_BASE_DOC_PATH}/${item.id}`]
+      // 如果有自定义路径，解析后封装至数组
+      if (item.path) {
+        item.path = item.path[0] === '/' ? item.path : '/' + item.path
+        paths = item.path.split('/').filter(function (item) {
+          return !!item
+        }) // .replace(/^\/.*?\//, '')
+        console.log(paths, item.id, item.path)
+      }
+      return {
+        params: {
+          paths: paths,
+        },
+      }
+    })
+  console.log(paths.length, '/', pages.length, '待静态化页面数量')
+
   return {
-    paths: pages
-      .sort(function (item) {
-        return item.path ? -1 : 1 // 优先静态化定义 path 的页面
-      })
-      .slice(0, isDev ? 5 : 50) // 最多静态化50个
-      .map(function (item) {
-        let paths = [DEFAULT_BASE_DOC_PATH, item.id] //[`/${DEFAULT_BASE_DOC_PATH}/${item.id}`]
-        // 如果有自定义路径，解析后封装至数组
-        if (item.path) {
-          item.path = item.path[0] === '/' ? item.path : '/' + item.path
-          paths = item.path.split('/').filter(function (item) {
-            return !!item
-          }) // .replace(/^\/.*?\//, '')
-          console.log(paths, item.id, item.path)
-        }
-        return {
-          params: {
-            paths: paths,
-          },
-        }
-      }),
+    paths: paths,
     // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-true
     // fallback: true, // 立即返回，并尝试取重新生成
     // fallback: false, // 直接返回404，不会尝试重新刷新，新增的页面，需要重新部署才会生成

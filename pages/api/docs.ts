@@ -24,12 +24,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  /**容灾控制，当 notion 服务器不可用时，启用缓存作为数据兜底处理*/
-  const cacheData = getCacheContent('docs')
-  if (cacheData) {
-    return res.status(200).json(cacheData)
-  }
-
   const result = (await fetchAllDocs()) || { results: [] }
   const responseData = result?.results
     .map(function (item) {

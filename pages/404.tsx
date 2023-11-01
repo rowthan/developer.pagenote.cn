@@ -19,6 +19,8 @@ const redirectMap: Record<string, string> = {
   '/pagenote': '/ext/manage',
   '/signup': '/signin',
   '/me': '/pagenote',
+  '/webpage': '/pagenote',
+  '/post':'/sitemap'
 }
 
 export const getStaticProps = async () => {
