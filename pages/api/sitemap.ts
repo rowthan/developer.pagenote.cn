@@ -34,7 +34,10 @@ export default async function handler(
   const files = readDirectoryRecursive(path.join(process.cwd(), '.cache'))
   let urlList = ''
   files.forEach(function (item) {
-    const path = item.replace('.cache/', '').replace('.json', '')
+    const path = item
+      .replace(process.cwd(), '')
+      .replace('.cache/', '')
+      .replace('.json', '')
 
     urlList += `
         <url>
