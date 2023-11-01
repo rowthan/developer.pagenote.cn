@@ -41,7 +41,7 @@ export default async function handler(
 
     urlList += `
         <url>
-            <loc>https://pagenote.cn/${path}</loc>
+            <loc>https://pagenote.cn${path}</loc>
             <priority>1</priority>
             <lastmod>${dayjs().format('YYYY-MM-DD')}</lastmod>
             <changefreq>daily</changefreq>
