@@ -1,9 +1,9 @@
+import useVersionValid from 'hooks/useVersionValid'
 import AuthBottoms from '../AuthBottoms'
 import SignForm from './SignForm'
-import useVersionValid from 'hooks/useVersionValid'
 
 export default function SigninPart() {
-    const {valid} = useVersionValid('0.26.4')
+  const { valid } = useVersionValid('0.26.4')
 
     return (
       <div className={'max-w-lg m-1'}>

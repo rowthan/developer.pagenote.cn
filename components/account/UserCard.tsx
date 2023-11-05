@@ -19,7 +19,6 @@ interface Props {
 }
 
 export default function UserCard(props: Props) {
-    const { editable, onClick } = props
   const [data, mutate, setToken] = useUserInfo()
   const [bookInfo] = useBooks()
   const [whoAmI] = useWhoAmi()
