@@ -39,24 +39,15 @@ export default function EnableCheck() {
       })
   }
 
-  useEffect(function () {
-    setTimeout(function () {
-      mutate()
-    }, 200)
-  }, [])
 
   return (
     <div className={'mx-auto '}>
       <div className={'p-3'}>
         <Bookmark />
         <PageMemo url={tab?.url || ''} />
+
         <div className={'my-4'}>
-          {useMemo(
-            () => (
-              <Tagfy pageKey={tab?.url || ''} />
-            ),
-            [tab?.url]
-          )}
+          <Tagfy pageKey={tab?.url || ''} />
         </div>
       </div>
 
