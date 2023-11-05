@@ -7,13 +7,13 @@ import Head from 'next/head'
 import ForbiddenSvg from 'assets/svg/warn.svg'
 import useWhoAmi from 'hooks/useWhoAmi'
 import extApi from '@pagenote/shared/lib/pagenote-api'
+import { Collection } from '../../const/collection'
 
 export default function Img() {
   const router = useRouter()
   const [whoAmI] = useWhoAmi()
-  const [images, refresh] = useTableQuery<SnapshotResource>(
-    'lightpage',
-    'snapshot',
+  const { data: images, mutate: refresh } = useTableQuery<SnapshotResource>(
+    Collection.snapshot,
     {
       limit: 1,
       query: {

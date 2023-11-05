@@ -10,6 +10,7 @@ import { SnapshotResource, Step } from '@pagenote/shared/lib/@types/data'
 import DisableButton from './DisableButton'
 import KeyboardTip from '../../KeyboardTip'
 import IconButton from '../../button/IconButton'
+import { Collection } from '../../../const/collection'
 import OfflineHTML = html.OfflineHTML
 
 function Item(props: {
@@ -33,8 +34,8 @@ function Item(props: {
 }
 
 export function PageInfo() {
-  const {tab} = useCurrentTab()
-  const [resourceList] = useTableQuery<OfflineHTML>('resource', 'html', {
+  const { tab } = useCurrentTab()
+  const { data: resourceList } = useTableQuery<OfflineHTML>(Collection.html, {
     limit: 9,
     query: {
       relatedPageUrl: tab?.url,
@@ -95,7 +96,7 @@ export function PageInfo() {
 
 export function LightInfo() {
   const { tab } = useCurrentTab()
-  const [lights] = useTableQuery<Step>('lightpage', 'light', {
+  const { data: lights } = useTableQuery<Step>(Collection.light, {
     limit: 999,
     query: {
       pageKey: tab?.url,
@@ -106,6 +107,7 @@ export function LightInfo() {
   })
 
   const cnt = lights.length
+  // todo 优化 asChild
   return <Item left={<DisableButton />} right={<span>{cnt}</span>} />
 }
 
@@ -118,10 +120,8 @@ export function CaptureButton(props: Props) {
   const { children, pageKey } = props
   const { tab } = useCurrentTab()
   const key = pageKey || tab?.url
-  const [snapshots = [], refresh] = useTableQuery<SnapshotResource>(
-    'lightpage',
-    'snapshot',
-    {
+  const { data: snapshots = [], mutate: refresh } =
+    useTableQuery<SnapshotResource>(Collection.snapshot, {
       limit: 100,
       query: {
         $or: [
@@ -136,8 +136,11 @@ export function CaptureButton(props: Props) {
       sort: {
         createAt: -1,
       },
-    }
-  )
+      projection: {
+        key: 1,
+        url: 1,
+      },
+    })
 
   function capture() {
     // if (!tabState?.active) {

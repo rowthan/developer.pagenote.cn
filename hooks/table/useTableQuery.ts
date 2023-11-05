@@ -1,27 +1,34 @@
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import useSWR from 'swr'
 import { Find } from '@pagenote/shared/lib/@types/database'
+import { Collection, dbTableMap } from '../../const/collection'
 
 export default function useTableQuery<T>(
-  db: string,
-  table: string,
+  collection: Collection,
   find: Find<T>
-): [Partial<T>[], () => void] {
-  const { data = [], mutate } = useSWR<Partial<T>[]>(function () {
-    return `/table/${table}/${JSON.stringify(find)}`
+) {
+  const {
+    data = [],
+    isLoading,
+    mutate,
+  } = useSWR<Partial<T>[]>(function () {
+    return `/collection/${collection}/${JSON.stringify(find)}`
   }, fetchData)
 
   function fetchData() {
     return extApi.table
       .query({
-        db: db,
+        ...dbTableMap[collection],
         params: find,
-        table: table,
       })
       .then(function (res) {
         return res.data.list as Partial<T>[]
       })
   }
 
-  return [data, mutate]
+  return {
+    data,
+    isLoading,
+    mutate,
+  }
 }
