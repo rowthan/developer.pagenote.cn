@@ -4,8 +4,8 @@ import CloseSvg from '../../assets/svg/close.svg'
 import { bindTransition } from '../../service'
 import { toast } from 'utils/toast'
 import CommonForm from '../CommonForm'
-import Image from 'next/image'
 import CheckUser from 'components/check/CheckUser'
+import usePrice from '../../hooks/usePrice'
 
 export default function Tip(props: { onClose: () => void; amount: number }) {
   const { onClose, amount } = props
@@ -13,6 +13,7 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
   const [userInfo] = useUserInfo()
   const [showButton, setShowButton] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [plans] = usePrice()
 
   function confirmPaid() {
     if (userInfo) {
@@ -55,28 +56,27 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
         <CloseSvg />
       </button>
       <div className="relative px-4 md:px-14 py-4 md:py-10 bg-gradient-to-br from-yellow-300 to-yellow-400 border-4 border-gray-900 flex items-center justify-center transform ">
-        <div
-            className="inline-block py-8 px-5 md:px-10 bg-white text-neutral  border-4 border-gray-900 text-center transform ">
+        <div className="inline-block py-8 px-5 md:px-10 bg-white text-neutral  border-4 border-gray-900 text-center transform ">
           {paid ? (
-              <div>
-                若你已留言邮箱，无需其他操作，请稍后，我将尽快确认赞助信息，这可能需要几分钟。
-                <div className={'divider'}></div>
-                <div className={'text-sm mb-2'}>
-                  {' '}
-                  或手动提交支付凭证(为保障你的体验，提交后将立即启用一日VIP，作者将在12小时内核准订单)
-                  <CommonForm
-                      loading={loading}
-                      onSubmit={bindTransitionByUser}
-                      fields={[
-                        {
-                          label: '支付订单号',
-                          name: 'recordId',
-                          placeholder: '支付订单号或转账单号',
-                        },
-                      ]}
-                      value={{recordId: ''}}
-                  />
-                </div>
+            <div>
+              若你已留言邮箱，无需其他操作，请稍后，我将尽快确认赞助信息，这可能需要几分钟。
+              <div className={'divider'}></div>
+              <div className={'text-sm mb-2'}>
+                {' '}
+                或手动提交支付凭证(为保障你的体验，提交后将立即启用一日VIP，作者将在12小时内核准订单)
+                <CommonForm
+                  loading={loading}
+                  onSubmit={bindTransitionByUser}
+                  fields={[
+                    {
+                      label: '支付订单号',
+                      name: 'recordId',
+                      placeholder: '支付订单号或转账单号',
+                    },
+                  ]}
+                  value={{ recordId: '' }}
+                />
+              </div>
               <div className={'text-xs'}>
                 超过12小时未收到邮件通知，请在 <key-word>微信公众号</key-word>{' '}
                 留言联系我。
@@ -125,10 +125,21 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
                 </a>
               </div>
               <div className={'text-sm'}>
-                请按照 <b>5元/月</b>、<b>40元/年</b>、
-                <b>
-                  125元{amount ? <span>（你需支付{amount}元）</span> : ''}/终身
-                </b>{' '}
+                请按照
+                {plans
+                  .filter(function (item) {
+                    return item.price > 0
+                  })
+                  .map((value, index) => (
+                    <b key={index} className={'text-xs mr-2'}>
+                      {value.price}元/{value.duration}
+                      {value.final && amount && amount < value.price ? (
+                        <span>（你需支付{amount}元）</span>
+                      ) : (
+                        ''
+                      )}
+                    </b>
+                  ))}
                 支付
               </div>
 

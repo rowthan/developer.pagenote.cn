@@ -11,7 +11,6 @@ export const AuthConfig: Record<
   AuthType,
   {
     label: string
-    link?: string
     icon: string
     platformUrl: string
     redirectUri: () => string
@@ -31,14 +30,13 @@ export const AuthConfig: Record<
   },
   webdav: {
     label: 'webdav授权',
-    link: `/oauth/webdav`,
     icon: '',
     platformUrl: '',
     redirectUri: function () {
       return ''
     },
     getAuthLInk: function () {
-      return ''
+      return `/oauth/webdav`
     },
   },
   github: {
@@ -54,14 +52,13 @@ export const AuthConfig: Record<
   },
   email: {
     label: '邮箱验证',
-    link: `/oauth/email`,
     icon: '/img/email.webp',
     platformUrl: '',
     redirectUri: function () {
       return ''
     },
     getAuthLInk: function () {
-      return ''
+      return `/oauth/email`
     },
   },
 }

@@ -27,22 +27,22 @@ export async function unionFetch<T>(
   if (byExtFlag === null) {
     await checkExtAlive()
   }
-  request.url = /^http/.test(request.url)
-    ? request.url
-    : process.env.API_HOST + request.url
   if (byExtFlag) {
     return extApi.network.pagenote(request, header).then(function (res) {
       // 代理超时，重新请求
       if (res?.status === RESPONSE_STATUS_CODE.TIMEOUT) {
-        console.log('timeout retry')
         checkExtAlive()
-        if (!retry) {
+        if (!retry && request.method !== 'POST') {
+          console.log('timeout retry')
           return unionFetch(request, header, true)
         }
       }
       return res?.data?.json
     })
   } else {
+    request.url = /^http/.test(request.url)
+      ? request.url
+      : process.env.API_HOST + request.url
     if (request.method === 'POST') {
       request.body = JSON.stringify(request.data)
     } else {

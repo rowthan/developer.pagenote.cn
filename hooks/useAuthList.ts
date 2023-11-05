@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { unionFetch } from '../utils/fetch'
 import { AuthType } from '../const/oauth'
+import useUserInfo from './useUserInfo'
 
 type PlatInfo = { platformUrl: string; platformIcon: string; bindUrl: string }
 
@@ -59,13 +60,23 @@ export default function useAuthList(): {
   mutate: () => void
   isLoading: boolean
 } {
+  const [userInfo] = useUserInfo()
   const {
     data = [],
     mutate,
     isLoading,
-  } = useSWR<AuthInfo[]>('/authList', () => fetchAuthList(), {
-    fallbackData: [],
-  })
+  } = useSWR<AuthInfo[]>(
+    function () {
+      if (!userInfo) {
+        throw Error('no userInfo')
+      }
+      return '/authList'
+    },
+    () => fetchAuthList(),
+    {
+      fallbackData: [],
+    }
+  )
 
   return {
     data,

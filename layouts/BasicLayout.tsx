@@ -24,9 +24,9 @@ export default function BasicLayout(
     const {children, nav = true, footer = true, ...customMeta} = props
 
     const meta = {
-        title: isDev ? '开发页面-' + customMeta.title : customMeta.title || '小而美的网页标记工具 PAGENOTE',
-        description: customMeta.description || `一页一记 pagenote，开发者中心.`,
-        type: 'website',
+      title: customMeta.title || '小而美的网页标记工具 PAGENOTE',
+      description: customMeta.description || `一页一记 pagenote，开发者中心.`,
+      type: 'website',
     }
 
     return (

@@ -36,7 +36,7 @@ export default function AuthList() {
   const activeAuth = authList[index]
 
   function gotoAuth(authType: AuthType) {
-    window.open(AuthConfig[authType].link)
+    window.open(AuthConfig[authType].getAuthLInk())
   }
 
   return (
@@ -58,6 +58,7 @@ export default function AuthList() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="">
                 <DropdownMenuItem
+                  disabled={!data?.profile?.uid}
                   onClick={() => {
                     setToken(null)
                   }}

@@ -10,16 +10,18 @@ import UserInfoForm from './UserInfoForm'
 import Avatar from './Avatar'
 import { isExt } from '../../const/env'
 import Nickname from './Nickname'
+import useWhoAmi from '../../hooks/useWhoAmi'
 
 interface Props {
   editable: boolean
 }
 
 export default function UserCard(props: Props) {
-  const { editable } = props
   const [data, mutate, setToken] = useUserInfo()
   const [bookInfo] = useBooks()
+  const [whoAmI] = useWhoAmi()
   const [openProfileModal, setProfileModal] = useState(false)
+  const editable = props.editable && data?.profile.uid
 
   const endAt = bookInfo.expiredAt
   const endDay = endAt ? dayjs(endAt).format('YYYY-MM-DD') : ''
@@ -53,13 +55,17 @@ export default function UserCard(props: Props) {
                 <Nickname nickname={data?.profile?.nickname} />
               </>
             ) : (
-              <div>
+              <div
+                className={
+                  ' whitespace-nowrap max-w-[240px] overflow-ellipsis overflow-hidden'
+                }
+              >
                 <a
                   target={isExt ? '_blank' : '_self'}
                   href="https://pagenote.cn/signin"
-                  className={'btn btn-ghost btn-sm'}
+                  className={'btn btn-ghost btn-sm '}
                 >
-                  登录
+                  {whoAmI?.did}
                 </a>
               </div>
             )}
