@@ -6,6 +6,7 @@ import extApi from '@pagenote/shared/lib/pagenote-api'
 import useWhoAmi from 'hooks/useWhoAmi'
 import { Suspense, lazy } from 'react'
 import { useMountedState } from 'react-use'
+import RedirectToExt from '../../components/RedirectToExt'
 
 const ClipboardList = lazy(() => import('components/manage/ClipboardList'))
 const Search = lazy(() => import('components/popup/Search'))
@@ -49,63 +50,65 @@ export default function PopupPage() {
   }
   return (
     <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
-      <div
-        className={
-          'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
-        }
-      >
-        <Router>
-          <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-          <div
-            className={
-              'w-full h-basic relative overflow-hidden overflow-y-auto '
-            }
-          >
-            <Routes>
-              <Route
-                index
-                element={
-                  <Suspense>
-                    <CurrentTab />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/clipboard"
-                element={
-                  <Suspense>
-                    <ClipboardList />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/search"
-                element={
-                  <Suspense>
-                    <Search keyword={keyword} />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/setting/*"
-                element={
-                  <Suspense>
-                    <Setting />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="*"
-                element={
-                  <Suspense>
-                    <CurrentTab />
-                  </Suspense>
-                }
-              />
-            </Routes>
-          </div>
-        </Router>
-      </div>
+      <RedirectToExt>
+        <div
+          className={
+            'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
+          }
+        >
+          <Router>
+            <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+            <div
+              className={
+                'w-full h-basic relative overflow-hidden overflow-y-auto '
+              }
+            >
+              <Routes>
+                <Route
+                  index
+                  element={
+                    <Suspense>
+                      <CurrentTab />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/clipboard"
+                  element={
+                    <Suspense>
+                      <ClipboardList />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/search"
+                  element={
+                    <Suspense>
+                      <Search keyword={keyword} />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/setting/*"
+                  element={
+                    <Suspense>
+                      <Setting />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="*"
+                  element={
+                    <Suspense>
+                      <CurrentTab />
+                    </Suspense>
+                  }
+                />
+              </Routes>
+            </div>
+          </Router>
+        </div>
+      </RedirectToExt>
     </BasicLayout>
   )
 }

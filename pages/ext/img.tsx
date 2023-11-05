@@ -78,5 +78,3 @@ export default function Img() {
         </RedirectToExt>
     );
 }
-
-Img.defaultProps = {}
