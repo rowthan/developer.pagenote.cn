@@ -6,7 +6,6 @@ import extApi from '@pagenote/shared/lib/pagenote-api'
 import useWhoAmi from 'hooks/useWhoAmi'
 import { useMountedState } from 'react-use'
 import useCurrentTab from '../../hooks/useCurrentTab'
-import RedirectToExt from '../../components/RedirectToExt'
 
 const ClipboardList = lazy(() => import('components/manage/ClipboardList'))
 const Search = lazy(() => import('components/popup/Search'))
@@ -58,14 +57,16 @@ export default function PopupPage() {
     >
       <div
         className={
-          'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
+          'w-basic m-auto border border-border rounded-lg transform translate-x-0'
         }
       >
         <Router>
-          <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+          <div className="sticky top-0 bg-background z-10">
+            <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+          </div>
           <div
             className={
-              'w-full h-basic relative overflow-hidden overflow-y-auto '
+              'w-full min-h-[550px] relative overflow-hidden overflow-y-auto '
             }
           >
             <Routes>
