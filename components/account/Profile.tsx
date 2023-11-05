@@ -13,9 +13,7 @@ export default function Profile() {
           <UserCard editable={true} />
 
           <div className="my-4 ">
-            <CheckUser fallback={<div></div>}>
-              <AuthList />
-            </CheckUser>
+            <AuthList />
           </div>
 
           {/*<div className="bg-white p-3 hover:shadow">*/}
@@ -29,6 +27,11 @@ export default function Profile() {
             <div className={'ml-2'}>
               <h2>今日相关</h2>
               <TodayRelated />
+              <div>
+                <a className={'link'} href="https://pagenote.cn/pagenote">
+                  查看所有
+                </a>
+              </div>
             </div>
           </div>
         </div>
