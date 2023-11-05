@@ -81,26 +81,26 @@ const Callback: React.FC<{ authType: AuthType }> = (props) => {
           <header className="text-center px-5 pb-5">
             <div className="relative inline-flex -mt-9 w-[72px] h-[72px] fill-current rounded-full border-4 border-white box-content shadow mb-3">
               <img
-                  width={72}
-                  height={72}
-                  src="/images/light-64.png"
-                  alt="pagenote"
-                  className={'rounded-full'}
+                width={72}
+                height={72}
+                src="/images/light-64.png"
+                alt="pagenote"
+                className={'rounded-full'}
               />
               <img
-                  width={36}
-                  height={36}
-                  className={'absolute -bottom-3 -right-3 bg-white rounded-full'}
-                  crossOrigin={'anonymous'}
-                  src={AuthConfig[authType]?.icon}
-                  alt={authType}
+                width={36}
+                height={36}
+                className={'absolute -bottom-3 -right-3 bg-white rounded-full'}
+                crossOrigin={'anonymous'}
+                src={AuthConfig[authType]?.icon}
+                alt={authType}
               />
             </div>
             <h3 className="text-xl font-bold  mb-1">
               {status === STATUS.exchanging ? (
-                  <div>获取授权信息中...</div>
+                <div>获取授权信息中...</div>
               ) : (
-                  <div>授权</div>
+                <div>授权</div>
               )}
             </h3>
             {/*<div className="text-sm font-medium ">*/}
@@ -109,17 +109,19 @@ const Callback: React.FC<{ authType: AuthType }> = (props) => {
           </header>
           <div className=" text-center px-5 py-6">
             <div className="text-sm mb-6">
-              从 {authType} 获取基础信息，以便于识别你的身份。
+              正在从 {authType} 获取基础信息，以识别你的身份。
             </div>
             {status === STATUS.fail && (
-                <div className={'text-red-500'}>
-                  <div dangerouslySetInnerHTML={{__html: tip || '授权失败'}}></div>
-                  <p>
-                    <Link href="/signin.html" className="link">
-                      返回重试
-                    </Link>
-                  </p>
-                </div>
+              <div className={'text-red-500'}>
+                <div
+                  dangerouslySetInnerHTML={{ __html: tip || '授权失败' }}
+                ></div>
+                <p>
+                  <Link href="/signin.html" className="link">
+                    返回重试
+                  </Link>
+                </p>
+              </div>
             )}
 
             {status === STATUS.success && (
