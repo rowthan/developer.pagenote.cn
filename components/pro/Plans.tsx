@@ -1,14 +1,13 @@
 import React, { type ReactNode, useEffect, useState } from 'react'
+import useUserInfo, { fetchUserInfo } from 'hooks/useUserInfo'
+import usePrice, { PlanInfo } from 'hooks/usePrice'
+import { createOrder } from 'service'
 import PlanCard from './PlanCard'
-import useUserInfo from '../../hooks/useUserInfo'
-import { createOrder } from '../../service'
 import Tip from './Tip'
-import usePrice, { PlanInfo } from '../../hooks/usePrice'
 
 interface Props {
   children?: ReactNode
 }
-
 
 export default function Plans(props: Props) {
   const { children } = props
@@ -27,6 +26,7 @@ export default function Plans(props: Props) {
   }
   useEffect(
     function () {
+      fetchUserInfo(true)
       if (plan) {
         createOrder(plan?.price)
       }
