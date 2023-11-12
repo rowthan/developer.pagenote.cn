@@ -13,9 +13,9 @@ export default function LocalHTML() {
     let list: { url: string, name?: string, versions: Partial<OfflineHTML>[] }[] = []
     for (let i in group) {
         list.push({
-            url: i,
-            name: group[i][0].name,
-            versions: group[i],
+          url: i,
+          name: group[i][0]?.name || '-',
+          versions: group[i],
         })
     }
     list = list.sort(function (pre, next) {
