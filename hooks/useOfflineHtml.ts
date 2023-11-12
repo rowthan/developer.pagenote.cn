@@ -10,17 +10,29 @@ export default function useOfflineHtml() {
     )
 
     function fetchInfo() {
-        return extApi.html.group({
-            groupBy: 'relatedPageUrl',
-            projection: {
-                data: -1
+      return extApi.table
+        .group(
+          {
+            db: 'resource',
+            table: 'html',
+            params: {
+              //   @ts-ignore
+              groupBy: 'relatedPageUrl',
+              projection: {
+                //   @ts-ignore
+                data: -1,
+              },
             },
-        }, {
+          },
+          {
             cacheControl: {
-                maxAgeMillisecond: 10 * 1000
-            }
-        }).then(function (res) {
-            return res.data;
+              maxAgeMillisecond: 10 * 1000,
+            },
+          }
+        )
+        .then(function (res) {
+          debugger
+          return res.data
         })
     }
 
