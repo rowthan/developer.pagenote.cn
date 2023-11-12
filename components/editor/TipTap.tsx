@@ -26,7 +26,7 @@ const extensions = [
   }),
   Placeholder.configure({
     placeholder: () => {
-      return '在此网页上留下关联备忘录'
+      return '留下关联备忘录'
     },
   }),
 ]
@@ -63,7 +63,7 @@ function Editor(props: EditorProps) {
     onUpdate: onUpdate,
     autofocus: false,
   })
-  
+
   return (
     <EditorContent className={props.className} editor={editor}>
       {props.children}

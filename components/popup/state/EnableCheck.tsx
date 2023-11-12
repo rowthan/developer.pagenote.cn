@@ -10,7 +10,6 @@ import {
 import { refreshTab } from 'utils/popup'
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from 'hooks/useTabPagenoteState'
-import { useEffect, useMemo } from 'react'
 import WindowTabs from '../WindowTabs'
 import ActionButton from '../../button/ActionButton'
 import { LuCopyCheck } from 'react-icons/lu'
@@ -38,7 +37,6 @@ export default function EnableCheck() {
         mutate()
       })
   }
-
 
   return (
     <div className={'mx-auto '}>
