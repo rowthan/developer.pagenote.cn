@@ -4,10 +4,9 @@ import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
-import { EditorProvider } from '@tiptap/react'
+import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import React from 'react'
-// import {EditorOptions} from "@tiptap/core/src/types";
+import React, { ReactNode } from 'react'
 
 const extensions = [
   Link.configure(),
@@ -33,38 +32,42 @@ const extensions = [
 ]
 
 export interface EditorChangeContent {
-    htmlContent: string,
-    jsonContent?: Object,
+  htmlContent: string
+  jsonContent?: Object
+  textContent: string
 }
 
 export interface EditorProps {
-    htmlContent: string,
-    jsonContent?: Object,
-    onUpdate: (content: EditorChangeContent) => void
+  htmlContent: string
+  jsonContent?: Object
+  onUpdate: (content: EditorChangeContent) => void
+  className?: string
+  children?: ReactNode
 }
 
 function Editor(props: EditorProps) {
   const onUpdate = function (data: {
-    editor: { getHTML: () => any; getJSON: () => any }
+    editor: { getHTML: () => any; getJSON: () => any; getText: () => string }
   }) {
     props.onUpdate({
       htmlContent: data.editor.getHTML(),
       jsonContent: data.editor.getJSON(),
+      textContent: data.editor.getText(),
     })
-    console.log(data, data.editor.getJSON())
     return undefined
   }
 
+  const editor = useEditor({
+    extensions: extensions,
+    content: props.htmlContent,
+    onUpdate: onUpdate,
+    autofocus: false,
+  })
+  
   return (
-    // @ts-ignore
-    <EditorProvider
-      autofocus={true}
-      onUpdate={onUpdate}
-      extensions={extensions}
-      content={props.htmlContent}
-    >
-      <div className={'children'}></div>
-    </EditorProvider>
+    <EditorContent className={props.className} editor={editor}>
+      {props.children}
+    </EditorContent>
   )
 }
 
