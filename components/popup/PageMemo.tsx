@@ -93,9 +93,6 @@ export default function PageMemo(props: Props) {
         ...dbTableMap[Collection.note],
         params: [key],
       })
-      .then(function () {
-        mutate()
-      })
   }
 
   function onUpdate(change: EditorChangeContent, origin: Partial<Note>) {
@@ -206,6 +203,7 @@ export default function PageMemo(props: Props) {
                             domain: domain,
                           })
                         }}
+                        disabled={!!item.html}
                         checked={item.relatedType === 'domain'}
                       >
                         <GiFamilyTree />与<b>同域名</b>（{domain}）共享

@@ -52,11 +52,7 @@ export default function PopupPage() {
       title={'当前标签页-' + tab?.title}
       full={true}
     >
-      <div
-        className={
-          'w-basic m-auto border border-border rounded-lg transform translate-x-0'
-        }
-      >
+      <div className={'w-basic m-auto rounded-lg transform translate-x-0'}>
         {mounted() && (
           <Router>
             <div className="sticky top-0 bg-background z-10">
