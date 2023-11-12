@@ -45,9 +45,6 @@ export default function PopupPage() {
     [whoAmi]
   )
 
-  if (!mounted()) {
-    return null
-  }
   return (
     <BasicLayout
       nav={false}
@@ -60,59 +57,61 @@ export default function PopupPage() {
           'w-basic m-auto border border-border rounded-lg transform translate-x-0'
         }
       >
-        <Router>
-          <div className="sticky top-0 bg-background z-10">
-            <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
-          </div>
-          <div
-            className={
-              'w-full min-h-[550px] relative overflow-hidden overflow-y-auto '
-            }
-          >
-            <Routes>
-              <Route
-                index
-                element={
-                  <Suspense>
-                    <CurrentTab />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/clipboard"
-                element={
-                  <Suspense>
-                    <ClipboardList />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/search"
-                element={
-                  <Suspense>
-                    <Search keyword={keyword} />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/setting/*"
-                element={
-                  <Suspense>
-                    <Setting />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="*"
-                element={
-                  <Suspense>
-                    <CurrentTab />
-                  </Suspense>
-                }
-              />
-            </Routes>
-          </div>
-        </Router>
+        {mounted() && (
+          <Router>
+            <div className="sticky top-0 bg-background z-10">
+              <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+            </div>
+            <div
+              className={
+                'w-full min-h-[550px] relative overflow-hidden overflow-y-auto '
+              }
+            >
+              <Routes>
+                <Route
+                  index
+                  element={
+                    <Suspense>
+                      <CurrentTab />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/clipboard"
+                  element={
+                    <Suspense>
+                      <ClipboardList />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/search"
+                  element={
+                    <Suspense>
+                      <Search keyword={keyword} />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/setting/*"
+                  element={
+                    <Suspense>
+                      <Setting />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="*"
+                  element={
+                    <Suspense>
+                      <CurrentTab />
+                    </Suspense>
+                  }
+                />
+              </Routes>
+            </div>
+          </Router>
+        )}
       </div>
     </BasicLayout>
   )

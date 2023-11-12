@@ -217,9 +217,6 @@ export default function PageMemo(props: Props) {
                       <MenubarItem inset onClick={() => createNewMemo('path')}>
                         新增备忘录
                       </MenubarItem>
-                      <MenubarItem inset onClick={() => removeMemo(item.key)}>
-                        删除备忘录
-                      </MenubarItem>
                     </MenubarContent>
                   </MenubarMenu>
                 </Menubar>
