@@ -8,20 +8,16 @@ import UserCard from './UserCard'
 export default function Profile() {
   return (
     <div className="container mx-auto p-5">
-      <div className="md:flex no-wrap md:-mx-2 ">
-        <div className="w-full md:w-3/12 md:mx-2">
+      <div className="md:flex no-wrap md:-mx-2 gap-6">
+        <div className="w-full md:w-3/12 ">
           <UserCard editable={true} />
 
           <div className="my-4 ">
             <AuthList />
           </div>
-
-          {/*<div className="bg-white p-3 hover:shadow">*/}
-          {/*    <InviteGroup />*/}
-          {/*</div>*/}
         </div>
 
-        <div className="w-full md:w-9/12 mx-2 h-64">
+        <div className="w-full md:w-9/12 min-h-64">
           <div className="flex bg-white text-gray-900 p-3 shadow-sm rounded-sm min-h-16">
             <Day />
             <div className={'ml-2'}>

@@ -10,10 +10,12 @@ import UserInfoForm from './UserInfoForm'
 import Avatar from './Avatar'
 import { isExt } from '../../const/env'
 import Nickname from './Nickname'
+import classNames from 'classnames'
 import useWhoAmi from '../../hooks/useWhoAmi'
 
 interface Props {
   editable: boolean
+  onClick?: () => void
 }
 
 export default function UserCard(props: Props) {
@@ -27,12 +29,15 @@ export default function UserCard(props: Props) {
   const endDay = endAt ? dayjs(endAt).format('YYYY-MM-DD') : ''
   return (
     <div
-      className={
-        ' rounded-lg p-2 min-w-80 w-full border text-card-foreground bg-[#63b3ed]'
-      }
+      className={classNames(
+        ' rounded-lg p-2  min-w-80 w-full border text-card-foreground bg-[#63b3ed]',
+        {
+          'cursor-pointer': !editable,
+        }
+      )}
     >
       <div className={'flex justify-between'}>
-        <div className={'flex items-center mb-4'}>
+        <div className={'flex items-center'}>
           <div className="avatar">
             <div className="w-10 h-10 rounded-full bg-white ring ring-white ring-offset-base-100 ring-offset">
               {editable ? (

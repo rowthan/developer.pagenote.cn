@@ -10,7 +10,6 @@ import {
 import { refreshTab } from 'utils/popup'
 import WarnSvg from 'assets/svg/warn.svg'
 import useTabPagenoteState from 'hooks/useTabPagenoteState'
-import { useEffect, useMemo } from 'react'
 import WindowTabs from '../WindowTabs'
 import ActionButton from '../../button/ActionButton'
 import { LuCopyCheck } from 'react-icons/lu'
@@ -39,24 +38,14 @@ export default function EnableCheck() {
       })
   }
 
-  useEffect(function () {
-    setTimeout(function () {
-      mutate()
-    }, 200)
-  }, [])
-
   return (
     <div className={'mx-auto '}>
       <div className={'p-3'}>
         <Bookmark />
         <PageMemo url={tab?.url || ''} />
+
         <div className={'my-4'}>
-          {useMemo(
-            () => (
-              <Tagfy pageKey={tab?.url || ''} />
-            ),
-            [tab?.url]
-          )}
+          <Tagfy pageKey={tab?.url || ''} />
         </div>
       </div>
 

@@ -47,108 +47,143 @@ export default function Offline() {
         }
         const queries = [];
         if (id) {
-            queries.push({
-                resourceId: id,
-            })
+          queries.push({
+            resourceId: id,
+          })
         }
         if (url) {
-            queries.push({
-                relatedPageUrl: url,
-            })
+          queries.push({
+            relatedPageUrl: url,
+          })
         }
-        extApi.html.query({
-            query: {
-                $or: queries
+        extApi.table
+          .query({
+            table: 'html',
+            db: 'resource',
+            params: {
+              query: {
+                //@ts-ignore
+                $or: queries,
+              },
             },
             limit: 1,
-        }).then(function (res) {
-            const resource = res.data?.list[0] || null;
+          })
+          .then(function (res) {
+            debugger
+            console.log(res, 'res')
+            const resource = (res.data?.list[0] as Partial<OfflineHTML>) || null
             setResource(resource)
             if (resource) {
-                // setHTML(resource.data)
-                // return;
-                // 1.iframe 隔离的方式
-                const originUrl = resource.relatedPageUrl || resource.originUrl || '';
-                const iframe = document.createElement('iframe');
-                // TODO 植入 service worker 来控制网络请求的跨域问题
-                iframe.srcdoc = '<!DOCTYPE html><html><head></head><body></body></html>';
-                iframe.src = originUrl;
-                iframe.setAttribute('data-pagenote', 'html')
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                iframe.style.backgroundColor = '#ffffff'
-                const current = document.querySelector('iframe[data-pagenote]');
-                if (current) {
-                    document.documentElement.removeChild(current)
-                }
-                document.documentElement.appendChild(iframe)
-                iframe?.contentDocument?.write(resource.data || '');
+              // setHTML(resource.data)
+              // return;
+              // 1.iframe 隔离的方式
+              const originUrl =
+                resource.relatedPageUrl || resource.originUrl || ''
+              const iframe = document.createElement('iframe')
+              // TODO 植入 service worker 来控制网络请求的跨域问题
+              iframe.srcdoc =
+                '<!DOCTYPE html><html><head></head><body></body></html>'
+              iframe.src = originUrl
+              iframe.setAttribute('data-pagenote', 'html')
+              iframe.style.width = '100%'
+              iframe.style.height = '100%'
+              iframe.style.backgroundColor = '#ffffff'
+              const current = document.querySelector('iframe[data-pagenote]')
+              if (current) {
+                document.documentElement.removeChild(current)
+              }
+              document.documentElement.appendChild(iframe)
+              iframe?.contentDocument?.write(resource.data || '')
 
+              appendCss(
+                [
+                  `${whoAmI?.origin}/lib/pagenote/5.5.3/pagenote.css`,
+                  `${whoAmI?.origin}/rollup/pagenote_kit.css`,
+                ],
+                iframe.contentDocument?.documentElement
+              )
 
-                appendCss([
-                    `${whoAmI?.origin}/lib/pagenote/5.5.3/pagenote.css`,
-                    `${whoAmI?.origin}/rollup/pagenote_kit.css`
-                ], iframe.contentDocument?.documentElement)
+              appendScript(
+                [
+                  `${whoAmI?.origin}/lib/pagenote/5.5.3/pagenote.js`,
+                  `${whoAmI?.origin}/rollup/pagenote_kit.js`,
+                ],
+                iframe.contentDocument?.documentElement
+              )
 
-                appendScript([
-                    `${whoAmI?.origin}/lib/pagenote/5.5.3/pagenote.js`,
-                    `${whoAmI?.origin}/rollup/pagenote_kit.js`
-                ], iframe.contentDocument?.documentElement)
+              setLoaded(true)
 
-                setLoaded(true)
-
-                // 2.最原始的植入方式
-                //@ts-ignore
-                // document.documentElement.innerHTML = resource.data
+              // 2.最原始的植入方式
+              //@ts-ignore
+              // document.documentElement.innerHTML = resource.data
             }
-        })
+          })
     }
 
     function fetchRelated() {
-        if (!resource?.relatedPageUrl) {
-            return;
-        }
-        extApi.html.query({
+      if (!resource?.relatedPageUrl) {
+        return
+      }
+      extApi.table
+        .query({
+          table: 'html',
+          db: 'resource',
+          params: {
             query: {
-                relatedPageUrl: resource?.relatedPageUrl
+              //   @ts-ignore
+              relatedPageUrl: resource?.relatedPageUrl,
             },
             limit: 99,
             projection: {
-                data: -1
-            }
-        }).then(function (res) {
-            if (res.success) {
-                setResourceList(res.data.list || [])
-            }
+              //   @ts-ignore
+              data: -1,
+            },
+          },
+        })
+        .then(function (res) {
+          if (res.success) {
+            setResourceList(res.data.list || [])
+          }
         })
     }
 
     function onChangeResourceId(id: string) {
-        window.location.href = `${basePath}/ext/offline.html?id=${id}`
+      window.location.href = `${basePath}/ext/offline.html?id=${id}`
     }
 
     function removeResource() {
-        extApi.html.remove([resource?.resourceId || '']).then(function () {
-            window.location.reload()
+      extApi.table
+        .remove({
+          table: 'html',
+          db: 'resource',
+          params: [resource?.resourceId || ''],
+        })
+        .then(function () {
+          window.location.reload()
         })
     }
 
     function downloadHtml() {
-        if(resource?.data){
-            contentToFile(resource?.data||"",`${resource?.name||""}.html`)
+        if (resource?.data) {
+            contentToFile(resource?.data || '', `${resource?.name || ''}.html`)
         }
     }
 
-    useEffect(function () {
+    useEffect(
+      function () {
         if (resource?.relatedPageUrl) {
-            fetchRelated()
+          fetchRelated()
         }
-    }, [resource])
+      },
+      [resource]
+    )
 
-    useEffect(function () {
-        fetchResource();
-    }, [query, whoAmI])
-
+    useEffect(
+      function () {
+        fetchResource()
+      },
+      [query, whoAmI]
+    )
 
     const withoutId = !query.id && !query.url
 

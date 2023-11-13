@@ -18,6 +18,7 @@ import {
 import React, { useState } from 'react'
 import { ProfileEditor } from './ProfileEditor'
 import { DialogPortal } from '@radix-ui/react-dialog'
+import useWhoAmi from '../../hooks/useWhoAmi'
 
 interface Props {
   nickname: string
@@ -40,7 +41,7 @@ export default function Nickname(props: Props) {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
-              <div className={'p-1'}>用户ID：{data?.profile?.uid}</div>
+              <DropdownMenuItem>用户ID：{data?.profile?.uid}</DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DialogTrigger asChild>

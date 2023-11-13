@@ -1,12 +1,11 @@
 import BasicLayout from 'layouts/BasicLayout'
-import React, { useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import NavTabs from 'components/popup/NavTabs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import useWhoAmi from 'hooks/useWhoAmi'
-import { Suspense, lazy } from 'react'
 import { useMountedState } from 'react-use'
-import RedirectToExt from '../../components/RedirectToExt'
+import useCurrentTab from '../../hooks/useCurrentTab'
 
 const ClipboardList = lazy(() => import('components/manage/ClipboardList'))
 const Search = lazy(() => import('components/popup/Search'))
@@ -19,6 +18,7 @@ export default function PopupPage() {
   const [keyword, setKeyword] = useState<string>('')
   const [whoAmi] = useWhoAmi()
   const mounted = useMountedState()
+  const { tab } = useCurrentTab()
 
   useEffect(function () {
     setKeyword(localStorage.getItem(CACHE_SEARCH_KEY) || '')
@@ -45,22 +45,22 @@ export default function PopupPage() {
     [whoAmi]
   )
 
-  if (!mounted()) {
-    return null
-  }
   return (
-    <BasicLayout nav={false} footer={false} title={'当前标签页'} full={true}>
-      <RedirectToExt>
-        <div
-          className={
-            'w-basic m-auto border border-border rounded-lg overflow-hidden transform translate-x-0'
-          }
-        >
+    <BasicLayout
+      nav={false}
+      footer={false}
+      title={'当前标签页-' + tab?.title}
+      full={true}
+    >
+      <div className={'w-basic m-auto rounded-lg transform translate-x-0'}>
+        {mounted() && (
           <Router>
-            <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+            <div className="sticky top-0 bg-background z-10">
+              <NavTabs keyword={keyword} onChangeKeyword={setKeyword} />
+            </div>
             <div
               className={
-                'w-full h-basic relative overflow-hidden overflow-y-auto '
+                'w-full min-h-[550px] relative overflow-hidden overflow-y-auto '
               }
             >
               <Routes>
@@ -107,8 +107,8 @@ export default function PopupPage() {
               </Routes>
             </div>
           </Router>
-        </div>
-      </RedirectToExt>
+        )}
+      </div>
     </BasicLayout>
   )
 }

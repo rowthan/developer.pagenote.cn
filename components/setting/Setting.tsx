@@ -8,12 +8,21 @@ import ImageCloud from '../backup/extension/ImageCloud'
 import ImportAndExport from '../backup/extension/ImportAndExport'
 import SettingDetail from './SettingDetail'
 import Shortcut from './Shortcut'
+import extApi from '@pagenote/shared/lib/pagenote-api'
 
 export default function Setting() {
+  function onClickUser() {
+    extApi.commonAction.openTab({
+      reUse: true,
+      url: 'https://pagenote.cn/account',
+      tab: {},
+    })
+  }
+
   return (
     <div className={'max-w-3xl m-auto p-3'}>
       <div className={'mb-4'}>
-        <UserCard editable={false} />
+        <UserCard editable={false} onClick={onClickUser} />
       </div>
 
       <div className="">

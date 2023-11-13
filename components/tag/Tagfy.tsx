@@ -46,6 +46,7 @@ export default function Tagfy(props: Props) {
   const [categories] = useKeys<string[]>(Collection.webpage, 'categories')
   const keywords: string[] = content?.keywords || []
   const set = new Set(tags)
+  const [filterKey, setFilterKey] = useState<string>('')
 
   function updateTags(tags: string[]) {
     // setSelected(tags);
@@ -67,7 +68,7 @@ export default function Tagfy(props: Props) {
   }
 
   function search(value: string) {
-    console.log(value)
+    setFilterKey((value || '').trim().toLowerCase())
   }
 
   return (
@@ -140,19 +141,27 @@ export default function Tagfy(props: Props) {
               )}
               <div>
                 <div>历史标签</div>
-                {categories.map((word) =>
-                  set.has(word) ? null : (
-                    <Keywords
-                      className={'text-blue-300'}
-                      onClick={() => {
-                        addTag(word)
-                      }}
-                      key={word}
-                    >
-                      {word}
-                    </Keywords>
-                  )
-                )}
+                {categories
+                  .filter(function (value) {
+                    if (!filterKey) {
+                      return true
+                    } else {
+                      return value?.toLowerCase().indexOf(filterKey) !== -1
+                    }
+                  })
+                  .map((word) =>
+                    set.has(word) ? null : (
+                      <Keywords
+                        className={'text-blue-300'}
+                        onClick={() => {
+                          addTag(word)
+                        }}
+                        key={word}
+                      >
+                        {word}
+                      </Keywords>
+                    )
+                  )}
               </div>
             </div>
           </div>
