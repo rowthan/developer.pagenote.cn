@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import extApi from '@pagenote/shared/lib/pagenote-api'
+import { useEffect } from 'react'
 
 function fetchStatus(tabId?: number) {
   // @ts-ignore
@@ -9,7 +10,6 @@ function fetchStatus(tabId?: number) {
       params: undefined,
       header: {
         targetTabId: tabId,
-        timeout: 2000,
       },
     })
     .then(function (res) {
@@ -33,6 +33,14 @@ export default function useTabPagenoteState(
       return fetchStatus(tabId)
     }
   )
+
+  useEffect(() => {
+    if (!data) {
+      setTimeout(() => {
+        mutate()
+      }, 3000)
+    }
+  }, [data])
 
   return [data, mutate, isLoading]
 }

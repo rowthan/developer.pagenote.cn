@@ -1,11 +1,12 @@
 import { type ReactNode } from 'react'
-import useTableQuery from '../../hooks/useTableQuery'
+import useTableQuery from '../../hooks/table/useTableQuery'
 import { SnapshotResource } from '@pagenote/shared/lib/@types/data'
 import useTabPagenoteData from '../../hooks/useTabPagenoteData'
 import { TbCapture } from 'react-icons/tb'
 import { RiDownloadCloudLine } from 'react-icons/ri'
 import classNames from 'classnames'
 import DisableButton from './state/DisableButton'
+import { Collection } from '../../const/collection'
 
 interface Props {
   children?: ReactNode
@@ -28,10 +29,8 @@ function SectionItem(props: { children: ReactNode; className?: string }) {
 export default function Summary(props: Props) {
   const { url } = props
   const [webpage] = useTabPagenoteData()
-  const [snapshots = [], refresh] = useTableQuery<SnapshotResource>(
-    'lightpage',
-    'snapshot',
-    {
+  const { data: snapshots = [], mutate: refresh } =
+    useTableQuery<SnapshotResource>(Collection.snapshot, {
       limit: 100,
       query: {
         $or: [
@@ -46,8 +45,7 @@ export default function Summary(props: Props) {
       sort: {
         createAt: -1,
       },
-    }
-  )
+    })
 
   return (
     <div className="flex w-full gap-[3px] repeat-3 justify-between rounded">

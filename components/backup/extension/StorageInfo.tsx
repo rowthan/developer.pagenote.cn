@@ -1,24 +1,23 @@
 import React, { type ReactNode } from 'react'
-import useStorage from 'hooks/useStorage'
+import useStorage from 'hooks/table/useStorage'
 import { getMb } from 'utils/size'
 import BasicSettingLine from '../../setting/BasicSettingLine'
 import Loading from 'components/loading/Loading'
-import useWhoAmi from 'hooks/useWhoAmi'
 import { basePath } from 'const/env'
 import classNames from 'classnames'
+import { Collection } from 'const/collection'
 
 interface Props {
   children?: ReactNode
 }
 
 export default function StorageInfo(props: Props) {
-  const [pageStorage, loadingPage] = useStorage('lightpage', 'webpage')
-  const [lightStorage, loadingLight] = useStorage('lightpage', 'light')
-  const [snapshotStorage, loadingSnapshot] = useStorage('lightpage', 'snapshot')
-  const [htmlStorage, loadingHtml] = useStorage('resource', 'html')
-  const [noteStorage] = useStorage('lightpage', 'note')
+  const [pageStorage, loadingPage] = useStorage(Collection.webpage)
+  const [lightStorage, loadingLight] = useStorage(Collection.light)
+  const [snapshotStorage, loadingSnapshot] = useStorage(Collection.snapshot)
+  const [htmlStorage, loadingHtml] = useStorage(Collection.html)
+  const [noteStorage] = useStorage(Collection.note)
 
-  const [whoAmI] = useWhoAmi()
   const loading = loadingHtml || loadingLight || loadingSnapshot || loadingPage
   const total =
     pageStorage?.usage +

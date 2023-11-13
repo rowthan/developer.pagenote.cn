@@ -6,9 +6,8 @@ import Footer from '../components/Footer'
 import ErrorBoundary from '../components/debug/ErrorBound'
 import Error from 'components/debug/ErrorTip'
 import HelpAside from '../components/HelpAside'
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from '@/components/ui/toaster'
 
-import {isDev} from 'const/env'
 // 给普通用户访问的页面，基础layout
 export default function BasicLayout(
   props: PropsWithChildren<{

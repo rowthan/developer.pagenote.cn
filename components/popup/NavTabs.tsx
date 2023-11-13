@@ -45,12 +45,17 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
     }
 
     function onKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
-        // POPUP 模式下，无效，页面被关掉
-        if (e.key === 'Escape') {
-            onChangeKeyword('');
-            e.stopPropagation();
-            e.preventDefault();
+      // POPUP 模式下，无效，页面被关掉
+      if (e.key === 'Escape') {
+        onChangeKeyword('')
+      } else if (e.key === 'Enter') {
+        onChangeKeyword(e.currentTarget.value)
+        if (e.currentTarget.value) {
+          navigate('/search')
         }
+      }
+      e.stopPropagation()
+      e.preventDefault()
     }
 
     useEffect(function () {
@@ -68,7 +73,7 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
 
     const isSearchPath = location.pathname === '/search'
     return (
-      <div className="relative !bg-transparent max-w-full">
+      <div className=" !bg-transparent max-w-full">
         {tabs.map((item, index) => (
           <NavLink
             key={index}
@@ -87,7 +92,7 @@ export default function NavTabs(props: { keyword: string, onChangeKeyword: (keyw
         >
           <input
             type="text"
-            placeholder="🔍搜索笔记"
+            placeholder={'搜索 ' + keyword}
             autoFocus={true}
             value={keyword}
             ref={ref}

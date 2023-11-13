@@ -44,6 +44,7 @@ export default function SettingHome() {
       <SettingSection className={'mt-6'}>
         <BasicSettingLine
           label={'插件版本'}
+          subLabel={<span>{whoAmI?.extensionPlatform}</span>}
           right={
             <span className={'text-xs'}>
               <a href="https://pagenote.cn/release" target={'_blank'}>
