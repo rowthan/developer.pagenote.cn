@@ -203,7 +203,7 @@ export default function PageMemo(props: Props) {
                             domain: domain,
                           })
                         }}
-                        disabled={!!item.html}
+                        disabled={!item.html}
                         checked={item.relatedType === 'domain'}
                       >
                         <GiFamilyTree />与<b>同域名</b>（{domain}）共享

@@ -26,7 +26,7 @@ export function Bookmark() {
         </Avatar>
 
         <div className=" relative">
-          <div className=" text-sm font-medium font-['Inter']">
+          <div className=" text-sm font-medium font-['Inter'] overflow-hidden overflow-ellipsis line-clamp-1">
             <span className={''}>{tab?.title || '--'}</span>
           </div>
           <div className="mt-1 text-muted-foreground text-xs font-normal overflow-hidden overflow-ellipsis line-clamp-2">
