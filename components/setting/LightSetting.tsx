@@ -45,7 +45,7 @@ export default function LightSetting() {
                 <SelectTrigger className={'w-auto border-none shadow-none'}>
                   <SelectValue placeholder={'敏捷度调节'} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position={'item-aligned'}>
                   <SelectItem value={'0'}>灵敏，按下即触发</SelectItem>
                   <SelectItem value="500">适中，长按0.5秒</SelectItem>
                   <SelectItem value="2000">迟缓，长按2秒</SelectItem>
@@ -66,7 +66,7 @@ export default function LightSetting() {
                 <SelectTrigger className={'w-auto border-none shadow-none'}>
                   <SelectValue placeholder={'敏捷度调节'} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position={'item-aligned'}>
                   <SelectItem value={'0'}>立刻</SelectItem>
                   <SelectItem value="1000">迟缓</SelectItem>
                 </SelectContent>
