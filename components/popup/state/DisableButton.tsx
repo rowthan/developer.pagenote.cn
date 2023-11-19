@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/select'
 import { BiHighlight } from 'react-icons/bi'
 import { TbHighlightOff } from 'react-icons/tb'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 
 function checkDisabled(rule: string, url: string) {
   return rule === url || (rule.indexOf('*') > -1 && new RegExp(rule).test(url))
@@ -70,7 +72,7 @@ export default function DisableButton() {
 
   const disableDomain = url ? `${new URL(url).origin}/*` : ''
 
-  function onChangeDisableRule(type: EnableType) {
+  function onChangeDisableRule(type: EnableType | string) {
     switch (type) {
       case EnableType.disableDomain:
         add(disableDomain)
@@ -97,6 +99,26 @@ export default function DisableButton() {
   } else if (set.has(url)) {
     value = EnableType.disableUrl
   }
+
+  return (
+    <>
+      <Switch
+        id={'disable-button'}
+        color={'primary'}
+        checked={value === EnableType.enable}
+        onCheckedChange={(value) => {
+          if (value) {
+            onChangeDisableRule(EnableType.enable)
+          } else {
+            onChangeDisableRule(EnableType.disableUrl)
+          }
+        }}
+      />
+      <Label htmlFor="disable-button">
+        {value === EnableType.enable ? '已启用' : '已禁用'}
+      </Label>
+    </>
+  )
 
   return (
     <Select value={value} onValueChange={onChangeDisableRule}>

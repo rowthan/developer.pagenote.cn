@@ -12,6 +12,7 @@ import KeyboardTip from '../../KeyboardTip'
 import IconButton from '../../button/IconButton'
 import { Collection } from '../../../const/collection'
 import OfflineHTML = html.OfflineHTML
+import { BiHighlight } from 'react-icons/bi'
 
 function Item(props: {
   left: ReactNode
@@ -107,8 +108,7 @@ export function LightInfo() {
   })
 
   const cnt = lights.length
-  // todo 优化 asChild
-  return <Item left={<DisableButton />} right={<span>{cnt}</span>} />
+  return <Item left={<BiHighlight />} right={<span>{cnt}</span>} />
 }
 
 interface Props {
