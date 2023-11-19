@@ -1,5 +1,6 @@
 import React from 'react'
 import { CaptureButton, LightInfo, PageInfo } from './state/PageInfo'
+import DisableButton from './state/DisableButton'
 
 interface Props {
   pageKey?: string
@@ -12,6 +13,8 @@ export default function Achieve() {
         <CaptureButton />
         <PageInfo />
         <LightInfo />
+
+        <DisableButton />
       </div>
     </div>
   )
