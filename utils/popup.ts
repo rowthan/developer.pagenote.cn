@@ -1,5 +1,6 @@
 import Tab = chrome.tabs.Tab
 import extApi from '@pagenote/shared/lib/pagenote-api'
+import { isExt } from '../const/env'
 
 export function refreshTab(tab?: Tab) {
   function callback() {
@@ -8,7 +9,7 @@ export function refreshTab(tab?: Tab) {
     }, 1000)
   }
   if (tab?.id) {
-    if (chrome?.tabs) {
+    if (isExt && chrome?.tabs) {
       chrome?.tabs?.reload(tab?.id, {}, callback)
     } else {
       extApi.developer
@@ -25,12 +26,10 @@ export function refreshTab(tab?: Tab) {
 }
 
 export function focus(tab: Tab) {
-    if(chrome && chrome.tabs && tab.id){
-        chrome.tabs.update({
+    if (isExt && chrome && chrome.tabs && tab.id) {
+        chrome.tabs.update({})
 
-        })
-
-        chrome.windows.update(tab.windowId,{
+        chrome.windows.update(tab.windowId, {
             focused: true
         })
 

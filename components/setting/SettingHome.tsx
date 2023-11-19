@@ -34,15 +34,22 @@ export default function SettingHome() {
   }
 
   function gotoSetting() {
-    extApi.developer.chrome({
-      namespace: 'tabs',
-      type: 'create',
-      args: [
-        {
-          url: whoAmI?.origin + '/web/ext/setting.html#/setting/light',
-        },
-      ],
-    })
+    extApi.developer
+      .chrome({
+        namespace: 'tabs',
+        type: 'create',
+        args: [
+          {
+            reUse: true,
+            url: whoAmI?.origin + '/web/ext/setting.html#/setting/light',
+          },
+        ],
+      })
+      .then(function (res) {
+        if (res.success) {
+          window.close()
+        }
+      })
   }
 
   return (

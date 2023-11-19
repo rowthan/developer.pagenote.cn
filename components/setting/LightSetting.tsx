@@ -30,7 +30,7 @@ export default function LightSetting() {
 
   return (
     <SettingDetail label={'画笔设置'}>
-      <div>
+      <div className={'relative'}>
         <SettingSection>
           <BasicSettingLine
             label={'标记快捷键灵敏度'}
