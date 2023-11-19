@@ -10,6 +10,7 @@
   width: 100% !important;
 }
 
+
 .notion-app .breadcrumbs {
   /*overflow: hidden;*/
   width: 100%;
@@ -43,5 +44,13 @@
     height: 200px !important;
     max-height: 200px !important;
     min-height: 200px !important;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .notion-table-of-contents.notion-gray {
+    position: fixed;
+    left: 40px;
+    max-width: calc(50% - 390px);
   }
 }
