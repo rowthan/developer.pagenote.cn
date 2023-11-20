@@ -3,9 +3,13 @@ var currentKey = '0.28.0';
 var preCacheName = 'pre_cache_'+currentKey;
 var runtimeCacheName = 'runtime_cache_'+currentKey;
 var preCacheFiles = [
-    '/author',
-    '/release',
-    '/widget/close-on-installed'
+  '/',
+  '/setting',
+  '/redirect',
+  '/signin',
+  '/author',
+  '/release',
+  '/widget/close-on-installed',
 ]
 
 
@@ -35,47 +39,45 @@ var util = {
         });
     },
     checkAllowCache: function (request) {
-        try{
-            if(request.method !== 'GET'){
-                return false;
+        try {
+            if (request.method !== 'GET') {
+                return false
             }
 
             /**黑名单，不实用缓存*/
-            for (let i in cacheRules.blockList){
-                try{
-                    var regex = new RegExp(cacheRules.blockList[i]);
-                    if(regex.test(request.url)){
-                        console.log('blocked',request.url)
-                        return false;
+            for (let i in cacheRules.blockList) {
+                try {
+                    var regex = new RegExp(cacheRules.blockList[i])
+                    if (regex.test(request.url)) {
+                        console.log('blocked', request.url)
+                        return false
                     }
-                }catch (e) {
-
+                } catch (e) {
                 }
             }
 
             /**静态资源，可安全使用缓存*/
-            var isStatic = /(js|css|png|jpg|svg)$/.test(request.url);
-            // var isDoucment = request.destination==='document';
-            if(isStatic){
-                return true;
+            var isStatic = /(js|css|png|jpg|svg)$/.test(request.url)
+            var isDoucment = request.destination === 'document'
+            if (isStatic || isDoucment) {
+                return true
             }
 
             /**白名单，可缓存*/
-            for (let i in cacheRules.whiteList){
-                try{
-                    var whiteRegex = new RegExp(cacheRules.whiteList[i]);
-                    if(whiteRegex.test(request.url)){
-                        return true;
+            for (let i in cacheRules.whiteList) {
+                try {
+                    var whiteRegex = new RegExp(cacheRules.whiteList[i])
+                    if (whiteRegex.test(request.url)) {
+                        return true
                     }
-                }catch (e) {
-
+                } catch (e) {
                 }
             }
 
-            return false;
-        }catch (e) {
-            console.error('check error',e)
-            return false;
+            return false
+        } catch (e) {
+            console.error('check error', e)
+            return false
         }
     }
 };
