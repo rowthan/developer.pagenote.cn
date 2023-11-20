@@ -34,22 +34,25 @@ export default function SettingHome() {
   }
 
   function gotoSetting() {
-    extApi.developer
-      .chrome({
-        namespace: 'tabs',
-        type: 'create',
-        args: [
-          {
-            reUse: true,
-            url: whoAmI?.origin + '/web/ext/setting.html#/setting/light',
-          },
-        ],
-      })
-      .then(function (res) {
-        if (res.success) {
-          window.close()
-        }
-      })
+    const url = whoAmI?.origin + '/web/ext/setting.html#/setting/light'
+    window.open(url, 'setting')
+    window.close()
+    // extApi.developer
+    //   .chrome({
+    //     namespace: 'tabs',
+    //     type: 'create',
+    //     args: [
+    //       {
+    //         reUse: true,
+    //         url: url,
+    //       },
+    //     ],
+    //   })
+    //   .then(function (res) {
+    //     if (res.success) {
+    //       window.close()
+    //     }
+    //   })
   }
 
   return (
