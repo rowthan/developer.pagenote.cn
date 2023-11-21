@@ -8,8 +8,15 @@ var preCacheFiles = [
   '/redirect',
   '/signin',
   '/author',
+  '/pro-plan',
+  '/sitemap',
   '/release',
+  '/welcome',
+  '/gift',
+  '/account',
+  '/404',
   '/widget/close-on-installed',
+  '/widget/pro-plan',
 ]
 
 
@@ -22,7 +29,6 @@ var cacheRules = {
 var util = {
     fetchAndCache: function (request) {
         return fetch(request).then(response => {
-            console.log(request,'fetch and cache',response.type,response.status)
             // 跨域的资源直接return
             if (!response || response.status !== 200) {
                 return response;
@@ -47,7 +53,6 @@ var util = {
                 try {
                     var regex = new RegExp(cacheRules.blockList[i])
                     if (regex.test(request.url)) {
-                        console.log('blocked', request.url)
                         return false
                     }
                 } catch (e) {
