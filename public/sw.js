@@ -120,22 +120,28 @@ self.addEventListener('activate', function (e) {
  * **/
 self.addEventListener('fetch', function (e) {
     e.respondWith(
-      caches.match(e.request).then(function (response) {
-          const request = e.request.clone();
-          const allowCache = util.checkAllowCache(e.request);
-          if(!allowCache){
-              return fetch(e.request);
-          }else{
-              if(response){
-                  return response;
-              }
-              return util.fetchAndCache(request);
+      caches
+        .match(e.request)
+        .then(function (response) {
+          const allowCache = util.checkAllowCache(e.request)
+          if (allowCache && response) {
+            const date = response.headers.get('date')
+            const past = date ? Date.now() - new Date(date).getTime() : 0
+            //   60秒以前的缓存，重新更新
+            if (past > 1000 * 60) {
+              const request = e.request.clone()
+              util.fetchAndCache(request)
+            }
+            return response
           }
-      }).catch(function (err) {
-          console.error('sw fetch',err);
-          return fetch(e.request);
-      })
-    );
+
+          return fetch(e.request)
+        })
+        .catch(function (err) {
+          console.error('sw fetch', err)
+          return fetch(e.request)
+        })
+    )
 });
 
 /**
