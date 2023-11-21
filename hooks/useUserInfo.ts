@@ -22,19 +22,19 @@ export default function useUserInfo(): [
     () => void,
     (token: string | null) => void
 ] {
-    const {data, mutate} = useSWR<UserInfo>('/user', () => {
-        return fetchUserInfo(false)
+  const { data, mutate } = useSWR<UserInfo>('/user', () => {
+    return fetchUserInfo(false)
+  })
+
+  function setToken(token: string | null) {
+    // @ts-ignore
+    return extApi.user.setUserToken(token).then(function (res) {
+      mutate()
+      fetchUserInfo(true).then(function () {
+        mutate()
+      })
     })
+  }
 
-    function setToken(token: string | null) {
-        // @ts-ignore
-        return extApi.user.setUserToken(token).then(function (res) {
-            mutate()
-            fetchUserInfo(true).then(function () {
-                mutate()
-            })
-        })
-    }
-
-    return [data, mutate, setToken]
+  return [data, mutate, setToken]
 }

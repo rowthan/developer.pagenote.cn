@@ -1,30 +1,22 @@
 /**当前worker的版本，用于标识区分不通版本的 cache 和 worker*/
 var currentKey = '0.28.0';
-var preCacheName = 'pre_cache_'+currentKey;
-var runtimeCacheName = 'runtime_cache_'+currentKey;
+var preCacheName = 'pre_cache_' + currentKey
+var runtimeCacheName = 'runtime_cache_' + currentKey
 var preCacheFiles = [
-  '/',
-  '/setting',
-  '/redirect',
-  '/signin',
-  '/author',
-  '/pro-plan',
-  '/sitemap',
-  '/release',
-  '/welcome',
-  '/gift',
-  '/account',
-  '/404',
-  '/widget/close-on-installed',
-  '/widget/pro-plan',
+    '/',
+    '/signin',
+    '/pro-plan',
+    '/release',
+    '/gift',
+    '/account',
 ]
 
 
 var cacheRules = {
-    whiteList: [
-        // '/api/graph/profile'
-    ],
-    blockList: [],
+  whiteList: [
+    // '/api/graph/profile'
+  ],
+  blockList: ['_next/'],
 }
 var util = {
     fetchAndCache: function (request) {
@@ -131,7 +123,6 @@ self.addEventListener('fetch', function (e) {
       caches.match(e.request).then(function (response) {
           const request = e.request.clone();
           const allowCache = util.checkAllowCache(e.request);
-          console.log(allowCache, e.request.url)
           if(!allowCache){
               return fetch(e.request);
           }else{
@@ -150,13 +141,20 @@ self.addEventListener('fetch', function (e) {
 /**
  * 与主线程的通信协议
  * */
-self.addEventListener('message', function(e) {
-    switch (e.data) {
-        case 'clean_cache':
-            self.caches.delete(preCacheName);
-            self.caches.delete(runtimeCacheName)
-            break;
-        default:
-            console.warn('not support ', e.data)
-    }
+self.addEventListener('message', function (e) {
+  switch (e.data.type) {
+    case 'clean_cache':
+      self.caches.delete(preCacheName)
+      self.caches.delete(runtimeCacheName)
+      break
+    case 'add_cache':
+      if (e.data.values.length) {
+        caches.open(preCacheName).then(function (cache) {
+          return cache.addAll(e.data.values)
+        })
+      }
+      break
+    default:
+      console.warn('not support ', e.data)
+  }
 })
