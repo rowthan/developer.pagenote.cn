@@ -27,13 +27,11 @@ var util = {
             if (!response || response.status !== 200) {
                 return response;
             }
-            console.log('push cache with cache-control',request)
             util.putCache(request, response.clone());
             return response;
         });
     },
     putCache: function (request, resource) {
-        console.log('put cache', request)
         caches.open(runtimeCacheName).then(cache => {
             cache.put(request, resource);
         });
@@ -128,6 +126,7 @@ self.addEventListener('fetch', function (e) {
       caches.match(e.request).then(function (response) {
           const request = e.request.clone();
           const allowCache = util.checkAllowCache(e.request);
+          console.log(allowCache, e.request.url)
           if(!allowCache){
               return fetch(e.request);
           }else{
