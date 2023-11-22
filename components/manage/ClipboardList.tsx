@@ -73,7 +73,6 @@ export default function ClipboardList() {
         },
       })
       .then((res) => {
-        console.log(res)
         if (res.success) {
           setList((res.data.list || []) as Box[])
         }
