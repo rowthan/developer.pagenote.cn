@@ -9,6 +9,7 @@ import ImportAndExport from '../backup/extension/ImportAndExport'
 import SettingDetail from './SettingDetail'
 import Shortcut from './Shortcut'
 import extApi from '@pagenote/shared/lib/pagenote-api'
+import DisabledDetail from './DisabledDetail'
 
 export default function Setting() {
   function onClickUser() {
@@ -29,6 +30,7 @@ export default function Setting() {
         <Routes>
           <Route index element={<SettingHome />} />
           <Route path={'/light'} element={<LightSetting />} />
+          <Route path={'/disable'} element={<DisabledDetail />} />
           <Route path={'/shortcut'} element={<Shortcut />} />
           <Route path={'/data'} element={<DataBackup />} />
           <Route

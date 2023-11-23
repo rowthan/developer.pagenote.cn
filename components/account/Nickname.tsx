@@ -27,31 +27,40 @@ interface Props {
 export default function Nickname(props: Props) {
   const [data, mutate, setToken] = useUserInfo()
   const [open, setOpen] = useState(false)
-
+  const [openMenu, setOpenMenu] = useState(false)
   function signout() {
     setToken(null)
   }
 
   return (
     <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <span>{data?.profile.nickname}</span>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuGroup>
-              <DropdownMenuItem>用户ID：{data?.profile?.uid}</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DialogTrigger asChild>
-              <DropdownMenuItem>编辑资料</DropdownMenuItem>
-            </DialogTrigger>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={signout}>退出账号</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
+        <DropdownMenuTrigger
+          onClick={() => {
+            setOpenMenu(true)
+          }}
+        >
+          <span>{data?.profile.nickname}</span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuGroup>
+            <DropdownMenuItem>用户ID：{data?.profile?.uid}</DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              setOpen(true)
+              setOpenMenu(false)
+            }}
+          >
+            编辑资料
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={signout}>退出账号</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
+      <Dialog open={open} onOpenChange={setOpen} modal={true}>
         <DialogPortal>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>

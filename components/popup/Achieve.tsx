@@ -9,10 +9,12 @@ interface Props {
 export default function Achieve() {
   return (
     <div className="">
-      <div className={'flex gap-4 items-center'}>
-        <CaptureButton />
-        <PageInfo />
-        <LightInfo />
+      <div className={'flex gap-4 items-center justify-between'}>
+        <div className={'flex gap-4 items-center'}>
+          <CaptureButton />
+          <PageInfo />
+          <LightInfo />
+        </div>
 
         <DisableButton />
       </div>
