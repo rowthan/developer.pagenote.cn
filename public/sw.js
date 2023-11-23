@@ -16,7 +16,7 @@ var cacheRules = {
   whiteList: [
     // '/api/graph/profile'
   ],
-  blockList: ['_next/'],
+  blockList: ['3000'],
 }
 var util = {
     fetchAndCache: function (request) {
