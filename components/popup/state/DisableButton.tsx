@@ -12,6 +12,33 @@ import { BiHighlight } from 'react-icons/bi'
 import { TbHighlightOff } from 'react-icons/tb'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  ChevronDownIcon,
+  CircleIcon,
+  PlusIcon,
+  StarIcon,
+  SwitchIcon,
+} from '@radix-ui/react-icons'
+import { Button } from '../../../@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import KeyboardTip from '../../KeyboardTip'
+import { useNavigate } from 'react-router-dom'
 
 function checkDisabled(rule: string, url: string) {
   return rule === url || (rule.indexOf('*') > -1 && new RegExp(rule).test(url))
@@ -28,6 +55,7 @@ export default function DisableButton() {
   const [tabState] = useTabPagenoteState()
   const { data: setting, update } = useSettings()
   const disabledList = setting.disableList || []
+  const navigate = useNavigate()
 
   const url = tab?.url || ''
   const disabled =
@@ -100,36 +128,76 @@ export default function DisableButton() {
     value = EnableType.disableUrl
   }
 
-  return (
-    <>
-      <Switch
-        id={'disable-button'}
-        color={'primary'}
-        checked={value === EnableType.enable}
-        onCheckedChange={(value) => {
-          if (value) {
-            onChangeDisableRule(EnableType.enable)
-          } else {
-            onChangeDisableRule(EnableType.disableUrl)
-          }
-        }}
-      />
-      <Label htmlFor="disable-button">
-        {value === EnableType.enable ? '已启用' : '已禁用'}
-      </Label>
-    </>
-  )
+  const enabled = value === EnableType.enable
 
   return (
-    <Select value={value} onValueChange={onChangeDisableRule}>
-      <SelectTrigger className="w-auto h-auto p-0 border-none shadow-none">
-        {tabState?.active ? <BiHighlight /> : <TbHighlightOff />}
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="disable-url">🚫禁用当前网页</SelectItem>
-        <SelectItem value="disable-domain">🚫禁用当前域名</SelectItem>
-        <SelectItem value="enable">✅在此网站启用</SelectItem>
-      </SelectContent>
-    </Select>
+    <div className="flex items-center space-x-1 rounded-md bg-secondary text-secondary-foreground">
+      <KeyboardTip tip={'点击切换状态'}>
+        <Button
+          variant="secondary"
+          size={'sm'}
+          className="px-3 shadow-none"
+          onClick={() => {
+            onChangeDisableRule(
+              enabled ? EnableType.disableUrl : EnableType.enable
+            )
+          }}
+        >
+          <SwitchIcon color={enabled ? 'green' : 'red'} className="mr-2 h-4" />
+          {enabled ? '已启用' : '已禁用'}
+        </Button>
+      </KeyboardTip>
+
+      <Separator orientation="vertical" className="h-[20px]" />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="secondary" size={'sm'} className="px-1 shadow-none">
+            <ChevronDownIcon className="h-4 w-4 text-secondary-foreground" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          alignOffset={-5}
+          className="w-[200px]"
+          forceMount
+        >
+          <DropdownMenuLabel>禁用/启用设置</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuCheckboxItem
+            checked={enabled}
+            onClick={() => {
+              onChangeDisableRule(EnableType.enable)
+            }}
+          >
+            在此网页启用
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={value === EnableType.disableUrl}
+            onClick={() => {
+              onChangeDisableRule(EnableType.disableUrl)
+            }}
+          >
+            在此网页禁用
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={value === EnableType.disableDomain}
+            onClick={() => {
+              onChangeDisableRule(EnableType.disableDomain)
+            }}
+          >
+            在此域名禁用
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              navigate('/setting/disable')
+            }}
+          >
+            <PlusIcon className="mr-2 h-4 w-4" />
+            设置更多规则
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   )
 }

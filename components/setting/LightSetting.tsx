@@ -73,6 +73,19 @@ export default function LightSetting() {
               </Select>
             }
           ></BasicSettingLine>
+
+          <BasicSettingLine
+            label={'禁用规则'}
+            className={'cursor-pointer'}
+            path={'/setting/disable'}
+            subLabel={
+              <div>
+                {setting?.disableList?.length
+                  ? `${setting?.disableList?.length}条规则`
+                  : ''}
+              </div>
+            }
+          ></BasicSettingLine>
         </SettingSection>
 
         <div>

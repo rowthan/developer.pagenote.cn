@@ -3,10 +3,8 @@
  * @see https://v0.dev/t/Jd3OFwX
  */
 import useCurrentTab from 'hooks/useCurrentTab'
-import {CardDescription, CardHeader, CardTitle} from '@/components/ui/card'
 import {Separator} from '@/components/ui/separator'
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
-import DisableButton from './state/DisableButton'
 import useTabPagenoteState from '../../hooks/useTabPagenoteState'
 import Achieve from './Achieve'
 
