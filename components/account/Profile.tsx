@@ -2,7 +2,6 @@ import React from 'react'
 import AuthList from './AuthList'
 import Day from '../Day'
 import TodayRelated from './TodayRelated'
-import CheckUser from '../check/CheckUser'
 import UserCard from './UserCard'
 
 export default function Profile() {

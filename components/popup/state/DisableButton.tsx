@@ -161,16 +161,6 @@ export default function DisableButton() {
           className="w-[200px]"
           forceMount
         >
-          <DropdownMenuLabel>禁用/启用设置</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuCheckboxItem
-            checked={enabled}
-            onClick={() => {
-              onChangeDisableRule(EnableType.enable)
-            }}
-          >
-            在此网页启用
-          </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={value === EnableType.disableUrl}
             onClick={() => {
