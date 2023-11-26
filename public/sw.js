@@ -1,5 +1,5 @@
 /**当前worker的版本，用于标识区分不通版本的 cache 和 worker*/
-var currentKey = '0.28.0';
+var currentKey = '0.28.2';
 var preCacheName = 'pre_cache_' + currentKey
 var runtimeCacheName = 'runtime_cache_' + currentKey
 var preCacheFiles = [
