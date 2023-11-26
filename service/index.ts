@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import { unionFetch } from '../utils/fetch'
+import { fetchUserInfo } from '../hooks/useUserInfo'
 
 export function createOrder(price?: number) {
   return extApi.network.pagenote({
@@ -13,7 +14,8 @@ export function createOrder(price?: number) {
 }
 
 export function bindTransition(record: string, amount: number) {
-  const recordId = record || dayjs().format('YYYYMMDD_HHmmss')
+  const recordId = record || dayjs().format('YYYYMMDD_HH')
+  fetchUserInfo(false, 1000 * 180)
   return extApi.network.pagenote({
     url: '/api/user',
     data: {
