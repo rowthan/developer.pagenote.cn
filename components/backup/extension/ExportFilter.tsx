@@ -44,6 +44,8 @@ export default function ExportFilter() {
         backupId: `${Date.now()}`,
         backup_at: Date.now(),
         box: [],
+
+        // todo delete
         dataType: [
           BackupDataType.pages,
           BackupDataType.light,
@@ -53,6 +55,8 @@ export default function ExportFilter() {
           'note',
         ],
         extension_version: whoAmI?.version,
+
+        // todo delete
         lights: lights,
         pages: pages,
         notes: notes,
@@ -61,7 +65,44 @@ export default function ExportFilter() {
         size: 0,
         remark: '',
         resources: [],
-        version: BackupVersion.version5,
+        version: BackupVersion.version6,
+        items: [
+          {
+            db: 'lightpage',
+            table: 'light',
+            remark: `total ${lights.length}`,
+            //@ts-ignore
+            list: lights,
+          },
+          {
+            db: 'lightpage',
+            table: 'note',
+            remark: `total ${notes.length}`,
+            //@ts-ignore
+            list: notes,
+          },
+          {
+            db: 'lightpage',
+            table: 'snapshot',
+            remark: `total ${snapshots.length}`,
+            //@ts-ignore
+            list: snapshots,
+          },
+          {
+            db: 'lightpage',
+            table: 'webpage',
+            remark: `total ${pages.length}`,
+            //@ts-ignore
+            list: pages,
+          },
+          {
+            db: 'resource',
+            table: 'html',
+            remark: `total ${htmlList.length}`,
+            //@ts-ignore
+            list: htmlList,
+          },
+        ],
       }
       const blob = new Blob([JSON.stringify(backup)], {
         type: ContentType.json,
@@ -69,7 +110,7 @@ export default function ExportFilter() {
       const url = URL.createObjectURL(blob)
       const filename = `${whoAmI?.extensionPlatform}_${
         whoAmI?.version
-      }_${dayjs().format('YYYY-MM-DD_HH_mm')}.pagenote.bak`
+      }_${dayjs().format('YYYY-MM-DD')}.pagenote.bak`
       extApi.developer
         .chrome({
           namespace: 'downloads',

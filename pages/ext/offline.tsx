@@ -2,7 +2,6 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import extApi from "@pagenote/shared/lib/pagenote-api";
 import Head from "next/head";
-import Script from "next/script";
 
 import dayjs from "dayjs";
 import TipInfo from "components/TipInfo";
@@ -65,8 +64,8 @@ export default function Offline() {
                 //@ts-ignore
                 $or: queries,
               },
+              limit: 1,
             },
-            limit: 1,
           })
           .then(function (res) {
             debugger

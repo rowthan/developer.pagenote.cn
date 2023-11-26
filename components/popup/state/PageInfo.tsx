@@ -71,7 +71,6 @@ export function PageInfo() {
 
   function gotoOffline(resourceList: Partial<OfflineHTML>) {
     window.open(
-      resourceList.localUrl ||
         `${basePath}/ext/offline.html?id=${resourceList.resourceId}&url=${resourceList.relatedPageUrl}`
     )
   }
