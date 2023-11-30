@@ -36,29 +36,27 @@ export default function LocalHTML() {
     }
 
     return (
-        <div className={'grid grid-cols-5 gap-4 p-2'}>
-            {
-                list.map((item) => (
-                    <div className="stack" key={item.url}>
-                        {
-                            item.versions.map((version) => (
-                                <a target={'_blank'}
-                                   href={version.localUrl || `${basePath}/ext/offline.html?id=${version.resourceId}&url=${version.relatedPageUrl}`}
-                                   key={version.createAt}
-                                   className="w-full h-full text-center border border-base-content card bg-base-100">
-                                    <div className={'card-body text-sm'}>
-                                            <span>
-                                                {dayjs(version.createAt).format('YYYY-MM-DD HH:mm:ss')}
-                                            </span>
-                                        <div>{item.name}</div>
-                                        <div>{getDomain(version.originUrl||'',false)}</div>
-                                    </div>
-                                </a>
-                            ))
-                        }
-                    </div>
-                ))
-            }
-        </div>
+      <div className={'grid grid-cols-5 gap-4 p-2'}>
+        {list.map((item) => (
+          <div className="stack" key={item.url}>
+            {item.versions.map((version) => (
+              <a
+                target={'_blank'}
+                href={`${basePath}/ext/offline.html?id=${version.resourceId}&url=${version.relatedPageUrl}`}
+                key={version.createAt}
+                className="w-full h-full text-center border border-base-content card bg-base-100"
+              >
+                <div className={'card-body text-sm'}>
+                  <span>
+                    {dayjs(version.createAt).format('YYYY-MM-DD HH:mm:ss')}
+                  </span>
+                  <div>{item.name}</div>
+                  <div>{getDomain(version.originUrl || '', false)}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        ))}
+      </div>
     )
 }

@@ -35,6 +35,7 @@ interface Props {
 
 function createNewNote(url: string, relatedType: 'path' | 'domain') {
   return {
+    title: '',
     createAt: Date.now(),
     updateAt: Date.now(),
 

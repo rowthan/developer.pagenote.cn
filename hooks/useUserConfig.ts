@@ -20,10 +20,14 @@ export default function useUserConfig<T extends ConfigItem>(
   )
 
   function fetchUserConfig() {
-    return extApi.config
+    return extApi.table
       .query({
-        query: {
-          rootKey: rootKey,
+        db: 'config',
+        table: 'ext',
+        params: {
+          query: {
+            rootKey: rootKey,
+          },
         },
       })
       .then(function (res) {
@@ -49,9 +53,15 @@ export default function useUserConfig<T extends ConfigItem>(
     //   ...(data || {}),
     //   ...input,
     // })
-    extApi.config.put(objectArray).then(function (res) {
-      mutate()
-    })
+    extApi.table
+      .put({
+        db: 'config',
+        table: 'ext',
+        params: objectArray,
+      })
+      .then(function (res) {
+        mutate()
+      })
   }
 
   return [data, update]

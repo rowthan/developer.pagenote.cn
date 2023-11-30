@@ -11,9 +11,18 @@ type UserInfo = {
     }
 }
 
-export function fetchUserInfo(forceRefresh: boolean = false) {
-    return extApi.user.getUser({refresh: forceRefresh}).then(function (res) {
-        return (res.data || null) as UserInfo
+export function fetchUserInfo(forceRefresh: boolean = false, timeout = 0) {
+  return extApi.user
+    .getUser(
+      { refresh: forceRefresh },
+      {
+        scheduleControl: {
+          runAfterMillisecond: [timeout],
+        },
+      }
+    )
+    .then(function (res) {
+      return (res.data || null) as UserInfo
     })
 }
 

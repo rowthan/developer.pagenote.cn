@@ -104,15 +104,20 @@ async function searchInLight(keyword: string, operation: '$or' | '$and') {
     }
   })
 
-  const lightResult = await extApi.lightpage.queryLights(
+  const lightResult = await extApi.table.query(
     {
-      query: {
-        deleted: false,
-        [operation]: orLightFilter,
-      },
-      pageSize: 1000,
-      sort: {
-        updateAt: -1,
+      db: 'lightpage',
+      table: 'light',
+      params: {
+        //@ts-ignore
+        query: {
+          deleted: false,
+          [operation]: orLightFilter,
+        },
+        pageSize: 1000,
+        sort: {
+          updateAt: -1,
+        },
       },
     },
     {

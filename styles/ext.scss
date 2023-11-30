@@ -1,0 +1,10 @@
+// 这里有问题，需要修复
+.popup {
+  max-height: 100vh;
+  min-height: 600px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
