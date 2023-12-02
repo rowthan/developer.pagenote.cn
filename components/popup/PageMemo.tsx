@@ -106,6 +106,7 @@ export default function PageMemo(props: Props) {
       ...origin,
       tiptap: change.jsonContent,
       html: change.htmlContent || '',
+      updateAt: Date.now(),
     } as Note
 
     extApi.table
