@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BackupData } from '@pagenote/shared/lib/@types/data'
+import { BackupData, BackupVersion } from '@pagenote/shared/lib/@types/data'
 import extApi from '@pagenote/shared/lib/pagenote-api'
 import { toast } from '../../../utils/toast'
 import FilterCheckBox from './FilterCheckBox'
@@ -47,12 +47,8 @@ export default function ImportFilter(props: {
     setImportState(ImportState.importing)
     const importData = {
       ...backupData,
-      htmlList: selected.includes('html') ? backupData.htmlList : [],
-      pages: selected.includes('page') ? backupData.pages : [],
-      lights: selected.includes('light') ? backupData.lights : [],
-      snapshots: selected.includes('snapshot') ? backupData.snapshots : [],
-      // @ts-ignore todo
-      notes: selected.includes('note') ? backupData.notes || [] : [],
+      //@ts-ignore
+      notes: backupData.notes || backupData.note || [],
     }
     extApi.lightpage
       .importBackup(
@@ -60,10 +56,11 @@ export default function ImportFilter(props: {
           backupData: importData,
         },
         {
-          timeout: 10 * 1000,
+          timeout: 30 * 1000,
         }
       )
       .then(function (res) {
+        console.log(res, '导入结果')
         if (res.success) {
           toast('已成功导入')
           props.onSuccess()
@@ -74,15 +71,46 @@ export default function ImportFilter(props: {
       })
   }
 
+  let pageCnt,
+    lightCnt,
+    snapshotCnt,
+    noteCnt,
+    htmlCnt = 0
+  if ((backupData.version || 0) >= BackupVersion.version7) {
+    backupData.items.forEach(function (item) {
+      switch (item.table) {
+        case 'webpage':
+          pageCnt = item.list?.length || 0
+          break
+        case 'light':
+          lightCnt = item.list?.length || 0
+          break
+        case 'snapshot':
+          snapshotCnt = item.list?.length || 0
+          break
+        case 'note':
+          noteCnt = item.list?.length || 0
+          break
+        case 'html':
+          htmlCnt = item.list?.length || 0
+          break
+      }
+    })
+  } else {
+    pageCnt = pages.length
+    lightCnt = lights.length
+    snapshotCnt = snapshots.length
+    noteCnt = notes.length
+    htmlCnt = htmlList.length
+  }
+
   const importIng = importState === ImportState.importing
 
   return (
     <div>
       <h3 className="font-bold text-lg">请确认你的备份文件</h3>
       <div className="py-4">
-        如果当下插件内已有在待导入数据，{' '}
-        <b className={'text-error'}>则将被覆盖更新</b>
-        ！请谨慎操作。
+        <p>如果插件已有你导入的数据，将自动合并采用更新版本的数据。</p>
         <table className="table table-compact w-full">
           <thead>
             <tr>
@@ -94,7 +122,7 @@ export default function ImportFilter(props: {
           <tbody>
             <tr>
               <td>网页</td>
-              <td>{pages.length}个</td>
+              <td>{pageCnt}个</td>
               <td>
                 <FilterCheckBox
                   field={'page'}
@@ -105,7 +133,7 @@ export default function ImportFilter(props: {
             </tr>
             <tr>
               <td>标记</td>
-              <td>{lights.length}个</td>
+              <td>{lightCnt}个</td>
               <td>
                 <FilterCheckBox
                   field={'light'}
@@ -116,7 +144,7 @@ export default function ImportFilter(props: {
             </tr>
             <tr>
               <td>截图</td>
-              <td>{snapshots.length}个</td>
+              <td>{snapshotCnt}个</td>
               <td>
                 <FilterCheckBox
                   field={'snapshot'}
@@ -127,7 +155,7 @@ export default function ImportFilter(props: {
             </tr>
             <tr>
               <td>离线网页</td>
-              <td>{htmlList.length}个</td>
+              <td>{htmlCnt}个</td>
               <td>
                 <FilterCheckBox
                   field={'html'}
@@ -138,7 +166,7 @@ export default function ImportFilter(props: {
             </tr>
             <tr>
               <td>备忘录</td>
-              <td>{notes.length}个</td>
+              <td>{noteCnt}个</td>
               <td>
                 <FilterCheckBox
                   field={'note'}

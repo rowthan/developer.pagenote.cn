@@ -43,17 +43,16 @@ export default function ExportFilter() {
       const backup: BackupData = {
         backupId: `${Date.now()}`,
         backup_at: Date.now(),
-        box: [],
 
         // todo delete
-        dataType: [
-          BackupDataType.pages,
-          BackupDataType.light,
-          BackupDataType.snapshot,
-          BackupDataType.html,
-          //@ts-ignore
-          'note',
-        ],
+        // dataType: [
+        //   BackupDataType.pages,
+        //   BackupDataType.light,
+        //   BackupDataType.snapshot,
+        //   BackupDataType.html,
+        //   //@ts-ignore
+        //   'note',
+        // ],
         extension_version: whoAmI?.version,
 
         // todo delete
@@ -64,8 +63,8 @@ export default function ExportFilter() {
         htmlList: htmlList,
         size: 0,
         remark: '',
-        resources: [],
-        version: BackupVersion.version6,
+        
+        version: BackupVersion.version7,
         items: [
           {
             db: 'lightpage',
@@ -108,9 +107,9 @@ export default function ExportFilter() {
         type: ContentType.json,
       })
       const url = URL.createObjectURL(blob)
-      const filename = `${whoAmI?.extensionPlatform}_${
-        whoAmI?.version
-      }_${dayjs().format('YYYY-MM-DD')}.pagenote.bak`
+      const filename = `${dayjs().format('YYYY-MM-DD')}.v${
+        BackupVersion.version7
+      }.pagenote.bak`
       extApi.developer
         .chrome({
           namespace: 'downloads',

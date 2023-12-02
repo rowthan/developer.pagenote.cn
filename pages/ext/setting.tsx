@@ -11,7 +11,7 @@ export default function Setting() {
   return (
     <BasicLayout nav={false} footer={true} title={'设置'} full={true}>
       <RedirectToExt>
-        <div className={'p-4 min-h-fill relative'}>
+        <div className={'popup w-basic p-4 min-h-fill relative'}>
           {mounted() && (
             <Router>
               <Routes>
