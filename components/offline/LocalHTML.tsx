@@ -39,11 +39,11 @@ export default function LocalHTML() {
       <div className={'grid grid-cols-5 gap-4 p-2'}>
         {list.map((item) => (
           <div className="stack" key={item.url}>
-            {item.versions.map((version) => (
+            {item.versions.map((version, index) => (
               <a
                 target={'_blank'}
                 href={`${basePath}/ext/offline.html?id=${version.resourceId}&url=${version.relatedPageUrl}`}
-                key={version.createAt}
+                key={index}
                 className="w-full h-full text-center border border-base-content card bg-base-100"
               >
                 <div className={'card-body text-sm'}>

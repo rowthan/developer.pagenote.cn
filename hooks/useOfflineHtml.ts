@@ -16,11 +16,11 @@ export default function useOfflineHtml() {
           db: 'resource',
           table: 'html',
           params: {
-            //   @ts-ignore
             groupBy: 'relatedPageUrl',
             projection: {
-              //   @ts-ignore
-              data: -1,
+              url: 1,
+              name: 1,
+              resourceId: 1,
             },
           },
         },

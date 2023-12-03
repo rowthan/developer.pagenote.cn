@@ -56,7 +56,7 @@ export async function computeStaticPaths() {
     .filter(function (item) {
       return !!item.path
     })
-    .slice(0, isDev ? 5 : 20) // 最多静态化
+    .slice(0, isDev ? 5 : 10) // 最多静态化
     .map(function (item) {
       let paths = [DEFAULT_BASE_DOC_PATH, item.id] //[`/${DEFAULT_BASE_DOC_PATH}/${item.id}`]
       // 如果有自定义路径，解析后封装至数组
