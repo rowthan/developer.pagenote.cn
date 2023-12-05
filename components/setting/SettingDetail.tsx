@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackSvg from '../../assets/svg/back.svg'
 import React, { ReactElement } from 'react'
 

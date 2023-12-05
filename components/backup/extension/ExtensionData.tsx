@@ -17,7 +17,7 @@ export default function ExtensionData() {
     if (isFirefox) {
       const url = `${basePath}/ext/setting.html#/setting/data/backup`
       if (checkIsInPopup()) {
-        window.open(url, 'setting')
+        window.open(url)
         window.close()
       } else {
         window.location.href = url
