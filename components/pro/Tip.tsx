@@ -5,19 +5,22 @@ import { bindTransition } from '../../service'
 import { toast } from 'utils/toast'
 import CommonForm from '../CommonForm'
 import CheckUser from 'components/check/CheckUser'
-import usePrice from '../../hooks/usePrice'
+import { PlanInfo } from '../../typing'
 
-export default function Tip(props: { onClose: () => void; amount: number }) {
-  const { onClose, amount } = props
+export default function Tip(props: {
+  onClose: () => void
+  children: React.ReactNode
+  plan: PlanInfo
+}) {
+  const { onClose, children, plan } = props
   const [paid, setPaid] = useState(false)
   const [userInfo] = useUserInfo()
   const [showButton, setShowButton] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [plans] = usePrice()
 
   function confirmPaid() {
     if (userInfo) {
-      bindTransition('', amount).then(function () {})
+      bindTransition('', plan.price).then(function () {})
       setPaid(true)
     } else {
       window.open('https://pagenote.cn/signin.html')
@@ -32,7 +35,7 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
       return
     }
     setLoading(true)
-    bindTransition(value.recordId, amount).then(function (res) {
+    bindTransition(value.recordId, plan.price).then(function (res) {
       setLoading(false)
       toast(res.data?.json?.success ? '提交成功' : '提交失败')
       if (res?.data?.json?.success) {
@@ -47,6 +50,13 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
     }, 5000)
   }, [])
 
+  const payments = plan.payments || [
+    {
+      label: '支付宝',
+      id: 'alipay',
+      url: 'https://pagenote-public.oss-cn-beijing.aliyuncs.com/_static/alipay.png',
+    },
+  ]
   // @ts-ignore
   const { uid, emailMask } = userInfo?.profile || {}
 
@@ -97,52 +107,30 @@ export default function Tip(props: { onClose: () => void; amount: number }) {
               </p>
 
               <div className="carousel w-40 h-40 m-auto">
-                <div id="ali" className="carousel-item w-full">
-                  <img
-                    src="https://pagenote-public.oss-cn-beijing.aliyuncs.com/_static/alipay.png"
-                    className="w-full"
-                    width={160}
-                    height={160}
-                    alt="alipay"
-                  />
-                </div>
-                <div id="wechat" className="carousel-item w-full">
-                  <img
-                    src="https://pagenote-public.oss-cn-beijing.aliyuncs.com/_static/wechat-pay.png"
-                    className="w-full"
-                    width={160}
-                    height={160}
-                    alt="wechat pay"
-                  />
-                </div>
+                {payments.map((item) => (
+                  <div
+                    key={item.id}
+                    id={item.id}
+                    className="carousel-item w-full"
+                  >
+                    <img
+                      src={item.url || payments[0].url}
+                      className="w-full"
+                      width={160}
+                      height={160}
+                      alt={item.label}
+                    />
+                  </div>
+                ))}
               </div>
               <div className="flex justify-center w-full py-2 gap-2">
-                <a href="#ali" className="btn btn-xs">
-                  支付宝
-                </a>
-                <a href="#wechat" className="btn btn-xs">
-                  微信
-                </a>
+                {payments.map((item) => (
+                  <a href={`#${item.id}`} key={item.id} className="btn btn-xs">
+                    {item.label}
+                  </a>
+                ))}
               </div>
-              <div className={'text-sm'}>
-                请按照
-                {plans
-                  .filter(function (item) {
-                    return item.price > 0
-                  })
-                  .map((value, index) => (
-                    <b key={index} className={'text-xs mr-2'}>
-                      {value.price}元/{value.duration}
-                      {value.final && amount && amount < value.price ? (
-                        <span>（你需支付{amount}元）</span>
-                      ) : (
-                        ''
-                      )}
-                    </b>
-                  ))}
-                支付
-              </div>
-
+              {children}
               <CheckUser
                 fallback={
                   <a
