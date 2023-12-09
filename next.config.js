@@ -21,6 +21,10 @@ module.exports = {
         source: '/vip',
         destination: '/widget/pro-plan',
       },
+      {
+        source: '/pricing',
+        destination: '/widget/pro-plan',
+      },
     ]
   },
   images: {
