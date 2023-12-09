@@ -6,11 +6,14 @@ import {
 } from '@/components/ui/popover'
 import { useMountedState } from 'react-use'
 import QuestionSvg from '../assets/svg/question.svg'
-import RateSvg from '../assets/svg/pingfen.svg'
 import { useRouter } from 'next/router'
-import HelpSvg from '../assets/svg/bangzhu.svg'
-import SettingSvg from '../assets/svg/setting.svg'
 import { basePath, isExt } from '../const/env'
+import {
+  RocketIcon,
+  QuestionMarkCircledIcon,
+  MixerHorizontalIcon,
+  StarIcon,
+} from '@radix-ui/react-icons'
 
 interface Props {
   children?: ReactNode
@@ -21,30 +24,35 @@ export default function HelpAside(props: Props) {
     const {pathname} = useRouter()
     const mounted = useMountedState();
     const asideList: {
-        label: string
-        link?: string
-        onClick?: () => void
-        icon: ReactComponentElement<any>
-        target?: '_self' | '_blank'
+      label: string
+      link?: string
+      onClick?: () => void
+      icon: ReactComponentElement<any>
+      target?: '_self' | '_blank'
     }[] = [
-        {
-            label: '帮助',
-            link: 'https://pagenote.cn/question',
-            icon: <HelpSvg className={'fill-current inline'}/>,
-        },
+      {
+        label: '帮助',
+        link: 'https://pagenote.cn/question',
+        icon: <QuestionMarkCircledIcon className={'fill-current inline'} />,
+      },
+      {
+        label: 'VIP',
+        link: 'https://pagenote.cn/pro',
+        icon: <RocketIcon className={'fill-current inline'} />,
+      },
     ]
     if (pathname.includes('/ext')) {
       asideList.push({
         label: '设置',
         link: basePath + '/ext/setting.html',
-        icon: <SettingSvg className={'fill-current inline'} />,
+        icon: <MixerHorizontalIcon className={'fill-current inline'} />,
         target: '_blank',
       })
     } else {
       asideList.push({
         label: '设置',
         link: 'https://pagenote.cn/setting',
-        icon: <SettingSvg className={'fill-current inline'} />,
+        icon: <MixerHorizontalIcon className={'fill-current inline'} />,
         target: '_self',
       })
     }
@@ -52,7 +60,7 @@ export default function HelpAside(props: Props) {
       asideList.push({
         label: '评分',
         link: 'https://pagenote.cn/rate',
-        icon: <RateSvg className={'fill-current inline'} />,
+        icon: <StarIcon className={'fill-current inline'} />,
       })
     }
 
@@ -64,7 +72,7 @@ export default function HelpAside(props: Props) {
             <Popover>
               <PopoverTrigger>
                 <QuestionSvg
-                  className={'fill-current'}
+                  className={'fill-current bg-background'}
                   width={20}
                   height={20}
                 />
@@ -88,7 +96,7 @@ export default function HelpAside(props: Props) {
                         target={item.target || '_blank'}
                       >
                         {item.icon}
-                        <span>{item.label}</span>
+                        <span className={'ml-1'}>{item.label}</span>
                       </a>
                     </li>
                   ))}

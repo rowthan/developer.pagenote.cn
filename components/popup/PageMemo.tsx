@@ -18,6 +18,10 @@ import { getDomain } from '@pagenote/shared/lib/utils/filter'
 import { CiLink, CiShoppingTag } from 'react-icons/ci'
 import { GiFamilyTree } from 'react-icons/gi'
 import { toast } from '../../@/components/ui/use-toast'
+import { SizeIcon } from '@radix-ui/react-icons'
+import { basePath } from '../../const/env'
+import useWhoAmi from '../../hooks/useWhoAmi'
+import Memo from '../editor/Memo'
 
 const ICONS = {
   ['path']: <CiLink />,
@@ -89,34 +93,18 @@ export default function PageMemo(props: Props) {
   })
 
   function removeMemo(key: string = '') {
-    return extApi.table
-      .remove({
-        ...dbTableMap[Collection.note],
-        params: [key],
-      })
+    return extApi.table.remove({
+      ...dbTableMap[Collection.note],
+      params: [key],
+    })
   }
 
-  function onUpdate(change: EditorChangeContent, origin: Partial<Note>) {
-    if (!change.textContent && origin.key) {
-      removeMemo(origin.key)
-      return
-    }
-
-    const note = {
-      ...origin,
-      tiptap: change.jsonContent,
-      html: change.htmlContent || '',
-      updateAt: Date.now(),
-    } as Note
-
-    extApi.table
-      .put({
-        ...dbTableMap[Collection.note],
-        params: [note],
-      })
-      .then(function (res) {
+  function afterUpdate(change: EditorChangeContent, origin: Partial<Note>) {
+    if (!change.textContent && origin && origin?.key) {
+      removeMemo(origin.key).then(function () {
         mutate()
       })
+    }
   }
 
   function updateRelatedType(id: string = '', data: Partial<Note>) {
@@ -155,24 +143,38 @@ export default function PageMemo(props: Props) {
       })
   }
 
+  function newTabMemo(key?: string) {
+    extApi.commonAction.openTab({
+      reUse: true,
+      tab: {},
+      url: `${window.location?.origin}${basePath}/ext/memo.html?key=${key}`,
+    })
+  }
+
   const domain = getDomain(url, false)
   const memos = data.length ? data : [createNewNote(url, 'path')]
   return (
     <div className="mt-3  min-h-10 ">
       {!isLoading && (
         <div>
-          {memos.map((item) => {
+          {memos.map((item, index) => {
             return (
-              <Tiptap
-                key={item.key}
+              <Memo
+                afterUpdate={afterUpdate}
+                key={item.key || ''}
+                id={item.key || ''}
                 className={
                   'relative rounded border border-accent text-sm bg-[#fbf4edc7] dark:bg-[#4c3d2fc7] mb-4'
                 }
-                htmlContent={item.html || ''}
-                onUpdate={(data) => {
-                  onUpdate(data, item)
-                }}
               >
+                <button
+                  onClick={() => {
+                    newTabMemo(item.key)
+                  }}
+                  className={'absolute right-1 top-1 z-10'}
+                >
+                  <SizeIcon />
+                </button>
                 <Menubar
                   className={
                     'absolute right-1 bottom-1 shadow-none  border-none h-auto p-0 z-10'
@@ -220,7 +222,7 @@ export default function PageMemo(props: Props) {
                     </MenubarContent>
                   </MenubarMenu>
                 </Menubar>
-              </Tiptap>
+              </Memo>
             )
           })}
         </div>

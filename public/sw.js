@@ -1,14 +1,10 @@
 /**当前worker的版本，用于标识区分不通版本的 cache 和 worker*/
-var currentKey = '0.28.2';
+var currentKey = '0.28.3';
 var preCacheName = 'pre_cache_' + currentKey
 var runtimeCacheName = 'runtime_cache_' + currentKey
 var preCacheFiles = [
     '/',
-    '/signin',
-    '/pro-plan',
     '/release',
-    '/gift',
-    '/account',
 ]
 
 
@@ -127,8 +123,8 @@ self.addEventListener('fetch', function (e) {
           if (allowCache && response) {
             const date = response.headers.get('date')
             const past = date ? Date.now() - new Date(date).getTime() : 0
-            //   60秒以前的缓存，重新更新
-            if (past > 1000 * 60) {
+            // 滞后的缓存，重新更新
+            if (past > 1000 * 30) {
               const request = e.request.clone()
               util.fetchAndCache(request)
             }
