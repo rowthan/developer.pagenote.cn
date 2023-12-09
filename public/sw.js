@@ -20,7 +20,6 @@ var util = {
     return fetch(request).then((response) => {
       // 跨域的资源直接return
       if (!response || response.status !== 200) {
-        console.log(response, 'not 200', request.url, response.status)
         return response
       }
       util.putCache(request, response.clone())
@@ -96,7 +95,8 @@ self.addEventListener('activate', function (e) {
   // 清空上一个版本的旧缓存
   var cachePromise = caches.keys().then(function (keys) {
     var deleteKey = keys.filter(function (key) {
-      return ['document'].includes(key)
+      // 非白名单缓存 均清空
+      return !['image', 'script', 'font', 'style', preCacheName].includes(key)
     })
     return Promise.all(
         deleteKey.map(function (key) {
@@ -149,12 +149,20 @@ self.addEventListener('fetch', function (e) {
 self.addEventListener('message', function (e) {
   switch (e.data.type) {
     case 'clean_cache':
-      self.caches.delete(preCacheName)
-      self.caches.delete(commonCacheName)
+      if (e.data.key) {
+        self.caches.delete(e.data.key)
+      } else {
+        self.caches.keys().then(function (keys) {
+          keys.forEach(function (key) {
+            self.caches.delete(key)
+          })
+        })
+      }
       break
     case 'add_cache':
       if (e.data.values.length) {
-        caches.open(preCacheName).then(function (cache) {
+        var key = e.data.key || commonCacheName
+        caches.open(key).then(function (cache) {
           return cache.addAll(e.data.values)
         })
       }
