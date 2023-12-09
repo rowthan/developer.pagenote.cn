@@ -14,7 +14,7 @@ function ClientApp({ Component, pageProps }: AppProps) {
   return (
     <StrictMode>
       <Head>
-        <title>{isDev ? '开发阶段' : TDK.common.title}</title>
+        <title>{TDK.common.title}</title>
       </Head>
       {!isExt && !isDev && <SpeedInsights />}
       {!isExt && !isDev && <Analytics />}
