@@ -14,6 +14,7 @@ import {SEO_REVERT_MAP} from "../../const/notion";
 async function fetchDocByPath(path: string): Promise<string | null> {
   const officialNotion = getOfficialNotion()
   if (!officialNotion) {
+    console.error('未初始化 Notion 客户端')
     return null
   }
   const { results } = await officialNotion.search({
@@ -82,9 +83,7 @@ export default async function handler(
     if (!notionId) {
       console.error(notionIdOrUrlPath, 'no page')
       // throw Error('找不到 notion 页面')
-      return res.status(200).json({
-        title: '404 not found',
-      })
+      return res.status(404).json(null)
     }
   }
 

@@ -56,7 +56,7 @@ export default function ImportFilter(props: {
           backupData: importData,
         },
         {
-          timeout: 30 * 1000,
+          timeout: 90 * 1000,
         }
       )
       .then(function (res) {
