@@ -45,7 +45,7 @@ export interface EditorProps {
   children?: ReactNode
 }
 
-function Editor(props: EditorProps) {
+const TipEditor = React.forwardRef((props: EditorProps, ref) => {
   const onUpdate = function (data: {
     editor: { getHTML: () => any; getJSON: () => any; getText: () => string }
   }) {
@@ -64,11 +64,16 @@ function Editor(props: EditorProps) {
     autofocus: false,
   })
 
+  React.useImperativeHandle(ref, () => ({
+    editor: editor,
+  }))
+
   return (
     <EditorContent className={props.className} editor={editor}>
       {props.children}
     </EditorContent>
   )
-}
+})
+TipEditor.displayName = 'TipEditor'
 
-export default Editor
+export default TipEditor
