@@ -4,7 +4,6 @@ var preCacheName = 'pre_cache_' + currentKey
 var runtimeCacheName = 'runtime_cache_' + currentKey
 var preCacheFiles = [
     '/',
-    '/release',
 ]
 
 
@@ -120,17 +119,13 @@ self.addEventListener('fetch', function (e) {
         .match(e.request)
         .then(function (response) {
           const allowCache = util.checkAllowCache(e.request)
-          if (allowCache && response) {
-            const date = response.headers.get('date')
-            const past = date ? Date.now() - new Date(date).getTime() : 0
-            // 滞后的缓存，重新更新
-            if (past > 1000 * 30) {
-                util.fetchAndCache(e.request)
+          if (allowCache) {
+            util.fetchAndCache(e.request)
+            if (response) {
+              return response
             }
-            return response
           }
-
-            return util.fetchAndCache(e.request)
+          return fetch(e.request)
         })
         .catch(function (err) {
           console.error('sw fetch', err)
