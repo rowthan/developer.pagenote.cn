@@ -16,17 +16,19 @@ export const receiveGiftItem = function (
   )
 }
 
-const demoGiftDetail = {
+export const demoGiftDetail = {
   giftId: '',
   giftName: '',
   description: '',
   qualificationDes: '',
   image: '',
   expiredAt: new Date(),
-  paidRate: 1,
   limit: 9,
   bookDays: 1,
+  paidDays: 1,
   received: false,
+  score: 1,
+  userGiftKey: 'bookDays',
 }
 export type GiftDetail = typeof demoGiftDetail
 

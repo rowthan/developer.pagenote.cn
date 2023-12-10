@@ -1,22 +1,20 @@
 import useSWR from 'swr'
 import { fetchGiftItem, GiftDetail, receiveGiftItem } from '../service/gift'
-import useVersionValid from './useVersionValid'
 
-export function fetchData(id: string, byExt: boolean) {
+export function fetchData(id: string) {
   return fetchGiftItem(id).then(function (res) {
     return res?.data?.gift || null
   })
 }
 
 export default function useGiftDetail(id: string) {
-  const { valid } = useVersionValid('0.26.4')
   const data = useSWR<GiftDetail | null>(
     '/gift/' + id,
     () => {
       if (!id) {
         return Promise.resolve(null)
       }
-      return fetchData(id, valid)
+      return fetchData(id)
     },
     {
       fallbackData: null,
