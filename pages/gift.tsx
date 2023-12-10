@@ -10,6 +10,7 @@ import { demoGiftDetail, GiftDetail } from '../service/gift'
 import { Button } from '../@/components/ui/button'
 import { get } from 'lodash'
 import classNames from 'classnames'
+import BasicLayout from '../layouts/BasicLayout'
 
 interface Props {
   children?: ReactNode
@@ -118,107 +119,109 @@ export default function Gift(props: Props) {
 
   const userKey = gift?.userGiftKey || 'bookDays'
   return (
-    <div className={'flex h-screen item-center flex-col'}>
-      <div className="m-auto sm:max-w-[520px] max-w-[375px] min-w-[300px] p-5 rounded-[10px] shadow border border-slate-400 flex-col justify-start items-start gap-[30px]">
-        <div className="flex-col justify-start items-start gap-[5px] flex">
-          <div className=" justify-start items-center gap-1 inline-flex">
-            <div className="text-sky-800 text-[28px] font-bold font-['Inter'] leading-10">
-              {title}
+    <BasicLayout nav={false}>
+      <div className={'min-h-fill flex item-center flex-col'}>
+        <div className="m-auto sm:max-w-[520px] max-w-[375px] min-w-[300px] p-5 rounded-[10px] shadow border border-slate-400 flex-col justify-start items-start gap-[30px]">
+          <div className="flex-col justify-start items-start gap-[5px] flex">
+            <div className=" justify-start items-center gap-1 inline-flex">
+              <div className="text-sky-800 text-[28px] font-bold font-['Inter'] leading-10">
+                {title}
+              </div>
             </div>
-          </div>
-          <div
-            className=" text-sky-700 text-sm font-semibold font-['Inter'] uppercase leading-normal tracking-tight"
-            dangerouslySetInnerHTML={{ __html: gift?.description || '' }}
-          ></div>
-        </div>
-        <div className="flex-col justify-start items-start gap-[5px] flex mt-4">
-          {types.map((type) => (
             <div
-              key={type.key}
-              className={classNames(
-                'w-full  justify-between items-center inline-flex text-sky-950 ',
-                {
-                  'bg-yellow-400': type.key === userKey,
-                  'bg-yellow-50 text-opacity-80': type.key !== userKey,
-                }
-              )}
-            >
-              <div className=" px-[5px] py-2.5 justify-start items-center gap-[15px] flex">
-                <div className="justify-start items-center gap-2 flex">
-                  <div className=" text-xs font-semibold font-['Inter'] leading-tight">
-                    {type.key === userKey ? ' ✓ ' : ' × '} {type.label}
-                    {type.key === userKey && uid ? '（你）' : ''}
+              className=" text-sky-700 text-sm font-semibold font-['Inter'] uppercase leading-normal tracking-tight"
+              dangerouslySetInnerHTML={{ __html: gift?.description || '' }}
+            ></div>
+          </div>
+          <div className="flex-col justify-start items-start gap-[5px] flex mt-4">
+            {types.map((type) => (
+              <div
+                key={type.key}
+                className={classNames(
+                  'w-full  justify-between items-center inline-flex text-sky-950 ',
+                  {
+                    'bg-yellow-400': type.key === userKey,
+                    'bg-yellow-50 text-opacity-80': type.key !== userKey,
+                  }
+                )}
+              >
+                <div className=" px-[5px] py-2.5 justify-start items-center gap-[15px] flex">
+                  <div className="justify-start items-center gap-2 flex">
+                    <div className=" text-xs font-semibold font-['Inter'] leading-tight">
+                      {type.key === userKey ? ' ✓ ' : ' × '} {type.label}
+                      {type.key === userKey && uid ? '（你）' : ''}
+                    </div>
                   </div>
                 </div>
+                <div className="pr-[5px] justify-center items-center flex text-sky-950">
+                  {get(gift, type.key)} {type.unit}
+                </div>
               </div>
-              <div className="pr-[5px] justify-center items-center flex text-sky-950">
-                {get(gift, type.key)} {type.unit}
+            ))}
+          </div>
+          <div className="mt-2 text-slate-400 text-xs font-medium font-['Inter'] leading-tight">
+            {gift?.expiredAt && (
+              <div>
+                <span>领取有效期</span> -{' '}
+                {dayjs(gift?.expiredAt).format('YYYY-MM-DD')}
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-2 text-slate-400 text-xs font-medium font-['Inter'] leading-tight">
-          {gift?.expiredAt && (
-            <div>
-              <span>领取有效期</span> -{' '}
-              {dayjs(gift?.expiredAt).format('YYYY-MM-DD')}
-            </div>
-          )}
-          <br />
-          领取条件：
-          <br />
-          {gift?.qualificationDes}
-        </div>
-
-        <form
-          onSubmit={submit}
-          className="flex flex-col justify-center m-auto relative mt-4 z-10 gap-1"
-        >
-          <div className={'hidden'}>
-            <input
-              type="text"
-              readOnly
-              className="hidden"
-              name="giftId"
-              defaultValue={giftId}
-            />
-            <input
-              type="text"
-              readOnly
-              className="hidden"
-              name="uid"
-              defaultValue={uid}
-            />
+            )}
+            <br />
+            领取条件：
+            <br />
+            {gift?.qualificationDes}
           </div>
 
-          {!uid && (
-            <div>
+          <form
+            onSubmit={submit}
+            className="flex flex-col justify-center m-auto relative mt-4 z-10 gap-1"
+          >
+            <div className={'hidden'}>
               <input
-                type="email"
-                autoFocus
-                required
-                name="email"
-                className="w-full p-2 mb-1 rounded-sm border m-auto"
-                placeholder="福利接收邮箱地址"
+                type="text"
+                readOnly
+                className="hidden"
+                name="giftId"
+                defaultValue={giftId}
+              />
+              <input
+                type="text"
+                readOnly
+                className="hidden"
+                name="uid"
+                defaultValue={uid}
               />
             </div>
-          )}
-          <Button
-            disabled={!available}
-            type={'submit'}
-            loading={status === ReceiveStatus.ing}
-          >
-            <div className="text-sm ">{label}</div>
-          </Button>
-          {gift?.paidDays && userKey === 'bookDays' && (
-            <Button type={'button'} variant={'link'}>
-              <a className="text-sm text-muted-foreground" href={'/pricing'}>
-                成为赞助者后领取 {gift.paidDays} 日福利
-              </a>
+
+            {!uid && (
+              <div>
+                <input
+                  type="email"
+                  autoFocus
+                  required
+                  name="email"
+                  className="w-full p-2 mb-1 rounded-sm border m-auto"
+                  placeholder="福利接收邮箱地址"
+                />
+              </div>
+            )}
+            <Button
+              disabled={!available}
+              type={'submit'}
+              loading={status === ReceiveStatus.ing}
+            >
+              <div className="text-sm ">{label}</div>
             </Button>
-          )}
-        </form>
+            {gift?.paidDays && userKey === 'bookDays' && (
+              <Button type={'button'} variant={'link'}>
+                <a className="text-sm text-muted-foreground" href={'/pricing'}>
+                  成为赞助者后领取 {gift.paidDays} 日福利
+                </a>
+              </Button>
+            )}
+          </form>
+        </div>
       </div>
-    </div>
+    </BasicLayout>
   )
 }

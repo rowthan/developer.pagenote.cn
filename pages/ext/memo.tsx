@@ -15,19 +15,20 @@ export default function Memo() {
 
     const memo = data?.[0];
     return (
-        <div className="max-w-5xl m-auto ">
-            <MemoComponent id={key}
-                className={'single-memo'}
+      <div className="max-w-5xl m-auto my-1">
+        <MemoComponent id={key} className={'single-memo'}></MemoComponent>
+        <hr />
+        {memo && (
+          <div className={'text-xs text-muted-foreground mt-2'}>
+            from{' '}
+            <a
+              className={'link link-info'}
+              href={memo.url || memo.path || memo.domain}
             >
-
-            </MemoComponent>
-            <hr/>
-            {
-                memo &&
-                <div className={'text-xs text-muted-foreground mt-2'}>
-                    from <a className={'link link-info'} href={memo.url || memo.path || memo.domain}>{memo.url || memo.path || memo.domain}</a>
-                </div>
-            }
-        </div>
-    );
+              {memo.url || memo.path || memo.domain}
+            </a>
+          </div>
+        )}
+      </div>
+    )
 }
