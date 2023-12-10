@@ -93,7 +93,6 @@ export default function Gift(props: Props) {
     available = false
   }
 
-  console.log(gift, 'gift')
 
   const types = [
     {
@@ -120,7 +119,7 @@ export default function Gift(props: Props) {
   const userKey = gift?.userGiftKey || 'bookDays'
   return (
     <div className={'flex h-screen item-center flex-col'}>
-      <div className="m-auto max-w-[440px] min-w-[400px] p-5 rounded-[10px] shadow border border-slate-400 flex-col justify-start items-start gap-[30px]">
+      <div className="m-auto sm:max-w-[520px] max-w-[375px] min-w-[300px] p-5 rounded-[10px] shadow border border-slate-400 flex-col justify-start items-start gap-[30px]">
         <div className="flex-col justify-start items-start gap-[5px] flex">
           <div className=" justify-start items-center gap-1 inline-flex">
             <div className="text-sky-800 text-[28px] font-bold font-['Inter'] leading-10">
