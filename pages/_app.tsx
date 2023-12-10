@@ -14,14 +14,14 @@ function ClientApp({ Component, pageProps }: AppProps) {
   return (
     <StrictMode>
       <Head>
-        <title>{isDev ? '开发阶段' : TDK.common.title}</title>
+        <title>{TDK.common.title}</title>
       </Head>
       {!isExt && !isDev && <SpeedInsights />}
       {!isExt && !isDev && <Analytics />}
       <Component {...pageProps} />
       <Script src={`${basePath}/components.js`} />
       <Script src={`${basePath}/lib/aliyun-oss-sdk.min.js`} />
-      {!isExt && <Script src={`/worker-register.js`} />}
+      {!isExt && !isDev && <Script src={`/worker-register.js`} />}
     </StrictMode>
   )
 }

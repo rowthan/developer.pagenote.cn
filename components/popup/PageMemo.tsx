@@ -160,7 +160,7 @@ export default function PageMemo(props: Props) {
           {memos.map((item, index) => {
             return (
               <Memo
-                afterUpdate={afterUpdate}
+                afterUpdate={(data) => afterUpdate(data, { key: item.key })}
                 key={item.key || ''}
                 id={item.key || ''}
                 className={

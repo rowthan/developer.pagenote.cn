@@ -1,18 +1,18 @@
 import React, { type ReactNode, useEffect, useState } from 'react'
 import useUserInfo, { fetchUserInfo } from 'hooks/useUserInfo'
-import usePrice, { PlanInfo } from 'hooks/usePrice'
 import { createOrder } from 'service'
 import PlanCard from './PlanCard'
 import Tip from './Tip'
+import { PlanInfo } from '../../typing'
 
 interface Props {
   children?: ReactNode
+  plans: PlanInfo[]
 }
 
 export default function Plans(props: Props) {
-  const { children } = props
+  const { children, plans } = props
   const [userInfo] = useUserInfo()
-  const [plans] = usePrice()
   const [plan, setPlan] = useState<PlanInfo | null>(null)
   const [activeIndex, setActiveIndex] = useState(1)
   let current = 0
@@ -69,11 +69,16 @@ export default function Plans(props: Props) {
       {open && (
         <div className={`modal modal-open`}>
           <Tip
-            amount={userInfo?.leftPermanent || plans[2].price}
+            plan={plan}
             onClose={() => {
               setPlan(null)
             }}
-          />
+          >
+            <div className={'text-sm'}>
+              此方案需要支付：¥
+              {Math.min(plan.price, userInfo?.leftPermanent || 130)}
+            </div>
+          </Tip>
         </div>
       )}
     </div>

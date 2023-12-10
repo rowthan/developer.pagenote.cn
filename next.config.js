@@ -13,6 +13,18 @@ module.exports = {
         source: '/:path*.html',
         destination: '/:path*',
       },
+      {
+        source: '/pro',
+        destination: '/widget/pro-plan',
+      },
+      {
+        source: '/vip',
+        destination: '/widget/pro-plan',
+      },
+      {
+        source: '/pricing',
+        destination: '/widget/pro-plan',
+      },
     ]
   },
   images: {

@@ -1,59 +1,5 @@
 import useUserInfo, { fetchUserInfo } from '../../hooks/useUserInfo'
-import { PlanInfo } from '../../hooks/usePrice'
-
-interface Right {
-  label: string
-  disAllowLabel?: string
-  allowFor: number[]
-  visibleFor: number[]
-}
-
-
-
-const RIGHTS: Right[] = [
-  {
-    label: '在任意网页标记',
-    allowFor: [0, 1, 2],
-    visibleFor: [0, 1, 2],
-  },
-  {
-    label: '搜索引擎内可联动搜索',
-    allowFor: [0, 1, 2],
-    visibleFor: [0, 1, 2],
-  },
-  {
-    label: '标记无上限，画笔颜色无限制',
-    disAllowLabel: '单个页面标记上限 50 个(种子用户100个)',
-    allowFor: [1, 2],
-    visibleFor: [0, 1, 2],
-  },
-  {
-    label: '对图片进行标记',
-    disAllowLabel: '不可标记图片（种子用户可标记）',
-    allowFor: [1, 2],
-    visibleFor: [0, 1, 2],
-  },
-  // {
-  //   label: '与 Notion 同步',
-  //   allowFor: [1, 2],
-  //   visibleFor: [0, 1, 2],
-  // },
-  {
-    label: '网页离线存档',
-    allowFor: [1, 2],
-    visibleFor: [0, 1, 2],
-  },
-  {
-    label: '有赠送福利时，时长加倍',
-    allowFor: [1],
-    visibleFor: [0, 1],
-  },
-  {
-    label: '福利转换为积分。可抵扣其他作品VIP',
-    allowFor: [2],
-    visibleFor: [2],
-  },
-]
+import { PlanInfo } from '../../typing'
 
 export default function PlanCard(props: {
   info: PlanInfo
@@ -70,6 +16,7 @@ export default function PlanCard(props: {
     bg = 'indigo',
     role,
     unit = '元',
+    rights = [],
   } = info
   const disabled = current >= role
 
@@ -143,14 +90,11 @@ export default function PlanCard(props: {
           <key-word>只增不减</key-word>）
         </div>
         <ul>
-          {RIGHTS.filter((item) => {
-            return item.visibleFor.includes(role)
-          }).map((item, index) => {
-            const allow = item.allowFor.includes(role)
+          {rights.map((item, index) => {
             return (
               <li key={index} className="flex items-center py-1">
                 <aside className={'mr-2'}>
-                  {allow ? (
+                  {item.allowed ? (
                     <svg
                       className="w-3 h-3 flex-shrink-0 fill-current text-green-500 "
                       viewBox="0 0 12 12"
@@ -175,9 +119,7 @@ export default function PlanCard(props: {
                   )}
                 </aside>
 
-                <div className="text-sm">
-                  {allow ? item.label : item.disAllowLabel || item.label}
-                </div>
+                <div className="text-sm">{item.label}</div>
               </li>
             )
           })}
