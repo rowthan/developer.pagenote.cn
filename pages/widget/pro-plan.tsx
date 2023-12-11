@@ -25,7 +25,7 @@ export const getStaticProps = async function () {
 export default function ProPlan(props: { plans: PlanInfo[] }) {
   const { plans } = props
   return (
-    <div className={'m-auto px-6'}>
+    <div className={'m-auto px-6 max-w-7xl pt-2'}>
       <Plans plans={plans || []}>
         <div className="p-2 text-muted-foreground">
           <ul>
